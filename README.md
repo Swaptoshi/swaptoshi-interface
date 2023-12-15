@@ -1,4 +1,4 @@
-![Logo](./docs/assets/banner_interface.png)
+![Logo](./static/img/banner_interface.png)
 
 # Swaptoshi Interface
 
