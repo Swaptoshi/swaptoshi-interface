@@ -1,0 +1,251 @@
+/* ---------------- Dark Theme ----------------------- */
+:root {
+  --shadow: #ffffff05;
+  --body-color: #2d2d2d;
+  --body-bg-color: linear-gradient(rgb(32, 39, 56) 0%, rgb(7, 8, 22) 100%);
+  /* Swap page */
+  --card-bg: rgb(13, 17, 28);
+  --card-inside-color: rgb(19, 26, 42);
+  --switch-button: rgb(19, 26, 42);
+  --switch-button-border: rgb(13, 17, 28);
+  --connect-btn: rgba(76, 130, 251, 0.24);
+  --open-currency-btn-bg: rgb(41, 50, 73);
+  --open-currency-btn-top: #ffffff;
+  --open-currency-btn-color: #ffffff;
+  /* Home page */
+  --home-cards: rgb(19, 26, 42);
+  /* --text-color: rgb(152, 161, 192); */
+  --text-color: #7f9bd4;
+  /* --body-bg-shade: radial-gradient(72.04% 72.04% at 50% 3.99%, rgb(255, 55, 235) 0%, rgba(166, 151, 255, 0) 100%); */
+  --body-bg-shade: radial-gradient(
+    72.04% 72.04% at 50% 3.99%,
+    #89cff0 0%,
+    rgba(166, 151, 255, 0) 100%
+  );
+  --card-border-color: 1px solid rgba(152, 161, 192, 0.24);
+  --card-hover-color: 1px solid rgb(76, 130, 251);
+  --color-white: #ffffff;
+  --btn-color: rgb(76, 130, 251);
+  /* Body Background */
+  --body-bg: linear-gradient(180deg, #0d0d0e 0, #0b0b0c 100%);
+  --back-drop: linear-gradient(rgba(8, 10, 24, 0) 0%, rgb(8, 10, 24) 45%);
+  /* --back-drop-two: linear-gradient(rgb(0 0 0 / 60%) 0%, rgb(4 4 6) 60%); */
+  --cards-background: linear-gradient(
+    179.82deg,
+    rgba(0, 0, 0, 0) 0.16%,
+    rgb(5, 0, 38) 99.85%
+  );
+  --protocol-card: radial-gradient(
+    101.8% 4091.31% at 0% 0%,
+    rgb(70, 115, 250) 0%,
+    rgb(150, 70, 250) 100%
+  );
+  /* Sticky-Nav */
+  --sticky-nav: #000;
+  --nav-drop: #0d111c;
+  /* Tokens page */
+  --eth-dropdown: rgb(232, 236, 251);
+  --token-border-color: 1px solid rgba(152, 161, 192, 0.24);
+  /* Model page*/
+  --model-bg: rgb(13, 17, 28);
+  --model-btn-hover: rgb(51, 113, 250);
+  --model-btn-color: rgb(76, 130, 251);
+  --model-cards: rgb(19, 26, 42);
+  --model-text: rgb(152, 161, 192);
+  --model-bg-text: rgb(255, 255, 255);
+  /*Vote page*/
+  --vote-card-color: rgb(13, 17, 28);
+  --vote-card-bgcolor: rgb(19, 26, 42);
+  /* Privacy Modal */
+  --privacy-cards-clr: rgb(76, 130, 251);
+  --privacy-cards-bg: rgba(21, 61, 111, 0.44);
+  --privacy-cards-bg-hover: rgba(55, 107, 173, 0.44);
+  --privacy-cc: rgb(41, 50, 73);
+  /* Footer  */
+  --text-clr: rgb(152, 161, 192);
+  /* Liquidity page */
+  --dropdown-bg: rgb(19, 26, 42);
+  --dropdown-border: rgb(13, 17, 28);
+  --token-clrr: rgba(152, 161, 192, 0.24);
+
+  --hover-background: rgb(41, 50, 73);
+  --border: rgba(152, 161, 192, 0.24);
+}
+
+/* ------------------------------------------------------------
+ ---------------- Light Theme -----------------------
+------------------------------------------------------------- */
+[data-theme="light"] {
+  --shadow: #00000005;
+  /* Body Background */
+  --body-color: radial-gradient(
+      100% 100% at 50% 0,
+      rgba(255, 184, 226, 0.51) 0,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    #fff;
+  /* --body-bg: radial-gradient(100% 100% at 50% 0, rgba(255, 184, 226, .51) 0, rgba(255, 255, 255, 0) 100%), #fff; */
+  --body-bg: radial-gradient(
+      100% 100% at 50% 0,
+      rgb(217 226 255 / 51%) 0,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    #fff;
+  --back-drop: linear-gradient(
+    rgba(255, 255, 255, 0) 0%,
+    rgb(255, 255, 255) 45%
+  );
+  --cards-background: linear-gradient(
+    179.82deg,
+    rgba(255, 255, 255, 0) 0.16%,
+    rgb(234, 234, 234) 99.85%
+  );
+  /* Swap page */
+  --card-bg: rgb(255, 255, 255);
+  --card-inside-color: rgb(245, 246, 252);
+  --switch-button: rgb(245, 246, 252);
+  --switch-button-border: rgb(255, 255, 255);
+  --color-white: #000;
+  --connect-btn: rgba(251, 17, 142, 0.12);
+  --btn-color: rgb(251, 17, 142);
+  --open-currency-btn-color: #ffffff;
+  --open-currency-btn-bg: rgb(232, 236, 251);
+  --open-currency-btn-top: #000000;
+  /* Home page */
+  --home-cards: #ffff;
+  --protocol-card: linear-gradient(
+    93.06deg,
+    rgb(255, 0, 199) 2.66%,
+    rgb(255, 159, 251) 98.99%
+  );
+  /* Sticky-Nav */
+  --sticky-nav: #fff;
+  --nav-drop: #fff;
+  /* Tokens page */
+  --eth-dropdown: rgb(232, 236, 251);
+  --token-border-color: 1px solid rgb(210, 217, 238);
+  --token-clrr: rgb(210, 217, 238);
+  /* Model  */
+  --model-bg: #fff;
+  --model-btn-hover: rgb(251, 17, 142);
+  --model-btn-color: rgba(251, 17, 142, 0.12);
+  --model-cards: rgb(245, 246, 252);
+  --model-text: rgb(251, 17, 142);
+  --model-bg-text: rgb(13, 17, 28);
+  /* Vote page */
+  --vote-card-color: rgb(255, 255, 255);
+  --vote-card-bgcolor: rgb(245, 246, 252);
+  /* Privacy Modal*/
+  --privacy-cards-clr: rgb(251, 17, 142);
+  --privacy-cards-bg: rgb(253, 234, 241);
+  --privacy-cards-bg-hover: rgb(246, 221, 232);
+  --privacy-cc: rgb(232, 236, 251);
+  /* Footer  */
+  --text-clr: rgb(119, 128, 160);
+  /* Liquidity page */
+  --dropdown-bg: rgb(245, 246, 252);
+  --dropdown-border: #fff;
+
+  --hover-background: rgb(232, 236, 251);
+  --border: rgb(210, 217, 238);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden !important;
+  background: var(--body-bg);
+}
+
+a {
+  text-decoration: none;
+  color: unset;
+}
+
+a:hover {
+  color: unset;
+}
+
+ul {
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.dark-theme {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  /* background: var(--body-bg); */
+}
+
+.dark-theme::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  width: 200vw;
+  height: 200vh;
+  transform: translate(-50vw, -100vh);
+  z-index: 1;
+}
+
+.backdrop {
+  position: absolute;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  top: 0px;
+  left: 0;
+  bottom: 0px;
+  width: 100%;
+  min-height: 550px;
+  background: var(--back-drop);
+  /* background: linear-gradient(rgba(8, 10, 24, 0) 0%, rgb(8, 10, 24) 45%); */
+  z-index: 110;
+  pointer-events: none;
+  height: calc(100vh - 52px);
+  overflow: hidden;
+}
+
+/* .gtxiKG {
+  position: absolute;
+  display: flex;
+  overflow: hidden;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+  overflow-y: hidden;
+  height: calc(100vh - 52px);
+} */
+
+@media screen and (min-width: 768px) {
+  .backdrop {
+    height: 100vh;
+  }
+
+  /* 
+  .gtxiKG {
+    height: 100vh;
+  } */
+}
