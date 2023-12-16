@@ -11,30 +11,39 @@ export function useLiskPrice() {
 
 export default function LiskPriceProvider({ children }) {
   const [prices, setPrices] = React.useState([]);
+  const [currency, setCurrency] = React.useState("USD");
   const { selectedService } = useChain();
 
   React.useEffect(() => {
     const run = async () => {
       if (selectedService) {
         const market = await getLiskMarket(selectedService.serviceURLs);
-        if (market && market.data && market.data.data.length > 0)
-          setPrices(market.data.data);
+        if (market && market.data && market.data.data.length > 0) {
+          const price = market.data.data.find(
+            (t) => t.from === "LSK" && t.to === currency.toUpperCase()
+          );
+          if (!price) setPrices(0);
+          else setPrices(Number(price.rate));
+        }
       }
     };
 
-    const updateLiskPriceInterval = setInterval(tryToast(run), 60000);
+    tryToast(run);
+    const updateLiskPriceInterval = setInterval(() => tryToast(run), 60000);
 
     return () => {
       clearInterval(updateLiskPriceInterval);
     };
-  }, [selectedService]);
+  }, [currency, selectedService]);
 
   const context = React.useMemo(
     () => ({
       prices,
       setPrices,
+      currency,
+      setCurrency,
     }),
-    [prices]
+    [currency, prices]
   );
 
   return (

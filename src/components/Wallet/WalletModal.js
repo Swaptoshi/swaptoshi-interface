@@ -11,6 +11,7 @@ export default function WalletModal({
   theme,
 }) {
   const { senderPublicKey } = useWalletConnect();
+
   return show ? (
     <div data-testid="wallet-modal" className="sc-1hmbv05-0 jcIclM">
       <WalletModalHeader
@@ -18,7 +19,7 @@ export default function WalletModal({
         closeHandler={closeHandler}
         theme={theme}
       />
-      {senderPublicKey ? <WalletAccount /> : <ConnectWalletModal />}
+      {senderPublicKey ? <WalletAccount show={show} /> : <ConnectWalletModal />}
     </div>
   ) : null;
 }

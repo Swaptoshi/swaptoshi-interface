@@ -1,9 +1,10 @@
 import React from "react";
 import Card from "../Card/Card";
 import TokenAvatar from "../Avatar/token";
+import { useLiskPrice } from "../../context/LiskPriceProvider";
 
-export default function BalanceCard() {
-  const tokenId = "01576352";
+export default function BalanceCard({ balance }) {
+  const { prices, currency } = useLiskPrice();
 
   return (
     <Card
@@ -13,16 +14,14 @@ export default function BalanceCard() {
         flexDirection: "row",
         alignItems: "center",
         overflow: "hidden",
-        margin: "16px 0px",
+        marginBottom: "16px",
       }}
     >
       <TokenAvatar
-        src={
-          "https://raw.githubusercontent.com/LiskHQ/app-registry/main/devnet/Lisk/images/tokens/lisk.png"
-        }
+        src={balance.logo}
         style={{ marginRight: "8px" }}
         size={35}
-        tokenId={tokenId}
+        tokenId={balance.tokenId}
       />
 
       <div>
@@ -30,13 +29,19 @@ export default function BalanceCard() {
           className="text"
           style={{ whiteSpace: "nowrap", fontSize: "16px" }}
         >
-          12312321.2342342 LSK
+          {balance.balance / 10 ** balance.decimal} {balance.symbol}
         </div>
         <div
           className="text-accent"
           style={{ whiteSpace: "nowrap", fontSize: "12px" }}
         >
-          ~12312312321 USD
+          ~
+          {(
+            (balance.balance / 10 ** balance.decimal) *
+            balance.priceLSK *
+            prices
+          ).toFixed(2)}{" "}
+          {currency}
         </div>
       </div>
     </Card>
