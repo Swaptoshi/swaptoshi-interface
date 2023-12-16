@@ -36,11 +36,15 @@ const Navbar = ({ searchOptions, handleCart }) => {
     setIsModalOpen(false);
   }, [setIsModalOpen]);
 
-  const connectHandler = React.useCallback(() => {
+  const handleOpenModal = React.useCallback(() => {
     setIsOpen(false);
     setIsModalOpen(true);
+  }, [setIsModalOpen]);
+
+  const connectHandler = React.useCallback(() => {
+    handleOpenModal();
     if (!wcUri) connect({ onFailed: onConnectFailed });
-  }, [setIsModalOpen, wcUri, connect, onConnectFailed]);
+  }, [handleOpenModal, wcUri, connect, onConnectFailed]);
 
   //For header
   useEffect(() => {
@@ -83,7 +87,7 @@ const Navbar = ({ searchOptions, handleCart }) => {
     );
   }, [availableService]);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = React.useCallback(() => setIsOpen(!isOpen), [isOpen]);
 
   const handleOptionClick = (option) => {
     setChain(option.value.substring(0, 2));
@@ -592,7 +596,7 @@ const Navbar = ({ searchOptions, handleCart }) => {
                 {senderPublicKey ? (
                   <button
                     className="hover-shadow"
-                    onClick={connectHandler}
+                    onClick={handleOpenModal}
                     disabled={signClient === undefined}
                     style={{
                       opacity: signClient === undefined ? 0.2 : 1,

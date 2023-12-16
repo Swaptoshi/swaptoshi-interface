@@ -8,25 +8,38 @@ function CustomDropdown({
   handleOptionClick,
 }) {
   const ref = React.useRef(null);
+  const isClickInside = React.useRef(false);
 
   React.useEffect(() => {
     if (!isOpen) return;
 
     function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        isClickInside.current
+      ) {
         toggleDropdown();
       }
+      isClickInside.current = false;
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mouseup", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mouseup", handleClickOutside);
     };
   }, [isOpen, ref, toggleDropdown]);
 
   return (
-    <div className="custom-dropdown" ref={ref}>
-      <div className="selected-option hover-shadow" onClick={toggleDropdown}>
+    <div
+      className="custom-dropdown"
+      ref={ref}
+      onClick={() => {
+        toggleDropdown();
+        isClickInside.current = true;
+      }}
+    >
+      <div className="selected-option hover-shadow">
         <img src={selectedOption.imgSrc} alt={selectedOption.value} />
         <div style={{ width: "8px" }} />
         <span className="hide-1024">{selectedOption.label}</span>
