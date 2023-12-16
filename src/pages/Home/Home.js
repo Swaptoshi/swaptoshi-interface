@@ -1,9 +1,28 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 
 import "./Home.css";
 import Footer from "../../components/Footer/Footer";
+import { NavLink } from "react-router-dom";
 
 const Home = () => {
+  const sectionRef = React.useRef(null);
+
+  const handleClick = () => {
+    const headerHeight = 72;
+    const element = sectionRef.current;
+
+    if (element) {
+      const rect = element.getBoundingClientRect();
+      const scrollPosition = window.scrollY + rect.top - headerHeight;
+
+      window.scrollTo({
+        top: scrollPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="home-page">
@@ -155,35 +174,35 @@ const Home = () => {
         </div>
 
         <div className="hero-content-wrapper">
-          <h1 className="hero-title">Trade crypto and NFTs with confidence</h1>
+          <h1 className="hero-title">Trade Tremendous New Opportunities</h1>
           <div className="hero-text">
-            <p>Buy, sell, and explore tokens and NFTs</p>
+            <p>Swaptoshi is a Fair-Launched Community-Driven Lisk DEX</p>
           </div>
           <span className="get-started-wrapper">
-            <a
-              id="getStartedBtnId"
-              className="get-started-btn get-btn"
-              href="#/swap"
-            >
-              <p className="get-started-text">Get Started</p>
-            </a>
+            <NavLink to={"/swap"}>
+              <a id="getStartedBtnId" className="get-started-btn get-btn">
+                <p className="get-started-text">Get Started</p>
+              </a>
+            </NavLink>
           </span>
-          <div className="learn-more">
+          <div className="learn-more" onClick={handleClick}>
             Learn more
             <i className="learn-more-icon ri-arrow-down-line"></i>
           </div>
 
           <a
-            href="https://wallet.uniswap.org/?utm_source=home_page&amp;utm_medium=webapp&amp;utm_campaign=wallet_microsite&amp;utm_id=1"
+            href="https://lisk.chat"
             className="download-app"
+            target="_blank"
+            rel="noreferrer"
           >
-            <i className="apple-icon ri-apple-fill"></i>
-            Download the Uniswap Wallet for iOS
+            <i className="discord-icon ri-discord-fill"></i>
+            Join Lisk Discord Server!
           </a>
         </div>
 
         {/* Cards Section */}
-        <section className="container-cards">
+        <section className="container-cards" ref={sectionRef}>
           <div className="col-2 container-wrapper">
             {/* Card One */}
             <a className="swap-tokens-card card-one" href="#/swap">
