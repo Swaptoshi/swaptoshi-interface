@@ -48,7 +48,7 @@ export default function ConfigModal({
                           currentTheme === "system" ? "eqaHKd" : ""
                         }`}
                       >
-                        <div className="sc-sx9n2y-0 kandXm css-rjqmed">
+                        <div className="sc-sx9n2y-0 kandXm css-rjqmed text">
                           Auto
                         </div>
                       </div>

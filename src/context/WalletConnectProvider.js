@@ -212,7 +212,7 @@ export function WalletConnectProvider({ children }) {
 
   React.useEffect(() => {
     const run = async () => {
-      if (senderPublicKey) {
+      if (senderPublicKey && selectedService) {
         const address = cryptography.address.getLisk32AddressFromPublicKey(
           Buffer.from(senderPublicKey, "hex")
         );
