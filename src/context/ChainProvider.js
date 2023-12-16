@@ -1,6 +1,7 @@
 import React from "react";
-import { serviceGET } from "../service/node";
-import axios from "axios";
+import { checkServiceNode } from "../service/node";
+import { getBlockchainApps } from "../service/apps";
+import { tryToast } from "../utils/Toast/tryToast";
 
 const ChainContext = React.createContext();
 
@@ -26,11 +27,7 @@ export default function ChainProvider({ children }) {
   React.useEffect(() => {
     const run = async () => {
       const fetchedService = [];
-
-      const swaptoshiMetadata = await serviceGET(
-        "/api/v3/blockchain/apps/meta?search=Swaptoshi",
-        process.env.REACT_APP_SWAPTOSHI_SERVICE_URL
-      );
+      const swaptoshiMetadata = await getBlockchainApps();
 
       if (swaptoshiMetadata && swaptoshiMetadata.data) {
         for (const metadata of swaptoshiMetadata.data.data) {
@@ -40,13 +37,10 @@ export default function ChainProvider({ children }) {
             serviceURLs: "",
           };
           for (let i = 0; i < metadata.serviceURLs.length; i++) {
-            try {
-              await axios.get(
-                `${metadata.serviceURLs[i].http}/api/v3/index/status`
-              );
+            if (await checkServiceNode(metadata.serviceURLs[i].http)) {
               service.serviceURLs = metadata.serviceURLs[i].http;
               break;
-            } catch {}
+            }
           }
           fetchedService.push(service);
         }
@@ -65,7 +59,7 @@ export default function ChainProvider({ children }) {
       }
     };
 
-    run();
+    tryToast(run);
   }, []);
 
   const context = React.useMemo(

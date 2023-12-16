@@ -33,6 +33,7 @@ import LiskPriceProvider from "./context/LiskPriceProvider";
 import CreateTokenModal from "./utils/Modal/CreateToken";
 import { useTheme } from "./context/ThemeProvider";
 import WalletModalProvider from "./context/WalletModal";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [theme] = useTheme();
@@ -310,6 +311,7 @@ function App() {
           </WalletConnectProvider>
         </WalletModalProvider>
       </LiskPriceProvider>
+      <ToastContainer position="bottom-right" theme={theme} />
     </ChainProvider>
   );
 }

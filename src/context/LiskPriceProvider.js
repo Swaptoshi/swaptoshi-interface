@@ -1,6 +1,7 @@
 import React from "react";
 import { useChain } from "./ChainProvider";
 import { getLiskMarket } from "../service/market";
+import { tryToast } from "../utils/Toast/tryToast";
 
 const LiskPriceContext = React.createContext();
 
@@ -21,7 +22,11 @@ export default function LiskPriceProvider({ children }) {
       }
     };
 
-    run();
+    const updateLiskPriceInterval = setInterval(tryToast(run), 60000);
+
+    return () => {
+      clearInterval(updateLiskPriceInterval);
+    };
   }, [selectedService]);
 
   const context = React.useMemo(
