@@ -2,7 +2,10 @@ import React, { useContext } from "react";
 import { SignClient } from "@walletconnect/sign-client";
 import { useChain } from "./ChainProvider";
 import { codec } from "@liskhq/lisk-codec";
+import * as cryptography from "@liskhq/lisk-cryptography";
 import { transactionSchema } from "../schema/transactionSchema";
+import { getTokenBalances } from "../service/token";
+import { tryToast } from "../utils/Toast/tryToast";
 
 const WalletConnectContext = React.createContext();
 
@@ -14,8 +17,9 @@ export function WalletConnectProvider({ children }) {
   const [signClient, setSignClient] = React.useState();
   const [wcUri, setWcUri] = React.useState();
   const [sessions, setSessions] = React.useState();
+  const [balances, setBalances] = React.useState();
   const [senderPublicKey, setSenderPublicKey] = React.useState();
-  const { chain } = useChain();
+  const { chain, selectedService } = useChain();
 
   const createClient = React.useCallback(
     async (callback) => {
@@ -106,6 +110,7 @@ export function WalletConnectProvider({ children }) {
         });
         setSessions(undefined);
         setSenderPublicKey(undefined);
+        setBalances(undefined);
         callback && callback.onSuccess && callback.onSuccess();
       } catch (e) {
         callback && callback.onFailed && callback.onFailed();
@@ -163,8 +168,18 @@ export function WalletConnectProvider({ children }) {
       disconnect,
       sign,
       wcUri,
+      balances,
     }),
-    [signClient, sessions, senderPublicKey, connect, disconnect, sign, wcUri]
+    [
+      signClient,
+      sessions,
+      senderPublicKey,
+      connect,
+      disconnect,
+      sign,
+      wcUri,
+      balances,
+    ]
   );
 
   React.useEffect(() => {
@@ -184,6 +199,7 @@ export function WalletConnectProvider({ children }) {
       } else {
         setSessions(undefined);
         setSenderPublicKey(undefined);
+        setBalances(undefined);
       }
     }
     if (wcUri) setWcUri(undefined);
@@ -193,6 +209,25 @@ export function WalletConnectProvider({ children }) {
   React.useEffect(() => {
     if (!signClient) createClient();
   }, [createClient, signClient]);
+
+  React.useEffect(() => {
+    const run = async () => {
+      if (senderPublicKey) {
+        const address = cryptography.address.getLisk32AddressFromPublicKey(
+          Buffer.from(senderPublicKey, "hex")
+        );
+        const tokens = await getTokenBalances(
+          { address },
+          selectedService.serviceURLs
+        );
+        if (tokens && tokens.data && tokens.data.data.length > 0) {
+          setBalances(tokens.data.data);
+        }
+      }
+    };
+
+    tryToast(run);
+  }, [selectedService, senderPublicKey]);
 
   return (
     <WalletConnectContext.Provider value={context}>
