@@ -4,7 +4,7 @@ import TokenAvatar from "../Avatar/token";
 import { useLiskPrice } from "../../context/LiskPriceProvider";
 
 export default function BalanceCard({ balance }) {
-  const { prices, currency } = useLiskPrice();
+  const { prices, fiatFormatter, cryptoFormatter } = useLiskPrice();
 
   return (
     <Card
@@ -29,19 +29,21 @@ export default function BalanceCard({ balance }) {
           className="text"
           style={{ whiteSpace: "nowrap", fontSize: "16px" }}
         >
-          {balance.balance / 10 ** balance.decimal} {balance.symbol}
+          {cryptoFormatter.format(balance.balance / 10 ** balance.decimal)}{" "}
+          {balance.symbol}
         </div>
         <div
           className="text-accent"
           style={{ whiteSpace: "nowrap", fontSize: "12px" }}
         >
           ~
-          {(
-            (balance.balance / 10 ** balance.decimal) *
-            balance.priceLSK *
-            prices
-          ).toFixed(2)}{" "}
-          {currency}
+          {fiatFormatter.format(
+            (
+              (balance.balance / 10 ** balance.decimal) *
+              balance.priceLSK *
+              prices
+            ).toFixed(2)
+          )}
         </div>
       </div>
     </Card>

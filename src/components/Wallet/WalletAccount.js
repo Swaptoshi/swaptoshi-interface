@@ -14,7 +14,7 @@ import { useLiskPrice } from "../../context/LiskPriceProvider";
 export default function WalletAccount({ show }) {
   const { senderPublicKey } = useWalletConnect();
   const { chain, selectedService } = useChain();
-  const { prices, currency } = useLiskPrice();
+  const { prices, fiatFormatter } = useLiskPrice();
 
   const [walletState, setWalletState] = React.useState();
   const requestRef = React.useRef(false);
@@ -95,12 +95,13 @@ export default function WalletAccount({ show }) {
           marginBottom: "24px",
         }}
       >
-        {(
-          walletState
-            .map((t) => (t.priceLSK * Number(t.balance)) / 10 ** t.decimal)
-            .reduce((a, b) => a + b, 0) * prices
-        ).toFixed(2)}{" "}
-        {currency}
+        {fiatFormatter.format(
+          (
+            walletState
+              .map((t) => (t.priceLSK * Number(t.balance)) / 10 ** t.decimal)
+              .reduce((a, b) => a + b, 0) * prices
+          ).toFixed(2)
+        )}
       </div>
       <div style={{ overflow: "scroll", flex: 0.95 }}>
         {walletState.map((balance) => (

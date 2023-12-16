@@ -11,8 +11,22 @@ export function useLiskPrice() {
 
 export default function LiskPriceProvider({ children }) {
   const [prices, setPrices] = React.useState([]);
+  const [fiatFormatter, setFiatFormatter] = React.useState();
+  const [cryptoFormatter, setCryptoFormatter] = React.useState();
   const [currency, setCurrency] = React.useState("USD");
   const { selectedService } = useChain();
+
+  React.useEffect(() => {
+    setFiatFormatter(
+      new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: currency,
+      })
+    );
+    setCryptoFormatter(
+      new Intl.NumberFormat(undefined, { maximumFractionDigits: 20 })
+    );
+  }, [currency]);
 
   React.useEffect(() => {
     const run = async () => {
@@ -42,8 +56,10 @@ export default function LiskPriceProvider({ children }) {
       setPrices,
       currency,
       setCurrency,
+      fiatFormatter,
+      cryptoFormatter,
     }),
-    [currency, prices]
+    [cryptoFormatter, currency, fiatFormatter, prices]
   );
 
   return (
