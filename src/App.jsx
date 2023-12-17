@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
@@ -7,11 +7,7 @@ import Home from './pages/Home/Home';
 import Swap from './pages/Swap/Swap';
 import Token from './pages/Tokens/Token';
 import Pools from './pages/Pools/Pools';
-import Nfts from './pages/Nfts/Nfts';
-import PrivacyModal from './utils/PrivacyModal/PrivacyModal';
-import Vote from './pages/Vote/Vote';
-import LiquidityModal from './utils/Modal/LiquidityModal';
-import NftsDetails from './pages/NftsDetails/NftsDetails';
+import LiquidityModal from './pages/LiquidityModal/LiquidityModal';
 
 import './App.css';
 import TokenDetails from './components/TokenDetails/TokenDetails';
@@ -23,23 +19,17 @@ import { allTableData, updateTime, options, chartData } from './service/tokens';
 //Swap Modal Tokens Data
 import { swapTokens } from './service/swapTokens';
 
-import SettingModal from './utils/SettingModal/SettingModal';
-import { allTableDataETH, allTableDataUSD } from './service/nfts';
-import CartModal from './components/Cart/CartModal/CartModal';
 import { WalletConnectProvider } from './context/WalletConnectProvider';
 import ChainProvider from './context/ChainProvider';
 import { getSystemTheme } from './utils/Theme/getSystemTheme';
 import LiskPriceProvider from './context/LiskPriceProvider';
-import CreateTokenModal from './utils/Modal/CreateToken';
+import CreateTokenModal from './pages/CreateToken/CreateToken';
 import { useTheme } from './context/ThemeProvider';
 import WalletModalProvider from './context/WalletModal';
 import { ToastContainer } from 'react-toastify';
 
 function App() {
 	const [theme] = useTheme();
-	//Add to Bag
-	const [addToBag, setAddToBag] = useState([]);
-	const [data, setData] = useState(null);
 
 	//Swap Modal
 	const [swapModal, setSwapModal] = useState(false);
@@ -62,8 +52,6 @@ function App() {
 		symbol: 'Select Token',
 	});
 	const [isLiquidityTokenSelected, setIsLiquidityTokenSelected] = useState(false);
-
-	const [currency, setCurrency] = useState('ETH');
 
 	//Swap Modal Func
 	const handleSwapModal = currencyId => {
@@ -106,64 +94,6 @@ function App() {
 			handleTokenSelect(token);
 		}
 		setSwapModal(false);
-	};
-
-	//Save bag item
-	useEffect(() => {
-		setAddToBag(
-			localStorage.getItem('newBagItems') ? JSON.parse(localStorage.getItem('newBagItems')) : [],
-		);
-	}, []);
-
-	//Add to Bag
-	// const onAddToBagHandler = (product) => {
-	//   const existing = addToBag.find((item) => item.id === product.id);
-
-	//   if (existing) {
-	//     const newBagItems = addToBag.map((item) =>
-	//       item.id === product.id
-	//         ? { ...existing, qty: existing.qty + 1 }
-	//         : item
-	//     );
-	//     setAddToBag(newBagItems);
-	//     localStorage.setItem("newBagItems", JSON.stringify(newBagItems));
-	//   } else {
-	//     const matchingDataItem = data.find((item) => item.id === product.id);
-
-	//     if (matchingDataItem) {
-	//       const newBagItems = [
-	//         ...addToBag,
-	//         {
-	//           ...product,
-	//           qty: 1,
-	//           selectedName: matchingDataItem.title,
-	//         },
-	//       ];
-	//       setAddToBag(newBagItems);
-	//       localStorage.setItem("newBagItems", JSON.stringify(newBagItems));
-	//     } else {
-	//       console.log('No matching data found for the product ID');
-	//     }
-	//   }
-	// };
-
-	const onAddToBagHandler = product => {
-		const existing = addToBag.find(item => item.id === product.id);
-		if (existing) {
-			const newBagItems = addToBag.map(item =>
-				item.id === product.id ? { ...existing, qty: existing.qty + 1 } : item,
-			);
-			setAddToBag(newBagItems);
-			localStorage.setItem('newBagItems', JSON.stringify(newBagItems));
-		} else {
-			const newBagItems = [...addToBag, { ...product, qty: 1 }];
-			setAddToBag(newBagItems);
-		}
-	};
-	const onRemoveBagItem = product => {
-		const newBagItems = addToBag.filter(item => item.id !== product.id);
-		setAddToBag(newBagItems);
-		localStorage.setItem('newBagItems', JSON.stringify(newBagItems));
 	};
 
 	return (
@@ -215,52 +145,9 @@ function App() {
 										/>
 										<Route path="/pools" element={<Pools />} />
 										<Route
-											path="/nfts"
-											element={
-												<Nfts
-													data={data}
-													setData={setData}
-													addToBag={addToBag}
-													setAddToBag={setAddToBag}
-													onAddToBagHandler={onAddToBagHandler}
-													onRemoveBagItem={onRemoveBagItem}
-													isCartVisible={isCartVisible}
-													setIsCartVisible={setIsCartVisible}
-													handleCart={handleCart}
-													allTableDataETH={allTableDataETH}
-													allTableDataUSD={allTableDataUSD}
-													currency={currency}
-													setCurrency={setCurrency}
-												/>
-											}
-										/>
-										<Route
 											path="/tokens/:id"
 											element={<TokenDetails allTableData={allTableData} chartData={chartData} />}
 										/>
-										<Route
-											path="/nfts/:id"
-											element={
-												<NftsDetails
-													data={data}
-													setData={setData}
-													addToBag={addToBag}
-													setAddToBag={setAddToBag}
-													onAddToBagHandler={onAddToBagHandler}
-													onRemoveBagItem={onRemoveBagItem}
-													allTableDataETH={allTableDataETH}
-													allTableDataUSD={allTableDataUSD}
-													currency={currency}
-													setCurrency={setCurrency}
-													isCartVisible={isCartVisible}
-													setIsCartVisible={setIsCartVisible}
-												/>
-											}
-										/>
-
-										<Route path="/vote" element={<Vote />} />
-
-										<Route path="/privacy" element={<PrivacyModal />} />
 
 										<Route path="/create-token" element={<CreateTokenModal />} />
 
@@ -283,9 +170,6 @@ function App() {
 												/>
 											}
 										/>
-
-										<Route path="/cart-modal" element={<CartModal />} />
-										<Route path="/settings" element={<SettingModal />} />
 									</Routes>
 								</div>
 							</>

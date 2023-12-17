@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import SwapModal from '../SwapModal/SwapModal';
+import SwapModal from '../../components/SwapModal/SwapModal';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import BarChart from './LiquidityModal/BarChart/BarChart';
+import BarChart from './BarChart/BarChart';
 
 const LiquidityModal = ({
 	swapTokens,

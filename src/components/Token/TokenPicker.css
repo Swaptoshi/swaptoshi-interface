@@ -1,10 +1,10 @@
 .jBBXQD[data-reach-dialog-content] {
 	margin: auto;
-	background-color: #fff;
+	background-color: rgb(255 255 255);
 	box-shadow:
-		#3335480a 8px 12px 20px,
-		#33354805 4px 6px 12px,
-		#3335480a 4px 4px 8px;
+		rgb(51 53 72 / 4%) 8px 12px 20px,
+		rgb(51 53 72 / 2%) 4px 6px 12px,
+		rgb(51 53 72 / 4%) 4px 4px 8px;
 	padding: 0;
 	width: 50vw;
 	overflow: hidden auto;
@@ -412,9 +412,7 @@
 
 @media screen and (width <= 640px) {
 	.jBBXQD[data-reach-dialog-content] {
-		margin: 0;
 		width: 100vw;
-		border-radius: 20px 20px 0 0;
 	}
 
 	.bmYGet[data-reach-dialog-overlay] {

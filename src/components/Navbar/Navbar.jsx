@@ -1,23 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as cryptography from '@liskhq/lisk-cryptography';
 import './Navbar.css';
-import { useLocation } from 'react-router-dom';
-import Nftbag from './navbarbag.js';
-import CustomDropdown from './dropdown.js';
 import { NavLink } from 'react-router-dom';
 import Modal from '../Modal/Modal';
-import { useWalletConnect } from '../../context/WalletConnectProvider.js';
-import Avatar from '../Avatar/index.js';
-import { addressCompact } from '../../utils/Address/index.js';
-import { useChain } from '../../context/ChainProvider.js';
-import Loader from '../Loader/Loader.js';
-import { getSwaptoshiIcon } from '../../service/icon.js';
-import PrimaryButton from '../Button/PrimaryButton.js';
-import { useWalletModal } from '../../context/WalletModal.js';
+import { useWalletConnect } from '../../context/WalletConnectProvider';
+import Avatar from '../Avatar/index';
+import { addressCompact } from '../../utils/Address';
+import { useChain } from '../../context/ChainProvider';
+import Loader from '../Loader/Loader';
+import { getSwaptoshiIcon } from '../../service/icon';
+import PrimaryButton from '../Button/PrimaryButton';
+import { useWalletModal } from '../../context/WalletModal';
+import Dropdown from './Dropdown';
 
-const Navbar = ({ searchOptions, handleCart }) => {
+const Navbar = ({ searchOptions }) => {
 	const logoImage = '/assets/images/logo/swaptoshi-logo.svg';
-	const location = useLocation();
 	const [isActiveHeader, setIsActiveHeader] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [isSearchOpen, setSearchOpen] = useState(false);
@@ -180,12 +177,10 @@ const Navbar = ({ searchOptions, handleCart }) => {
 								/>
 							</NavLink>
 							<div className="show-below-768 hide-above-768">
-								{location.pathname === '/nfts' || location.pathname.startsWith('/nfts/') ? (
-									<Nftbag handleCart={handleCart} />
-								) : optionsLabel === undefined ? (
+								{optionsLabel === undefined ? (
 									<Loader size={12} />
 								) : optionsLabel.length > 0 && selectedOption ? (
-									<CustomDropdown
+									<Dropdown
 										selectedOption={selectedOption}
 										toggleDropdown={toggleDropdown}
 										isOpen={isOpen}
@@ -523,12 +518,10 @@ const Navbar = ({ searchOptions, handleCart }) => {
 								</div>
 
 								<div className="hide-below-768">
-									{location.pathname === '/nfts' || location.pathname.startsWith('/nfts/') ? (
-										<Nftbag handleCart={handleCart} />
-									) : optionsLabel === undefined ? (
+									{optionsLabel === undefined ? (
 										<Loader size={12} />
 									) : optionsLabel.length > 0 && selectedOption ? (
-										<CustomDropdown
+										<Dropdown
 											selectedOption={selectedOption}
 											toggleDropdown={toggleDropdown}
 											isOpen={isOpen}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Swap.css';
-import SwapModal from '../../utils/SwapModal/SwapModal';
+import SwapModal from '../../components/SwapModal/SwapModal';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 
 const Swap = ({

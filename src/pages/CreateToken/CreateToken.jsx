@@ -1,11 +1,11 @@
 import React from 'react';
-import './Modal.css';
+import './CreateToken.css';
 import { NavLink } from 'react-router-dom';
-import TextInput from '../Forms/TextInput';
+import TextInput from '../../components/Forms/TextInput';
 import SecondaryButton from '../../components/Button/SecondaryButton';
 import { FileUploader } from 'react-drag-drop-files';
 import { useTheme } from '../../context/ThemeProvider';
-import { getSystemTheme } from '../Theme/getSystemTheme';
+import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
 import { toast } from 'react-toastify';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 

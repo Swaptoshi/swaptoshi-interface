@@ -1,12 +1,6 @@
 import React from 'react';
 
-function CustomDropdown({
-	selectedOption,
-	toggleDropdown,
-	isOpen,
-	optionsLabel,
-	handleOptionClick,
-}) {
+function Dropdown({ selectedOption, toggleDropdown, isOpen, optionsLabel, handleOptionClick }) {
 	const ref = React.useRef(null);
 	const isClickInside = React.useRef(false);
 
@@ -64,4 +58,4 @@ function CustomDropdown({
 	);
 }
 
-export default CustomDropdown;
+export default Dropdown;
