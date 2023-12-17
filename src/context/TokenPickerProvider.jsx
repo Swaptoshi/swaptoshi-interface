@@ -28,7 +28,7 @@ export default function TokenPickerProvider({ children }) {
 			setSelected(selected);
 
 			setOnClose(() => () => {
-				onClose();
+				onClose && onClose();
 				setShow(false);
 				onDismount();
 			});
@@ -49,7 +49,7 @@ export default function TokenPickerProvider({ children }) {
 			setSelected(selected);
 
 			setOnClose(() => () => {
-				onClose();
+				onClose && onClose();
 				setShow(false);
 				onDismount();
 			});

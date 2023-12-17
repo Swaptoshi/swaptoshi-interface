@@ -2,9 +2,19 @@ import React, { useState } from 'react';
 import './Swap.css';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import TradableTokenPicker from '../../components/Token/TradableTokenPicker';
-import WalletTokenPicker from '../../components/Token/WalletTokenPicker';
 
 const Swap = () => {
+	const [baseToken, setBaseToken] = useState();
+	const [quoteToken, setQuoteToken] = useState();
+
+	const onSelectBaseToken = React.useCallback(selected => {
+		setBaseToken(selected);
+	}, []);
+
+	const onSelectQuoteToken = React.useCallback(selected => {
+		setQuoteToken(selected);
+	}, []);
+
 	const [inputValues, setInputValues] = useState({
 		'you-pay': '',
 		'you-receive': '',
@@ -79,13 +89,7 @@ const Swap = () => {
 											/>
 
 											<div id={etheriumId}>
-												{
-													<WalletTokenPicker
-														value={undefined}
-														onClose={() => console.log('closed')}
-														onSelect={item => console.log(item)}
-													/>
-												}
+												{<TradableTokenPicker value={baseToken} onSelect={onSelectBaseToken} />}
 											</div>
 										</div>
 									</div>
@@ -121,13 +125,7 @@ const Swap = () => {
 												/>
 
 												<div id={tokenId}>
-													{
-														<TradableTokenPicker
-															value={undefined}
-															onClose={() => console.log('closed')}
-															onSelect={item => console.log(item)}
-														/>
-													}
+													{<TradableTokenPicker value={quoteToken} onSelect={onSelectQuoteToken} />}
 												</div>
 											</div>
 										</div>

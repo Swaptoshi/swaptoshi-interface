@@ -308,8 +308,9 @@
 
 .cryptocurrency-wrapper .token-name {
 	margin: 0 0.25rem;
-	font-size: 20px;
+	font-size: 16px;
 	font-weight: 600;
+	padding: 2px 4px;
 }
 
 .dropdown-icon .fa-drop {
