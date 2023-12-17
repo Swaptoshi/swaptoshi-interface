@@ -1,16 +1,16 @@
 .apexcharts-pan-icon {
-    transform: scale(.62);
-    position: relative;
-    left: 1px;
-    top: 0;
-    display: none;
+	transform: scale(0.62);
+	position: relative;
+	left: 1px;
+	top: 0;
+	display: none;
 }
 
 .apexcharts-menu-icon,
 .apexcharts-reset-icon,
 .apexcharts-zoom-icon {
-    transform: scale(.85);
-    display: none;
+	transform: scale(0.85);
+	display: none;
 }
 
 .apexcharts-menu-icon,
@@ -21,15 +21,15 @@
 .apexcharts-zoom-icon,
 .apexcharts-zoomin-icon,
 .apexcharts-zoomout-icon {
-    cursor: pointer;
-    width: 40px;
-    height: 30px;
-    line-height: 24px;
-    color: #6e8192;
-    text-align: center;
+	cursor: pointer;
+	width: 40px;
+	height: 30px;
+	line-height: 24px;
+	color: #6e8192;
+	text-align: center;
 }
 
 .apexcharts-zoomin-icon,
 .apexcharts-zoomout-icon {
-    transform: scale(1.5);
+	transform: scale(1.5);
 }

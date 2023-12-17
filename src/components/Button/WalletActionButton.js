@@ -1,25 +1,21 @@
-import React from "react";
-import { useWalletConnect } from "../../context/WalletConnectProvider";
-import PrimaryButton from "./PrimaryButton";
-import { useWalletModal } from "../../context/WalletModal";
+import React from 'react';
+import { useWalletConnect } from '../../context/WalletConnectProvider';
+import PrimaryButton from './PrimaryButton';
+import { useWalletModal } from '../../context/WalletModal';
 
 export default function WalletActionButton(props) {
-  const { senderPublicKey, signClient } = useWalletConnect();
-  const [, setWalletOpen] = useWalletModal();
+	const { senderPublicKey, signClient } = useWalletConnect();
+	const [, setWalletOpen] = useWalletModal();
 
-  const handleOpenWallet = React.useCallback(() => {
-    setWalletOpen((e) => !e);
-  }, [setWalletOpen]);
+	const handleOpenWallet = React.useCallback(() => {
+		setWalletOpen(e => !e);
+	}, [setWalletOpen]);
 
-  return senderPublicKey ? (
-    <PrimaryButton {...props}>{props.children}</PrimaryButton>
-  ) : (
-    <PrimaryButton
-      onClick={handleOpenWallet}
-      disabled={signClient === undefined}
-      {...props}
-    >
-      Connect Wallet
-    </PrimaryButton>
-  );
+	return senderPublicKey ? (
+		<PrimaryButton {...props}>{props.children}</PrimaryButton>
+	) : (
+		<PrimaryButton onClick={handleOpenWallet} disabled={signClient === undefined} {...props}>
+			Connect Wallet
+		</PrimaryButton>
+	);
 }

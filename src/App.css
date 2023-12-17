@@ -1,26 +1,26 @@
 .App {
-  background: var(--body-bg);
+	background: var(--body-bg);
 }
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: var(--text-color) transparent;
+	scrollbar-width: thin;
+	scrollbar-color: var(--text-color) transparent;
 }
 
 *::-webkit-scrollbar {
-  width: 12px;
+	width: 12px;
 }
 
 *::-webkit-scrollbar-track {
-  background: transparent;
+	background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--text-color);
-  border-radius: 20px;
-  border: 3px solid var(--text-color);
+	background-color: var(--text-color);
+	border-radius: 20px;
+	border: 3px solid var(--text-color);
 }
 
 ::-webkit-scrollbar-corner {
-  background: rgba(0, 0, 0, 0);
+	background: rgba(0, 0, 0, 0);
 }

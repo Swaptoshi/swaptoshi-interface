@@ -1,4 +1,3 @@
-
 // export const dataSource = [
 //     { t: new Date(2011, 11, 22), costs: 19, income: 18 },
 //     { t: new Date(2011, 11, 29), costs: 27, income: 12 },
@@ -10,21 +9,19 @@
 //     { t: new Date(2012, 1, 9), costs: 14, income: 25 },
 // ];
 
-export const booksData =
-    [
-        {
-            original_title: "The Great Book",
-            ratings_count: 12000,
-            rating: 4.5,
-            author: "John Doe",
-            publication_year: 2010
-        },
-        {
-            original_title: "Fantastic Stories",
-            ratings_count: 8000,
-            rating: 3.8,
-            author: "Jane Smith",
-            publication_year: 2015
-        },
-
-    ]
+export const booksData = [
+	{
+		original_title: 'The Great Book',
+		ratings_count: 12000,
+		rating: 4.5,
+		author: 'John Doe',
+		publication_year: 2010,
+	},
+	{
+		original_title: 'Fantastic Stories',
+		ratings_count: 8000,
+		rating: 3.8,
+		author: 'Jane Smith',
+		publication_year: 2015,
+	},
+];

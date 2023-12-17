@@ -1,55 +1,55 @@
 .primary-button-container {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-flow: row;
-  -webkit-box-align: center;
-  align-items: center;
-  background-color: var(--connect-btn);
-  border-radius: 9999px;
-  border: none;
-  padding: 0px;
-  height: 40px;
-  color: var(--btn-color);
-  transition: color 125ms ease-in 0s;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	flex-flow: row;
+	-webkit-box-align: center;
+	align-items: center;
+	background-color: var(--connect-btn);
+	border-radius: 9999px;
+	border: none;
+	padding: 0px;
+	height: 40px;
+	color: var(--btn-color);
+	transition: color 125ms ease-in 0s;
 }
 
 .primary-button-container .primary-button-content {
-  background-color: transparent;
-  border: none;
-  border-top-left-radius: 9999px;
-  border-bottom-left-radius: 9999px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 10px 12px;
-  color: inherit;
+	background-color: transparent;
+	border: none;
+	border-top-left-radius: 9999px;
+	border-bottom-left-radius: 9999px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 16px;
+	padding: 10px 12px;
+	color: inherit;
 }
 
 .secondary-button-container {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-flow: row;
-  -webkit-box-align: center;
-  align-items: center;
-  background-color: var(--open-currency-btn-bg);
-  border-radius: 9999px;
-  border: none;
-  padding: 0px;
-  height: 40px;
-  color: var(--color-white);
-  transition: color 125ms ease-in 0s;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	flex-flow: row;
+	-webkit-box-align: center;
+	align-items: center;
+	background-color: var(--open-currency-btn-bg);
+	border-radius: 9999px;
+	border: none;
+	padding: 0px;
+	height: 40px;
+	color: var(--color-white);
+	transition: color 125ms ease-in 0s;
 }
 
 .secondary-button-container .secondary-button-content {
-  background-color: transparent;
-  border: none;
-  border-top-left-radius: 9999px;
-  border-bottom-left-radius: 9999px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 10px 12px;
-  color: inherit;
+	background-color: transparent;
+	border: none;
+	border-top-left-radius: 9999px;
+	border-bottom-left-radius: 9999px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 16px;
+	padding: 10px 12px;
+	color: inherit;
 }
