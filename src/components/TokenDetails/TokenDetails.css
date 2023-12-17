@@ -3,7 +3,7 @@
 	flex-direction: column;
 	width: 100%;
 	min-height: 100vh;
-	padding: 72px 0px 5rem;
+	padding: 72px 0 5rem;
 	-webkit-box-align: center;
 	align-items: center;
 	flex: 1 1 0%;
@@ -31,7 +31,7 @@
 .fhPvJh {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -40,32 +40,32 @@
 
 .hJYFVB {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 }
 
 .jyEmZw {
 	-webkit-box-align: center;
 	align-items: center;
-	bottom: 0px;
-	color: rgb(152, 161, 192);
+	bottom: 0;
+	color: rgb(152 161 192);
 	display: none;
 	padding: 1rem;
 	position: fixed;
-	right: 0px;
+	right: 0;
 	transition: color 250ms ease 0s;
 }
 
 .css-x9zcw6 {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 500;
 	font-size: 11px;
 }
 
 .dihEkF {
-	color: rgb(64, 182, 107);
+	color: rgb(64 182 107);
 	transition: opacity 0.25s ease 0s;
 	opacity: 0.5;
 }
@@ -82,8 +82,8 @@
 	text-decoration: none;
 	cursor: pointer;
 	transition-duration: 125ms;
-	color: rgb(251, 17, 142);
-	stroke: rgb(251, 17, 142);
+	color: rgb(251 17 142);
+	stroke: rgb(251 17 142);
 	font-weight: 500;
 }
 
@@ -99,7 +99,7 @@
 	min-width: 8px;
 	border-radius: 50%;
 	position: relative;
-	background-color: rgb(64, 182, 107);
+	background-color: rgb(64 182 107);
 	transition: background-color 250ms ease 0s;
 }
 
@@ -108,9 +108,10 @@
 	-webkit-box-pack: justify;
 	justify-content: space-between;
 	display: none;
+
 	/* background: url("./static/media/wallet_banner_phone_image.7458b169d90ac9039783.png") right 15px top 18px / 166px no-repeat rgb(253, 130, 255); */
 	transition: background-size 250ms ease-in-out 0s;
-	color: rgb(13, 17, 28);
+	color: rgb(13 17 28);
 	position: fixed;
 	z-index: 1020;
 	padding: 24px 16px 16px;
@@ -119,11 +120,11 @@
 	right: 20px;
 	width: 390px;
 	height: 164px;
-	border: 1px solid rgb(210, 217, 238);
+	border: 1px solid rgb(210 217 238);
 	box-shadow:
-		rgba(51, 53, 72, 0.04) 8px 12px 20px,
-		rgba(51, 53, 72, 0.02) 4px 6px 12px,
-		rgba(51, 53, 72, 0.04) 4px 4px 8px;
+		rgb(51 53 72 / 4%) 8px 12px 20px,
+		rgb(51 53 72 / 2%) 4px 6px 12px,
+		rgb(51 53 72 / 4%) 4px 4px 8px;
 	user-select: none;
 }
 
@@ -132,7 +133,7 @@
 	position: absolute;
 	top: 21px;
 	right: 17px;
-	color: rgb(255, 255, 255);
+	color: rgb(255 255 255);
 	transition: opacity 250ms ease 0s;
 }
 
@@ -144,8 +145,8 @@
 
 .css-10k34qy {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 500;
 	font-size: 24px;
 	line-height: 28px;
@@ -175,7 +176,7 @@
 	border-radius: 20px;
 	outline: none;
 	border: 1px solid transparent;
-	color: rgb(13, 17, 28);
+	color: rgb(13 17 28);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -188,13 +189,13 @@
 	z-index: 1;
 	will-change: transform;
 	transition: transform 450ms ease 0s;
-	transform: perspective(1px) translateZ(0px);
+	transform: perspective(1px) translateZ(0);
 }
 
 .jnEFg {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	appearance: none;
 	display: inline-block;
 	text-align: center;
@@ -203,7 +204,7 @@
 	font-size: inherit;
 	padding: 8px 16px;
 	color: white;
-	border: 0px;
+	border: 0;
 	border-radius: 4px;
 	background-color: white;
 	width: 125px;
@@ -211,8 +212,8 @@
 
 .css-18hn7mq {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 600;
 	font-size: 14px;
 }
@@ -222,12 +223,12 @@
 }
 
 .bhqxth {
-	color: rgb(0, 0, 0);
+	color: rgb(0 0 0);
 }
 
 .fBEeS {
 	display: flex;
-	padding: 0px 8px 52px;
+	padding: 0 8px 52px;
 	-webkit-box-pack: center;
 	justify-content: center;
 	width: 100%;
@@ -241,7 +242,7 @@
 
 .MpERT {
 	display: flex;
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 	font-size: 14px;
 	line-height: 20px;
 	-webkit-box-align: center;
@@ -254,7 +255,7 @@
 }
 
 a {
-	color: rgb(251, 17, 142);
+	color: rgb(251 17 142);
 }
 
 .kbDyok {
@@ -286,7 +287,7 @@ a {
 	height: 32px;
 	background: none;
 	transition: background-color 250ms ease-in 0s;
-	box-shadow: white 0px 0px 1px;
+	box-shadow: white 0 0 1px;
 	border-radius: 50%;
 }
 
@@ -300,11 +301,12 @@ a {
 
 .izFcWZ {
 	--size: calc(32px / 2);
+
 	width: var(--size);
 	height: var(--size);
 	position: absolute;
 	left: 50%;
-	bottom: 0px;
+	bottom: 0;
 	display: none;
 	background: url('') 0% 0% / calc(16px) calc(16px) no-repeat;
 	background-repeat: no-repeat;
@@ -316,14 +318,14 @@ a {
 
 .gRPQtw {
 	text-transform: uppercase;
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 	margin-left: 8px;
 }
 
 .kxJsVh {
 	display: flex;
 	gap: 16px;
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 }
 
 .gOFqpR {
@@ -332,7 +334,7 @@ a {
 }
 
 .hTKuaT {
-	stroke: rgb(119, 128, 160);
+	stroke: rgb(119 128 160);
 	height: 24px;
 	width: 24px;
 	text-decoration: none;
@@ -368,7 +370,7 @@ a {
 }
 
 .lbxvhe {
-	color: rgb(250, 43, 57);
+	color: rgb(250 43 57);
 }
 
 .ibmoxq {
@@ -402,7 +404,7 @@ a {
 	align-items: center;
 	-webkit-box-pack: center;
 	justify-content: center;
-	background-color: rgb(232, 236, 251);
+	background-color: rgb(232 236 251);
 	font-weight: 600;
 	font-size: 16px;
 	padding: 6px 12px;
@@ -410,7 +412,7 @@ a {
 	line-height: 20px;
 	border: none;
 	cursor: pointer;
-	color: rgb(13, 17, 28);
+	color: rgb(13 17 28);
 	transition-duration: 125ms;
 }
 
@@ -429,7 +431,7 @@ a {
 	line-height: 20px;
 	border: none;
 	cursor: pointer;
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 	transition-duration: 125ms;
 }
 
@@ -440,8 +442,8 @@ a {
 
 .css-1b492mu {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 400;
 	font-size: 20px;
 }
@@ -470,11 +472,11 @@ a {
 }
 
 .iJvfTG {
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 	font-size: 14px;
 	min-width: 168px;
 	flex: 1 1 0%;
-	padding: 24px 0px;
+	padding: 24px 0;
 }
 
 .iydZZJ {
@@ -484,14 +486,14 @@ a {
 }
 
 .hsvmWZ {
-	background-color: rgb(210, 217, 238);
+	background-color: rgb(210 217 238);
 	border: none;
 	height: 0.5px;
 }
 
 .ghcBpv {
 	gap: 16px;
-	padding: 24px 0px;
+	padding: 24px 0;
 	animation: 125ms ease-in 0s 1 normal none running jBcSpD;
 }
 
@@ -506,7 +508,7 @@ a {
 }
 
 .iHKewj {
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 	font-weight: 400;
 	font-size: 0.85em;
 	padding-top: 0.5em;
@@ -514,14 +516,14 @@ a {
 
 .css-1aekuku {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 500;
 	font-size: 14px;
 }
 
 .bftkTM {
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 }
 
 .gTErEb {
@@ -546,7 +548,7 @@ a {
 
 .oSKSq:hover,
 .oSKSq:focus {
-	color: rgb(213, 4, 116);
+	color: rgb(213 4 116);
 	text-decoration: none;
 }
 
@@ -572,11 +574,11 @@ sup {
 @media screen and(min-width: 640) {
 	.fBEeS {
 		gap: 16px;
-		padding: 0px 16px 52px;
+		padding: 0 16px 52px;
 	}
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (width >= 768px) {
 	.jyEmZw {
 		display: flex;
 	}
@@ -587,13 +589,13 @@ sup {
 	}
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (width >= 1024px) {
 	.kFzxb {
 		display: flex;
 	}
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (width >= 1280px) {
 	.fBEeS {
 		gap: 60px;
 	}

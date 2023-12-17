@@ -3,15 +3,15 @@
 	background-color: var(--card-bg);
 	border: 1px solid var(--switch-button-border);
 	box-shadow:
-		rgba(0, 0, 0, 0.01) 0px 0px 1px,
-		rgba(0, 0, 0, 0.04) 0px 4px 8px,
-		rgba(0, 0, 0, 0.04) 0px 16px 24px,
-		rgba(0, 0, 0, 0.01) 0px 24px 32px;
+		rgb(0 0 0 / 1%) 0 0 1px,
+		rgb(0 0 0 / 4%) 0 4px 8px,
+		rgb(0 0 0 / 4%) 0 16px 24px,
+		rgb(0 0 0 / 1%) 0 24px 32px;
 	border-radius: 12px;
 	position: absolute;
 	top: 100%;
 	margin-top: 10px;
-	right: 0px;
+	right: 0;
 	z-index: 100;
 	color: var(--color-white);
 	user-select: none;
@@ -36,7 +36,7 @@
 .cPkaXY {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -46,16 +46,16 @@
 
 .hJYFVB {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 }
 
 .gFmEMo {
 	width: 100%;
 	height: 1px;
-	border-width: 0px;
-	margin: 0px;
-	background-color: rgba(152, 161, 192, 0.24);
+	border-width: 0;
+	margin: 0;
+	background-color: rgb(152 161 192 / 24%);
 }
 
 .jeYuAz {
@@ -65,10 +65,11 @@
 .gOYHMo {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
+
 	/* justify-content: flex-start; */
 }
 
@@ -82,20 +83,20 @@
 
 .css-1jljtub {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 400;
 	font-size: 16px;
 }
 
 .fbSdRZ {
-	color: rgb(152, 161, 192);
+	color: rgb(152 161 192);
 }
 
 .cXKarZ {
 	-webkit-box-align: center;
 	align-items: center;
-	background: rgba(76, 130, 251, 0.24);
+	background: rgb(76 130 251 / 24%);
 	border: 1px solid transparent;
 	border-radius: 20px;
 	cursor: pointer;
@@ -107,7 +108,7 @@
 
 .byYXGz {
 	animation: 0.1s ease-in 0s 1 normal none running none;
-	background: rgb(76, 130, 251);
+	background: rgb(76 130 251);
 	border-radius: 50%;
 	height: 24px;
 	margin-left: 2.2em;
@@ -134,7 +135,7 @@
 .bTQDrP {
 	width: auto;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -143,8 +144,8 @@
 
 .jPOzlZ {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	width: auto;
 }
 
@@ -159,7 +160,7 @@
 	align-items: center;
 	-webkit-box-pack: center;
 	justify-content: center;
-	padding: 0px;
+	padding: 0;
 	width: 18px;
 	height: 18px;
 	border: none;
@@ -175,7 +176,7 @@
 	margin-left: 8px;
 	-webkit-box-align: center;
 	align-items: center;
-	color: rgb(152, 161, 192);
+	color: rgb(152 161 192);
 	margin-top: 2.5px;
 }
 
@@ -191,7 +192,7 @@
 }
 
 .kdjsvs {
-	color: rgb(152, 161, 192);
+	color: rgb(152 161 192);
 	transform: rotate(0deg);
 	transition: transform 250ms ease 0s;
 }
@@ -211,7 +212,7 @@
 .bObhWT {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -222,7 +223,7 @@
 .krAXBK {
 	width: auto;
 	padding: 4px;
-	border: 1px solid rgba(152, 161, 192, 0.24);
+	border: 1px solid rgb(152 161 192 / 24%);
 	border-radius: 16px;
 }
 
@@ -233,7 +234,7 @@
 	text-align: center;
 	gap: 4px;
 	border-radius: 12px;
-	background: rgb(41, 50, 73);
+	background: rgb(41 50 73);
 	pointer-events: none;
 }
 
@@ -253,11 +254,11 @@
 	width: auto;
 	min-width: 100px;
 	flex: 1 1 0%;
-	border: 1px solid rgba(152, 161, 192, 0.24);
+	border: 1px solid rgb(152 161 192 / 24%);
 }
 
 .gjcFql input {
-	color: rgb(255, 255, 255);
+	color: rgb(255 255 255);
 }
 
 .bqpUJc {
@@ -265,7 +266,7 @@
 	display: flex;
 	flex: 1 1 0%;
 	font-size: 16px;
-	border: 0px;
+	border: 0;
 	outline: none;
 	background: transparent;
 	text-align: right;
@@ -281,5 +282,5 @@
 	flex-direction: column;
 	gap: 20px;
 	padding-top: 20px;
-	border-top: 1px solid rgb(41, 50, 73);
+	border-top: 1px solid rgb(41 50 73);
 }

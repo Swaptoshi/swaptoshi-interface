@@ -1,11 +1,11 @@
 .jBBXQD[data-reach-dialog-content] {
 	margin: auto;
-	background-color: rgb(255, 255, 255);
+	background-color: rgb(255 255 255);
 	box-shadow:
-		rgba(51, 53, 72, 0.04) 8px 12px 20px,
-		rgba(51, 53, 72, 0.02) 4px 6px 12px,
-		rgba(51, 53, 72, 0.04) 4px 4px 8px;
-	padding: 0px;
+		rgb(51 53 72 / 4%) 8px 12px 20px,
+		rgb(51 53 72 / 2%) 4px 6px 12px,
+		rgb(51 53 72 / 4%) 4px 4px 8px;
+	padding: 0;
 	width: 50vw;
 	overflow: hidden auto;
 	max-width: 420px;
@@ -49,7 +49,7 @@
 }
 
 .fqkEGC {
-	color: rgb(13, 17, 28);
+	color: rgb(13 17 28);
 	cursor: pointer;
 }
 
@@ -66,7 +66,7 @@
 	white-space: nowrap;
 	outline: none;
 	border-radius: 12px;
-	color: rgb(13, 17, 28);
+	color: rgb(13 17 28);
 	border: 1px solid var(--border);
 	appearance: none;
 	font-size: 16px;
@@ -87,7 +87,7 @@
 .cTSGxd {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -96,14 +96,14 @@
 }
 
 .ipXHOd {
-	border: 1px solid rgb(76, 130, 251);
+	border: 1px solid rgb(76 130 251);
 	border-radius: 16px;
 	display: flex;
 	padding: 6px 12px 6px 6px;
 	-webkit-box-align: center;
 	align-items: center;
-	color: rgb(76, 130, 251);
-	background-color: rgba(76, 130, 251, 0.24);
+	color: rgb(76 130 251);
+	background-color: rgb(76 130 251 / 24%);
 }
 
 .bORAza > * {
@@ -115,7 +115,7 @@
 	height: 24px;
 	background: none;
 	transition: background-color 250ms ease-in 0s;
-	box-shadow: white 0px 0px 1px;
+	box-shadow: white 0 0 1px;
 	border-radius: 50%;
 }
 
@@ -129,8 +129,8 @@
 
 .css-xy7yfl {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 500;
 	font-size: 16px;
 }
@@ -154,9 +154,9 @@
 }
 
 .fosiKD.active {
-	border: 1px solid rgb(76, 130, 251);
-	color: rgb(76, 130, 251);
-	background-color: rgba(76, 130, 251, 0.24);
+	border: 1px solid rgb(76 130 251);
+	color: rgb(76 130 251);
+	background-color: rgb(76 130 251 / 24%);
 }
 
 .eLvYRk {
@@ -224,7 +224,7 @@
 .fhPvJeh {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -235,8 +235,9 @@
 	padding: 4px 20px;
 	height: 56px;
 	display: grid;
-	grid-template-columns: auto minmax(auto, 1fr) auto minmax(0px, 72px);
+	grid-template-columns: auto minmax(auto, 1fr) auto minmax(0, 72px);
 	gap: 16px;
+
 	/* pointer-events: none; */
 	opacity: 1;
 	cursor: pointer;
@@ -252,8 +253,8 @@
 
 .hJYFVB {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 }
 
 .swap-tick {
@@ -266,7 +267,7 @@
 	height: 36px;
 	background: none;
 	transition: background-color 250ms ease-in 0s;
-	box-shadow: white 0px 0px 1px;
+	box-shadow: white 0 0 1px;
 	border-radius: 50%;
 }
 
@@ -277,8 +278,8 @@
 
 .css-vurnku {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 }
 
 .dmGdpm {
@@ -293,13 +294,13 @@
 }
 
 .bqwbXT {
-	color: rgb(152, 161, 192);
+	color: rgb(152 161 192);
 }
 
 .css-yfjwjl {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 300;
 	font-size: 12px;
 }
@@ -319,14 +320,14 @@
 	height: 20px;
 	width: 20px;
 	margin-left: 4px;
-	color: rgb(251, 17, 142);
+	color: rgb(251 17 142);
 }
 
 .bPeMEk {
 	padding: 4px 20px;
 	height: 56px;
 	display: grid;
-	grid-template-columns: auto minmax(auto, 1fr) auto minmax(0px, 72px);
+	grid-template-columns: auto minmax(auto, 1fr) auto minmax(0, 72px);
 	gap: 16px;
 	cursor: pointer;
 	opacity: 1;
@@ -342,7 +343,7 @@
 
 .resize-triggers,
 .resize-triggers > div,
-.contract-trigger:before {
+.contract-trigger::before {
 	content: ' ';
 	display: block;
 	position: absolute;
@@ -385,38 +386,35 @@
 	align-items: center;
 	-webkit-box-pack: center;
 	justify-content: center;
-	background-color: rgba(13, 17, 28, 0.6);
+	background-color: rgb(13 17 28 / 60%);
 }
 
 [data-reach-dialog-overlay] {
-	background: rgba(0, 0, 0, 0.33);
-	bottom: 0;
-	left: 0;
+	background: rgb(0 0 0 / 33%);
+	inset: 0;
 	overflow: auto;
 	position: fixed;
-	right: 0;
-	top: 0;
 }
 
 /* media query */
 
-@media screen and (max-width: 720px) {
+@media screen and (width <= 720px) {
 	.gqQqei {
 		display: none;
 	}
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (width <= 768px) {
 	.jBBXQD[data-reach-dialog-content] {
 		width: 65vw;
 	}
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (width <= 640px) {
 	.jBBXQD[data-reach-dialog-content] {
-		margin: 0px;
+		margin: 0;
 		width: 100vw;
-		border-radius: 20px 20px 0px 0px;
+		border-radius: 20px 20px 0 0;
 	}
 
 	.bmYGet[data-reach-dialog-overlay] {

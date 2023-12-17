@@ -21,15 +21,15 @@
 }
 
 .frDZwo {
-	background: radial-gradient(76.02% 75.41% at 1.84% 0%, rgb(39, 174, 96) 0%, rgb(0, 0, 0) 100%);
+	background: radial-gradient(76.02% 75.41% at 1.84% 0%, rgb(39 174 96) 0%, rgb(0 0 0) 100%);
 	overflow: hidden;
 }
 
 .gqCodE {
 	background: radial-gradient(
 		76.02% 75.41% at 1.84% 0%,
-		rgb(255, 0, 122) 0%,
-		rgb(33, 114, 229) 100%
+		rgb(255 0 122) 0%,
+		rgb(33 114 229) 100%
 	);
 	border-radius: 12px;
 	width: 100%;
@@ -61,8 +61,8 @@
 	height: 100%;
 	opacity: 0.15;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 	user-select: none;
 	background: url('/public/assets/images/noise.png') 0% 0% / cover;
 	border-radius: 12px;
@@ -101,7 +101,7 @@
 .fhPvJh {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -109,14 +109,14 @@
 }
 
 element.style {
-	margin: 0.5rem 0.5rem 0.5rem 0px;
+	margin: 0.5rem 0.5rem 0.5rem 0;
 	flex-shrink: 0;
 }
 
 .css-68pfx3 {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 500;
 	font-size: 20px;
 }
@@ -131,7 +131,7 @@ element.style {
 .diZBNg {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: end;
@@ -141,8 +141,8 @@ element.style {
 
 .hJYFVB {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 }
 
 element.style {
@@ -153,10 +153,12 @@ element.style {
 
 .kEIpOD {
 	background-color: var(--btn-color);
+
 	/* font-size: 20px; */
 	font-weight: 600;
+
 	/* padding: 16px; */
-	color: rgb(245, 246, 252);
+	color: rgb(245 246 252);
 }
 
 .geXoyc {
@@ -167,7 +169,7 @@ element.style {
 	border-radius: 20px;
 	outline: none;
 	border: 1px solid transparent;
-	color: rgb(255, 255, 255);
+	color: rgb(255 255 255);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -180,7 +182,7 @@ element.style {
 	z-index: 1;
 	will-change: transform;
 	transition: transform 450ms ease 0s;
-	transform: perspective(1px) translateZ(0px);
+	transform: perspective(1px) translateZ(0);
 }
 
 .fOxruH > * {
@@ -188,14 +190,14 @@ element.style {
 }
 
 a {
-	color: rgb(76, 130, 251);
+	color: rgb(76 130 251);
 }
 
 .gcgZYO {
 	-webkit-box-align: center;
 	align-items: center;
 	background: transparent;
-	border: 1px solid rgba(152, 161, 192, 0.24);
+	border: 1px solid rgb(152 161 192 / 24%);
 	border-radius: 20px;
 	cursor: pointer;
 	display: flex;
@@ -210,7 +212,7 @@ button {
 
 .cCvVVM {
 	animation: 0.1s ease-in 0s 1 normal none running none;
-	background: rgb(93, 103, 133);
+	background: rgb(93 103 133);
 	border-radius: 50%;
 	height: 24px;
 	margin-right: 2.2em;
@@ -255,8 +257,8 @@ button {
 	font-weight: 600;
 	padding: 0.5rem;
 	border-radius: 8px;
-	color: rgb(118, 209, 145);
-	border: 1px solid rgb(118, 209, 145);
+	color: rgb(118 209 145);
+	border: 1px solid rgb(118 209 145);
 	width: fit-content;
 	justify-self: flex-end;
 	text-transform: uppercase;
@@ -269,8 +271,8 @@ button {
 	font-weight: 600;
 	padding: 0.5rem;
 	border-radius: 8px;
-	color: rgb(253, 118, 107);
-	border: 1px solid rgb(253, 118, 107);
+	color: rgb(253 118 107);
+	border: 1px solid rgb(253 118 107);
 	width: fit-content;
 	justify-self: flex-end;
 	text-transform: uppercase;

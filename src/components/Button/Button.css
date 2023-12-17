@@ -1,5 +1,4 @@
 .primary-button-container {
-	align-items: center;
 	justify-content: center;
 	display: flex;
 	flex-flow: row;
@@ -8,7 +7,7 @@
 	background-color: var(--connect-btn);
 	border-radius: 9999px;
 	border: none;
-	padding: 0px;
+	padding: 0;
 	height: 40px;
 	color: var(--btn-color);
 	transition: color 125ms ease-in 0s;
@@ -27,7 +26,6 @@
 }
 
 .secondary-button-container {
-	align-items: center;
 	justify-content: center;
 	display: flex;
 	flex-flow: row;
@@ -36,7 +34,7 @@
 	background-color: var(--open-currency-btn-bg);
 	border-radius: 9999px;
 	border: none;
-	padding: 0px;
+	padding: 0;
 	height: 40px;
 	color: var(--color-white);
 	transition: color 125ms ease-in 0s;

@@ -3,14 +3,14 @@
 	flex-direction: column;
 	width: 100%;
 	min-height: 100vh;
-	padding: 72px 0px 5rem;
+	padding: 72px 0 5rem;
 	-webkit-box-align: center;
 	align-items: center;
 	flex: 1 1 0%;
 }
 
 .card-section {
-	padding: 68px 8px 0px;
+	padding: 68px 8px 0;
 	max-width: 480px;
 	width: 100%;
 }
@@ -23,6 +23,7 @@
 	padding: 12px 8px 8px;
 	z-index: 1;
 	transition: transform 250ms ease 0s;
+
 	/* pointer-events: none; */
 }
 
@@ -31,26 +32,27 @@
 	color: var(--text-color);
 	-webkit-box-pack: justify;
 	justify-content: space-between;
+
 	/* pointer-events: none; */
 }
 
 .card-top-parent {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
 	justify-content: flex-start;
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 }
 
 .card-top-parent .top-btns {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -62,13 +64,13 @@
 	padding: 0 12px;
 	gap: 5px;
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 }
 
 #btns-top .swap-btn {
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 500;
 	font-size: 16px;
 	line-height: 24px;
@@ -99,11 +101,11 @@
 	z-index: 1;
 	will-change: transform;
 	transition: transform 450ms ease 0s;
-	transform: perspective(1px) translateZ(0px);
+	transform: perspective(1px) translateZ(0);
 }
 
 .buy .buy-btn {
-	padding: 0px;
+	padding: 0;
 	width: fit-content;
 	background: none;
 	text-decoration: none;
@@ -120,8 +122,8 @@
 .gear .gear-btn {
 	border: none;
 	background-color: transparent;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	cursor: pointer;
 	outline: none;
 }
@@ -154,8 +156,8 @@
 	background-size: 100%;
 	border-radius: inherit;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	pointer-events: none;
@@ -182,8 +184,8 @@
 
 .input-wrapper .youPay-label {
 	box-sizing: border-box;
-	margin: 0px;
-	min-width: 0px;
+	margin: 0;
+	min-width: 0;
 	font-weight: 500;
 	font-size: 14px;
 }
@@ -208,8 +210,8 @@
 }
 
 .paying-wrapper .token-amount-input {
-	color: rgb(255, 255, 255);
-	width: 0px;
+	color: rgb(255 255 255);
+	width: 0;
 	position: relative;
 	font-weight: 400;
 	outline: none;
@@ -220,7 +222,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	padding: 0px;
+	padding: 0;
 	appearance: textfield;
 	text-align: right;
 }
@@ -254,8 +256,8 @@
 	background-size: 100%;
 	border-radius: inherit;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	content: '';
@@ -275,7 +277,7 @@
 .cryptocurrency-wrapper {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -292,7 +294,7 @@
 	height: 24px;
 	background: none;
 	transition: background-color 250ms ease-in 0s;
-	box-shadow: white 0px 0px 1px;
+	box-shadow: white 0 0 1px;
 	border-radius: 50%;
 }
 
@@ -305,7 +307,7 @@
 }
 
 .cryptocurrency-wrapper .token-name {
-	margin: 0px 0.25rem;
+	margin: 0 0.25rem;
 	font-size: 20px;
 	font-weight: 600;
 }
@@ -358,8 +360,8 @@
 	background-size: 100%;
 	border-radius: inherit;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	pointer-events: none;
@@ -372,7 +374,7 @@
 	align-items: center;
 	background-color: var(--btn-color);
 	opacity: 1;
-	box-shadow: rgba(0, 0, 0, 0.075) 0px 6px 10px;
+	box-shadow: rgb(0 0 0 / 7.5%) 0 6px 10px;
 	color: var(--open-currency-btn-color);
 	cursor: pointer;
 	height: unset;
@@ -395,8 +397,8 @@
 	background-size: 100%;
 	border-radius: inherit;
 	position: absolute;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	content: '';
@@ -415,7 +417,7 @@
 .text-wrapper {
 	width: 100%;
 	display: flex;
-	padding: 0px;
+	padding: 0;
 	-webkit-box-align: center;
 	align-items: center;
 	-webkit-box-pack: start;
@@ -423,7 +425,7 @@
 }
 
 .text-wrapper .select-token {
-	margin: 0px 0.25rem;
+	margin: 0 0.25rem;
 	font-size: 20px;
 	font-weight: 600;
 }
@@ -444,7 +446,7 @@
 	border-radius: 16px;
 	outline: none;
 	border: 1px solid transparent;
-	color: rgb(255, 255, 255);
+	color: rgb(255 255 255);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -457,12 +459,12 @@
 	z-index: 1;
 	will-change: transform;
 	transition: transform 450ms ease 0s;
-	transform: perspective(1px) translateZ(0px);
+	transform: perspective(1px) translateZ(0);
 }
 
 .connect-wallet div {
 	background-color: transparent;
-	inset: 0px;
+	inset: 0;
 	border-radius: inherit;
 	height: 100%;
 	position: absolute;
@@ -478,7 +480,7 @@
 
 /* ------------------------------
 -------Media Query----------- */
-@media screen and (min-width: 768px) {
+@media screen and (width >= 768px) {
 	.shade-parent {
 		height: 100vh;
 	}

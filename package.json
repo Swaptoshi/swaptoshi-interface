@@ -49,7 +49,10 @@
 		"eject": "react-scripts eject",
 		"lint": "eslint --ext .js .",
 		"lint:fix": "eslint --fix --ext .js,.ts .",
-		"format": "prettier --write '**/*'"
+		"lint:css": "stylelint .",
+		"lint:css:fix": "stylelint --fix .",
+		"format": "prettier --write '**/*'",
+		"postbuild": "purgecss --css build/static/css/*.css --content build/index.html build/static/js/*.js --output build/static/css"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -76,11 +79,14 @@
 		"babel-eslint": "^10.1.0",
 		"eslint": "^8.56.0",
 		"eslint-plugin-import": "^2.29.1",
+		"eslint-plugin-jest": "^27.6.0",
 		"eslint-plugin-jsx": "^0.1.0",
 		"eslint-plugin-jsx-a11y": "^6.8.0",
 		"eslint-plugin-react": "^7.33.2",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"prettier-eslint": "^16.1.2",
-		"react-app-rewired": "^2.2.1"
+		"purgecss": "^5.0.0",
+		"react-app-rewired": "^2.2.1",
+		"stylelint-config-standard-scss": "^12.0.0"
 	}
 }

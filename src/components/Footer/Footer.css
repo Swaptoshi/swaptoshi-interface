@@ -20,6 +20,7 @@
 	width: 120px;
 	height: 120px;
 	opacity: 0.7;
+
 	/* display: none; */
 }
 
@@ -28,7 +29,7 @@
 	-webkit-box-align: center;
 	align-items: center;
 	gap: 20px;
-	margin: 20px 0px 0px;
+	margin: 20px 0 0;
 }
 
 .fCbTAS {
@@ -36,13 +37,13 @@
 }
 
 a {
-	color: rgb(76, 130, 251);
+	color: rgb(76 130 251);
 }
 
 .kXoVHj {
 	font-size: 16px;
 	line-height: 20px;
-	margin: 1rem 0px 0px;
+	margin: 1rem 0 0;
 	color: var(----text-color);
 }
 
@@ -57,6 +58,7 @@ a {
 	grid-template-columns: 1fr 1fr;
 	gap: 12px;
 }
+
 .koQguvx {
 	color: var(--text-clr);
 }
@@ -66,7 +68,7 @@ a {
 	flex-direction: column;
 	gap: 12px;
 	width: 200px;
-	margin: 20px 0px 0px;
+	margin: 20px 0 0;
 	color: var(--color-white);
 }
 
@@ -79,50 +81,50 @@ a {
 .etpyAT {
 	font-size: 16px;
 	line-height: 20px;
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 }
 
 .inbLGK {
 	font-size: 16px;
 	line-height: 20px;
-	color: rgb(119, 128, 160);
+	color: rgb(119 128 160);
 }
 
 .jnMVFj {
 	text-decoration: none;
 	cursor: pointer;
 	transition-duration: 125ms;
-	color: rgb(251, 17, 142);
-	stroke: rgb(251, 17, 142);
+	color: rgb(251 17 142);
+	stroke: rgb(251 17 142);
 	font-weight: 500;
 }
 
 .gzPmPD {
 	height: 32px;
 	width: 32px;
-	fill: rgb(152, 161, 192);
+	fill: rgb(152 161 192);
 	opacity: 1;
 }
 
 .dDVVbm {
 	height: 32px;
 	width: 32px;
-	fill: rgb(152, 161, 192);
+	fill: rgb(152 161 192);
 	opacity: 1;
 }
 
 .jRgqAR {
 	height: 32px;
 	width: 32px;
-	fill: rgb(152, 161, 192);
+	fill: rgb(152 161 192);
 	opacity: 1;
 }
 
 .budeec {
 	font-size: 16px;
 	line-height: 20px;
-	margin: 1rem 0px 0px;
-	color: rgb(93, 103, 133);
+	margin: 1rem 0 0;
+	color: rgb(93 103 133);
 }
 
 .cSdhBE {
@@ -130,14 +132,16 @@ a {
 	flex-direction: column;
 	-webkit-box-align: center;
 	align-items: center;
+
 	/* padding: 0px 24px 5rem; */
 	width: 100%;
 	background: var(--cards-background);
+
 	/* background: linear-gradient(179.82deg, rgba(0, 0, 0, 0) 0.16%, rgb(5, 0, 38) 99.85%); */
 }
 
 /* Media QUery */
-@media screen and (min-width: 1024px) {
+@media screen and (width >= 1024px) {
 	.lcjkzD {
 		flex-direction: row;
 		-webkit-box-pack: justify;
@@ -157,13 +161,13 @@ a {
 	}
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (width >= 1280px) {
 	.kzmIWZ {
 		grid-template-columns: 1fr 1fr 1fr 1fr;
 		gap: 24px;
 	}
 
 	.dbjOeL {
-		margin: 0px;
+		margin: 0;
 	}
 }

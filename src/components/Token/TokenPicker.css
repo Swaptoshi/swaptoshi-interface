@@ -1,10 +1,10 @@
 .jBBXQD[data-reach-dialog-content] {
 	margin: auto;
-	background-color: rgb(255 255 255);
+	background-color: #fff;
 	box-shadow:
-		rgb(51 53 72 / 4%) 8px 12px 20px,
-		rgb(51 53 72 / 2%) 4px 6px 12px,
-		rgb(51 53 72 / 4%) 4px 4px 8px;
+		#3335480a 8px 12px 20px,
+		#33354805 4px 6px 12px,
+		#3335480a 4px 4px 8px;
 	padding: 0;
 	width: 50vw;
 	overflow: hidden auto;
@@ -55,7 +55,7 @@
 
 .hxoNas {
 	background: url('/public/assets/images/search-icon.svg') 12px center / 20px 20px no-repeat scroll
-		rgb(245 246 252);
+		var(--nav-drop);
 	position: relative;
 	display: flex;
 	padding: 16px 16px 16px 40px;
@@ -67,7 +67,7 @@
 	outline: none;
 	border-radius: 12px;
 	color: rgb(13 17 28);
-	border: 1px solid rgb(210 217 238);
+	border: 1px solid var(--border);
 	appearance: none;
 	font-size: 16px;
 	transition: border 100ms ease 0s;
