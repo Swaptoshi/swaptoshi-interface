@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as cryptography from '@liskhq/lisk-cryptography';
 import './Navbar.css';
 import { NavLink } from 'react-router-dom';
@@ -14,6 +15,7 @@ import { useWalletModal } from '../../context/WalletModalProvider';
 import Dropdown from './Dropdown';
 
 const Navbar = ({ searchOptions }) => {
+	const location = useLocation();
 	const logoImage = '/assets/images/logo/swaptoshi-logo.svg';
 	const [isActiveHeader, setIsActiveHeader] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
@@ -193,17 +195,35 @@ const Navbar = ({ searchOptions }) => {
 							</div>
 							<div className="nav-menu" id="nav-menu">
 								<ul className="list-unstyled nav-list elYyfH">
-									<li className="nav-item">
+									<li
+										className="nav-item hover-shadow"
+										style={{
+											backgroundColor:
+												location.pathname === '/swap' ? 'var(--hover-background)' : undefined,
+										}}
+									>
 										<NavLink className="nav-link" to="/swap">
 											Swap
 										</NavLink>
 									</li>
-									<li className="nav-item">
+									<li
+										className="nav-item hover-shadow"
+										style={{
+											backgroundColor:
+												location.pathname === '/tokens' ? 'var(--hover-background)' : undefined,
+										}}
+									>
 										<NavLink className="nav-link" to="/tokens">
 											Tokens
 										</NavLink>
 									</li>
-									<li className="nav-item">
+									<li
+										className="nav-item hover-shadow"
+										style={{
+											backgroundColor:
+												location.pathname === '/pools' ? 'var(--hover-background)' : undefined,
+										}}
+									>
 										<NavLink className="nav-link" to="/pools">
 											Pools
 										</NavLink>

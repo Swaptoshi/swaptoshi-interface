@@ -70,6 +70,12 @@
 	align-items: center;
 }
 
+.nav-item {
+	border-radius: 16px;
+	overflow: hidden;
+	margin: 0 4px;
+}
+
 .nav-item .nav-link {
 	color: var(--text-color);
 }
