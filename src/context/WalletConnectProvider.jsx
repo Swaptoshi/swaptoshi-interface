@@ -215,7 +215,7 @@ export function WalletConnectProvider({ children }) {
 						if (tokens.data.length > 0) {
 							balance = balance.concat(tokens.data);
 						}
-						if (tokens.meta.count < tokens.meta.total) {
+						if (balance.length < tokens.meta.total) {
 							offset += process.env.REACT_APP_DEFAULT_REQUEST_LIMIT;
 							continue;
 						}
