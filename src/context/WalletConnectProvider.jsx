@@ -199,13 +199,32 @@ export function WalletConnectProvider({ children }) {
 	React.useEffect(() => {
 		const run = async () => {
 			if (senderPublicKey && selectedService) {
-				const address = cryptography.address.getLisk32AddressFromPublicKey(
-					Buffer.from(senderPublicKey, 'hex'),
-				);
-				const tokens = await getTokenBalances({ address }, selectedService.serviceURLs);
-				if (tokens && tokens.data && tokens.data.length > 0) {
-					setBalances(tokens.data);
+				let balance = [];
+				let offset = 0;
+
+				// eslint-disable-next-line no-constant-condition
+				while (true) {
+					const address = cryptography.address.getLisk32AddressFromPublicKey(
+						Buffer.from(senderPublicKey, 'hex'),
+					);
+					const tokens = await getTokenBalances(
+						{ address, limit: process.env.REACT_APP_DEFAULT_REQUEST_LIMIT, offset },
+						selectedService.serviceURLs,
+					);
+					if (tokens && tokens.data && tokens.meta) {
+						if (tokens.data.length > 0) {
+							balance = balance.concat(tokens.data);
+						}
+						if (tokens.meta.count < tokens.meta.total) {
+							offset += process.env.REACT_APP_DEFAULT_REQUEST_LIMIT;
+							continue;
+						}
+						break;
+					}
+					break;
 				}
+
+				setBalances(balance);
 			}
 		};
 
