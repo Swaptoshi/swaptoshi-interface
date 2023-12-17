@@ -12,9 +12,7 @@ const Nfts = ({
 	setIsCartVisible,
 	allTableDataETH,
 	allTableDataUSD,
-	currency,
 	setCurrency,
-	data,
 	setData,
 	addToBag,
 	setAddToBag,
@@ -379,6 +377,7 @@ const Nfts = ({
 										className={`sc-1dnk851-4 currencyTabs  ${
 											selectedCurrencyTab === cTab ? 'active' : ''
 										}`}
+										key={cTab}
 									>
 										<div
 											className="sc-sx9n2y-0 kivXvb sc-1dnk851-5 jURivN css-1w21yux"
@@ -517,6 +516,7 @@ const Nfts = ({
 											onClick={() => navigate(`/nfts/${item.id}?currency=${selectedCurrencyTab}`)}
 											data-testid="nft-trending-collection"
 											className="sc-iwpsza-1 dbIfpX"
+											key={Math.random()}
 										>
 											<td
 												className="_1mor7vef rgw6ezcp rgw6ezb1 rgw6ezed rgw6ez2o7 rgw6ez27p rgw6ez1jp rgw6ez467 rgw6ez491"

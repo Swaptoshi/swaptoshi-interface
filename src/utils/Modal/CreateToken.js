@@ -1,7 +1,6 @@
 import React from 'react';
 import './Modal.css';
 import { NavLink } from 'react-router-dom';
-import PrimaryButton from '../../components/Button/PrimaryButton';
 import TextInput from '../Forms/TextInput';
 import SecondaryButton from '../../components/Button/SecondaryButton';
 import { FileUploader } from 'react-drag-drop-files';

@@ -3,7 +3,7 @@ import './Cart.css';
 
 const Cart = ({ addToBag, setIsCartVisible, onRemoveBagItem }) => {
 	const [totalEth, setTotalEth] = useState(0);
-	const [showConnectWallet, setShowConnectWallet] = useState(true);
+	const [showConnectWallet] = useState(true);
 
 	useEffect(() => {
 		let total = 0;
@@ -46,6 +46,7 @@ const Cart = ({ addToBag, setIsCartVisible, onRemoveBagItem }) => {
 				<div>
 					{addToBag?.map(item => (
 						<div
+							key={item.id}
 							className="_1klryar0 rgw6ez44r rgw6ez473 rgw6ez3tf _1jcz50r1 rgw6ez2ef rgw6ez2jx rgw6ez1yr rgw6ez8ct"
 							id={item.id}
 						>

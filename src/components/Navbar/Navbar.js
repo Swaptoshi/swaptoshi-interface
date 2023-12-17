@@ -27,7 +27,6 @@ const Navbar = ({ searchOptions, handleCart }) => {
 	const { availableService, selectedService, setChain } = useChain();
 	const [isModalOpen, setIsModalOpen] = useWalletModal();
 
-	const ref = useRef(null);
 	const centerSearchRef = useRef(null);
 	const rightSearchRef = useRef(null);
 	const rightSearchInsideRef = useRef(null);

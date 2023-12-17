@@ -2,16 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Swap from '../../pages/Swap/Swap';
 import './TokenDetails.css';
 import { useParams } from 'react-router-dom';
-import {
-	LineChart,
-	Line,
-	XAxis,
-	YAxis,
-	CartesianGrid,
-	Tooltip,
-	Legend,
-	ResponsiveContainer,
-} from 'recharts';
+import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import { NavLink } from 'react-router-dom';
 
 const TokenDetails = ({ allTableData, chartData }) => {
@@ -78,7 +69,7 @@ const TokenDetails = ({ allTableData, chartData }) => {
 								className="sc-7yzmni-9 jnMVFj"
 							>
 								<div className="sc-d5tbhs-1 cSretk">
-									<div>17970396 </div>
+									<div>17970396 </div>
 								</div>
 							</a>
 						</div>
@@ -117,7 +108,7 @@ const TokenDetails = ({ allTableData, chartData }) => {
 
 				<div className="sc-qwzj9s-1 fBEeS">
 					{tokensData.map(data => (
-						<div className="sc-qwzj9s-2 kUtZkz">
+						<div className="sc-qwzj9s-2 kUtZkz" key={data.id}>
 							<NavLink className="sc-djdxof-0 MpERT" to="/tokens">
 								<i className="ri-arrow-left-line"></i>
 								Tokens

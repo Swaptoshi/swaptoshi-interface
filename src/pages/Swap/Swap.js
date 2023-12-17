@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Swap.css';
 import SwapModal from '../../utils/SwapModal/SwapModal';
-import { useWalletModal } from '../../context/WalletModal';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 
 const Swap = ({
@@ -16,7 +15,6 @@ const Swap = ({
 	setSelectedTokenSecond,
 	handleSelect,
 }) => {
-	const [, setIsModalOpen] = useWalletModal();
 	const [inputValues, setInputValues] = useState({
 		'you-pay': '',
 		'you-receive': '',

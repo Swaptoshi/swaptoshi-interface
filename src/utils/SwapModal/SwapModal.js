@@ -75,7 +75,7 @@ const SwapModal = ({
 											paddingTop: '4px',
 										}}
 									>
-										{filteredTokenSearch?.map((item, index) => (
+										{filteredTokenSearch?.map(item => (
 											<div
 												key={item.id}
 												tabIndex={0}

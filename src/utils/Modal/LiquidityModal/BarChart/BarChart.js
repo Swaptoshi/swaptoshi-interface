@@ -6,8 +6,8 @@ import { bitcoinPrices } from '../fakePrices';
 
 const BarChart = () => {
 	const [data, setData] = useState({ prices: [] });
-	const [minInputValue, setMinInputValue] = useState('');
-	const [maxInputValue, setMaxInputValue] = useState('');
+	const [, setMinInputValue] = useState('');
+	const [, setMaxInputValue] = useState('');
 
 	useEffect(() => {
 		const prices = bitcoinPrices;

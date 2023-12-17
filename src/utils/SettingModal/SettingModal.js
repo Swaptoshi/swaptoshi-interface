@@ -3,7 +3,7 @@ import './SettingModal.css';
 
 const SettingModal = () => {
 	return (
-		<div ClassName="imhdhD">
+		<div className="imhdhD">
 			<div className="Column__AutoColumn-sc-72c388fb-2 Settings__MenuFlyout-sc-6676197f-1 gXqkQO fkhvJx">
 				<div className="Column__AutoColumn-sc-72c388fb-2 ereioh">
 					<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB cPkaXY BkVYr">

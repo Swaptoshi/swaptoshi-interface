@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Buffer } from 'buffer';
 import { SignClient } from '@walletconnect/sign-client';
 import { useChain } from './ChainProvider';
 import { codec } from '@liskhq/lisk-codec';
@@ -189,7 +190,6 @@ export function WalletConnectProvider({ children }) {
 			}
 		}
 		if (wcUri) setWcUri(undefined);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chain]);
 
 	React.useEffect(() => {

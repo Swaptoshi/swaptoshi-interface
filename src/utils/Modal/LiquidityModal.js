@@ -18,7 +18,7 @@ const LiquidityModal = ({
 	minInputValue,
 	maxInputValue,
 }) => {
-	const [data, setData] = useState([]);
+	const [, setData] = useState([]);
 
 	const fetchData = async () => {
 		try {

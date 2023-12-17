@@ -1,7 +1,7 @@
 import React from 'react';
 import './PrivacyModal.css';
 
-const PrivacyModal = ({ privacyModal, setPrivacyModal }) => {
+const PrivacyModal = () => {
 	return (
 		<div className="bCNYil">
 			<div
@@ -68,7 +68,7 @@ const PrivacyModal = ({ privacyModal, setPrivacyModal }) => {
 														<line x1={12} y1={8} x2="12.01" y2={8} />
 													</svg>
 													<div className="sc-sx9n2y-0 kcDJjM css-1aekuku">
-														Uniswap Labs' Terms of Service
+														Uniswap Labs\&apos; Terms of Service
 													</div>
 												</div>
 												<svg

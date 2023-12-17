@@ -109,7 +109,7 @@ const Token = ({ allTableData, updateTime, options }) => {
 								{isOpen && (
 									<ul className="dropdown-items-wrapper">
 										{options.map(option => (
-											<li id="dropdownItem" className="dropdown-item">
+											<li id="dropdownItem" className="dropdown-item" key={Math.random()}>
 												<div
 													className="item-crypto"
 													onClick={() => {
@@ -145,7 +145,7 @@ const Token = ({ allTableData, updateTime, options }) => {
 									{handleOpen && (
 										<ul className="igfebL">
 											{updateTime.map(op => (
-												<li id="" className="chstga iCcgEc">
+												<li id="" className="chstga iCcgEc" key={op.value}>
 													<div
 														className=""
 														onClick={() => {

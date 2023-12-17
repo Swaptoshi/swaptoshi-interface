@@ -51,10 +51,9 @@ const Vote = () => {
 						</div>
 						<div className="sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-3 hJYFVB diZBNg fOxruH">
 							<a
-								padding="8px"
 								className="sc-fwrjc2-1 sc-fwrjc2-2 geXoyc kEIpOD"
 								href="#/create-proposal"
-								style={{ width: 'fit-content', borderRadius: 8, height: 40 }}
+								style={{ width: 'fit-content', borderRadius: 8, height: 40, padding: 8 }}
 							>
 								Create Proposal
 							</a>
@@ -207,7 +206,7 @@ const Vote = () => {
 					<a className="sc-uxt6ak-2 dgkaVU" href="#/vote/1/3">
 						<span className="sc-uxt6ak-3 gyFpxT">1.3</span>
 						<span className="sc-uxt6ak-4 Dzbgo">
-							Upgrade Governance Contract to Compound's Governor Bravo
+							Upgrade Governance Contract to Compound\&apos;s Governor Bravo
 						</span>
 						<span className="sc-1z0b5a1-0 dYbPAW">Executed</span>
 					</a>

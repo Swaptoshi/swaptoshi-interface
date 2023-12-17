@@ -192,7 +192,7 @@ const CartModal = ({
 											paddingBottom: '20px',
 										}}
 									>
-										{filteredTokenSearch?.map((item, index) => (
+										{filteredTokenSearch?.map(item => (
 											<div
 												key={item.id}
 												tabIndex={0}

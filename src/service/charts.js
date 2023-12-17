@@ -10,18 +10,18 @@
 // ];
 
 export const booksData = [
-	{
-		original_title: 'The Great Book',
-		ratings_count: 12000,
-		rating: 4.5,
-		author: 'John Doe',
-		publication_year: 2010,
-	},
-	{
-		original_title: 'Fantastic Stories',
-		ratings_count: 8000,
-		rating: 3.8,
-		author: 'Jane Smith',
-		publication_year: 2015,
-	},
+  {
+    original_title: 'The Great Book',
+    ratings_count: 12000,
+    rating: 4.5,
+    author: 'John Doe',
+    publication_year: 2010,
+  },
+  {
+    original_title: 'Fantastic Stories',
+    ratings_count: 8000,
+    rating: 3.8,
+    author: 'Jane Smith',
+    publication_year: 2015,
+  },
 ];

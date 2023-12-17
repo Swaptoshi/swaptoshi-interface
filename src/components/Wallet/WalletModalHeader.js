@@ -1,4 +1,5 @@
 import React from 'react';
+import { Buffer } from 'buffer';
 import * as cryptography from '@liskhq/lisk-cryptography';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import CopyToClipboard from 'react-copy-to-clipboard';

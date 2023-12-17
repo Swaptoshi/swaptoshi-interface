@@ -69,7 +69,6 @@ const Home = () => {
 														minLength="1"
 														maxLength="79"
 														spellCheck="false"
-														value=""
 													/>
 
 													<div>
@@ -122,7 +121,6 @@ const Home = () => {
 															minLength="1"
 															maxLength="79"
 															spellCheck="false"
-															value=""
 														/>
 
 														<div>
@@ -147,7 +145,7 @@ const Home = () => {
 											</div>
 										</div>
 										<div>
-											<button font-weight="600" id="connectId" className="connect-wallet">
+											<button fontWeight="600" id="connectId" className="connect-wallet">
 												<div className=""></div>
 												Connect Wallet
 											</button>
@@ -170,10 +168,8 @@ const Home = () => {
 						<p>Swaptoshi is a Fair-Launched Community-Driven Lisk DEX</p>
 					</div>
 					<span className="get-started-wrapper">
-						<NavLink to={'/swap'}>
-							<a id="getStartedBtnId" className="get-started-btn get-btn">
-								<p className="get-started-text">Get Started</p>
-							</a>
+						<NavLink to={'/swap'} id="getStartedBtnId" className="get-started-btn get-btn">
+							<p className="get-started-text">Get Started</p>
 						</NavLink>
 					</span>
 					<div className="learn-more" onClick={handleClick}>

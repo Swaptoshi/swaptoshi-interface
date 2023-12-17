@@ -379,6 +379,7 @@ const NftsDetails = ({
 													className={`jtXgVB ${isHovered ? 'hovered' : ''}`}
 													onMouseEnter={() => setIsHovered(true)}
 													onMouseLeave={() => setIsHovered(false)}
+													key={Math.random()}
 												>
 													<a
 														className="sc-1xox0sw-4 qzRBv"
