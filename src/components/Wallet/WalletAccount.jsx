@@ -34,7 +34,7 @@ export default function WalletAccount({ show }) {
 					baseTokenId: balances[i].tokenID,
 					quoteTokenId: lskTokenId,
 				});
-				const meta = tokenMeta.data.data.find(t => t.tokenID === balances[i].tokenID);
+				const meta = tokenMeta.data.find(t => t.tokenID === balances[i].tokenID);
 
 				let symbol = meta ? meta.symbol : '???';
 				let logo = meta ? meta.logo.png : undefined;
@@ -46,11 +46,9 @@ export default function WalletAccount({ show }) {
 					const dexMeta = await getDEXTokenCompact({
 						search: balances[i].tokenID,
 					});
-					symbol = dexMeta ? dexMeta.data.data[0].symbol : '???';
-					logo = dexMeta ? dexMeta.data.data[0].logo : '';
-					decimal = dexMeta
-						? dexMeta.data.data[0].decimal
-						: process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;
+					symbol = dexMeta ? dexMeta.data[0].symbol : '???';
+					logo = dexMeta ? dexMeta.data[0].logo : '';
+					decimal = dexMeta ? dexMeta.data[0].decimal : process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;
 				}
 
 				const accountBalance = {
@@ -59,7 +57,7 @@ export default function WalletAccount({ show }) {
 					symbol,
 					logo,
 					decimal,
-					priceLSK: price.data.data.price,
+					priceLSK: price.data.price,
 				};
 
 				accountBalances.push(accountBalance);

@@ -30,7 +30,7 @@ export default function ChainProvider({ children }) {
 			const swaptoshiMetadata = await getBlockchainApps();
 
 			if (swaptoshiMetadata && swaptoshiMetadata.data) {
-				for (const metadata of swaptoshiMetadata.data.data) {
+				for (const metadata of swaptoshiMetadata.data) {
 					const service = {
 						chainID: metadata.chainID,
 						networkType: metadata.networkType,

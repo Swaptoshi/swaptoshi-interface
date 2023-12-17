@@ -30,10 +30,8 @@ export default function LiskPriceProvider({ children }) {
 		const run = async () => {
 			if (selectedService) {
 				const market = await getLiskMarket(selectedService.serviceURLs);
-				if (market && market.data && market.data.data.length > 0) {
-					const price = market.data.data.find(
-						t => t.from === 'LSK' && t.to === currency.toUpperCase(),
-					);
+				if (market && market.data && market.data.length > 0) {
+					const price = market.data.find(t => t.from === 'LSK' && t.to === currency.toUpperCase());
 					if (!price) setPrices(0);
 					else setPrices(Number(price.rate));
 				}

@@ -203,8 +203,8 @@ export function WalletConnectProvider({ children }) {
 					Buffer.from(senderPublicKey, 'hex'),
 				);
 				const tokens = await getTokenBalances({ address }, selectedService.serviceURLs);
-				if (tokens && tokens.data && tokens.data.data.length > 0) {
-					setBalances(tokens.data.data);
+				if (tokens && tokens.data && tokens.data.length > 0) {
+					setBalances(tokens.data);
 				}
 			}
 		};
