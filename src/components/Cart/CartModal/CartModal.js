@@ -186,7 +186,7 @@ const CartModal = ({
               <div style={{ overflow: "visible", height: 0 }}>
                 <div
                   data-testid="currency-list-wrapper"
-                  className="sc-1e2o00j-5 kszyds"
+                  className="sc-1e2o00j-5"
                 >
                   <div
                     className="_1pi21y70"

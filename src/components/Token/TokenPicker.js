@@ -1,21 +1,13 @@
 import React, { useState } from "react";
-import "./SwapModal.css";
 
-const SwapModal = ({
-  swapModal,
-  setSwapModal,
-  swapTokens,
-  selectedToken,
-  handleSelect,
-  isLiquidity = false,
-}) => {
+const TokenPicker = ({ show, onClose, data, selected, onSelect }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleTokenChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredTokenSearch = swapTokens?.filter((token) =>
+  const filteredTokenSearch = data?.filter((token) =>
     token.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -24,7 +16,7 @@ const SwapModal = ({
       <div
         className={`sc-jajvtp-0 bmYGet`}
         data-reach-dialog-overlay=""
-        style={{ display: swapModal ? "flex" : "none" }}
+        style={{ display: show ? "flex" : "none" }}
       >
         <div
           aria-modal="true"
@@ -41,7 +33,7 @@ const SwapModal = ({
                 className="sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-1 hJYFVB fhPvJeh frnZMKK"
               >
                 <div className="css-xy7yfl">Select a token</div>
-                <span onClick={() => setSwapModal(false)}>
+                <span onClick={onClose}>
                   <i className="close-modal ri-close-line"></i>
                 </span>
               </div>
@@ -82,10 +74,10 @@ const SwapModal = ({
                         key={item.id}
                         tabIndex={0}
                         className={`hJYFVB fhPvJeh frnZMKK edPdrxe token-item-ETHER ${
-                          selectedToken?.label === item?.label ? "active " : ""
+                          selected?.label === item?.label ? "active " : ""
                         }`}
                         disabled=""
-                        onClick={() => handleSelect(item, isLiquidity)}
+                        onClick={onSelect}
                       >
                         <div className="sc-1kykgp9-0 iCxowP">
                           <div
@@ -128,7 +120,7 @@ const SwapModal = ({
                           className="sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-4 hJYFVB fhPvJeh leSroW"
                           style={{ justifySelf: "flex-end" }}
                         >
-                          {selectedToken?.label === item?.label && (
+                          {selected?.label === item?.label && (
                             <i className="swap-tick ri-check-line"></i>
                           )}
                         </div>
@@ -151,4 +143,4 @@ const SwapModal = ({
   );
 };
 
-export default SwapModal;
+export default TokenPicker;
