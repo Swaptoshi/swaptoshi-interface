@@ -16,8 +16,9 @@
 			"presets": ["@babel/preset-react"]
 		}
 	},
-	"plugins": ["react", "jsx-a11y", "import", "jsx"],
+	"plugins": ["react", "jsx-a11y", "import", "jsx", "react-hooks"],
 	"rules": {
-		"react/prop-types": 0
+		"react/prop-types": 0,
+		"react-hooks/exhaustive-deps": "error"
 	  }
 }

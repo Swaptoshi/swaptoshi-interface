@@ -38,6 +38,7 @@
 		"slick-carousel": "^1.8.1",
 		"sodium-universal": "^4.0.0",
 		"stream-browserify": "^3.0.0",
+		"use-debounce": "^10.0.0",
 		"use-local-storage": "^3.0.0",
 		"util": "^0.12.5",
 		"web-vitals": "^2.1.4"

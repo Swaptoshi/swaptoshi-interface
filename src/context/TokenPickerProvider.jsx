@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import TokenPicker from '../components/Token/TokenPickerModal';
-import { swapTokens } from '../service/swapTokens';
 
 const TokenPickerContext = React.createContext();
 
@@ -9,56 +8,59 @@ export function useTokenPicker() {
 }
 
 export default function TokenPickerProvider({ children }) {
-	const [show, setShow] = useState();
-	const [data, setData] = useState();
+	const [show, setShow] = useState(false);
+	const [mode, setMode] = useState();
 	const [selected, setSelected] = useState();
 	const [onClose, setOnClose] = useState();
 	const [onSelect, setOnSelect] = useState();
 
 	const onDismount = React.useCallback(() => {
-		setData();
 		setSelected();
 		setOnClose();
 		setOnSelect();
 	}, []);
 
-	const pickTradableToken = React.useCallback(({ selected, onClose, onSelect }) => {
-		setSelected(selected);
+	const pickTradableToken = React.useCallback(
+		async ({ selected, onClose, onSelect }) => {
+			setMode('tradable');
 
-		setOnClose(() => () => {
-			onClose();
-			setShow(false);
-			onDismount();
-		});
-		setOnSelect(() => item => {
-			onSelect(item);
-			setShow(false);
-			onDismount();
-		});
+			setShow(true);
+			setSelected(selected);
 
-		// fetch data and setData
-		setData(swapTokens);
-		setShow(true);
-	}, []);
+			setOnClose(() => () => {
+				onClose();
+				setShow(false);
+				onDismount();
+			});
+			setOnSelect(() => item => {
+				onSelect(item);
+				setShow(false);
+				onDismount();
+			});
+		},
+		[onDismount],
+	);
 
-	const pickWalletToken = React.useCallback(({ selected, onClose, onSelect }) => {
-		setSelected(selected);
+	const pickWalletToken = React.useCallback(
+		({ selected, onClose, onSelect }) => {
+			setMode('wallet');
 
-		setOnClose(() => () => {
-			onClose();
-			setShow(false);
-			onDismount();
-		});
-		setOnSelect(() => item => {
-			onSelect(item);
-			setShow(false);
-			onDismount();
-		});
+			setShow(true);
+			setSelected(selected);
 
-		// fetch data and setData
-		setData(swapTokens);
-		setShow(true);
-	}, []);
+			setOnClose(() => () => {
+				onClose();
+				setShow(false);
+				onDismount();
+			});
+			setOnSelect(() => item => {
+				onSelect(item);
+				setShow(false);
+				onDismount();
+			});
+		},
+		[onDismount],
+	);
 
 	return (
 		<TokenPickerContext.Provider
@@ -70,7 +72,7 @@ export default function TokenPickerProvider({ children }) {
 			{show ? (
 				<TokenPicker
 					show={show}
-					data={data}
+					mode={mode}
 					onClose={onClose}
 					onSelect={onSelect}
 					selected={selected}

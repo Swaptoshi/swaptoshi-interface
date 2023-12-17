@@ -190,7 +190,7 @@ export function WalletConnectProvider({ children }) {
 			}
 		}
 		if (wcUri) setWcUri(undefined);
-	}, [chain]);
+	}, [chain, signClient, wcUri]);
 
 	React.useEffect(() => {
 		if (!signClient) createClient();
@@ -200,7 +200,6 @@ export function WalletConnectProvider({ children }) {
 		const run = async () => {
 			if (senderPublicKey && selectedService) {
 				let balance = [];
-				let offset = 0;
 
 				// eslint-disable-next-line no-constant-condition
 				while (true) {
@@ -208,7 +207,7 @@ export function WalletConnectProvider({ children }) {
 						Buffer.from(senderPublicKey, 'hex'),
 					);
 					const tokens = await getTokenBalances(
-						{ address, limit: process.env.REACT_APP_DEFAULT_REQUEST_LIMIT, offset },
+						{ address, limit: process.env.REACT_APP_DEFAULT_REQUEST_LIMIT, offset: balance.length },
 						selectedService.serviceURLs,
 					);
 					if (tokens && tokens.data && tokens.meta) {
@@ -216,7 +215,6 @@ export function WalletConnectProvider({ children }) {
 							balance = balance.concat(tokens.data);
 						}
 						if (balance.length < tokens.meta.total) {
-							offset += process.env.REACT_APP_DEFAULT_REQUEST_LIMIT;
 							continue;
 						}
 						break;
