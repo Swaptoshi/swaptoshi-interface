@@ -7,6 +7,8 @@ import * as cryptography from '@liskhq/lisk-cryptography';
 import { transactionSchema } from '../schema/transactionSchema';
 import { getTokenBalances } from '../service/token';
 import { tryToast } from '../utils/Toast/tryToast';
+import { getFactoryTokenMeta } from '../service/factory';
+import { getDEXTokenCompact } from '../service/dex';
 
 const WalletConnectContext = React.createContext();
 
@@ -212,7 +214,41 @@ export function WalletConnectProvider({ children }) {
 					);
 					if (tokens && tokens.data && tokens.meta) {
 						if (tokens.data.length > 0) {
-							balance = balance.concat(tokens.data);
+							const tokenMeta = await getFactoryTokenMeta({
+								registry: true,
+								tokenIds: tokens.data.map(t => t.tokenID).join(','),
+							});
+
+							for (let i = 0; i < tokens.data.length; i++) {
+								const meta = tokenMeta.data.find(t => t.tokenID === tokens.data[i].tokenID);
+
+								let symbol = meta ? meta.symbol : '???';
+								let logo = meta ? meta.logo.png : undefined;
+								let decimal = meta
+									? meta.denomUnits.find(t => t.denom === symbol.toLowerCase()).decimals
+									: undefined;
+
+								if (!meta) {
+									const dexMeta = await getDEXTokenCompact({
+										search: tokens.data[i].tokenID,
+									});
+									symbol = dexMeta ? dexMeta.data[0].symbol : '???';
+									logo = dexMeta ? dexMeta.data[0].logo : '';
+									decimal = dexMeta
+										? dexMeta.data[0].decimal
+										: process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;
+								}
+
+								const accountBalance = {
+									tokenId: tokens.data[i].tokenID,
+									balance: tokens.data[i].availableBalance,
+									symbol,
+									logo,
+									decimal,
+								};
+
+								balance.push(accountBalance);
+							}
 						}
 						if (balance.length < tokens.meta.total) {
 							continue;
@@ -221,7 +257,6 @@ export function WalletConnectProvider({ children }) {
 					}
 					break;
 				}
-
 				setBalances(balance);
 			}
 		};

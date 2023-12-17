@@ -2,8 +2,7 @@ import React from 'react';
 import BalanceCard from './BalanceCard';
 import { tryToast } from '../../utils/Toast/tryToast';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
-import { getFactoryTokenMeta } from '../../service/factory';
-import { getDEXTokenCompact, getPrice } from '../../service/dex';
+import { getPrice } from '../../service/dex';
 import { getLSKTokenId } from '../../utils/Token/getLSKTokenId';
 import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader';
@@ -23,40 +22,16 @@ export default function WalletAccount({ show }) {
 		const run = async () => {
 			requestRef.current = true;
 			const lskTokenId = await getLSKTokenId(chain);
-			const tokenMeta = await getFactoryTokenMeta({
-				registry: true,
-				tokenIds: balances.map(t => t.tokenID).join(','),
-			});
 
 			const accountBalances = [];
 			for (let i = 0; i < balances.length; i++) {
 				const price = await getPrice({
-					baseTokenId: balances[i].tokenID,
+					baseTokenId: balances[i].tokenId,
 					quoteTokenId: lskTokenId,
 				});
-				const meta = tokenMeta.data.find(t => t.tokenID === balances[i].tokenID);
-
-				let symbol = meta ? meta.symbol : '???';
-				let logo = meta ? meta.logo.png : undefined;
-				let decimal = meta
-					? meta.denomUnits.find(t => t.denom === symbol.toLowerCase()).decimals
-					: undefined;
-
-				if (!meta) {
-					const dexMeta = await getDEXTokenCompact({
-						search: balances[i].tokenID,
-					});
-					symbol = dexMeta ? dexMeta.data[0].symbol : '???';
-					logo = dexMeta ? dexMeta.data[0].logo : '';
-					decimal = dexMeta ? dexMeta.data[0].decimal : process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;
-				}
 
 				const accountBalance = {
-					tokenId: balances[i].tokenID,
-					balance: balances[i].availableBalance,
-					symbol,
-					logo,
-					decimal,
+					...balances[i],
 					priceLSK: price.data.price,
 				};
 
