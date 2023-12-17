@@ -1,7 +1,7 @@
 import React from 'react';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import PrimaryButton from './PrimaryButton';
-import { useWalletModal } from '../../context/WalletModal';
+import { useWalletModal } from '../../context/WalletModalProvider';
 
 export default function WalletActionButton(props) {
 	const { senderPublicKey, signClient } = useWalletConnect();

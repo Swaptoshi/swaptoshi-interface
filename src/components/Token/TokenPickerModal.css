@@ -379,7 +379,7 @@
 }
 
 .bmYGet[data-reach-dialog-overlay] {
-	z-index: 10000;
+	z-index: 20000;
 	overflow: hidden;
 	display: flex;
 	-webkit-box-align: center;

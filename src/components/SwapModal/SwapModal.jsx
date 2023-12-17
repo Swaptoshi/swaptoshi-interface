@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './SwapModal.css';
 
 const SwapModal = ({
 	swapModal,

@@ -10,7 +10,7 @@ import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader/Loader';
 import { getSwaptoshiIcon } from '../../service/icon';
 import PrimaryButton from '../Button/PrimaryButton';
-import { useWalletModal } from '../../context/WalletModal';
+import { useWalletModal } from '../../context/WalletModalProvider';
 import Dropdown from './Dropdown';
 
 const Navbar = ({ searchOptions }) => {

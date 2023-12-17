@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './TokenPickerModal.css';
 
 const TokenPicker = ({ show, onClose, data, selected, onSelect }) => {
 	const [searchTerm, setSearchTerm] = useState('');
@@ -75,7 +76,7 @@ const TokenPicker = ({ show, onClose, data, selected, onSelect }) => {
 													selected?.label === item?.label ? 'active ' : ''
 												}`}
 												disabled=""
-												onClick={onSelect}
+												onClick={() => onSelect(item)}
 											>
 												<div className="sc-1kykgp9-0 iCxowP">
 													<div className="sc-12k1pn4-3 eLvYRk" style={{ opacity: 1 }}>

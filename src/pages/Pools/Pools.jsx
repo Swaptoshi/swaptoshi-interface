@@ -1,7 +1,7 @@
 import React from 'react';
 import './Pools.css';
 import { NavLink } from 'react-router-dom';
-import { useWalletModal } from '../../context/WalletModal';
+import { useWalletModal } from '../../context/WalletModalProvider';
 
 const Pools = () => {
 	const [, setIsModalOpen] = useWalletModal();

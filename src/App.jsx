@@ -19,14 +19,10 @@ import { allTableData, updateTime, options, chartData } from './service/tokens';
 //Swap Modal Tokens Data
 import { swapTokens } from './service/swapTokens';
 
-import { WalletConnectProvider } from './context/WalletConnectProvider';
-import ChainProvider from './context/ChainProvider';
 import { getSystemTheme } from './utils/Theme/getSystemTheme';
-import LiskPriceProvider from './context/LiskPriceProvider';
 import CreateTokenModal from './pages/CreateToken/CreateToken';
 import { useTheme } from './context/ThemeProvider';
-import WalletModalProvider from './context/WalletModal';
-import { ToastContainer } from 'react-toastify';
+import AppContextProvider from './context/AppContextProvider';
 
 function App() {
 	const [theme] = useTheme();
@@ -97,88 +93,73 @@ function App() {
 	};
 
 	return (
-		<ChainProvider>
-			<LiskPriceProvider>
-				<WalletModalProvider>
-					<WalletConnectProvider>
-						<div className="App" data-theme={theme === 'system' ? getSystemTheme() : theme}>
-							<>
-								<Navbar
-									searchOptions={searchOptions}
-									privacyModal={privacyModal}
-									setPrivacyModal={setPrivacyModal}
-									handleCart={handleCart}
-								/>
-								<div>
-									<Routes>
-										<Route exact path="/" element={<Home />} />
+		<div className="App" data-theme={theme === 'system' ? getSystemTheme() : theme}>
+			<AppContextProvider>
+				<Navbar
+					searchOptions={searchOptions}
+					privacyModal={privacyModal}
+					setPrivacyModal={setPrivacyModal}
+					handleCart={handleCart}
+				/>
+				<Routes>
+					<Route exact path="/" element={<Home />} />
 
-										<Route
-											path="/swap"
-											element={
-												<Swap
-													swapTokens={swapTokens}
-													handleSwapModal={handleSwapModal}
-													swapModal={swapModal}
-													setSwapModal={setSwapModal}
-													selectedToken={selectedToken}
-													setSelectedToken={setSelectedToken}
-													selectedTokenSecond={selectedTokenSecond}
-													setSelectedTokenSecond={setSelectedTokenSecond}
-													// handleTokenSelect={handleTokenSelect}
-													handleSelect={(token, isLiquidity) => handleSelect(token, isLiquidity)}
-													currentCurrencyId={currentCurrencyId}
-												/>
-											}
-											setCurrentCurrencyId={setCurrentCurrencyId}
-										/>
+					<Route
+						path="/swap"
+						element={
+							<Swap
+								swapTokens={swapTokens}
+								handleSwapModal={handleSwapModal}
+								swapModal={swapModal}
+								setSwapModal={setSwapModal}
+								selectedToken={selectedToken}
+								setSelectedToken={setSelectedToken}
+								selectedTokenSecond={selectedTokenSecond}
+								setSelectedTokenSecond={setSelectedTokenSecond}
+								// handleTokenSelect={handleTokenSelect}
+								handleSelect={(token, isLiquidity) => handleSelect(token, isLiquidity)}
+								currentCurrencyId={currentCurrencyId}
+							/>
+						}
+						setCurrentCurrencyId={setCurrentCurrencyId}
+					/>
 
-										<Route
-											path="/tokens"
-											element={
-												<Token
-													allTableData={allTableData}
-													updateTime={updateTime}
-													options={options}
-												/>
-											}
-										/>
-										<Route path="/pools" element={<Pools />} />
-										<Route
-											path="/tokens/:id"
-											element={<TokenDetails allTableData={allTableData} chartData={chartData} />}
-										/>
+					<Route
+						path="/tokens"
+						element={
+							<Token allTableData={allTableData} updateTime={updateTime} options={options} />
+						}
+					/>
+					<Route path="/pools" element={<Pools />} />
+					<Route
+						path="/tokens/:id"
+						element={<TokenDetails allTableData={allTableData} chartData={chartData} />}
+					/>
 
-										<Route path="/create-token" element={<CreateTokenModal />} />
+					<Route path="/create-token" element={<CreateTokenModal />} />
 
-										<Route
-											path="/liquidity"
-											element={
-												<LiquidityModal
-													chartData={chartData}
-													swapTokens={swapTokens}
-													handleSwapModal={handleSwapModal}
-													swapModal={swapModal}
-													setSwapModal={setSwapModal}
-													currentCurrencyId={currentCurrencyId}
-													setCurrentCurrencyId={setCurrentCurrencyId}
-													handleSelect={(token, isLiquidity) => handleSelect(token, isLiquidity)}
-													selectedToken={selectedToken}
-													liquidityTokenOne={liquidityTokenOne}
-													liquidityTokenTwo={liquidityTokenTwo}
-													isLiquidityTokenSelected={isLiquidityTokenSelected}
-												/>
-											}
-										/>
-									</Routes>
-								</div>
-							</>
-						</div>
-					</WalletConnectProvider>
-				</WalletModalProvider>
-			</LiskPriceProvider>
-			<ToastContainer position="bottom-right" theme={theme} />
-		</ChainProvider>
+					<Route
+						path="/liquidity"
+						element={
+							<LiquidityModal
+								chartData={chartData}
+								swapTokens={swapTokens}
+								handleSwapModal={handleSwapModal}
+								swapModal={swapModal}
+								setSwapModal={setSwapModal}
+								currentCurrencyId={currentCurrencyId}
+								setCurrentCurrencyId={setCurrentCurrencyId}
+								handleSelect={(token, isLiquidity) => handleSelect(token, isLiquidity)}
+								selectedToken={selectedToken}
+								liquidityTokenOne={liquidityTokenOne}
+								liquidityTokenTwo={liquidityTokenTwo}
+								isLiquidityTokenSelected={isLiquidityTokenSelected}
+							/>
+						}
+					/>
+				</Routes>
+			</AppContextProvider>
+		</div>
 	);
 }
 

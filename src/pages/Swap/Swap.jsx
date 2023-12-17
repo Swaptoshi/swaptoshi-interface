@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
 import './Swap.css';
-import SwapModal from '../../components/SwapModal/SwapModal';
 import WalletActionButton from '../../components/Button/WalletActionButton';
+import TradableTokenPicker from '../../components/Token/TradableTokenPicker';
 
-const Swap = ({
-	swapTokens,
-	swapModal,
-	setSwapModal,
-	currentCurrencyId,
-	handleSwapModal,
-	selectedToken,
-	setSelectedToken,
-	selectedTokenSecond,
-	setSelectedTokenSecond,
-	handleSelect,
-}) => {
+const Swap = () => {
 	const [inputValues, setInputValues] = useState({
 		'you-pay': '',
 		'you-receive': '',
@@ -39,58 +28,6 @@ const Swap = ({
 		const temp = etheriumId;
 		setEtheriumId(tokenId);
 		setTokenId(temp);
-	};
-	const renderButtonContent = currencyId => {
-		let currentToken = currencyId === 'ethId' ? selectedToken : selectedTokenSecond;
-		if (
-			currencyId === 'ethId' ||
-			(currencyId !== 'ethId' && currentToken?.symbol !== 'Select Token')
-		) {
-			return (
-				<button
-					id={`open-currency-select-${currencyId}`}
-					className={currencyId === 'ethId' ? 'open-currency-btn-top' : 'open-currency-btn-bottom'}
-					onClick={() => handleSwapModal(currencyId)}
-				>
-					<span className={currencyId === 'ethId' ? 'span-one' : 'span-two'}>
-						<div className="cryptocurrency-wrapper">
-							<div className="image-wrapper">
-								<div>
-									<img
-										className="icon-image"
-										src={currentToken?.imgSrc}
-										alt={currentToken?.symbol}
-									/>
-								</div>
-							</div>
-							<span className="token-name">{currentToken?.symbol}</span>
-						</div>
-						<div className="dropdown-icon">
-							<i className="ri-arrow-down-s-line"></i>
-						</div>
-					</span>
-				</button>
-			);
-		} else {
-			return (
-				<button
-					id={`open-currency-select-${currencyId}`}
-					className="open-currency-btn-bottom"
-					onClick={() => handleSwapModal(currencyId)}
-				>
-					<span className="span-two">
-						<div className="cryptocurrency-wrapper">
-							<div className="text-wrapper">
-								<span className="select-token">Select token</span>
-							</div>
-						</div>
-						<div className="dropdown-icon">
-							<i className="ri-arrow-down-s-line"></i>
-						</div>
-					</span>
-				</button>
-			);
-		}
 	};
 
 	return (
@@ -140,7 +77,15 @@ const Swap = ({
 												onChange={handleInputChange}
 											/>
 
-											<div id={etheriumId}>{renderButtonContent(etheriumId)}</div>
+											<div id={etheriumId}>
+												{
+													<TradableTokenPicker
+														value={undefined}
+														onClose={() => console.log('closed')}
+														onSelect={item => console.log(item)}
+													/>
+												}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -174,7 +119,15 @@ const Swap = ({
 													onChange={handleInputChange}
 												/>
 
-												<div id={tokenId}>{renderButtonContent(tokenId)}</div>
+												<div id={tokenId}>
+													{
+														<TradableTokenPicker
+															value={undefined}
+															onClose={() => console.log('closed')}
+															onSelect={item => console.log(item)}
+														/>
+													}
+												</div>
 											</div>
 										</div>
 									</div>
@@ -189,19 +142,6 @@ const Swap = ({
 					</main>
 				</div>
 			</div>
-
-			<SwapModal
-				swapModal={swapModal}
-				setSwapModal={setSwapModal}
-				swapTokens={swapTokens}
-				selectedToken={selectedToken}
-				selectedTokenSecond={selectedTokenSecond}
-				currentCurrencyId={currentCurrencyId}
-				setSelectedToken={setSelectedToken}
-				setSelectedTokenSecond={setSelectedTokenSecond}
-				handleSelect={handleSelect}
-				isLiquidity={false}
-			/>
 		</React.Fragment>
 	);
 };

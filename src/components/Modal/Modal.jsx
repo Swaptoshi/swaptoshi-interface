@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Modal.css';
 import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
 import { useTheme } from '../../context/ThemeProvider';
-import { useWalletModal } from '../../context/WalletModal';
+import { useWalletModal } from '../../context/WalletModalProvider';
 import ConfigModal from '../Wallet/ConfigModal';
 import WalletModal from '../Wallet/WalletModal';
 
