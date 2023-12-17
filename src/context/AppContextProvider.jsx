@@ -13,11 +13,11 @@ export default function AppContextProvider({ children }) {
 	return (
 		<ChainProvider>
 			<LiskPriceProvider>
-				<TokenPickerProvider>
-					<WalletModalProvider>
-						<WalletConnectProvider>{children}</WalletConnectProvider>
-					</WalletModalProvider>
-				</TokenPickerProvider>
+				<WalletModalProvider>
+					<WalletConnectProvider>
+						<TokenPickerProvider>{children}</TokenPickerProvider>
+					</WalletConnectProvider>
+				</WalletModalProvider>
 			</LiskPriceProvider>
 			<ToastContainer position="bottom-right" theme={theme} />
 		</ChainProvider>

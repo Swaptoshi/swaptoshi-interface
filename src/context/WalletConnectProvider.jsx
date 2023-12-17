@@ -224,6 +224,7 @@ export function WalletConnectProvider({ children }) {
 
 								let symbol = meta ? meta.symbol : '???';
 								let logo = meta ? meta.logo.png : undefined;
+								let tokenName = meta ? meta.tokenName : undefined;
 								let decimal = meta
 									? meta.denomUnits.find(t => t.denom === symbol.toLowerCase()).decimals
 									: undefined;
@@ -234,6 +235,7 @@ export function WalletConnectProvider({ children }) {
 									});
 									symbol = dexMeta ? dexMeta.data[0].symbol : '???';
 									logo = dexMeta ? dexMeta.data[0].logo : '';
+									tokenName = dexMeta ? dexMeta.data[0].tokenName : undefined;
 									decimal = dexMeta
 										? dexMeta.data[0].decimal
 										: process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;
@@ -242,6 +244,7 @@ export function WalletConnectProvider({ children }) {
 								const accountBalance = {
 									tokenId: tokens.data[i].tokenID,
 									balance: tokens.data[i].availableBalance,
+									tokenName,
 									symbol,
 									logo,
 									decimal,

@@ -269,6 +269,7 @@
 	transition: background-color 250ms ease-in 0s;
 	box-shadow: white 0 0 1px;
 	border-radius: 50%;
+	overflow: hidden;
 }
 
 .jdTKGL {

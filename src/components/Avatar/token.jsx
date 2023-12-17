@@ -1,11 +1,16 @@
 import React from 'react';
 import { tokenToColorHex } from '../../utils/Color/tokenToColor';
 
-export default function TokenAvatar({ size, style, src, tokenId }) {
+export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 	const [loaded, setIsLoaded] = React.useState(false);
+	const [error, setError] = React.useState(false);
 
 	const onLoad = React.useCallback(() => {
 		setIsLoaded(true);
+	}, []);
+
+	const onError = React.useCallback(() => {
+		setError(true);
 	}, []);
 
 	return (
@@ -17,17 +22,21 @@ export default function TokenAvatar({ size, style, src, tokenId }) {
 				overflow: 'hidden',
 				...style,
 			}}
+			{...props}
 		>
-			<img
-				alt={'logo'}
-				src={src}
-				style={{
-					height: '100%',
-					width: '100%',
-					display: loaded ? undefined : 'none',
-				}}
-				onLoad={onLoad}
-			/>
+			{!error && (
+				<img
+					alt={'logo'}
+					src={src}
+					style={{
+						height: '100%',
+						width: '100%',
+						display: loaded ? undefined : 'none',
+					}}
+					onLoad={onLoad}
+					onError={onError}
+				/>
+			)}
 			{!loaded && (
 				<div
 					style={{

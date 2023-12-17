@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Swap.css';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import TradableTokenPicker from '../../components/Token/TradableTokenPicker';
+import WalletTokenPicker from '../../components/Token/WalletTokenPicker';
 
 const Swap = () => {
 	const [inputValues, setInputValues] = useState({
@@ -79,7 +80,7 @@ const Swap = () => {
 
 											<div id={etheriumId}>
 												{
-													<TradableTokenPicker
+													<WalletTokenPicker
 														value={undefined}
 														onClose={() => console.log('closed')}
 														onSelect={item => console.log(item)}

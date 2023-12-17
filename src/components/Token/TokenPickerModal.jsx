@@ -5,9 +5,12 @@ import Loader from '../Loader/Loader';
 import { getDEXTokenCompact } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/Toast/tryToast';
+import { useWalletConnect } from '../../context/WalletConnectProvider';
+import TokenAvatar from '../Avatar/token';
 
 const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 	const { selectedService } = useChain();
+	const { balances } = useWalletConnect();
 
 	const [data, setData] = useState();
 	const [total, setTotal] = useState();
@@ -28,18 +31,37 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 
 	const search = useDebouncedCallback(async e => {
 		setSearchTerm(e.target.value);
+		setSearchError();
+
 		await tryToast(
 			async () => {
-				const nextSearch = await getDEXTokenCompact(
-					{ search: e.target.value },
-					selectedService.serviceURLs,
-				);
-				if (nextSearch && nextSearch.data && nextSearch.meta) {
-					if (nextSearch.data.length === 0) {
-						setSearchError('No tradable tokens found');
+				if (mode === 'tradable') {
+					const nextSearch = await getDEXTokenCompact(
+						{ search: e.target.value },
+						selectedService.serviceURLs,
+					);
+					if (nextSearch && nextSearch.data && nextSearch.meta) {
+						if (nextSearch.data.length === 0) {
+							setSearchError('No tradable tokens found');
+						} else {
+							setSearchResult(nextSearch.data);
+							setSearchTotal(nextSearch.data.length);
+						}
+					}
+				}
+
+				if (mode === 'wallet') {
+					const filtered = data.filter(
+						t =>
+							t.tokenId.toLowerCase().includes(e.target.value.toLowerCase()) ||
+							t.tokenName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+							t.symbol.toLowerCase().includes(e.target.value.toLowerCase()),
+					);
+					if (filtered.length > 0) {
+						setSearchResult(filtered);
+						setSearchTotal(filtered.length);
 					} else {
-						setSearchResult(nextSearch.data);
-						setSearchTotal(nextSearch.meta);
+						setSearchError('Tokens not found on your wallet');
 					}
 				}
 			},
@@ -124,7 +146,10 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 				}
 			}
 
-			// TODO: wallet
+			if (mode === 'wallet' && balances) {
+				console.log(balances);
+				setData(balances);
+			}
 		};
 
 		tryToast(
@@ -132,7 +157,7 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 			err => setError(err.message),
 			() => setIsLoading(false),
 		);
-	}, [mode, selectedService]);
+	}, [balances, mode, selectedService]);
 
 	const tokenDataMapper = React.useCallback(
 		(tokens, loader) => {
@@ -151,7 +176,11 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 							<div className="sc-1kykgp9-0 iCxowP">
 								<div className="sc-12k1pn4-3 eLvYRk" style={{ opacity: 1 }}>
 									<div className="sc-12k1pn4-2 oJGcu">
-										<img src={item.logo} alt="Token logo" className="sc-12k1pn4-1 gxjzue" />
+										<TokenAvatar
+											tokenId={item.tokenId}
+											src={item.logo}
+											className={'sc-12k1pn4-1 gxjzue'}
+										/>
 									</div>
 								</div>
 							</div>
