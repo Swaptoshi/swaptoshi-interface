@@ -242,7 +242,7 @@ const Navbar = ({ searchOptions }) => {
 									<input
 										className=""
 										type="search"
-										placeholder="Search tokens and NFT collections"
+										placeholder="Search tokens"
 										value={searchTerm}
 										onChange={handleSearchChange}
 										onClick={() => setSearchOpen(true)}
@@ -391,7 +391,7 @@ const Navbar = ({ searchOptions }) => {
 												<input
 													className=""
 													type="search"
-													placeholder="Search tokens and NFT collections"
+													placeholder="Search tokens"
 													value={searchTerm}
 													onChange={handleSearchChange}
 													onClick={() => setSearchOpen(true)}
