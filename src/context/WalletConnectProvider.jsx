@@ -173,6 +173,7 @@ export function WalletConnectProvider({ children }) {
 		[signClient, sessions, senderPublicKey, connect, disconnect, sign, wcUri, balances],
 	);
 
+	// chain change side-effects
 	React.useEffect(() => {
 		if (signClient) {
 			const session = signClient.session
@@ -192,7 +193,8 @@ export function WalletConnectProvider({ children }) {
 			}
 		}
 		if (wcUri) setWcUri(undefined);
-	}, [chain, signClient, wcUri]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [chain]);
 
 	React.useEffect(() => {
 		if (!signClient) createClient();

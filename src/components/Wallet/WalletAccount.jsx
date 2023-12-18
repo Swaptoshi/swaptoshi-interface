@@ -14,7 +14,7 @@ export default function WalletAccount({ show }) {
 	const { senderPublicKey, balances } = useWalletConnect();
 	const { chain, selectedService } = useChain();
 	const { prices, fiatFormatter } = useLiskPrice();
-	const { lastBalance, updateLastBalance } = useLastBalance();
+	const { getLastBalance, updateLastBalance } = useLastBalance();
 
 	const [walletState, setWalletState] = React.useState();
 
@@ -30,10 +30,12 @@ export default function WalletAccount({ show }) {
 
 	const priceChange = React.useMemo(
 		() =>
-			lastBalance > 0
-				? (((currentWalletBalance - lastBalance) / lastBalance) * 100).toFixed(2)
+			getLastBalance(chain) > 0
+				? (((currentWalletBalance - getLastBalance(chain)) / getLastBalance(chain)) * 100).toFixed(
+						2,
+					)
 				: undefined,
-		[currentWalletBalance, lastBalance],
+		[chain, currentWalletBalance, getLastBalance],
 	);
 
 	const requestRef = React.useRef(false);
@@ -105,8 +107,9 @@ export default function WalletAccount({ show }) {
 						color: priceChange >= 0 ? 'var(--green)' : 'var(--red)',
 					}}
 				>
-					{priceChange > 0 ? '+' : priceChange < 0 ? '-' : ''} {priceChange}% (
-					{process.env.REACT_APP_LAST_BALANCE_UPDATE_INTERVAL})
+					{fiatFormatter.format(currentWalletBalance - getLastBalance(chain))} (
+					{priceChange > 0 ? '+' : ''}
+					{priceChange}%)
 				</div>
 			</div>
 			<div style={{ overflow: 'scroll', flex: 0.95 }}>

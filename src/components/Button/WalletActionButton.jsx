@@ -4,17 +4,26 @@ import PrimaryButton from './PrimaryButton';
 import { useWalletModal } from '../../context/WalletModalProvider';
 
 export default function WalletActionButton(props) {
-	const { senderPublicKey, signClient } = useWalletConnect();
+	const { senderPublicKey, signClient, wcUri, connect } = useWalletConnect();
 	const [, setWalletOpen] = useWalletModal();
 
 	const handleOpenWallet = React.useCallback(() => {
 		setWalletOpen(e => !e);
 	}, [setWalletOpen]);
 
+	const onConnectFailed = React.useCallback(() => {
+		setWalletOpen(false);
+	}, [setWalletOpen]);
+
+	const connectHandler = React.useCallback(() => {
+		handleOpenWallet();
+		if (!wcUri) connect({ onFailed: onConnectFailed });
+	}, [handleOpenWallet, wcUri, connect, onConnectFailed]);
+
 	return senderPublicKey ? (
 		<PrimaryButton {...props}>{props.children}</PrimaryButton>
 	) : (
-		<PrimaryButton onClick={handleOpenWallet} disabled={signClient === undefined} {...props}>
+		<PrimaryButton onClick={connectHandler} disabled={signClient === undefined} {...props}>
 			Connect Wallet
 		</PrimaryButton>
 	);

@@ -11,35 +11,42 @@ export function useLastBalance() {
 
 export default function LastBalanceProvider({ children }) {
 	const { chain } = useChain();
-	const [lastBalance, setLastBalance] = useLocalStorage(`last_balance_${chain}`, 0);
+	const [lastBalance, setLastBalance] = useLocalStorage(`last_balance`, {});
 	const [lastBalanceUpdatedOn, setLastBalanceUpdatedOn] = useLocalStorage(
-		`last_balance_${chain}_updated_on`,
-		0,
+		`last_balance_updated_on`,
+		{},
+	);
+
+	const getLastBalance = React.useCallback(
+		chainPrefix => {
+			return lastBalance[chainPrefix] ?? 0;
+		},
+		[lastBalance],
 	);
 
 	const updateLastBalance = React.useCallback(
 		balance => {
 			const now = normalizeInterval(process.env.REACT_APP_LAST_BALANCE_UPDATE_INTERVAL);
-			if (lastBalanceUpdatedOn < now) {
-				setLastBalance(balance);
-				setLastBalanceUpdatedOn(now);
+			if (Object.keys(lastBalanceUpdatedOn).length === 0 || lastBalanceUpdatedOn[chain] < now) {
+				setLastBalance(old => ({ ...old, [chain]: balance }));
+				setLastBalanceUpdatedOn(old => ({ ...old, [chain]: now }));
 			}
 		},
-		[lastBalanceUpdatedOn, setLastBalance, setLastBalanceUpdatedOn],
+		[chain, lastBalanceUpdatedOn, setLastBalance, setLastBalanceUpdatedOn],
 	);
 
 	const clearLastBalance = React.useCallback(() => {
-		setLastBalance(0);
-		setLastBalanceUpdatedOn(0);
+		setLastBalance({});
+		setLastBalanceUpdatedOn({});
 	}, [setLastBalance, setLastBalanceUpdatedOn]);
 
 	const context = React.useMemo(
 		() => ({
-			lastBalance,
+			getLastBalance,
 			updateLastBalance,
 			clearLastBalance,
 		}),
-		[lastBalance, updateLastBalance, clearLastBalance],
+		[getLastBalance, updateLastBalance, clearLastBalance],
 	);
 
 	return <LastBalanceContext.Provider value={context}>{children}</LastBalanceContext.Provider>;
