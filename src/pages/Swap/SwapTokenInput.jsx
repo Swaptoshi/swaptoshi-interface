@@ -8,6 +8,7 @@ import { useChain } from '../../context/ChainProvider';
 
 export default function SwapTokenInput({
 	title,
+	isLoading,
 	inputValue,
 	onInputChange,
 	selectedToken,
@@ -21,6 +22,17 @@ export default function SwapTokenInput({
 	const [selectedFiatValue, setSelectedFiatValue] = React.useState();
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
 
+	const fetchFiatPrice = useDebouncedCallback(async (amount, tokenId, lskPrice) => {
+		const tokenToLskPrice = await getPrice({
+			baseTokenId: tokenId,
+			quoteTokenId: `${chain}00000000000000`,
+		});
+		if (tokenToLskPrice && tokenToLskPrice.data) {
+			setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
+		}
+		setIsFectingPrice(false);
+	}, 500);
+
 	const onSelect = React.useCallback(
 		selected => {
 			onTokenSelect(selected);
@@ -29,22 +41,13 @@ export default function SwapTokenInput({
 				setSelectedBalance(
 					foundBalance ? Number(foundBalance.balance) / 10 ** foundBalance.decimal : 0,
 				);
+				if (inputValue) {
+					fetchFiatPrice(inputValue, selected.tokenId, prices);
+				}
 			}
 		},
-		[balances, onTokenSelect],
+		[balances, fetchFiatPrice, inputValue, onTokenSelect, prices],
 	);
-
-	const fetchFiatPrice = useDebouncedCallback(async (amount, tokenId, lskPrice) => {
-		const tokenToLskPrice = await getPrice({
-			baseTokenId: tokenId,
-			quoteTokenId: `${chain}00000000000000`,
-		});
-		if (tokenToLskPrice && tokenToLskPrice.data) {
-			console.log(Number(amount));
-			setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
-		}
-		setIsFectingPrice(false);
-	}, 500);
 
 	const handleInputChange = React.useCallback(
 		e => {
@@ -63,8 +66,19 @@ export default function SwapTokenInput({
 	}, [handleInputChange, onMaxClick, selectedBalance]);
 
 	return (
-		<div className="you-pay">
-			<div id="swap-currency-input" className="swap-currency">
+		<div className="you-pay" style={{ opacity: isLoading ? 0.5 : 1 }}>
+			{isLoading && (
+				<div
+					style={{
+						position: 'absolute',
+						zIndex: 10,
+						backgroundColor: 'transparent',
+						width: '100%',
+						height: '100%',
+					}}
+				/>
+			)}
+			<div id="swap-currency-input" className="swap-currency" style={{ padding: '16px' }}>
 				<div className="input-wrapper">
 					<label className="youPay-label" style={{ marginBottom: '4px' }}>
 						{title}
