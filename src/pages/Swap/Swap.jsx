@@ -151,6 +151,7 @@ const Swap = () => {
 								inputValue={baseValue}
 								onInputChange={handleBaseInputChange}
 								selectedToken={baseToken}
+								blockedToken={quoteToken}
 								onTokenSelect={onSelectBaseToken}
 								onMaxClick={handleBaseMax}
 							/>
@@ -167,6 +168,7 @@ const Swap = () => {
 								inputValue={quoteValue}
 								onInputChange={handleQuoteInputChange}
 								selectedToken={quoteToken}
+								blockedToken={baseToken}
 								onTokenSelect={onSelectQuoteToken}
 								onMaxClick={handleQuoteMax}
 							/>

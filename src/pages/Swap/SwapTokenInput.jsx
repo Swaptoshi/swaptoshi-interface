@@ -12,6 +12,7 @@ export default function SwapTokenInput({
 	inputValue,
 	onInputChange,
 	selectedToken,
+	blockedToken,
 	onTokenSelect,
 	onMaxClick,
 }) {
@@ -106,7 +107,15 @@ export default function SwapTokenInput({
 							onChange={handleInputChange}
 						/>
 
-						<div>{<TradableTokenPicker value={selectedToken} onSelect={onSelect} />}</div>
+						<div>
+							{
+								<TradableTokenPicker
+									value={selectedToken}
+									blocked={blockedToken}
+									onSelect={onSelect}
+								/>
+							}
+						</div>
 					</div>
 					<div style={{ display: 'flex', flexDirection: 'row', marginTop: '4px' }}>
 						<div

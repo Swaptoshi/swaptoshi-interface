@@ -7,7 +7,7 @@ import { useChain } from '../../context/ChainProvider';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import TokenAvatar from '../Avatar/token';
 
-const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
+const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 	const { selectedService } = useChain();
 	const { balances } = useWalletConnect();
 	const fetchBlock = useRef(false);
@@ -172,10 +172,14 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 							key={item.tokenId}
 							tabIndex={0}
 							className={`hJYFVB fhPvJeh frnZMKK edPdrxe token-item-ETHER ${
-								selected?.tokenId === item.tokenId ? 'active ' : ''
+								[selected?.tokenId, blocked?.tokenId].includes(item.tokenId) ? 'active ' : ''
 							}`}
 							disabled=""
-							onClick={() => onSelect(item)}
+							onClick={() =>
+								[selected?.tokenId, blocked?.tokenId].includes(item.tokenId)
+									? undefined
+									: onSelect(item)
+							}
 						>
 							<div className="sc-1kykgp9-0 iCxowP">
 								<div className="sc-12k1pn4-3 eLvYRk" style={{ opacity: 1 }}>
@@ -228,7 +232,7 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 				</>
 			);
 		},
-		[onSelect, selected],
+		[blocked, onSelect, selected],
 	);
 
 	const renderTokenList = React.useCallback(() => {

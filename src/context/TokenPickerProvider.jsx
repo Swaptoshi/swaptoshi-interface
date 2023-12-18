@@ -11,6 +11,7 @@ export default function TokenPickerProvider({ children }) {
 	const [show, setShow] = useState(false);
 	const [mode, setMode] = useState();
 	const [selected, setSelected] = useState();
+	const [blocked, setBlocked] = useState();
 	const [onClose, setOnClose] = useState();
 	const [onSelect, setOnSelect] = useState();
 
@@ -21,11 +22,11 @@ export default function TokenPickerProvider({ children }) {
 	}, []);
 
 	const pickTradableToken = React.useCallback(
-		async ({ selected, onClose, onSelect }) => {
+		async ({ selected, blocked, onClose, onSelect }) => {
 			setMode('tradable');
 
-			setShow(true);
 			setSelected(selected);
+			setBlocked(blocked);
 
 			setOnClose(() => () => {
 				onClose && onClose();
@@ -37,16 +38,18 @@ export default function TokenPickerProvider({ children }) {
 				setShow(false);
 				onDismount();
 			});
+
+			setShow(true);
 		},
 		[onDismount],
 	);
 
 	const pickWalletToken = React.useCallback(
-		({ selected, onClose, onSelect }) => {
+		({ selected, blocked, onClose, onSelect }) => {
 			setMode('wallet');
 
-			setShow(true);
 			setSelected(selected);
+			setBlocked(blocked);
 
 			setOnClose(() => () => {
 				onClose && onClose();
@@ -58,6 +61,8 @@ export default function TokenPickerProvider({ children }) {
 				setShow(false);
 				onDismount();
 			});
+
+			setShow(true);
 		},
 		[onDismount],
 	);
@@ -72,6 +77,7 @@ export default function TokenPickerProvider({ children }) {
 			{show ? (
 				<TokenPicker
 					show={show}
+					blocked={blocked}
 					mode={mode}
 					onClose={onClose}
 					onSelect={onSelect}
