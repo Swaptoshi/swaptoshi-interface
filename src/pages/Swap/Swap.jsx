@@ -22,7 +22,7 @@ const Swap = () => {
 			{
 				base: baseToken.tokenId,
 				quote: quoteToken.tokenId,
-				amountIn: Number(amountIn) * 10 ** baseToken.decimal,
+				amountIn: Math.floor(Number(amountIn) * 10 ** baseToken.decimal),
 			},
 			selectedService ? selectedService.serviceURLs : undefined,
 		);
@@ -39,7 +39,7 @@ const Swap = () => {
 			{
 				base: baseToken.tokenId,
 				quote: quoteToken.tokenId,
-				amountOut: Number(amountOut) * 10 ** quoteToken.decimal,
+				amountOut: Math.floor(Number(amountOut) * 10 ** quoteToken.decimal),
 			},
 			selectedService ? selectedService.serviceURLs : undefined,
 		);
