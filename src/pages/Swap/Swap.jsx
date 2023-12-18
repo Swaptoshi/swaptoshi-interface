@@ -5,6 +5,7 @@ import SwapTokenInput from './SwapTokenInput';
 import { useDebouncedCallback } from 'use-debounce';
 import { getQuote } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
+import { tryToast } from '../../utils/Toast/tryToast';
 
 const Swap = () => {
 	const { selectedService } = useChain();
@@ -18,37 +19,49 @@ const Swap = () => {
 	const [quoteLoading, setQuoteLoading] = useState(false);
 
 	const handleExactIn = useDebouncedCallback(async (baseToken, quoteToken, amountIn) => {
-		const quote = await getQuote(
-			{
-				base: baseToken.tokenId,
-				quote: quoteToken.tokenId,
-				amountIn: Math.floor(Number(amountIn) * 10 ** baseToken.decimal),
+		await tryToast(
+			'Quote price failed',
+			async () => {
+				const quote = await getQuote(
+					{
+						base: baseToken.tokenId,
+						quote: quoteToken.tokenId,
+						amountIn: Math.floor(Number(amountIn) * 10 ** baseToken.decimal),
+					},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (quote && quote.data) {
+					const value = Number(quote.data.amount) / 10 ** quoteToken.decimal;
+					setQuoteValue(value);
+					handleQuoteInputChange({ target: { event: value } });
+				}
 			},
-			selectedService ? selectedService.serviceURLs : undefined,
+			undefined,
+			() => setQuoteLoading(false),
 		);
-		if (quote && quote.data) {
-			const value = Number(quote.data.amount) / 10 ** quoteToken.decimal;
-			setQuoteValue(value);
-			handleQuoteInputChange({ target: { event: value } });
-		}
-		setQuoteLoading(false);
 	}, 500);
 
 	const handleExactOut = useDebouncedCallback(async (baseToken, quoteToken, amountOut) => {
-		const quote = await getQuote(
-			{
-				base: baseToken.tokenId,
-				quote: quoteToken.tokenId,
-				amountOut: Math.floor(Number(amountOut) * 10 ** quoteToken.decimal),
+		await tryToast(
+			'Quote price failed',
+			async () => {
+				const quote = await getQuote(
+					{
+						base: baseToken.tokenId,
+						quote: quoteToken.tokenId,
+						amountOut: Math.floor(Number(amountOut) * 10 ** quoteToken.decimal),
+					},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (quote && quote.data) {
+					const value = Number(quote.data.amount) / 10 ** baseToken.decimal;
+					setBaseValue(value);
+					handleBaseInputChange({ target: { event: value } });
+				}
 			},
-			selectedService ? selectedService.serviceURLs : undefined,
+			undefined,
+			() => setBaseLoading(false),
 		);
-		if (quote && quote.data) {
-			const value = Number(quote.data.amount) / 10 ** baseToken.decimal;
-			setBaseValue(value);
-			handleBaseInputChange({ target: { event: value } });
-		}
-		setBaseLoading(false);
 	}, 500);
 
 	const onSelectBaseToken = React.useCallback(

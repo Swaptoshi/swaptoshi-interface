@@ -5,6 +5,7 @@ import { useLiskPrice } from '../../context/LiskPriceProvider';
 import { useDebouncedCallback } from 'use-debounce';
 import { getPrice } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
+import { tryToast } from '../../utils/Toast/tryToast';
 
 export default function SwapTokenInput({
 	title,
@@ -24,17 +25,23 @@ export default function SwapTokenInput({
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
 
 	const fetchFiatPrice = useDebouncedCallback(async (amount, tokenId, lskPrice) => {
-		const tokenToLskPrice = await getPrice(
-			{
-				baseTokenId: tokenId,
-				quoteTokenId: `${chain}00000000000000`,
+		await tryToast(
+			'Quote price failed',
+			async () => {
+				const tokenToLskPrice = await getPrice(
+					{
+						baseTokenId: tokenId,
+						quoteTokenId: `${chain}00000000000000`,
+					},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (tokenToLskPrice && tokenToLskPrice.data) {
+					setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
+				}
 			},
-			selectedService ? selectedService.serviceURLs : undefined,
+			undefined,
+			() => setIsFectingPrice(false),
 		);
-		if (tokenToLskPrice && tokenToLskPrice.data) {
-			setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
-		}
-		setIsFectingPrice(false);
 	}, 500);
 
 	const onSelect = React.useCallback(
