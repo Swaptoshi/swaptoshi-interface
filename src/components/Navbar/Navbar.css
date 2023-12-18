@@ -511,11 +511,11 @@
 }
 
 .green-text {
-	color: rgb(118 209 145);
+	color: var(--green);
 }
 
 .red-text {
-	color: rgb(252 83 83);
+	color: var(--red);
 }
 
 .floor-text {

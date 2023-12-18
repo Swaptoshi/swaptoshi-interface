@@ -46,7 +46,7 @@ const Token = ({ allTableData, updateTime, options }) => {
 		const filteredData = allTableData.filter(data => data.label === selectedOption.label);
 
 		setFilteredTableData(filteredData);
-	}, [selectedOption]);
+	}, [allTableData, selectedOption]);
 
 	function determineTrendIcon(current, old) {
 		if (current > old) {

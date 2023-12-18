@@ -8,14 +8,41 @@ import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import Card from '../Card/Card';
+import { useLastBalance } from '../../context/LastBalanceProvider';
 
 export default function WalletAccount({ show }) {
 	const { senderPublicKey, balances } = useWalletConnect();
 	const { chain, selectedService } = useChain();
 	const { prices, fiatFormatter } = useLiskPrice();
+	const { lastBalance, updateLastBalance } = useLastBalance();
 
 	const [walletState, setWalletState] = React.useState();
+
+	const currentWalletBalance = React.useMemo(
+		() =>
+			walletState
+				? walletState
+						.map(t => (t.priceLSK * Number(t.balance)) / 10 ** t.decimal)
+						.reduce((a, b) => a + b, 0) * prices
+				: 0,
+		[prices, walletState],
+	);
+
+	const priceChange = React.useMemo(
+		() =>
+			lastBalance > 0
+				? (((currentWalletBalance - lastBalance) / lastBalance) * 100).toFixed(2)
+				: undefined,
+		[currentWalletBalance, lastBalance],
+	);
+
 	const requestRef = React.useRef(false);
+
+	React.useEffect(() => {
+		if (currentWalletBalance > 0 && senderPublicKey) {
+			updateLastBalance(currentWalletBalance);
+		}
+	}, [senderPublicKey, currentWalletBalance, updateLastBalance]);
 
 	React.useEffect(() => {
 		if (!show || requestRef.current) return;
@@ -53,18 +80,34 @@ export default function WalletAccount({ show }) {
 			<div
 				className="text"
 				style={{
-					fontSize: 25,
+					fontSize: 23,
+					maxWidth: '100%',
 					marginTop: '8px',
 					marginBottom: '24px',
 				}}
 			>
-				{fiatFormatter.format(
-					(
-						walletState
-							.map(t => (t.priceLSK * Number(t.balance)) / 10 ** t.decimal)
-							.reduce((a, b) => a + b, 0) * prices
-					).toFixed(2),
-				)}
+				<div
+					style={{
+						textOverflow: 'ellipsis',
+						overflow: 'hidden',
+						whiteSpace: 'nowrap',
+						maxWidth: '100%',
+					}}
+				>
+					{fiatFormatter.format(currentWalletBalance.toFixed(2))}
+				</div>
+				<div
+					style={{
+						fontSize: 12,
+						fontWeight: 600,
+						marginTop: '4px',
+						display: priceChange === undefined ? 'none' : undefined,
+						color: priceChange >= 0 ? 'var(--green)' : 'var(--red)',
+					}}
+				>
+					{priceChange > 0 ? '+' : priceChange < 0 ? '-' : ''} {priceChange}% (
+					{process.env.REACT_APP_LAST_BALANCE_UPDATE_INTERVAL})
+				</div>
 			</div>
 			<div style={{ overflow: 'scroll', flex: 0.95 }}>
 				{walletState.length > 0 ? (
