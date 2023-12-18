@@ -73,41 +73,56 @@ const Swap = () => {
 		[baseToken, handleExactOut, quoteValue],
 	);
 
-	const handleBaseMax = max => {
+	const handleBaseMax = React.useCallback(max => {
 		setBaseValue(max);
-	};
+	}, []);
 
-	const handleQuoteMax = max => {
+	const handleQuoteMax = React.useCallback(max => {
 		setQuoteValue(max);
-	};
+	}, []);
 
-	const handleBaseInputChange = event => {
-		const inputValue = event.target.value;
+	const handleBaseInputChange = React.useCallback(
+		event => {
+			const inputValue = event.target.value;
 
-		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-			setBaseValue(inputValue);
-			if (baseToken && quoteToken) {
-				setQuoteLoading(true);
-				handleExactIn(baseToken, quoteToken, inputValue);
+			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+				setBaseValue(inputValue);
+				if (baseToken && quoteToken) {
+					setQuoteLoading(true);
+					handleExactIn(baseToken, quoteToken, inputValue);
+				}
 			}
-		}
-	};
+		},
+		[baseToken, handleExactIn, quoteToken],
+	);
 
-	const handleQuoteInputChange = event => {
-		const inputValue = event.target.value;
+	const handleQuoteInputChange = React.useCallback(
+		event => {
+			const inputValue = event.target.value;
 
-		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-			setQuoteValue(inputValue);
-			if (baseToken && quoteToken) {
-				setBaseLoading(true);
-				handleExactOut(baseToken, quoteToken, inputValue);
+			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+				setQuoteValue(inputValue);
+				if (baseToken && quoteToken) {
+					setBaseLoading(true);
+					handleExactOut(baseToken, quoteToken, inputValue);
+				}
 			}
-		}
-	};
+		},
+		[baseToken, handleExactOut, quoteToken],
+	);
 
-	const switchHandler = () => {
-		console.log('switch');
-	};
+	const switchHandler = React.useCallback(() => {
+		const oldBaseToken = baseToken;
+		const oldBaseValue = baseValue;
+
+		setBaseToken(quoteToken);
+		setBaseValue(quoteValue);
+		setQuoteToken(oldBaseToken);
+		setQuoteValue(oldBaseValue);
+
+		setBaseLoading(true);
+		handleExactOut(quoteToken, baseToken, oldBaseValue);
+	}, [baseToken, baseValue, handleExactOut, quoteToken, quoteValue]);
 
 	return (
 		<React.Fragment>
