@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './Swap.css';
 import WalletActionButton from '../../components/Button/WalletActionButton';
-import TradableTokenPicker from '../../components/Token/TradableTokenPicker';
+import SwapTokenInput from './SwapTokenInput';
 
 const Swap = () => {
 	const [baseToken, setBaseToken] = useState();
 	const [quoteToken, setQuoteToken] = useState();
+
+	const [baseValue, setBaseValue] = useState('');
+	const [quoteValue, setQuoteValue] = useState('');
 
 	const onSelectBaseToken = React.useCallback(selected => {
 		setBaseToken(selected);
@@ -15,30 +18,32 @@ const Swap = () => {
 		setQuoteToken(selected);
 	}, []);
 
-	const [inputValues, setInputValues] = useState({
-		'you-pay': '',
-		'you-receive': '',
-	});
+	const handleBaseMax = max => {
+		setBaseValue(max);
+	};
 
-	const [etheriumId, setEtheriumId] = useState('ethId');
-	const [tokenId, setTokenId] = useState('tokenId');
+	const handleQuoteMax = max => {
+		setQuoteValue(max);
+	};
 
-	const handleInputChange = event => {
+	const handleBaseInputChange = event => {
 		const inputValue = event.target.value;
-		const inputName = event.target.name;
 
 		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-			setInputValues(prevInputValues => ({
-				...prevInputValues,
-				[inputName]: inputValue,
-			}));
+			setBaseValue(inputValue);
+		}
+	};
+
+	const handleQuoteInputChange = event => {
+		const inputValue = event.target.value;
+
+		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+			setQuoteValue(inputValue);
 		}
 	};
 
 	const switchHandler = () => {
-		const temp = etheriumId;
-		setEtheriumId(tokenId);
-		setTokenId(temp);
+		console.log('switch');
 	};
 
 	return (
@@ -67,34 +72,14 @@ const Swap = () => {
 
 						{/* You Pay Tab */}
 						<div>
-							<div className="you-pay">
-								<div id="swap-currency-input" className="swap-currency">
-									<div className="input-wrapper">
-										<label className="youPay-label">You pay</label>
-										<div className="paying-wrapper">
-											<input
-												id="token-amount"
-												className="token-amount-input"
-												inputMode="numeric"
-												autoComplete="off"
-												autoCorrect="off"
-												type="text"
-												name="you-pay"
-												placeholder="0"
-												minLength="1"
-												maxLength="79"
-												spellCheck="false"
-												value={inputValues['you-pay']}
-												onChange={handleInputChange}
-											/>
-
-											<div id={etheriumId}>
-												{<TradableTokenPicker value={baseToken} onSelect={onSelectBaseToken} />}
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+							<SwapTokenInput
+								title={'You pay'}
+								inputValue={baseValue}
+								onInputChange={handleBaseInputChange}
+								selectedToken={baseToken}
+								onTokenSelect={onSelectBaseToken}
+								onMaxClick={handleBaseMax}
+							/>
 
 							<div className="switch-button" onClick={switchHandler}>
 								<div className="switch-bg">
@@ -102,41 +87,18 @@ const Swap = () => {
 								</div>
 							</div>
 
-							<div className="grid">
-								<div className="you-receive">
-									<div id="swap-currency-input" className="swap-currency">
-										<div className="input-wrapper">
-											<label className="youPay-label">You receive</label>
-											<div className="paying-wrapper">
-												<input
-													id="token-amount"
-													className="token-amount-input"
-													inputMode="numeric"
-													autoComplete="off"
-													autoCorrect="off"
-													name="you-receive"
-													type="text"
-													placeholder="0"
-													minLength="1"
-													maxLength="79"
-													spellCheck="false"
-													value={inputValues['you-receive']}
-													onChange={handleInputChange}
-												/>
+							<SwapTokenInput
+								title={'You receive'}
+								inputValue={quoteValue}
+								onInputChange={handleQuoteInputChange}
+								selectedToken={quoteToken}
+								onTokenSelect={onSelectQuoteToken}
+								onMaxClick={handleQuoteMax}
+							/>
 
-												<div id={tokenId}>
-													{<TradableTokenPicker value={quoteToken} onSelect={onSelectQuoteToken} />}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div>
-									<WalletActionButton style={{ width: '100%', height: '60px' }}>
-										Swap
-									</WalletActionButton>
-								</div>
-							</div>
+							<WalletActionButton style={{ width: '100%', height: '60px' }}>
+								Swap
+							</WalletActionButton>
 						</div>
 					</main>
 				</div>
