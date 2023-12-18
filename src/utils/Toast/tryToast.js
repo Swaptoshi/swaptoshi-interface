@@ -1,11 +1,11 @@
 import { toast } from 'react-toastify';
 
-export const tryToast = async (callback, errf, final) => {
+export const tryToast = async (identifier, callback, errf, final) => {
 	try {
 		await callback();
 	} catch (err) {
-		console.error(err);
-		toast.error(err.message);
+		console.error(`${identifier}: (${err})`);
+		toast.error(`${identifier}`);
 		errf ? errf(err) : {};
 	} finally {
 		final ? final() : {};

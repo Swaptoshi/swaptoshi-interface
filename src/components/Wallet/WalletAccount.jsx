@@ -7,6 +7,7 @@ import { getLSKTokenId } from '../../utils/Token/getLSKTokenId';
 import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
+import Card from '../Card/Card';
 
 export default function WalletAccount({ show }) {
 	const { senderPublicKey, balances } = useWalletConnect();
@@ -20,6 +21,8 @@ export default function WalletAccount({ show }) {
 		if (!show || requestRef.current) return;
 
 		const run = async () => {
+			if (balances === undefined) setWalletState([]);
+
 			requestRef.current = true;
 			const lskTokenId = await getLSKTokenId(chain);
 
@@ -42,7 +45,7 @@ export default function WalletAccount({ show }) {
 			requestRef.current = false;
 		};
 
-		tryToast(run);
+		tryToast('Update wallet failed', run);
 	}, [balances, chain, selectedService, senderPublicKey, show]);
 
 	return walletState !== undefined ? (
@@ -64,9 +67,23 @@ export default function WalletAccount({ show }) {
 				)}
 			</div>
 			<div style={{ overflow: 'scroll', flex: 0.95 }}>
-				{walletState.map(balance => (
-					<BalanceCard key={balance.tokenId} balance={balance} />
-				))}
+				{walletState.length > 0 ? (
+					walletState.map(balance => <BalanceCard key={balance.tokenId} balance={balance} />)
+				) : (
+					<Card
+						style={{
+							padding: '16px',
+							display: 'flex',
+							flexDirection: 'row',
+							alignItems: 'center',
+							overflow: 'hidden',
+							marginBottom: '16px',
+							justifyContent: 'center',
+						}}
+					>
+						No token to show
+					</Card>
+				)}
 			</div>
 		</div>
 	) : (

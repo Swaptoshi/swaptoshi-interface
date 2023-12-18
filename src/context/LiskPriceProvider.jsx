@@ -38,8 +38,11 @@ export default function LiskPriceProvider({ children }) {
 			}
 		};
 
-		tryToast(run);
-		const updateLiskPriceInterval = setInterval(() => tryToast(run), 60000);
+		tryToast('Fetch LSK/USD price failed', run);
+		const updateLiskPriceInterval = setInterval(
+			() => tryToast('Fetch LSK/USD price failed', run),
+			60000,
+		);
 
 		return () => {
 			clearInterval(updateLiskPriceInterval);

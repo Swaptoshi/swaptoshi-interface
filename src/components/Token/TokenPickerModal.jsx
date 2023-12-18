@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import './TokenPickerModal.css';
 import Loader from '../Loader/Loader';
 import { getDEXTokenCompact } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
-import { tryToast } from '../../utils/Toast/tryToast';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import TokenAvatar from '../Avatar/token';
 
 const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 	const { selectedService } = useChain();
 	const { balances } = useWalletConnect();
+	const fetchBlock = useRef(false);
 
 	const [data, setData] = useState();
 	const [total, setTotal] = useState();
@@ -33,41 +33,41 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 		setSearchTerm(e.target.value);
 		setSearchError();
 
-		await tryToast(
-			async () => {
-				if (mode === 'tradable') {
-					const nextSearch = await getDEXTokenCompact(
-						{ search: e.target.value },
-						selectedService.serviceURLs,
-					);
-					if (nextSearch && nextSearch.data && nextSearch.meta) {
-						if (nextSearch.data.length === 0) {
-							setSearchError('No tradable tokens found');
-						} else {
-							setSearchResult(nextSearch.data);
-							setSearchTotal(nextSearch.data.length);
-						}
-					}
-				}
-
-				if (mode === 'wallet') {
-					const filtered = data.filter(
-						t =>
-							t.tokenId.toLowerCase().includes(e.target.value.toLowerCase()) ||
-							t.tokenName.toLowerCase().includes(e.target.value.toLowerCase()) ||
-							t.symbol.toLowerCase().includes(e.target.value.toLowerCase()),
-					);
-					if (filtered.length > 0) {
-						setSearchResult(filtered);
-						setSearchTotal(filtered.length);
+		try {
+			if (mode === 'tradable') {
+				const nextSearch = await getDEXTokenCompact(
+					{ search: e.target.value },
+					selectedService.serviceURLs,
+				);
+				if (nextSearch && nextSearch.data && nextSearch.meta) {
+					if (nextSearch.data.length === 0) {
+						setSearchError('No tradable tokens found');
 					} else {
-						setSearchError('Tokens not found on your wallet');
+						setSearchResult(nextSearch.data);
+						setSearchTotal(nextSearch.data.length);
 					}
 				}
-			},
-			err => setSearchError(err.message),
-			() => setIsSearching(false),
-		);
+			}
+
+			if (mode === 'wallet') {
+				const filtered = data.filter(
+					t =>
+						t.tokenId.toLowerCase().includes(e.target.value.toLowerCase()) ||
+						t.tokenName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+						t.symbol.toLowerCase().includes(e.target.value.toLowerCase()),
+				);
+				if (filtered.length > 0) {
+					setSearchResult(filtered);
+					setSearchTotal(filtered.length);
+				} else {
+					setSearchError('Tokens not found on your wallet');
+				}
+			}
+		} catch (err) {
+			setSearchError(err.message);
+		} finally {
+			setIsSearching(false);
+		}
 	}, 500);
 
 	const handleTokenChange = React.useCallback(
@@ -86,33 +86,31 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 
 	const handleScrollEnd = useDebouncedCallback(async () => {
 		if (mode === 'tradable' && searchTerm.length === 0 && withPaginationNormal) {
-			tryToast(
-				async () => {
-					const nextTradableToken = await getDEXTokenCompact(
-						{ offset: data.length },
-						selectedService.serviceURLs,
-					);
-					if (nextTradableToken && nextTradableToken.data && nextTradableToken.meta) {
-						setData(data.concat(nextTradableToken.data));
-					}
-				},
-				err => setError(err.message),
-			);
+			try {
+				const nextTradableToken = await getDEXTokenCompact(
+					{ offset: data.length },
+					selectedService.serviceURLs,
+				);
+				if (nextTradableToken && nextTradableToken.data && nextTradableToken.meta) {
+					setData(data.concat(nextTradableToken.data));
+				}
+			} catch (err) {
+				setError(err.message);
+			}
 		}
 
 		if (mode === 'tradable' && searchTerm.length > 0 && withPaginationSearch) {
-			tryToast(
-				async () => {
-					const nextSearch = await getDEXTokenCompact(
-						{ search: searchTerm, offset: searchResult.length },
-						selectedService.serviceURLs,
-					);
-					if (nextSearch && nextSearch.data && nextSearch.meta) {
-						setSearchResult(searchResult.concat(nextSearch.data));
-					}
-				},
-				err => setSearchError(err.message),
-			);
+			try {
+				const nextSearch = await getDEXTokenCompact(
+					{ search: searchTerm, offset: searchResult.length },
+					selectedService.serviceURLs,
+				);
+				if (nextSearch && nextSearch.data && nextSearch.meta) {
+					setSearchResult(searchResult.concat(nextSearch.data));
+				}
+			} catch (err) {
+				setSearchError(err.message);
+			}
 		}
 	}, 500);
 
@@ -133,30 +131,36 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 	);
 
 	React.useEffect(() => {
-		if (!selectedService) return;
-
 		const run = async () => {
-			setIsLoading(true);
+			try {
+				if (fetchBlock.current) return;
+				fetchBlock.current = true;
 
-			if (mode === 'tradable') {
-				const tradableToken = await getDEXTokenCompact({}, selectedService.serviceURLs);
-				if (tradableToken && tradableToken.data && tradableToken.meta) {
-					setData(tradableToken.data);
-					setTotal(tradableToken.meta.total);
+				setIsLoading(true);
+
+				if (mode === 'tradable') {
+					if (!selectedService) throw new Error('Network error');
+					const tradableToken = await getDEXTokenCompact({}, selectedService.serviceURLs);
+					if (tradableToken && tradableToken.data && tradableToken.meta) {
+						setData(tradableToken.data);
+						setTotal(tradableToken.meta.total);
+					}
 				}
-			}
 
-			if (mode === 'wallet' && balances) {
-				console.log(balances);
-				setData(balances);
+				if (mode === 'wallet' && balances) {
+					setData(balances);
+				}
+			} catch (err) {
+				setError(err.message);
+			} finally {
+				setIsLoading(false);
+				fetchBlock.current = false;
 			}
 		};
 
-		tryToast(
-			run,
-			err => setError(err.message),
-			() => setIsLoading(false),
-		);
+		run();
+
+		return () => setError();
 	}, [balances, mode, selectedService]);
 
 	const tokenDataMapper = React.useCallback(
@@ -228,22 +232,6 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 	);
 
 	const renderTokenList = React.useCallback(() => {
-		if (isSearching || isLoading || data === undefined) {
-			return (
-				<div
-					style={{
-						width: '100%',
-						height: '100%',
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}
-				>
-					<Loader size={40} />
-				</div>
-			);
-		}
-
 		if (searchError !== undefined || error !== undefined) {
 			return (
 				<div
@@ -256,6 +244,22 @@ const TokenPicker = ({ mode, show, onClose, selected, onSelect }) => {
 					}}
 				>
 					{searchError ? searchError : error}
+				</div>
+			);
+		}
+
+		if (isSearching || isLoading || data === undefined) {
+			return (
+				<div
+					style={{
+						width: '100%',
+						height: '100%',
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}
+				>
+					<Loader size={40} />
 				</div>
 			);
 		}

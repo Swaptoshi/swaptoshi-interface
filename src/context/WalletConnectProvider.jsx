@@ -264,7 +264,7 @@ export function WalletConnectProvider({ children }) {
 			}
 		};
 
-		tryToast(run);
+		tryToast('Balance update failed', run);
 	}, [selectedService, senderPublicKey]);
 
 	return <WalletConnectContext.Provider value={context}>{children}</WalletConnectContext.Provider>;

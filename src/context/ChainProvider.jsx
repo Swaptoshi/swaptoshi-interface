@@ -14,6 +14,8 @@ export default function ChainProvider({ children }) {
 	const [availableService, setAvailableService] = React.useState();
 	const [selectedService, setSelectedService] = React.useState();
 
+	const fetchBlock = React.useRef(false);
+
 	React.useEffect(() => {
 		if (!availableService) return;
 		for (let i = 0; i < availableService.length; i++) {
@@ -26,6 +28,9 @@ export default function ChainProvider({ children }) {
 
 	React.useEffect(() => {
 		const run = async () => {
+			if (fetchBlock.current) return;
+			fetchBlock.current = true;
+
 			const fetchedService = [];
 			const swaptoshiMetadata = await getBlockchainApps();
 
@@ -56,7 +61,7 @@ export default function ChainProvider({ children }) {
 			}
 		};
 
-		tryToast(run);
+		tryToast('Fetch chain information failed', run, undefined, () => (fetchBlock.current = false));
 	}, []);
 
 	const context = React.useMemo(
