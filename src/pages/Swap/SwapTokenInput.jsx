@@ -16,17 +16,20 @@ export default function SwapTokenInput({
 	onMaxClick,
 }) {
 	const { balances } = useWalletConnect();
-	const { chain } = useChain();
+	const { chain, selectedService } = useChain();
 	const { prices, fiatFormatter } = useLiskPrice();
 	const [selectedBalance, setSelectedBalance] = React.useState();
 	const [selectedFiatValue, setSelectedFiatValue] = React.useState();
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
 
 	const fetchFiatPrice = useDebouncedCallback(async (amount, tokenId, lskPrice) => {
-		const tokenToLskPrice = await getPrice({
-			baseTokenId: tokenId,
-			quoteTokenId: `${chain}00000000000000`,
-		});
+		const tokenToLskPrice = await getPrice(
+			{
+				baseTokenId: tokenId,
+				quoteTokenId: `${chain}00000000000000`,
+			},
+			selectedService ? selectedService.serviceURLs : undefined,
+		);
 		if (tokenToLskPrice && tokenToLskPrice.data) {
 			setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
 		}
@@ -52,18 +55,21 @@ export default function SwapTokenInput({
 	const handleInputChange = React.useCallback(
 		e => {
 			onInputChange(e);
-			if (selectedToken) {
-				setIsFectingPrice(true);
-				fetchFiatPrice(e.target.value, selectedToken.tokenId, prices);
-			}
 		},
-		[fetchFiatPrice, onInputChange, prices, selectedToken],
+		[onInputChange],
 	);
 
 	const handleMaxClick = React.useCallback(() => {
 		onMaxClick(selectedBalance);
 		handleInputChange({ target: { value: selectedBalance } });
 	}, [handleInputChange, onMaxClick, selectedBalance]);
+
+	React.useEffect(() => {
+		if (selectedToken) {
+			setIsFectingPrice(true);
+			fetchFiatPrice(inputValue, selectedToken.tokenId, prices);
+		}
+	}, [fetchFiatPrice, inputValue, prices, selectedToken]);
 
 	return (
 		<div className="you-pay" style={{ opacity: isLoading ? 0.5 : 1 }}>

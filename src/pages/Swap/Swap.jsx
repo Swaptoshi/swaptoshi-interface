@@ -2,21 +2,76 @@ import React, { useState } from 'react';
 import './Swap.css';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import SwapTokenInput from './SwapTokenInput';
+import { useDebouncedCallback } from 'use-debounce';
+import { getQuote } from '../../service/dex';
+import { useChain } from '../../context/ChainProvider';
 
 const Swap = () => {
+	const { selectedService } = useChain();
+
 	const [baseToken, setBaseToken] = useState();
-	const [quoteToken, setQuoteToken] = useState();
-
 	const [baseValue, setBaseValue] = useState('');
+	const [baseLoading, setBaseLoading] = useState(false);
+
+	const [quoteToken, setQuoteToken] = useState();
 	const [quoteValue, setQuoteValue] = useState('');
+	const [quoteLoading, setQuoteLoading] = useState(false);
 
-	const onSelectBaseToken = React.useCallback(selected => {
-		setBaseToken(selected);
-	}, []);
+	const handleExactIn = useDebouncedCallback(async (baseToken, quoteToken, amountIn) => {
+		const quote = await getQuote(
+			{
+				base: baseToken.tokenId,
+				quote: quoteToken.tokenId,
+				amountIn: Number(amountIn) * 10 ** baseToken.decimal,
+			},
+			selectedService ? selectedService.serviceURLs : undefined,
+		);
+		if (quote && quote.data) {
+			const value = Number(quote.data.amount) / 10 ** quoteToken.decimal;
+			setQuoteValue(value);
+			handleQuoteInputChange({ target: { event: value } });
+		}
+		setQuoteLoading(false);
+	}, 500);
 
-	const onSelectQuoteToken = React.useCallback(selected => {
-		setQuoteToken(selected);
-	}, []);
+	const handleExactOut = useDebouncedCallback(async (baseToken, quoteToken, amountOut) => {
+		const quote = await getQuote(
+			{
+				base: baseToken.tokenId,
+				quote: quoteToken.tokenId,
+				amountOut: Number(amountOut) * 10 ** quoteToken.decimal,
+			},
+			selectedService ? selectedService.serviceURLs : undefined,
+		);
+		if (quote && quote.data) {
+			const value = Number(quote.data.amount) / 10 ** baseToken.decimal;
+			setBaseValue(value);
+			handleBaseInputChange({ target: { event: value } });
+		}
+		setBaseLoading(false);
+	}, 500);
+
+	const onSelectBaseToken = React.useCallback(
+		selected => {
+			setBaseToken(selected);
+			if (baseValue && quoteToken) {
+				setQuoteLoading(true);
+				handleExactIn(selected, quoteToken, baseValue);
+			}
+		},
+		[baseValue, handleExactIn, quoteToken],
+	);
+
+	const onSelectQuoteToken = React.useCallback(
+		selected => {
+			setQuoteToken(selected);
+			if (quoteValue && baseToken) {
+				setBaseLoading(true);
+				handleExactOut(baseToken, selected, quoteValue);
+			}
+		},
+		[baseToken, handleExactOut, quoteValue],
+	);
 
 	const handleBaseMax = max => {
 		setBaseValue(max);
@@ -31,6 +86,10 @@ const Swap = () => {
 
 		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 			setBaseValue(inputValue);
+			if (baseToken && quoteToken) {
+				setQuoteLoading(true);
+				handleExactIn(baseToken, quoteToken, inputValue);
+			}
 		}
 	};
 
@@ -39,6 +98,10 @@ const Swap = () => {
 
 		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 			setQuoteValue(inputValue);
+			if (baseToken && quoteToken) {
+				setBaseLoading(true);
+				handleExactOut(baseToken, quoteToken, inputValue);
+			}
 		}
 	};
 
@@ -54,11 +117,6 @@ const Swap = () => {
 						<div id="card-top" className="card-top-parent">
 							<div id="btns-top" className="top-btns">
 								<span className="swap-btn">Swap</span>
-								<div className="buy">
-									<button id="btn-id" className="buy-btn">
-										Buy
-									</button>
-								</div>
 							</div>
 
 							<div className="gear">
@@ -74,6 +132,7 @@ const Swap = () => {
 						<div>
 							<SwapTokenInput
 								title={'You pay'}
+								isLoading={baseLoading}
 								inputValue={baseValue}
 								onInputChange={handleBaseInputChange}
 								selectedToken={baseToken}
@@ -89,6 +148,7 @@ const Swap = () => {
 
 							<SwapTokenInput
 								title={'You receive'}
+								isLoading={quoteLoading}
 								inputValue={quoteValue}
 								onInputChange={handleQuoteInputChange}
 								selectedToken={quoteToken}
