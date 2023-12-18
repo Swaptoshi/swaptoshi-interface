@@ -67,7 +67,7 @@ const Swap = () => {
 			setQuoteToken(selected);
 			if (quoteValue && baseToken) {
 				setBaseLoading(true);
-				handleExactOut(baseToken, selected, quoteValue);
+				handleExactOut(selected, baseToken, quoteValue);
 			}
 		},
 		[baseToken, handleExactOut, quoteValue],
@@ -104,7 +104,7 @@ const Swap = () => {
 				setQuoteValue(inputValue);
 				if (baseToken && quoteToken) {
 					setBaseLoading(true);
-					handleExactOut(baseToken, quoteToken, inputValue);
+					handleExactOut(quoteToken, baseToken, inputValue);
 				}
 			}
 		},
@@ -121,7 +121,7 @@ const Swap = () => {
 		setQuoteValue(oldBaseValue);
 
 		setBaseLoading(true);
-		handleExactOut(quoteToken, baseToken, oldBaseValue);
+		handleExactOut(baseToken, quoteToken, oldBaseValue);
 	}, [baseToken, baseValue, handleExactOut, quoteToken, quoteValue]);
 
 	return (
