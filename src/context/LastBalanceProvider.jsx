@@ -1,7 +1,7 @@
 import React from 'react';
 import useLocalStorage from 'use-local-storage';
 import { useChain } from './ChainProvider';
-import { normalizeInterval } from '../utils/Time/normalizeInterval';
+import { getPreviousDayTimestamp } from '../utils/Time/getPreviousDayTimestamp';
 
 const LastBalanceContext = React.createContext();
 
@@ -26,10 +26,17 @@ export default function LastBalanceProvider({ children }) {
 
 	const updateLastBalance = React.useCallback(
 		balance => {
-			const now = normalizeInterval(process.env.REACT_APP_LAST_BALANCE_UPDATE_INTERVAL);
-			if (Object.keys(lastBalanceUpdatedOn).length === 0 || lastBalanceUpdatedOn[chain] < now) {
+			if (!Object.keys(lastBalanceUpdatedOn).includes(chain)) {
+				const startOfToday = getPreviousDayTimestamp(0);
 				setLastBalance(old => ({ ...old, [chain]: balance }));
-				setLastBalanceUpdatedOn(old => ({ ...old, [chain]: now }));
+				setLastBalanceUpdatedOn(old => ({ ...old, [chain]: startOfToday }));
+				return;
+			}
+			if (new Date().getTime() - lastBalanceUpdatedOn[chain] > 2 * 86400000) {
+				const startOfYesterday = getPreviousDayTimestamp(1);
+				setLastBalance(old => ({ ...old, [chain]: balance }));
+				setLastBalanceUpdatedOn(old => ({ ...old, [chain]: startOfYesterday }));
+				return;
 			}
 		},
 		[chain, lastBalanceUpdatedOn, setLastBalance, setLastBalanceUpdatedOn],

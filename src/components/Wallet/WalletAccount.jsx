@@ -107,6 +107,7 @@ export default function WalletAccount({ show }) {
 						color: priceChange >= 0 ? 'var(--green)' : 'var(--red)',
 					}}
 				>
+					{priceChange > 0 ? '+' : ''}
 					{fiatFormatter.format(currentWalletBalance - getLastBalance(chain))} (
 					{priceChange > 0 ? '+' : ''}
 					{priceChange}%)
