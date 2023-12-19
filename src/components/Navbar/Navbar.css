@@ -629,21 +629,14 @@
 	min-width: 240px;
 	max-height: 350px;
 	overflow: auto;
-	background-color: var(--nav-drop);
-	box-shadow:
-		rgb(0 0 0 / 7%) 8px 14px 20px,
-		rgb(0 0 0 / 7%) 8px 4px 8px,
-		rgb(0 0 0 / 7%) 1px 1px 4px;
-	border: 0.5px solid rgb(152 161 192 / 24%);
-	border-radius: 12px;
-	padding: 8px;
 	display: flex;
 	flex-direction: column;
 	font-size: 16px;
-	position: absolute;
+}
+
+.chain-selector {
 	top: 56px;
 	right: 0;
-	z-index: 100;
 	left: auto;
 }
 
@@ -986,5 +979,11 @@
 
 	.show-below-768 {
 		display: unset;
+	}
+
+	.chain-selector {
+		top: 56px;
+		right: auto;
+		left: 0;
 	}
 }

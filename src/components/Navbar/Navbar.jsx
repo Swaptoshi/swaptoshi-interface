@@ -35,7 +35,6 @@ const Navbar = ({ searchOptions }) => {
 	}, [setIsModalOpen]);
 
 	const handleOpenModal = React.useCallback(() => {
-		setIsOpen(false);
 		setIsModalOpen(true);
 	}, [setIsModalOpen]);
 
@@ -56,8 +55,6 @@ const Navbar = ({ searchOptions }) => {
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
-
-	const [isOpen, setIsOpen] = useState(false);
 
 	const [selectedOption, setSelectedOption] = useState();
 	const [optionsLabel, setOptionsLabel] = useState([]);
@@ -85,12 +82,9 @@ const Navbar = ({ searchOptions }) => {
 		);
 	}, [availableService]);
 
-	const toggleDropdown = React.useCallback(() => setIsOpen(!isOpen), [isOpen]);
-
 	const handleOptionClick = option => {
 		setChain(option.value.substring(0, 2));
 		setSelectedOption(option);
-		setIsOpen(false);
 	};
 
 	const handleSearchChange = e => {
@@ -184,8 +178,6 @@ const Navbar = ({ searchOptions }) => {
 								) : optionsLabel.length > 0 && selectedOption ? (
 									<Dropdown
 										selectedOption={selectedOption}
-										toggleDropdown={toggleDropdown}
-										isOpen={isOpen}
 										optionsLabel={optionsLabel}
 										handleOptionClick={handleOptionClick}
 									/>
@@ -543,8 +535,6 @@ const Navbar = ({ searchOptions }) => {
 									) : optionsLabel.length > 0 && selectedOption ? (
 										<Dropdown
 											selectedOption={selectedOption}
-											toggleDropdown={toggleDropdown}
-											isOpen={isOpen}
 											optionsLabel={optionsLabel}
 											handleOptionClick={handleOptionClick}
 										/>

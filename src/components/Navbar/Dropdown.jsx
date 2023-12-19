@@ -1,60 +1,55 @@
 import React from 'react';
+import Dialog from '../Tooltip/Dialog';
 
-function Dropdown({ selectedOption, toggleDropdown, isOpen, optionsLabel, handleOptionClick }) {
-	const ref = React.useRef(null);
-	const isClickInside = React.useRef(false);
+function Dropdown({ selectedOption, optionsLabel, handleOptionClick }) {
+	const [show, setShow] = React.useState(false);
 
-	React.useEffect(() => {
-		if (!isOpen) return;
+	const onClickOutside = React.useCallback(() => {
+		setShow(false);
+	}, []);
 
-		function handleClickOutside(event) {
-			if (ref.current && !ref.current.contains(event.target) && isClickInside.current) {
-				toggleDropdown();
-			}
-			isClickInside.current = false;
-		}
+	const onOptionClick = React.useCallback(
+		option => {
+			handleOptionClick(option);
+			setShow(false);
+		},
+		[handleOptionClick],
+	);
 
-		document.addEventListener('mouseup', handleClickOutside);
-		return () => {
-			document.removeEventListener('mouseup', handleClickOutside);
-		};
-	}, [isOpen, ref, toggleDropdown]);
+	const onAnchorClick = React.useCallback(() => {
+		setShow(s => !s);
+	}, []);
 
 	return (
-		<div
-			className="custom-dropdown"
-			ref={ref}
-			onClick={() => {
-				toggleDropdown();
-				isClickInside.current = true;
-			}}
+		<Dialog
+			show={show}
+			onClickOutside={onClickOutside}
+			className="options chain-selector"
+			anchor={
+				<div className="selected-option hover-shadow" onClick={onAnchorClick}>
+					<img src={selectedOption.imgSrc} alt={selectedOption.value} />
+					<div style={{ width: '8px' }} />
+					<span className="hide-1024">{selectedOption.label}</span>
+					<span className="dropdown">
+						<i className="nav-dropdown ri-arrow-down-s-line"></i>
+					</span>
+				</div>
+			}
 		>
-			<div className="selected-option hover-shadow">
-				<img src={selectedOption.imgSrc} alt={selectedOption.value} />
-				<div style={{ width: '8px' }} />
-				<span className="hide-1024">{selectedOption.label}</span>
-				<span className="dropdown">
-					<i className="nav-dropdown ri-arrow-down-s-line"></i>
-				</span>
-			</div>
-			{isOpen && (
-				<ul className="options">
-					{optionsLabel.map((option, index) => (
-						<li key={index} onClick={() => handleOptionClick(option)}>
-							<div className="options-name">
-								<img src={option.imgSrc} alt={option.label} />
-								<span>{option.label}</span>
-							</div>
-							<div>
-								{selectedOption.value === option.value && (
-									<i className="tick-icon ri-check-line"></i>
-								)}
-							</div>
-						</li>
-					))}
-				</ul>
-			)}
-		</div>
+			<ul>
+				{optionsLabel.map((option, index) => (
+					<li key={index} onClick={() => onOptionClick(option)}>
+						<div className="options-name">
+							<img src={option.imgSrc} alt={option.label} />
+							<span>{option.label}</span>
+						</div>
+						<div>
+							{selectedOption.value === option.value && <i className="tick-icon ri-check-line"></i>}
+						</div>
+					</li>
+				))}
+			</ul>
+		</Dialog>
 	);
 }
 

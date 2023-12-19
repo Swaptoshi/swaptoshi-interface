@@ -161,9 +161,20 @@ const Swap = () => {
 							</div>
 
 							<div className="gear">
-								<button className="gear-btn">
+								<button className="gear-btn" style={{ position: 'relative' }}>
 									<div>
 										<i className="ri-settings-3-fill gear-icon"></i>
+									</div>
+									<div
+										style={{
+											position: 'absolute',
+											width: '100px',
+											height: '100px',
+											backgroundColor: 'white',
+											zIndex: 5,
+										}}
+									>
+										test
 									</div>
 								</button>
 							</div>
