@@ -98,6 +98,12 @@ const Swap = () => {
 		event => {
 			const inputValue = event.target.value;
 
+			if (inputValue === '') {
+				setBaseValue('');
+				setQuoteValue('');
+				return;
+			}
+
 			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 				setBaseValue(inputValue);
 				if (baseToken && quoteToken) {
@@ -112,6 +118,12 @@ const Swap = () => {
 	const handleQuoteInputChange = React.useCallback(
 		event => {
 			const inputValue = event.target.value;
+
+			if (inputValue === '') {
+				setBaseValue('');
+				setQuoteValue('');
+				return;
+			}
 
 			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 				setQuoteValue(inputValue);

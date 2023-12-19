@@ -73,7 +73,11 @@ export default function SwapTokenInput({
 	}, [handleInputChange, onMaxClick, selectedBalance]);
 
 	React.useEffect(() => {
-		if (selectedToken) {
+		if (inputValue === '') {
+			setSelectedFiatValue();
+			return;
+		}
+		if (selectedToken && inputValue !== '') {
 			setIsFectingPrice(true);
 			fetchFiatPrice(inputValue, selectedToken.tokenId, prices);
 		}
