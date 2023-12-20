@@ -391,7 +391,7 @@ a {
 	border-radius: 16px;
 	gap: 4px;
 	padding: 4px;
-	outline: rgb(210 217 238) solid 1px;
+	outline: var(--border) solid 1px;
 	outline-offset: -1px;
 }
 

@@ -5,11 +5,10 @@ import SwapTokenInput from './SwapTokenInput';
 import { useDebouncedCallback } from 'use-debounce';
 import { getQuote } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
-import { tryToast } from '../../utils/Toast/tryToast';
-import Tooltip from '../../components/Tooltip/Tooltip';
-import Dialog from '../../components/Tooltip/Dialog';
 import { liskTokenCompact } from '../../constants/tokens';
-import SwitchBox from '../../components/SwitchBox/SwitchBox';
+import SwapConfig from './SwapConfig';
+import SwapWarning from './SwapWarning';
+import SwapDetailsInfo from './SwapDetailsInfo';
 
 const Swap = () => {
 	const { selectedService } = useChain();
@@ -27,54 +26,85 @@ const Swap = () => {
 	const [quoteValue, setQuoteValue] = useState('');
 	const [quoteLoading, setQuoteLoading] = useState(false);
 
+	const [error, setError] = useState();
+
+	const isFetchingPrice = React.useMemo(
+		() => baseLoading || quoteLoading,
+		[baseLoading, quoteLoading],
+	);
+
+	const isSwappable = React.useMemo(() => {
+		return (
+			!error &&
+			baseToken !== undefined &&
+			baseValue !== undefined &&
+			!baseLoading &&
+			quoteToken !== undefined &&
+			quoteValue !== undefined &&
+			!quoteLoading
+		);
+	}, [baseLoading, baseToken, baseValue, error, quoteLoading, quoteToken, quoteValue]);
+
 	React.useEffect(() => {
 		setBaseToken(liskTokenCompact);
 	}, []);
 
 	const handleExactIn = useDebouncedCallback(async (baseToken, quoteToken, amountIn) => {
-		await tryToast(
-			'Quote price failed',
-			async () => {
-				const quote = await getQuote(
-					{
-						base: baseToken.tokenId,
-						quote: quoteToken.tokenId,
-						amountIn: Math.floor(Number(amountIn) * 10 ** baseToken.decimal),
-					},
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
-				if (quote && quote.data) {
-					const value = Number(quote.data.amount) / 10 ** quoteToken.decimal;
-					setQuoteValue(value);
-					handleQuoteInputChange({ target: { event: value } });
-				}
-			},
-			undefined,
-			() => setQuoteLoading(false),
-		);
+		try {
+			const quote = await getQuote(
+				{
+					base: baseToken.tokenId,
+					quote: quoteToken.tokenId,
+					amountIn: Math.floor(Number(amountIn) * 10 ** baseToken.decimal),
+				},
+				selectedService ? selectedService.serviceURLs : undefined,
+			);
+			if (quote && quote.data) {
+				const value = Number(quote.data.amount) / 10 ** quoteToken.decimal;
+				setQuoteValue(value);
+				handleQuoteInputChange({ target: { event: value } });
+				setError();
+			} else {
+				setQuoteValue('');
+				handleQuoteInputChange({ target: { event: '' } });
+				setError('Please try again later');
+			}
+		} catch (err) {
+			setQuoteValue('');
+			handleQuoteInputChange({ target: { event: '' } });
+			setError('Insufficient liquidity for this trade');
+		} finally {
+			setQuoteLoading(false);
+		}
 	}, 500);
 
 	const handleExactOut = useDebouncedCallback(async (baseToken, quoteToken, amountOut) => {
-		await tryToast(
-			'Quote price failed',
-			async () => {
-				const quote = await getQuote(
-					{
-						base: baseToken.tokenId,
-						quote: quoteToken.tokenId,
-						amountOut: Math.floor(Number(amountOut) * 10 ** quoteToken.decimal),
-					},
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
-				if (quote && quote.data) {
-					const value = Number(quote.data.amount) / 10 ** baseToken.decimal;
-					setBaseValue(value);
-					handleBaseInputChange({ target: { event: value } });
-				}
-			},
-			undefined,
-			() => setBaseLoading(false),
-		);
+		try {
+			const quote = await getQuote(
+				{
+					base: baseToken.tokenId,
+					quote: quoteToken.tokenId,
+					amountOut: Math.floor(Number(amountOut) * 10 ** quoteToken.decimal),
+				},
+				selectedService ? selectedService.serviceURLs : undefined,
+			);
+			if (quote && quote.data) {
+				const value = Number(quote.data.amount) / 10 ** baseToken.decimal;
+				setBaseValue(value);
+				handleBaseInputChange({ target: { event: value } });
+				setError();
+			} else {
+				setBaseValue('');
+				handleBaseInputChange({ target: { event: '' } });
+				setError('Please try again later');
+			}
+		} catch (err) {
+			setBaseValue('');
+			handleBaseInputChange({ target: { event: '' } });
+			setError('Insufficient liquidity for this trade');
+		} finally {
+			setBaseLoading(false);
+		}
 	}, 500);
 
 	const onSelectBaseToken = React.useCallback(
@@ -206,205 +236,16 @@ const Swap = () => {
 								<span className="swap-btn">Swap</span>
 							</div>
 
-							<div className="gear">
-								<Dialog
-									show={showSwapSetting}
-									style={{ right: 0, width: '300px' }}
-									anchor={
-										<button
-											className="gear-btn"
-											onClick={onConfigClick}
-											style={{ borderRadius: '24px', overflow: 'hidden' }}
-										>
-											<div
-												style={{
-													display: 'flex',
-													backgroundColor: 'var(--yellow-transparent)',
-													padding: '2px 8px',
-													alignItems: 'center',
-												}}
-											>
-												<div style={{ color: 'var(--text-clr)', fontSize: '14px' }}>
-													Slippage 1.0%
-												</div>
-												<i className="ri-settings-3-fill gear-icon"></i>
-											</div>
-										</button>
-									}
-								>
-									<div>
-										<div style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
-											<div
-												style={{
-													flex: 1,
-													color: 'var(--text-clr)',
-													display: 'flex',
-													fontSize: '14px',
-												}}
-											>
-												Max. slippage
-												<Tooltip
-													content={
-														'Your transaction will revert if the price changes unfavorably by more than this percentage.'
-													}
-												>
-													<i
-														style={{ margin: '0 2px', color: 'var(--text-clr)' }}
-														className="ri-information-line"
-													></i>
-												</Tooltip>
-											</div>
-											<div
-												style={{
-													color: 'var(--color-white)',
-													display: 'flex',
-													alignItems: 'center',
-												}}
-											>
-												<div style={{ fontSize: '14px' }}>Auto</div>
-												<i className="ri-arrow-down-s-line" style={{ fontSize: '20px' }}></i>
-											</div>
-										</div>
-
-										<div style={{ display: 'flex' }}>
-											<SwitchBox
-												style={{ flex: 1 }}
-												value={isSlippageAuto}
-												items={[
-													{
-														value: true,
-														onClick: () => setIsSlippageAuto(true),
-														component: 'Auto',
-													},
-													{
-														value: false,
-														onClick: () => setIsSlippageAuto(false),
-														component: 'Custom',
-													},
-												]}
-											/>
-											<div style={{ margin: '0px 4px' }} />
-											<div
-												style={{
-													display: 'flex',
-													flex: 1,
-													alignItems: 'center',
-													maxWidth: '30%',
-													outline: 'var(--border) solid 1px',
-													borderRadius: '14px',
-													padding: '0px 8px',
-												}}
-											>
-												<input
-													placeholder="0.5"
-													inputMode="numeric"
-													autoComplete="off"
-													autoCorrect="off"
-													spellCheck="false"
-													value={slippage}
-													type={'number'}
-													onChange={onSlippageInputChange}
-													style={{
-														width: '90%',
-														border: 'none',
-														outline: 'none',
-														textAlign: 'end',
-													}}
-												/>
-												<div style={{ margin: '0px 4px' }} />
-												<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>
-													%
-												</div>
-											</div>
-										</div>
-
-										<div
-											style={{
-												display: 'flex',
-												color: 'var(--yellow)',
-												padding: '0px 8px',
-												alignItems: 'center',
-												margin: '8px 0px',
-											}}
-										>
-											<i
-												className="ri-alert-line"
-												style={{ fontSize: '20px', marginRight: '8px' }}
-											></i>
-											<div style={{ fontSize: '12px' }}>
-												Slippage below 0.05% may result in a failed transaction
-											</div>
-										</div>
-									</div>
-
-									<div
-										style={{ height: '1px', backgroundColor: 'var(--border)', margin: '12px 0px' }}
-									/>
-
-									<div>
-										<div style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
-											<div
-												style={{
-													flex: 1,
-													color: 'var(--text-clr)',
-													display: 'flex',
-													fontSize: '14px',
-												}}
-											>
-												Transaction deadline
-												<Tooltip
-													content={
-														'Your transaction will revert if it is pending for more than this period of time.'
-													}
-												>
-													<i
-														style={{ margin: '0 2px', color: 'var(--text-clr)' }}
-														className="ri-information-line"
-													></i>
-												</Tooltip>
-											</div>
-											<div
-												style={{
-													color: 'var(--color-white)',
-													display: 'flex',
-													alignItems: 'center',
-												}}
-											>
-												<div style={{ fontSize: '14px' }}>Auto</div>
-												<i className="ri-arrow-down-s-line" style={{ fontSize: '20px' }}></i>
-											</div>
-										</div>
-
-										<div
-											style={{
-												display: 'flex',
-												flex: 1,
-												alignItems: 'center',
-												outline: 'var(--border) solid 1px',
-												borderRadius: '14px',
-												padding: '0px 8px',
-												height: '40px',
-											}}
-										>
-											<input
-												placeholder="10"
-												inputMode="numeric"
-												autoComplete="off"
-												autoCorrect="off"
-												spellCheck="false"
-												value={deadline}
-												type={'number'}
-												onChange={onDeadlineInputChange}
-												style={{ width: '90%', border: 'none', outline: 'none', textAlign: 'end' }}
-											/>
-											<div style={{ margin: '0px 4px' }} />
-											<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>
-												minutes
-											</div>
-										</div>
-									</div>
-								</Dialog>
-							</div>
+							<SwapConfig
+								show={showSwapSetting}
+								onClick={onConfigClick}
+								isSlippageAuto={isSlippageAuto}
+								setIsSlippageAuto={setIsSlippageAuto}
+								slippage={slippage}
+								onSlippageInputChange={onSlippageInputChange}
+								deadline={deadline}
+								onDeadlineInputChange={onDeadlineInputChange}
+							/>
 						</div>
 
 						<div style={{ marginTop: '4px' }} />
@@ -441,95 +282,25 @@ const Swap = () => {
 
 							<div style={{ marginTop: '4px' }} />
 
-							<div
-								style={{
-									border: '1px solid var(--border)',
-									borderRadius: '16px',
-									padding: '12px 16px',
-									fontSize: '14px',
-								}}
-							>
-								<div style={{ display: 'flex', alignItems: 'center' }}>
-									<div className="text" style={{ width: 'fit-content', flex: 1 }}>
-										fecthing price
-									</div>
-									<div className="text" style={{ fontSize: '18px' }}>
-										<i className="ri-arrow-down-s-line"></i>
-									</div>
-								</div>
-
-								<div>
-									<div
-										style={{ height: '1px', backgroundColor: 'var(--border)', marginTop: '12px' }}
-									/>
-
-									<div style={{ display: 'flex', alignItems: 'center', margin: '12px 0' }}>
-										<div
-											className="text"
-											style={{ width: 'fit-content', flex: 1, color: 'var(--text-color)' }}
-										>
-											Price impact
-										</div>
-										<div className="text">1.12%</div>
-									</div>
-
-									<div style={{ display: 'flex', alignItems: 'center', margin: '12px 0' }}>
-										<div
-											className="text"
-											style={{ width: 'fit-content', flex: 1, color: 'var(--text-color)' }}
-										>
-											Price impact
-										</div>
-										<div className="text">1.12%</div>
-									</div>
-
-									<div style={{ display: 'flex', alignItems: 'center', margin: '12px 0 0 0' }}>
-										<div
-											className="text"
-											style={{
-												width: 'fit-content',
-												flex: 1,
-												display: 'flex',
-												color: 'var(--text-color)',
-											}}
-										>
-											Price impact
-											<Tooltip content={'This is a new tooltip that we just created'}>
-												<i style={{ margin: '0 2px' }} className="ri-information-line"></i>
-											</Tooltip>
-										</div>
-										<div className="text">1.12%</div>
-									</div>
-								</div>
-							</div>
+							<SwapDetailsInfo
+								isLoading={isFetchingPrice}
+								baseToken={baseToken}
+								baseValue={baseValue}
+								quoteToken={quoteToken}
+								quoteValue={quoteValue}
+							/>
 
 							<div style={{ marginTop: '4px' }} />
 
-							<div
-								style={{
-									border: '1px solid var(--red)',
-									borderRadius: '16px',
-									padding: '12px 16px',
-									fontSize: '14px',
-								}}
-							>
-								<div style={{ display: 'flex', alignItems: 'center' }}>
-									<div
-										className="text"
-										style={{ width: 'fit-content', flex: 1, color: 'var(--red)' }}
-									>
-										Price impact warning
-									</div>
-									<div className="text" style={{ color: 'var(--red)' }}>
-										12.213%
-									</div>
-								</div>
-							</div>
+							<SwapWarning />
 
 							<div style={{ marginTop: '4px' }} />
 
-							<WalletActionButton style={{ width: '100%', height: '60px', borderRadius: '16px' }}>
-								Swap
+							<WalletActionButton
+								disabled={!isSwappable}
+								style={{ width: '100%', height: '60px', borderRadius: '16px' }}
+							>
+								{error ? error : 'Swap'}
 							</WalletActionButton>
 						</div>
 					</main>
