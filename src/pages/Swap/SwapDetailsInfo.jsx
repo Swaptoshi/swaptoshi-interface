@@ -4,6 +4,10 @@ import Loader from '../../components/Loader/Loader';
 
 export default function SwapDetailsInfo({
 	isLoading,
+	priceImpact,
+	priceReady,
+	isSlippageAuto,
+	slippage,
 	baseToken,
 	baseValue,
 	quoteToken,
@@ -12,14 +16,6 @@ export default function SwapDetailsInfo({
 	const [collapsed, setCollapsed] = React.useState(false);
 
 	const toogleCollapsed = React.useCallback(() => setCollapsed(s => !s), []);
-
-	const priceReady = React.useMemo(
-		() =>
-			baseToken !== undefined &&
-			quoteToken !== undefined &&
-			(baseValue !== '' || quoteValue !== ''),
-		[baseToken, baseValue, quoteToken, quoteValue],
-	);
 
 	return priceReady ? (
 		<div
@@ -75,7 +71,19 @@ export default function SwapDetailsInfo({
 								>
 									Price impact
 								</div>
-								<div className="text">1.12%</div>
+								<div
+									className="text"
+									style={{
+										color:
+											priceImpact < 0.03
+												? 'var(--color-white)'
+												: priceImpact < 0.05
+													? 'var(--yellow)'
+													: 'var(--red)',
+									}}
+								>
+									~{(priceImpact * 100).toFixed(4)}%
+								</div>
 							</div>
 
 							<div style={{ display: 'flex', alignItems: 'center', margin: '12px 0' }}>
@@ -83,9 +91,22 @@ export default function SwapDetailsInfo({
 									className="text"
 									style={{ width: 'fit-content', flex: 1, color: 'var(--text-color)' }}
 								>
-									Price impact
+									Max. slippage
 								</div>
-								<div className="text">1.12%</div>
+								{isSlippageAuto ? (
+									<div
+										style={{
+											backgroundColor: 'var(--open-currency-btn-bg)',
+											borderRadius: '16px',
+											padding: '2px 8px',
+											fontSize: '12px',
+											marginRight: '8px',
+										}}
+									>
+										Auto
+									</div>
+								) : null}
+								<div className="text">{isSlippageAuto ? '0.5%' : `${slippage}%`}</div>
 							</div>
 
 							<div style={{ display: 'flex', alignItems: 'center', margin: '12px 0 0 0' }}>

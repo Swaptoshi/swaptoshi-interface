@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function SwapWarning() {
-	return (
+export default function SwapWarning({ priceImpact }) {
+	return priceImpact > 0.15 ? (
 		<div
 			style={{
 				border: '1px solid var(--red)',
@@ -15,9 +15,9 @@ export default function SwapWarning() {
 					Price impact warning
 				</div>
 				<div className="text" style={{ color: 'var(--red)' }}>
-					12.213%
+					~{(priceImpact * 100).toFixed(4)}%
 				</div>
 			</div>
 		</div>
-	);
+	) : null;
 }

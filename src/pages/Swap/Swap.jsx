@@ -3,7 +3,7 @@ import './Swap.css';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import SwapTokenInput from './SwapTokenInput';
 import { useDebouncedCallback } from 'use-debounce';
-import { getQuote } from '../../service/dex';
+import { getPrice, getQuote } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { liskTokenCompact } from '../../constants/tokens';
 import SwapConfig from './SwapConfig';
@@ -12,6 +12,8 @@ import SwapDetailsInfo from './SwapDetailsInfo';
 
 const Swap = () => {
 	const { selectedService } = useChain();
+
+	const [currentPrice, setCurrentPrice] = useState();
 
 	const [showSwapSetting, setShowSwapSetting] = useState(false);
 	const [isSlippageAuto, setIsSlippageAuto] = useState(true);
@@ -44,6 +46,47 @@ const Swap = () => {
 			!quoteLoading
 		);
 	}, [baseLoading, baseToken, baseValue, error, quoteLoading, quoteToken, quoteValue]);
+
+	const priceReady = React.useMemo(
+		() =>
+			baseToken !== undefined &&
+			quoteToken !== undefined &&
+			(baseValue !== '' || quoteValue !== ''),
+		[baseToken, baseValue, quoteToken, quoteValue],
+	);
+
+	const priceImpact = React.useMemo(() => {
+		if (isSwappable) {
+			return (baseValue / quoteValue - currentPrice) / currentPrice;
+		} else {
+			return 0;
+		}
+	}, [baseValue, currentPrice, isSwappable, quoteValue]);
+
+	React.useEffect(() => {
+		const run = async () => {
+			try {
+				if (priceReady) {
+					const price = await getPrice(
+						{
+							baseTokenId: quoteToken.tokenId,
+							quoteTokenId: baseToken.tokenId,
+						},
+						selectedService ? selectedService.serviceURLs : undefined,
+					);
+					if (price && price.data) {
+						setCurrentPrice(price.data.price);
+					} else {
+						setError('Please try again later');
+					}
+				}
+			} catch {
+				setError('Please try again later');
+			}
+		};
+
+		run();
+	}, [baseToken, priceReady, quoteToken, selectedService]);
 
 	React.useEffect(() => {
 		setBaseToken(liskTokenCompact);
@@ -284,6 +327,10 @@ const Swap = () => {
 
 							<SwapDetailsInfo
 								isLoading={isFetchingPrice}
+								priceImpact={priceImpact}
+								priceReady={priceReady}
+								isSlippageAuto={isSlippageAuto}
+								slippage={slippage}
 								baseToken={baseToken}
 								baseValue={baseValue}
 								quoteToken={quoteToken}
@@ -292,7 +339,7 @@ const Swap = () => {
 
 							<div style={{ marginTop: '4px' }} />
 
-							<SwapWarning />
+							<SwapWarning priceImpact={priceImpact} />
 
 							<div style={{ marginTop: '4px' }} />
 
