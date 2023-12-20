@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '../../context/ThemeProvider';
+import SwitchBox from '../SwitchBox/SwitchBox';
 
 export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThemeDark }) {
 	const [currentTheme] = useTheme();
@@ -23,40 +24,23 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 									<div width="40%" className="sc-bczRLJ sc-nrd8cx-0 gxbXPT feIyWM">
 										<div className="sc-sx9n2y-0 kandXm css-1aekuku">Theme</div>
 									</div>
-									<div width="60%" className="sc-bczRLJ sc-nrd8cx-0 foniQS jGtsjx">
-										<div className="sc-bczRLJ sc-nrd8cx-0 sc-1euncec-1 hJYFVB xyz1 etXiLa">
-											<div
-												data-testid="theme-auto"
-												onClick={onThemeAuto}
-												className={`sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-3 sc-1euncec-0 hJYFVB xyz1 kHFzEX ${
-													currentTheme === 'system' ? 'eqaHKd' : ''
-												}`}
-											>
-												<div className="sc-sx9n2y-0 kandXm css-rjqmed text">Auto</div>
-											</div>
-											<div
-												data-testid="theme-lightmode"
-												className={`sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-3 sc-1euncec-0 hJYFVB xyz1 kHFzEX ${
-													currentTheme === 'light' ? 'eqaHKd' : ''
-												}`}
-												onClick={onThemeLight}
-											>
-												<i className="sun ri-sun-line"></i>
-												<div className="sc-sx9n2y-0 kandXm css-rjqmed" />
-											</div>
-											<div
-												data-testid="theme-darkmode"
-												className={`sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-3 sc-1euncec-0 hJYFVB xyz1 kHFzEX ${
-													currentTheme === 'dark' ? 'eqaHKd' : ''
-												}`}
-												onClick={onThemeDark}
-											>
-												<i className="moon ri-moon-line"></i>
-
-												<div className="sc-sx9n2y-0 kandXm css-rjqmed" />
-											</div>
-										</div>
-									</div>
+									<SwitchBox
+										width="60%"
+										value={currentTheme}
+										items={[
+											{ value: 'system', onClick: onThemeAuto, component: 'Auto' },
+											{
+												value: 'light',
+												onClick: onThemeLight,
+												component: <i className="sun ri-sun-line"></i>,
+											},
+											{
+												value: 'dark',
+												onClick: onThemeDark,
+												component: <i className="moon ri-moon-line"></i>,
+											},
+										]}
+									/>
 								</div>
 								<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
 									<div className="sc-1kykgp9-0 sc-1opkkz6-0 iCxowP kMuqSe">
