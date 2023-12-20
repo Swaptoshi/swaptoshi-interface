@@ -9,11 +9,15 @@ import { tryToast } from '../../utils/Toast/tryToast';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import Dialog from '../../components/Tooltip/Dialog';
 import { liskTokenCompact } from '../../constants/tokens';
+import SwitchBox from '../../components/SwitchBox/SwitchBox';
 
 const Swap = () => {
 	const { selectedService } = useChain();
 
 	const [showSwapSetting, setShowSwapSetting] = useState(false);
+	const [isSlippageAuto, setIsSlippageAuto] = useState(true);
+	const [slippage, setSlippage] = useState();
+	const [deadline, setDeadline] = useState();
 
 	const [baseToken, setBaseToken] = useState();
 	const [baseValue, setBaseValue] = useState('');
@@ -176,6 +180,22 @@ const Swap = () => {
 		setShowSwapSetting(s => !s);
 	}, []);
 
+	const onSlippageInputChange = React.useCallback(event => {
+		const inputValue = event.target.value;
+
+		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+			setSlippage(inputValue);
+		}
+	}, []);
+
+	const onDeadlineInputChange = React.useCallback(event => {
+		const inputValue = event.target.value;
+
+		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+			setDeadline(inputValue);
+		}
+	}, []);
+
 	return (
 		<React.Fragment>
 			<div className="swap-wrapper">
@@ -189,7 +209,7 @@ const Swap = () => {
 							<div className="gear">
 								<Dialog
 									show={showSwapSetting}
-									style={{ right: 0, width: 100, height: 200 }}
+									style={{ right: 0, width: '300px' }}
 									anchor={
 										<button
 											className="gear-btn"
@@ -212,7 +232,177 @@ const Swap = () => {
 										</button>
 									}
 								>
-									<div>testooo</div>
+									<div>
+										<div style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
+											<div
+												style={{
+													flex: 1,
+													color: 'var(--text-clr)',
+													display: 'flex',
+													fontSize: '14px',
+												}}
+											>
+												Max. slippage
+												<Tooltip
+													content={
+														'Your transaction will revert if the price changes unfavorably by more than this percentage.'
+													}
+												>
+													<i
+														style={{ margin: '0 2px', color: 'var(--text-clr)' }}
+														className="ri-information-line"
+													></i>
+												</Tooltip>
+											</div>
+											<div
+												style={{
+													color: 'var(--color-white)',
+													display: 'flex',
+													alignItems: 'center',
+												}}
+											>
+												<div style={{ fontSize: '14px' }}>Auto</div>
+												<i className="ri-arrow-down-s-line" style={{ fontSize: '20px' }}></i>
+											</div>
+										</div>
+
+										<div style={{ display: 'flex' }}>
+											<SwitchBox
+												style={{ flex: 1 }}
+												value={isSlippageAuto}
+												items={[
+													{
+														value: true,
+														onClick: () => setIsSlippageAuto(true),
+														component: 'Auto',
+													},
+													{
+														value: false,
+														onClick: () => setIsSlippageAuto(false),
+														component: 'Custom',
+													},
+												]}
+											/>
+											<div style={{ margin: '0px 4px' }} />
+											<div
+												style={{
+													display: 'flex',
+													flex: 1,
+													alignItems: 'center',
+													maxWidth: '30%',
+													outline: 'var(--border) solid 1px',
+													borderRadius: '14px',
+													padding: '0px 8px',
+												}}
+											>
+												<input
+													placeholder="0.5"
+													inputMode="numeric"
+													autoComplete="off"
+													autoCorrect="off"
+													spellCheck="false"
+													value={slippage}
+													type={'number'}
+													onChange={onSlippageInputChange}
+													style={{
+														width: '90%',
+														border: 'none',
+														outline: 'none',
+														textAlign: 'end',
+													}}
+												/>
+												<div style={{ margin: '0px 4px' }} />
+												<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>
+													%
+												</div>
+											</div>
+										</div>
+
+										<div
+											style={{
+												display: 'flex',
+												color: 'var(--yellow)',
+												padding: '0px 8px',
+												alignItems: 'center',
+												margin: '8px 0px',
+											}}
+										>
+											<i
+												className="ri-alert-line"
+												style={{ fontSize: '20px', marginRight: '8px' }}
+											></i>
+											<div style={{ fontSize: '12px' }}>
+												Slippage below 0.05% may result in a failed transaction
+											</div>
+										</div>
+									</div>
+
+									<div
+										style={{ height: '1px', backgroundColor: 'var(--border)', margin: '12px 0px' }}
+									/>
+
+									<div>
+										<div style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
+											<div
+												style={{
+													flex: 1,
+													color: 'var(--text-clr)',
+													display: 'flex',
+													fontSize: '14px',
+												}}
+											>
+												Transaction deadline
+												<Tooltip
+													content={
+														'Your transaction will revert if it is pending for more than this period of time.'
+													}
+												>
+													<i
+														style={{ margin: '0 2px', color: 'var(--text-clr)' }}
+														className="ri-information-line"
+													></i>
+												</Tooltip>
+											</div>
+											<div
+												style={{
+													color: 'var(--color-white)',
+													display: 'flex',
+													alignItems: 'center',
+												}}
+											>
+												<div style={{ fontSize: '14px' }}>Auto</div>
+												<i className="ri-arrow-down-s-line" style={{ fontSize: '20px' }}></i>
+											</div>
+										</div>
+
+										<div
+											style={{
+												display: 'flex',
+												flex: 1,
+												alignItems: 'center',
+												outline: 'var(--border) solid 1px',
+												borderRadius: '14px',
+												padding: '0px 8px',
+												height: '40px',
+											}}
+										>
+											<input
+												placeholder="10"
+												inputMode="numeric"
+												autoComplete="off"
+												autoCorrect="off"
+												spellCheck="false"
+												value={deadline}
+												type={'number'}
+												onChange={onDeadlineInputChange}
+												style={{ width: '90%', border: 'none', outline: 'none', textAlign: 'end' }}
+											/>
+											<div style={{ margin: '0px 4px' }} />
+											<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>
+												minutes
+											</div>
+										</div>
+									</div>
 								</Dialog>
 							</div>
 						</div>
