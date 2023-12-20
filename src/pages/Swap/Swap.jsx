@@ -7,9 +7,13 @@ import { getQuote } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/Toast/tryToast';
 import Tooltip from '../../components/Tooltip/Tooltip';
+import Dialog from '../../components/Tooltip/Dialog';
+import { liskTokenCompact } from '../../constants/tokens';
 
 const Swap = () => {
 	const { selectedService } = useChain();
+
+	const [showSwapSetting, setShowSwapSetting] = useState(false);
 
 	const [baseToken, setBaseToken] = useState();
 	const [baseValue, setBaseValue] = useState('');
@@ -18,6 +22,10 @@ const Swap = () => {
 	const [quoteToken, setQuoteToken] = useState();
 	const [quoteValue, setQuoteValue] = useState('');
 	const [quoteLoading, setQuoteLoading] = useState(false);
+
+	React.useEffect(() => {
+		setBaseToken(liskTokenCompact);
+	}, []);
 
 	const handleExactIn = useDebouncedCallback(async (baseToken, quoteToken, amountIn) => {
 		await tryToast(
@@ -71,9 +79,15 @@ const Swap = () => {
 			if (baseValue && quoteToken) {
 				setQuoteLoading(true);
 				handleExactIn(selected, quoteToken, baseValue);
+				return;
+			}
+			if (quoteValue && quoteToken) {
+				setBaseLoading(true);
+				handleExactOut(quoteToken, selected, quoteValue);
+				return;
 			}
 		},
-		[baseValue, handleExactIn, quoteToken],
+		[baseValue, handleExactIn, handleExactOut, quoteToken, quoteValue],
 	);
 
 	const onSelectQuoteToken = React.useCallback(
@@ -82,9 +96,15 @@ const Swap = () => {
 			if (quoteValue && baseToken) {
 				setBaseLoading(true);
 				handleExactOut(selected, baseToken, quoteValue);
+				return;
+			}
+			if (baseValue && baseToken) {
+				setQuoteLoading(true);
+				handleExactIn(baseToken, selected, baseValue);
+				return;
 			}
 		},
-		[baseToken, handleExactOut, quoteValue],
+		[baseToken, baseValue, handleExactIn, handleExactOut, quoteValue],
 	);
 
 	const handleBaseMax = React.useCallback(max => {
@@ -146,9 +166,15 @@ const Swap = () => {
 		setQuoteToken(oldBaseToken);
 		setQuoteValue(oldBaseValue);
 
-		setBaseLoading(true);
-		handleExactOut(baseToken, quoteToken, oldBaseValue);
+		if (baseToken && quoteToken) {
+			setBaseLoading(true);
+			handleExactOut(baseToken, quoteToken, oldBaseValue);
+		}
 	}, [baseToken, baseValue, handleExactOut, quoteToken, quoteValue]);
+
+	const onConfigClick = React.useCallback(() => {
+		setShowSwapSetting(s => !s);
+	}, []);
 
 	return (
 		<React.Fragment>
@@ -161,24 +187,37 @@ const Swap = () => {
 							</div>
 
 							<div className="gear">
-								<button className="gear-btn" style={{ position: 'relative' }}>
-									<div>
-										<i className="ri-settings-3-fill gear-icon"></i>
-									</div>
-									<div
-										style={{
-											position: 'absolute',
-											width: '100px',
-											height: '100px',
-											backgroundColor: 'white',
-											zIndex: 5,
-										}}
-									>
-										test
-									</div>
-								</button>
+								<Dialog
+									show={showSwapSetting}
+									style={{ right: 0, width: 100, height: 200 }}
+									anchor={
+										<button
+											className="gear-btn"
+											onClick={onConfigClick}
+											style={{ borderRadius: '24px', overflow: 'hidden' }}
+										>
+											<div
+												style={{
+													display: 'flex',
+													backgroundColor: 'var(--yellow-transparent)',
+													padding: '2px 8px',
+													alignItems: 'center',
+												}}
+											>
+												<div style={{ color: 'var(--text-clr)', fontSize: '14px' }}>
+													Slippage 1.0%
+												</div>
+												<i className="ri-settings-3-fill gear-icon"></i>
+											</div>
+										</button>
+									}
+								>
+									<div>testooo</div>
+								</Dialog>
 							</div>
 						</div>
+
+						<div style={{ marginTop: '4px' }} />
 
 						{/* You Pay Tab */}
 						<div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Dialog({ show, onClickOutside, className, anchor, children }) {
+function Dialog({ show, onClickOutside, className, anchor, children, style }) {
 	const ref = React.useRef(null);
 	const isClickInside = React.useRef(false);
 
@@ -41,6 +41,7 @@ function Dialog({ show, onClickOutside, className, anchor, children }) {
 						borderRadius: '12px',
 						padding: '8px',
 						zIndex: 100,
+						...style,
 					}}
 				>
 					{children}

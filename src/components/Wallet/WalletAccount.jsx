@@ -50,7 +50,10 @@ export default function WalletAccount({ show }) {
 		if (!show || requestRef.current) return;
 
 		const run = async () => {
-			if (balances === undefined) setWalletState([]);
+			if (balances === undefined) {
+				setWalletState([]);
+				return;
+			}
 
 			requestRef.current = true;
 			const lskTokenId = await getLSKTokenId(chain);

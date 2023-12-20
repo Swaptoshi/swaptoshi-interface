@@ -47,17 +47,11 @@ export default function SwapTokenInput({
 	const onSelect = React.useCallback(
 		selected => {
 			onTokenSelect(selected);
-			if (balances && balances.length > 0) {
-				const foundBalance = balances.find(t => t.tokenId === selected.tokenId);
-				setSelectedBalance(
-					foundBalance ? Number(foundBalance.balance) / 10 ** foundBalance.decimal : 0,
-				);
-				if (inputValue) {
-					fetchFiatPrice(inputValue, selected.tokenId, prices);
-				}
+			if (inputValue) {
+				fetchFiatPrice(inputValue, selected.tokenId, prices);
 			}
 		},
-		[balances, fetchFiatPrice, inputValue, onTokenSelect, prices],
+		[fetchFiatPrice, inputValue, onTokenSelect, prices],
 	);
 
 	const handleInputChange = React.useCallback(
@@ -71,6 +65,18 @@ export default function SwapTokenInput({
 		onMaxClick(selectedBalance);
 		handleInputChange({ target: { value: selectedBalance } });
 	}, [handleInputChange, onMaxClick, selectedBalance]);
+
+	React.useEffect(() => {
+		if (!selectedToken) {
+			setSelectedBalance();
+		}
+		if (selectedToken && balances && balances.length > 0) {
+			const foundBalance = balances.find(t => t.tokenId === selectedToken.tokenId);
+			setSelectedBalance(
+				foundBalance ? Number(foundBalance.balance) / 10 ** foundBalance.decimal : 0,
+			);
+		}
+	}, [balances, selectedToken]);
 
 	React.useEffect(() => {
 		if (inputValue === '') {

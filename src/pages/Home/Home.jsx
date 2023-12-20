@@ -79,12 +79,12 @@ const Home = () => {
 																		<div>
 																			<img
 																				className="icon-image"
-																				src="./assets/images/tokens/eth-icon.png"
-																				alt="eth-icon"
+																				src="./assets/images/tokens/lisk-token.png"
+																				alt="lisk-logo"
 																			/>
 																		</div>
 																	</div>
-																	<span className="token-name">ETH</span>
+																	<span className="token-name">LSK</span>
 																</div>
 																<div className="dropdown-icon">
 																	<i className="ri-arrow-down-s-line"></i>{' '}
