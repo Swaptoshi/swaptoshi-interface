@@ -33,9 +33,11 @@ export default function SwapDetailsInfo({
 				<div className="text" style={{ width: 'fit-content', flex: 1 }}>
 					{isLoading
 						? 'Fetching best price...'
-						: `1 ${quoteToken.symbol.toUpperCase()} = ${
-								baseValue / quoteValue
-							} ${baseToken.symbol.toUpperCase()}`}
+						: baseValue && quoteValue
+							? `1 ${quoteToken.symbol.toUpperCase()} = ${
+									baseValue / quoteValue
+								} ${baseToken.symbol.toUpperCase()}`
+							: 'Quote price failed'}
 				</div>
 				<div className="text" style={{ fontSize: '18px' }}>
 					{collapsed ? (
@@ -101,6 +103,7 @@ export default function SwapDetailsInfo({
 											padding: '2px 8px',
 											fontSize: '12px',
 											marginRight: '8px',
+											color: 'var(--text-clr)',
 										}}
 									>
 										Auto

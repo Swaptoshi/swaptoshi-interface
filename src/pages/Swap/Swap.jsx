@@ -35,25 +35,17 @@ const Swap = () => {
 		[baseLoading, quoteLoading],
 	);
 
-	const isSwappable = React.useMemo(() => {
-		return (
-			!error &&
-			baseToken !== undefined &&
-			baseValue !== undefined &&
-			!baseLoading &&
-			quoteToken !== undefined &&
-			quoteValue !== undefined &&
-			!quoteLoading
-		);
-	}, [baseLoading, baseToken, baseValue, error, quoteLoading, quoteToken, quoteValue]);
-
 	const priceReady = React.useMemo(
 		() =>
 			baseToken !== undefined &&
 			quoteToken !== undefined &&
-			(baseValue !== '' || quoteValue !== ''),
+			((baseValue !== '' && baseValue !== '0') || (quoteValue !== '' && quoteValue !== '0')),
 		[baseToken, baseValue, quoteToken, quoteValue],
 	);
+
+	const isSwappable = React.useMemo(() => {
+		return !error && !baseLoading && !quoteLoading && priceReady;
+	}, [baseLoading, error, priceReady, quoteLoading]);
 
 	const priceImpact = React.useMemo(() => {
 		if (isSwappable) {
@@ -115,7 +107,11 @@ const Swap = () => {
 		} catch (err) {
 			setQuoteValue('');
 			handleQuoteInputChange({ target: { event: '' } });
-			setError('Insufficient liquidity for this trade');
+			if (err.message === 'Network Error') {
+				setError('Network error');
+			} else {
+				setError('Insufficient liquidity for this trade');
+			}
 		} finally {
 			setQuoteLoading(false);
 		}
@@ -144,7 +140,11 @@ const Swap = () => {
 		} catch (err) {
 			setBaseValue('');
 			handleBaseInputChange({ target: { event: '' } });
-			setError('Insufficient liquidity for this trade');
+			if (err.message === 'Network Error') {
+				setError('Network error');
+			} else {
+				setError('Insufficient liquidity for this trade');
+			}
 		} finally {
 			setBaseLoading(false);
 		}
@@ -196,9 +196,10 @@ const Swap = () => {
 		event => {
 			const inputValue = event.target.value;
 
-			if (inputValue === '') {
+			if (inputValue === '' || inputValue === '0') {
 				setBaseValue('');
 				setQuoteValue('');
+				setError(false);
 				return;
 			}
 
@@ -217,9 +218,10 @@ const Swap = () => {
 		event => {
 			const inputValue = event.target.value;
 
-			if (inputValue === '') {
+			if (inputValue === '' || inputValue === '0') {
 				setBaseValue('');
 				setQuoteValue('');
+				setError(false);
 				return;
 			}
 
