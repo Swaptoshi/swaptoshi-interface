@@ -9,12 +9,14 @@ import { liskTokenCompact } from '../../constants/tokens';
 import SwapConfig from './SwapConfig';
 import SwapWarning from './SwapWarning';
 import SwapDetailsInfo from './SwapDetailsInfo';
+import { useWalletConnect } from '../../context/WalletConnectProvider';
 
 export const DEFAULT_DEADLINE_MINUTE = 10;
 export const DEFAULT_SLIPPAGE = 0.5;
 
 const Swap = () => {
 	const { selectedService } = useChain();
+	const { balances } = useWalletConnect();
 
 	const [currentPrice, setCurrentPrice] = useState();
 
@@ -32,6 +34,17 @@ const Swap = () => {
 	const [quoteLoading, setQuoteLoading] = useState(false);
 
 	const [error, setError] = useState();
+	const [path, setPath] = useState();
+	const [command, setCommand] = useState();
+
+	const baseBalance = React.useMemo(() => {
+		if (baseToken && balances && balances.length > 0) {
+			const foundToken = balances.find(t => t.tokenId === baseToken.tokenId);
+			const foundBalance = foundToken ? Number(foundToken.balance) / 10 ** foundToken.decimal : 0;
+			return foundBalance;
+		}
+		return 0;
+	}, [balances, baseToken]);
 
 	const isFetchingPrice = React.useMemo(
 		() => baseLoading || quoteLoading,
@@ -51,12 +64,20 @@ const Swap = () => {
 	}, [baseLoading, error, priceReady, quoteLoading]);
 
 	const priceImpact = React.useMemo(() => {
-		if (isSwappable) {
+		if (!baseLoading && !quoteLoading && priceReady) {
 			return (baseValue / quoteValue - currentPrice) / currentPrice;
 		} else {
 			return 0;
 		}
-	}, [baseValue, currentPrice, isSwappable, quoteValue]);
+	}, [baseLoading, baseValue, currentPrice, priceReady, quoteLoading, quoteValue]);
+
+	console.log(path, command);
+
+	React.useEffect(() => {
+		if (baseBalance && baseValue && baseBalance < baseValue) {
+			setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
+		}
+	}, [baseBalance, baseToken, baseValue]);
 
 	React.useEffect(() => {
 		const run = async () => {
@@ -101,7 +122,15 @@ const Swap = () => {
 				const value = Number(quote.data.amount) / 10 ** quoteToken.decimal;
 				setQuoteValue(value);
 				handleQuoteInputChange({ target: { event: value } });
-				setError();
+
+				if (baseBalance && baseValue && baseBalance < baseValue) {
+					setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
+				} else {
+					setError();
+				}
+
+				setCommand('exactInput');
+				setPath(quote.data.path);
 			} else {
 				setQuoteValue('');
 				handleQuoteInputChange({ target: { event: '' } });
@@ -134,7 +163,15 @@ const Swap = () => {
 				const value = Number(quote.data.amount) / 10 ** baseToken.decimal;
 				setBaseValue(value);
 				handleBaseInputChange({ target: { event: value } });
-				setError();
+
+				if (baseBalance && baseValue && baseBalance < baseValue) {
+					setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
+				} else {
+					setError();
+				}
+
+				setCommand('exactOutput');
+				setPath(quote.data.path);
 			} else {
 				setBaseValue('');
 				handleBaseInputChange({ target: { event: '' } });
@@ -348,6 +385,7 @@ const Swap = () => {
 
 							<SwapDetailsInfo
 								isLoading={isFetchingPrice}
+								command={command}
 								priceImpact={priceImpact}
 								priceReady={priceReady}
 								isSlippageAuto={isSlippageAuto}

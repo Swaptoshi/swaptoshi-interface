@@ -16,6 +16,7 @@ export default function Tooltip({ content, children }) {
 					backgroundColor: 'var(--card-inside-color)',
 					color: 'var(--color-white)',
 					borderRadius: '8px',
+					maxWidth: '250px',
 					boxShadow:
 						'rgb(0 0 0 / 7%) 8px 14px 20px, rgb(0 0 0 / 7%) 8px 4px 8px, rgb(0 0 0 / 7%) 1px 1px 4px',
 				}}

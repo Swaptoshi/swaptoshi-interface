@@ -1,9 +1,11 @@
 import React from 'react';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import Loader from '../../components/Loader/Loader';
+import { DEFAULT_SLIPPAGE } from './Swap';
 
 export default function SwapDetailsInfo({
 	isLoading,
+	command,
 	priceImpact,
 	priceReady,
 	isSlippageAuto,
@@ -14,6 +16,10 @@ export default function SwapDetailsInfo({
 	quoteValue,
 }) {
 	const [collapsed, setCollapsed] = React.useState(false);
+
+	const slippageValue = React.useMemo(() => {
+		return slippage ? slippage : DEFAULT_SLIPPAGE;
+	}, [slippage]);
 
 	const toogleCollapsed = React.useCallback(() => setCollapsed(s => !s), []);
 
@@ -100,9 +106,32 @@ export default function SwapDetailsInfo({
 							<div style={{ display: 'flex', alignItems: 'center', margin: '12px 0' }}>
 								<div
 									className="text"
-									style={{ width: 'fit-content', flex: 1, color: 'var(--text-color)' }}
+									style={{
+										width: 'fit-content',
+										flex: 1,
+										color: 'var(--text-color)',
+										display: 'flex',
+										alignItems: 'center',
+									}}
 								>
 									Max. slippage
+									<Tooltip
+										content={`If the price moves so that you will ${
+											command === 'exactInput' ? 'receive less' : 'pay more'
+										} than ${
+											command === 'exactInput'
+												? quoteValue - (quoteValue * slippageValue) / 100
+												: baseValue + (baseValue * slippageValue) / 100
+										} ${
+											command === 'exactInput'
+												? quoteToken.symbol.toUpperCase()
+												: baseToken.symbol.toUpperCase()
+										}, your transaction will be reverted. This is the minimum amount you are guaranteed to ${
+											command === 'exactInput' ? 'receive' : 'pay'
+										}.`}
+									>
+										<i style={{ margin: '0 2px' }} className="ri-information-line"></i>
+									</Tooltip>
 								</div>
 								{isSlippageAuto ? (
 									<div
