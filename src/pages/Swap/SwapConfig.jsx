@@ -2,6 +2,7 @@ import React from 'react';
 import Dialog from '../../components/Tooltip/Dialog';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import SwitchBox from '../../components/SwitchBox/SwitchBox';
+import { DEFAULT_DEADLINE_MINUTE, DEFAULT_SLIPPAGE } from './Swap';
 
 export default function SwapConfig({
 	show,
@@ -13,6 +14,9 @@ export default function SwapConfig({
 	deadline,
 	onDeadlineInputChange,
 }) {
+	const [slippageShow, setSlippageShow] = React.useState(false);
+	const [deadlineShow, setDeadlineShow] = React.useState(false);
+
 	return (
 		<div className="gear">
 			<Dialog
@@ -27,19 +31,31 @@ export default function SwapConfig({
 						<div
 							style={{
 								display: 'flex',
-								backgroundColor: 'var(--yellow-transparent)',
+								backgroundColor:
+									slippage && (slippage < 0.05 || slippage > 1)
+										? 'var(--yellow-transparent)'
+										: !isSlippageAuto && slippage
+											? 'var(--card-inside-color)'
+											: undefined,
 								padding: '2px 8px',
 								alignItems: 'center',
 							}}
 						>
-							<div style={{ color: 'var(--text-clr)', fontSize: '14px' }}>1.0% slippage</div>
+							{!isSlippageAuto && slippage ? (
+								<div style={{ color: 'var(--text-clr)', fontSize: '14px' }}>
+									{slippage}% slippage
+								</div>
+							) : null}
 							<i className="ri-settings-3-fill gear-icon"></i>
 						</div>
 					</button>
 				}
 			>
 				<div>
-					<div style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
+					<div
+						style={{ display: 'flex', alignItems: 'center', margin: '8px 0', cursor: 'pointer' }}
+						onClick={() => setSlippageShow(s => !s)}
+					>
 						<div
 							style={{
 								flex: 1,
@@ -67,82 +83,102 @@ export default function SwapConfig({
 								alignItems: 'center',
 							}}
 						>
-							<div style={{ fontSize: '14px' }}>Auto</div>
-							<i className="ri-arrow-down-s-line" style={{ fontSize: '20px' }}></i>
+							<div style={{ fontSize: '14px' }}>
+								{isSlippageAuto ? 'Auto' : `${slippage ? slippage : DEFAULT_SLIPPAGE}%`}
+							</div>
+							{slippageShow ? (
+								<i className="ri-arrow-up-s-line" style={{ fontSize: '20px' }}></i>
+							) : (
+								<i className="ri-arrow-down-s-line" style={{ fontSize: '20px' }}></i>
+							)}
 						</div>
 					</div>
 
-					<div style={{ display: 'flex' }}>
-						<SwitchBox
-							style={{ flex: 1 }}
-							value={isSlippageAuto}
-							items={[
-								{
-									value: true,
-									onClick: () => setIsSlippageAuto(true),
-									component: 'Auto',
-								},
-								{
-									value: false,
-									onClick: () => setIsSlippageAuto(false),
-									component: 'Custom',
-								},
-							]}
-						/>
-						<div style={{ margin: '0px 4px' }} />
+					{slippageShow ? (
+						<div style={{ display: 'flex' }}>
+							<SwitchBox
+								style={{ flex: 1 }}
+								value={isSlippageAuto}
+								items={[
+									{
+										value: true,
+										onClick: () => {
+											setIsSlippageAuto(true);
+											onSlippageInputChange({ target: { value: '' } });
+										},
+										component: 'Auto',
+									},
+									{
+										value: false,
+										onClick: () => setIsSlippageAuto(false),
+										component: 'Custom',
+									},
+								]}
+							/>
+							<div style={{ margin: '0px 4px' }} />
+							<div
+								style={{
+									display: 'flex',
+									flex: 1,
+									alignItems: 'center',
+									maxWidth: '30%',
+									outline: 'var(--border) solid 1px',
+									borderRadius: '14px',
+									padding: '0px 8px',
+								}}
+							>
+								<input
+									placeholder="0.5"
+									inputMode="numeric"
+									autoComplete="off"
+									autoCorrect="off"
+									spellCheck="false"
+									value={slippage}
+									type={'number'}
+									onChange={onSlippageInputChange}
+									style={{
+										width: '90%',
+										border: 'none',
+										outline: 'none',
+										textAlign: 'end',
+										backgroundColor: 'transparent',
+									}}
+								/>
+								<div style={{ margin: '0px 4px' }} />
+								<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>%</div>
+							</div>
+						</div>
+					) : null}
+
+					{slippage && (slippage < 0.05 || slippage > 1) ? (
 						<div
 							style={{
 								display: 'flex',
-								flex: 1,
-								alignItems: 'center',
-								maxWidth: '30%',
-								outline: 'var(--border) solid 1px',
-								borderRadius: '14px',
+								color: 'var(--yellow)',
 								padding: '0px 8px',
+								alignItems: 'center',
+								margin: '8px 0px',
 							}}
 						>
-							<input
-								placeholder="0.5"
-								inputMode="numeric"
-								autoComplete="off"
-								autoCorrect="off"
-								spellCheck="false"
-								value={slippage}
-								type={'number'}
-								onChange={onSlippageInputChange}
-								style={{
-									width: '90%',
-									border: 'none',
-									outline: 'none',
-									textAlign: 'end',
-									backgroundColor: 'transparent',
-								}}
-							/>
-							<div style={{ margin: '0px 4px' }} />
-							<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>%</div>
+							<i className="ri-alert-line" style={{ fontSize: '20px', marginRight: '8px' }}></i>
+							<div style={{ fontSize: '12px' }}>
+								{slippage < 0.05
+									? 'Slippage below 0.05% may result in a failed transaction'
+									: slippage > 1
+										? 'Your transaction may be frontrun and result in an unfavorable trade.'
+										: ''}
+							</div>
 						</div>
-					</div>
-
-					<div
-						style={{
-							display: 'flex',
-							color: 'var(--yellow)',
-							padding: '0px 8px',
-							alignItems: 'center',
-							margin: '8px 0px',
-						}}
-					>
-						<i className="ri-alert-line" style={{ fontSize: '20px', marginRight: '8px' }}></i>
-						<div style={{ fontSize: '12px' }}>
-							Slippage below 0.05% may result in a failed transaction
-						</div>
-					</div>
+					) : null}
 				</div>
 
 				<div style={{ height: '1px', backgroundColor: 'var(--border)', margin: '12px 0px' }} />
 
 				<div>
-					<div style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
+					<div
+						style={{ display: 'flex', alignItems: 'center', margin: '8px 0', cursor: 'pointer' }}
+						onClick={() => setDeadlineShow(s => !s)}
+					>
 						<div
 							style={{
 								flex: 1,
@@ -170,42 +206,52 @@ export default function SwapConfig({
 								alignItems: 'center',
 							}}
 						>
-							<div style={{ fontSize: '14px' }}>Auto</div>
-							<i className="ri-arrow-down-s-line" style={{ fontSize: '20px' }}></i>
+							<div style={{ fontSize: '14px' }}>
+								{deadline ? deadline : DEFAULT_DEADLINE_MINUTE}m
+							</div>
+							{deadlineShow ? (
+								<i className="ri-arrow-up-s-line" style={{ fontSize: '20px' }}></i>
+							) : (
+								<i className="ri-arrow-down-s-line" style={{ fontSize: '20px' }}></i>
+							)}
 						</div>
 					</div>
 
-					<div
-						style={{
-							display: 'flex',
-							flex: 1,
-							alignItems: 'center',
-							outline: 'var(--border) solid 1px',
-							borderRadius: '14px',
-							padding: '0px 8px',
-							height: '40px',
-						}}
-					>
-						<input
-							placeholder="10"
-							inputMode="numeric"
-							autoComplete="off"
-							autoCorrect="off"
-							spellCheck="false"
-							value={deadline}
-							type={'number'}
-							onChange={onDeadlineInputChange}
+					{deadlineShow ? (
+						<div
 							style={{
-								width: '90%',
-								border: 'none',
-								outline: 'none',
-								textAlign: 'end',
-								backgroundColor: 'transparent',
+								display: 'flex',
+								flex: 1,
+								alignItems: 'center',
+								outline: 'var(--border) solid 1px',
+								borderRadius: '14px',
+								padding: '0px 8px',
+								height: '40px',
 							}}
-						/>
-						<div style={{ margin: '0px 4px' }} />
-						<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>minutes</div>
-					</div>
+						>
+							<input
+								placeholder="10"
+								inputMode="numeric"
+								autoComplete="off"
+								autoCorrect="off"
+								spellCheck="false"
+								value={deadline}
+								type={'number'}
+								onChange={onDeadlineInputChange}
+								style={{
+									width: '90%',
+									border: 'none',
+									outline: 'none',
+									textAlign: 'end',
+									backgroundColor: 'transparent',
+								}}
+							/>
+							<div style={{ margin: '0px 4px' }} />
+							<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>
+								minutes
+							</div>
+						</div>
+					) : null}
 
 					<div style={{ margin: '4px 0px' }} />
 				</div>

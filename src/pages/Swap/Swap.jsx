@@ -10,6 +10,9 @@ import SwapConfig from './SwapConfig';
 import SwapWarning from './SwapWarning';
 import SwapDetailsInfo from './SwapDetailsInfo';
 
+export const DEFAULT_DEADLINE_MINUTE = 10;
+export const DEFAULT_SLIPPAGE = 0.5;
+
 const Swap = () => {
 	const { selectedService } = useChain();
 
@@ -258,16 +261,32 @@ const Swap = () => {
 	const onSlippageInputChange = React.useCallback(event => {
 		const inputValue = event.target.value;
 
+		if (inputValue === '') {
+			setSlippage('');
+			setIsSlippageAuto(true);
+			return;
+		}
+
 		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 			setSlippage(inputValue);
+			setIsSlippageAuto(false);
 		}
 	}, []);
 
 	const onDeadlineInputChange = React.useCallback(event => {
 		const inputValue = event.target.value;
 
+		if (inputValue === '') {
+			setDeadline('');
+			return;
+		}
+
 		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-			setDeadline(inputValue);
+			if (Number(inputValue) > 999) {
+				setDeadline(999);
+			} else {
+				setDeadline(inputValue);
+			}
 		}
 	}, []);
 

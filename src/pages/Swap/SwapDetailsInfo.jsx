@@ -69,9 +69,18 @@ export default function SwapDetailsInfo({
 							<div style={{ display: 'flex', alignItems: 'center', margin: '12px 0' }}>
 								<div
 									className="text"
-									style={{ width: 'fit-content', flex: 1, color: 'var(--text-color)' }}
+									style={{
+										width: 'fit-content',
+										flex: 1,
+										color: 'var(--text-color)',
+										display: 'flex',
+										alignItems: 'center',
+									}}
 								>
 									Price impact
+									<Tooltip content={'The impact your trade has on the market price of this pool.'}>
+										<i style={{ margin: '0 2px' }} className="ri-information-line"></i>
+									</Tooltip>
 								</div>
 								<div
 									className="text"
@@ -120,6 +129,7 @@ export default function SwapDetailsInfo({
 										flex: 1,
 										display: 'flex',
 										color: 'var(--text-color)',
+										alignItems: 'center',
 									}}
 								>
 									Price impact

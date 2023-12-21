@@ -8,7 +8,8 @@ export default function SwitchBox({ value, items, ...props }) {
 					return (
 						<div
 							key={index}
-							onClick={item.onClick}
+							onClick={value === item.value ? undefined : item.onClick}
+							style={{ cursor: value === item.value ? 'unset' : 'pointer' }}
 							className={`sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-3 sc-1euncec-0 hJYFVB xyz1 kHFzEX ${
 								value === item.value ? 'eqaHKd' : ''
 							}`}
