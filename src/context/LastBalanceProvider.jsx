@@ -2,6 +2,7 @@ import React from 'react';
 import useLocalStorage from 'use-local-storage';
 import { useChain } from './ChainProvider';
 import { getPreviousDayTimestamp } from '../utils/Time/getPreviousDayTimestamp';
+import { useWalletConnect } from './WalletConnectProvider';
 
 const LastBalanceContext = React.createContext();
 
@@ -11,6 +12,7 @@ export function useLastBalance() {
 
 export default function LastBalanceProvider({ children }) {
 	const { chain } = useChain();
+	const { senderPublicKey } = useWalletConnect();
 	const [lastBalance, setLastBalance] = useLocalStorage(`last_balance`, {});
 	const [lastBalanceUpdatedOn, setLastBalanceUpdatedOn] = useLocalStorage(
 		`last_balance_updated_on`,
@@ -19,41 +21,61 @@ export default function LastBalanceProvider({ children }) {
 
 	const getLastBalance = React.useCallback(
 		chainPrefix => {
-			return lastBalance[chainPrefix] ?? 0;
+			return lastBalance[`${chainPrefix}:${senderPublicKey}`] ?? 0;
 		},
-		[lastBalance],
+		[lastBalance, senderPublicKey],
 	);
 
 	const updateLastBalance = React.useCallback(
 		balance => {
-			if (!Object.keys(lastBalanceUpdatedOn).includes(chain)) {
+			if (!Object.keys(lastBalanceUpdatedOn).includes(`${chain}:${senderPublicKey}`)) {
 				const startOfToday = getPreviousDayTimestamp(0);
-				setLastBalance(old => ({ ...old, [chain]: balance }));
-				setLastBalanceUpdatedOn(old => ({ ...old, [chain]: startOfToday }));
+				setLastBalance(old => ({ ...old, [`${chain}:${senderPublicKey}`]: balance }));
+				setLastBalanceUpdatedOn(old => ({ ...old, [`${chain}:${senderPublicKey}`]: startOfToday }));
 				return;
 			}
-			if (new Date().getTime() - lastBalanceUpdatedOn[chain] > 2 * 86400000) {
+			if (
+				new Date().getTime() - lastBalanceUpdatedOn[`${chain}:${senderPublicKey}`] >
+				2 * 86400000
+			) {
 				const startOfYesterday = getPreviousDayTimestamp(1);
-				setLastBalance(old => ({ ...old, [chain]: balance }));
-				setLastBalanceUpdatedOn(old => ({ ...old, [chain]: startOfYesterday }));
+				setLastBalance(old => ({ ...old, [`${chain}:${senderPublicKey}`]: balance }));
+				setLastBalanceUpdatedOn(old => ({
+					...old,
+					[`${chain}:${senderPublicKey}`]: startOfYesterday,
+				}));
 				return;
 			}
 		},
-		[chain, lastBalanceUpdatedOn, setLastBalance, setLastBalanceUpdatedOn],
+		[chain, lastBalanceUpdatedOn, senderPublicKey, setLastBalance, setLastBalanceUpdatedOn],
 	);
 
-	const clearLastBalance = React.useCallback(() => {
+	const resetLastBalance = React.useCallback(() => {
 		setLastBalance({});
 		setLastBalanceUpdatedOn({});
 	}, [setLastBalance, setLastBalanceUpdatedOn]);
+
+	const clearCurrentAccountLastBalance = React.useCallback(() => {
+		setLastBalance(old => {
+			const state = old;
+			delete state[`${chain}:${senderPublicKey}`];
+			return state;
+		});
+		setLastBalanceUpdatedOn(old => {
+			const state = old;
+			delete state[`${chain}:${senderPublicKey}`];
+			return state;
+		});
+	}, [chain, senderPublicKey, setLastBalance, setLastBalanceUpdatedOn]);
 
 	const context = React.useMemo(
 		() => ({
 			getLastBalance,
 			updateLastBalance,
-			clearLastBalance,
+			resetLastBalance,
+			clearCurrentAccountLastBalance,
 		}),
-		[getLastBalance, updateLastBalance, clearLastBalance],
+		[getLastBalance, updateLastBalance, resetLastBalance, clearCurrentAccountLastBalance],
 	);
 
 	return <LastBalanceContext.Provider value={context}>{children}</LastBalanceContext.Provider>;
