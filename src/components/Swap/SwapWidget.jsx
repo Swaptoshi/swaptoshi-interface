@@ -17,7 +17,7 @@ import { getTransactionEstimateFee } from '../../service/transaction';
 export const DEFAULT_DEADLINE_MINUTE = 10;
 export const DEFAULT_SLIPPAGE = 0.5;
 
-const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
+const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken, onSwapClick }) => {
 	const { selectedService } = useChain();
 	const { balances, auth, senderPublicKey } = useWalletConnect();
 
@@ -514,6 +514,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 
 					<WalletActionButton
 						disabled={!isSwappable}
+						onClick={onSwapClick}
 						style={{ width: '100%', height: '60px', borderRadius: '16px' }}
 					>
 						{error ? error : 'Swap'}

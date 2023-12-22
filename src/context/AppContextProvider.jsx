@@ -7,6 +7,7 @@ import { WalletConnectProvider } from './WalletConnectProvider';
 import { ToastContainer } from 'react-toastify';
 import { useTheme } from './ThemeProvider';
 import LastBalanceProvider from './LastBalanceProvider';
+import TransactionModalProvider from './TransactionModalProvider';
 
 export default function AppContextProvider({ children }) {
 	const [theme] = useTheme();
@@ -17,7 +18,9 @@ export default function AppContextProvider({ children }) {
 				<WalletModalProvider>
 					<WalletConnectProvider>
 						<LastBalanceProvider>
-							<TokenPickerProvider>{children}</TokenPickerProvider>
+							<TransactionModalProvider>
+								<TokenPickerProvider>{children}</TokenPickerProvider>
+							</TransactionModalProvider>
 						</LastBalanceProvider>
 					</WalletConnectProvider>
 				</WalletModalProvider>
