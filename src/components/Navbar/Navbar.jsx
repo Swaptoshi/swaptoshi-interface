@@ -280,7 +280,7 @@ const Navbar = () => {
 							<div className="custom-search-dropdown" ref={centerSearchRef}>
 								<div className="custom-search-inside inside-search">
 									{/* <img className='search-icon' style={{ width: "20px" }} src='/images/search.svg' /> */}
-									<i className="search-icon ri-search-line"></i>
+									<i className="search-icon ri-search-line text"></i>
 
 									<input
 										className=""
@@ -320,7 +320,6 @@ const Navbar = () => {
 																			to={`/tokens/${option.tokenId}`}
 																			className="tokens-options"
 																			onClick={() => {
-																				handleOptionClick(option);
 																				setSearchOpen(false);
 																			}}
 																		>
@@ -409,7 +408,7 @@ const Navbar = () => {
 												ref={rightSearchInsideRef}
 											>
 												{/* <img className='search-icon' style={{ width: "20px" }} src='/images/search.svg' /> */}
-												<i className="search-icon ri-search-line"></i>
+												<i className="search-icon ri-search-line text"></i>
 
 												<input
 													className=""
@@ -448,7 +447,6 @@ const Navbar = () => {
 																							to={`/tokens/${option.tokenId}`}
 																							className="tokens-options"
 																							onClick={() => {
-																								handleOptionClick(option);
 																								setSearchOpen(false);
 																							}}
 																						>
@@ -533,7 +531,7 @@ const Navbar = () => {
 										className="search-button"
 										onClick={() => setDropdownVisibility(!isDropdownVisible)}
 									>
-										<i className="search-icon ri-search-line"></i>
+										<i className="search-icon ri-search-line text"></i>
 									</button>
 								</div>
 

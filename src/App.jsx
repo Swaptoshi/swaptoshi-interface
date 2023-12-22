@@ -68,9 +68,7 @@ function App() {
 				<Navbar />
 				<Routes>
 					<Route exact path="/" element={<Home />} />
-
 					<Route path="/swap" element={<Swap />} setCurrentCurrencyId={setCurrentCurrencyId} />
-
 					<Route path="/tokens" element={<Token />} />
 					<Route path="/pools" element={<Pools />} />
 					<Route

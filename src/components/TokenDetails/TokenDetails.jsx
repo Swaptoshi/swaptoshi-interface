@@ -1,45 +1,101 @@
 import React, { useEffect, useState } from 'react';
-import Swap from '../../pages/Swap/Swap';
 import './TokenDetails.css';
 import { useParams } from 'react-router-dom';
-import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import { NavLink } from 'react-router-dom';
+import SwapWidget from '../Swap/SwapWidget';
+import { intervalToSecond } from '../../utils/Time/intervalToSecond';
+import { getDEXToken, getPriceTick } from '../../service/dex';
+import { useChain } from '../../context/ChainProvider';
+import { tryToast } from '../../utils/Toast/tryToast';
+import { useLiskPrice } from '../../context/LiskPriceProvider';
+import SwitchBox from '../SwitchBox/SwitchBox';
+import Loader from '../Loader';
+import { PriceChart } from '../Chart/PriceChart';
+import { intervalToLimit } from '../../utils/Time/intervalToLimit';
+import { timeframeToInterval } from '../../utils/Time/timeframeToInterval';
 
-const TokenDetails = ({ allTableData, chartData }) => {
-	//ShowMoreBtn
-	const [showMore, setShowMore] = useState(false);
-	const toggleShowMore = () => {
-		setShowMore(!showMore);
-	};
-
-	const [tokensData, setTokensData] = useState(allTableData);
+const TokenDetails = () => {
 	const { id } = useParams();
+	const { fiatFormatter } = useLiskPrice();
+	const { selectedService } = useChain();
+
+	const [token, setToken] = useState();
+	const [chart, setChart] = useState();
+	const [timeframe, setTimeframe] = useState('24h');
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		const tokenDetails = () => {
-			const singleToken = allTableData.filter(item => item.id === Number(id));
-			setTokensData(singleToken);
+		const run = async () => {
+			const param = {
+				search: id,
+				offset: 0,
+				limit: 100,
+				changeWindow: timeframe,
+				start: Math.floor(Date.now() / 1000) - intervalToSecond[timeframe],
+				end: Math.floor(Date.now() / 1000),
+			};
+			const tokens = await getDEXToken(
+				param,
+				selectedService ? selectedService.serviceURLs : undefined,
+			);
+			if (tokens && tokens.data) {
+				setToken(tokens.data[0]);
+
+				const lskUsdTick = await getPriceTick({
+					base: 'LSK',
+					quote: 'USD',
+					interval: timeframeToInterval[timeframe],
+					limit: intervalToLimit[timeframe],
+				});
+				if (tokens.data[0].symbol !== 'LSK') {
+					const tokenTick = await getPriceTick({
+						base: tokens.data[0].symbol,
+						quote: 'LSK',
+						interval: timeframeToInterval[timeframe],
+						limit: intervalToLimit[timeframe],
+					});
+
+					if (tokenTick && tokenTick.data && lskUsdTick && lskUsdTick.data) {
+						setChart(
+							tokenTick.data.map(t => {
+								const matched = lskUsdTick.data.find(s => s.time === t.time);
+								if (matched) {
+									return {
+										time: t.time,
+										value: t.value * matched.value,
+									};
+								} else {
+									return t;
+								}
+							}),
+						);
+					}
+				} else {
+					if (lskUsdTick && lskUsdTick.data) {
+						setChart(lskUsdTick.data);
+					}
+				}
+			}
 		};
+		tryToast('Fetch token price failed', run, undefined, () => setIsLoading(false));
+	}, [id, selectedService, timeframe]);
 
-		tokenDetails();
-	}, [id, allTableData]);
-
-	function determineTrendIcon(current, old) {
-		if (current > old) {
+	function determineTrendIcon(priceChangeUSD) {
+		if (priceChangeUSD > 0) {
 			return (
 				<i
 					style={{ color: 'rgb(118, 209, 145)' }}
 					className="trends-up-icon ri-arrow-right-up-line"
 				></i>
 			);
-		} else if (current < old) {
+		} else if (priceChangeUSD < 0) {
 			return (
 				<i
 					style={{ color: 'rgb(252, 83, 83)' }}
 					className="trends-down-icon ri-arrow-right-down-line"
 				></i>
 			);
-		} else if (current === old) {
+		} else if (priceChangeUSD === 0) {
 			return (
 				<i
 					style={{ color: 'rgb(118, 209, 145)' }}
@@ -50,65 +106,24 @@ const TokenDetails = ({ allTableData, chartData }) => {
 		return null;
 	}
 
-	//Calculate Search `dropdown` rates
-	function calculatePercentChange(current, old) {
-		return Math.abs(((current - old) / old) * 100);
-	}
-
 	return (
 		<div>
-			<div className="sc-1dv6j2d-0 bCNYil">
-				<div data-testid="popups" className="sc-1kykgp9-2 sc-fo3pji-2 kqyYZZ hoPRWs" />
-				<div className="sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-4 hJYFVB fhPvJh leSroW">
-					<div className="sc-8msj8j-0 jyEmZw">
-						<div className="sc-sx9n2y-0 kandXm sc-8msj8j-1 dihEkF css-x9zcw6">
-							<a
-								target="_blank"
-								rel="noopener noreferrer"
-								href="https://etherscan.io/block/17970396"
-								className="sc-7yzmni-9 jnMVFj"
-							>
-								<div className="sc-d5tbhs-1 cSretk">
-									<div>17970396 </div>
-								</div>
-							</a>
-						</div>
-						<div className="sc-8msj8j-2 ePKXce" />{' '}
-					</div>
-				</div>
-				<div className="sc-1evvmet-0 kopCVp">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width={20}
-						height={20}
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth={2}
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						data-testid="uniswap-wallet-banner"
-						className="sc-1evvmet-2 bqwZaK"
+			<div className="sc-1dv6j2d-0 bCNYil" style={{ paddingBottom: 0 }}>
+				{isLoading ? (
+					<div
+						style={{
+							width: '100%',
+							height: '80vh',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
 					>
-						<line x1={18} y1={6} x2={6} y2={18} />
-						<line x1={6} y1={6} x2={18} y2={18} />
-					</svg>
-					<div className="sc-1kykgp9-2 hinRyL">
-						<div className="sc-sx9n2y-0 EngNh css-10k34qy">Uniswap in your pocket</div>
+						<Loader size={20} />{' '}
 					</div>
-					<div className="sc-bczRLJ sc-nrd8cx-0 sc-1evvmet-1 hJYFVB fhPvJh hMzltt">
-						<button
-							width="125px"
-							className="sc-bczRLJ jnEFg sc-fwrjc2-1 sc-1evvmet-3 hgZoRv cXqfrP"
-						>
-							<div className="sc-sx9n2y-0 bhqxth css-18hn7mq">Learn more</div>
-						</button>
-					</div>
-				</div>
-
-				<div className="sc-qwzj9s-1 fBEeS">
-					{tokensData.map(data => (
-						<div className="sc-qwzj9s-2 kUtZkz" key={data.id}>
+				) : (
+					<div className="sc-qwzj9s-1 fBEeS" style={{ paddingBottom: 0 }}>
+						<div className="sc-qwzj9s-2 kUtZkz" key={token.tokenId} style={{ paddingBottom: 0 }}>
 							<NavLink className="sc-djdxof-0 MpERT" to="/tokens">
 								<i className="ri-arrow-left-line"></i>
 								Tokens
@@ -118,34 +133,13 @@ const TokenDetails = ({ allTableData, chartData }) => {
 								<div className="sc-qwzj9s-7 hfZYqf">
 									<div className="sc-12k1pn4-3 eLvYRk">
 										<div className="sc-12k1pn4-2 fEQuSm">
-											<img src={data.image} alt="ETH logo" className="sc-12k1pn4-1 ejtfTW" />
+											<img src={token.logo} alt="ETH logo" className="sc-12k1pn4-1 ejtfTW" />
 										</div>
 										<div className="sc-12k1pn4-4 izFcWZ" />
 									</div>
 									<div className="sc-1su5spn-2 gkgzJh">
-										<span className="textclr">{data.name}</span>
-										<span className="sc-1su5spn-0 gRPQtw">{data.symbol}</span>
-									</div>
-								</div>
-								<div className="sc-1su5spn-1 kxJsVh">
-									<div className="sc-j8s2sa-0 gOFqpR">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width={22}
-											height={22}
-											fill="none"
-											viewBox="0 0 24 24"
-											strokeWidth={2}
-											stroke="#fff"
-											aria-label="ShareOptions"
-											className="sc-j8s2sa-1 hTKuaT"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m14-7-5-5-5 5m5-5v12"
-											/>
-										</svg>
+										<span className="textclr">{token.tokenName}</span>
+										<span className="sc-1su5spn-0 gRPQtw">{token.symbol}</span>
 									</div>
 								</div>
 							</div>
@@ -154,7 +148,7 @@ const TokenDetails = ({ allTableData, chartData }) => {
 									<div style={{ width: '100%', height: '100%' }}>
 										<div data-cy="chart-header" className="sc-1nu6e54-3 hZgvDp">
 											<span className="sc-1nu6e54-4 gLsRgG textclr">
-												${data.price.toFixed(2).toLocaleString()}
+												{fiatFormatter.format(token.priceUSD.toFixed(4))}
 											</span>
 											<div className="sc-1nu6e54-6 khjLim textclr">
 												{/* 0.38% */}
@@ -163,31 +157,29 @@ const TokenDetails = ({ allTableData, chartData }) => {
 													className="percentage-text"
 													style={{
 														color:
-															data.price > data.oldPrice
-																? 'rgb(118, 209, 145)'
-																: 'rgb(252, 83, 83)',
+															token.priceChangeUSD > 0 ? 'rgb(118, 209, 145)' : 'rgb(252, 83, 83)',
 													}}
 												>
-													<span>
-														{calculatePercentChange(data.price, data.oldPrice).toFixed(2)}%
-													</span>
+													<span>{token.priceChangeUSD.toFixed(2)}%</span>
 												</span>
-												<span>{determineTrendIcon(data.price, data.oldPrice)}</span>
+												<span>{determineTrendIcon(token.priceChangeUSD)}</span>
 											</div>
 										</div>
-										<ResponsiveContainer width="100%" height="100%">
-											<LineChart width={780} height={392} data={chartData}>
-												<Line type="monotone" dataKey="uv" stroke="#FB118E" dot={false} />
-											</LineChart>
-										</ResponsiveContainer>
+
+										{chart ? <PriceChart data={chart} /> : null}
 									</div>
 									<div className="sc-1wj62vu-0 ibmoxq">
-										<div className="sc-1wj62vu-1 fvQpGv">
-											<button className="sc-1wj62vu-2 PSFWR">1H</button>
-											<button className="sc-1wj62vu-2 kRVxFs">1D</button>
-											<button className="sc-1wj62vu-2 PSFWR">1W</button>
-											<button className="sc-1wj62vu-2 PSFWR">1M</button>
-											<button className="sc-1wj62vu-2 PSFWR">1Y</button>
+										<div className="sc-1wj62vu-1 fvQpGv" style={{ width: '250px' }}>
+											<SwitchBox
+												value={timeframe}
+												items={[
+													{ value: '1h', component: '1H', onClick: () => setTimeframe('1h') },
+													{ value: '24h', component: '1D', onClick: () => setTimeframe('24h') },
+													{ value: '7d', component: '1W', onClick: () => setTimeframe('7d') },
+													{ value: '30d', component: '1M', onClick: () => setTimeframe('30d') },
+													{ value: '1y', component: '1Y', onClick: () => setTimeframe('1y') },
+												]}
+											/>
 										</div>
 									</div>
 								</div>
@@ -200,91 +192,29 @@ const TokenDetails = ({ allTableData, chartData }) => {
 											<div className="sc-d5tbhs-1 cSretk">
 												<div>TVL</div>
 											</div>
-											<div className="sc-y05v5v-4 iydZZJ">${data.tvl}</div>
+											<div className="sc-y05v5v-4 iydZZJ">
+												{fiatFormatter.format(token.totalTvlUSD.toFixed(2))}
+											</div>
 										</div>
 										<div data-cy="volume-24h" className="sc-y05v5v-0 iJvfTG">
 											<div className="sc-d5tbhs-1 cSretk">
 												<div>24H volume</div>
 											</div>
 											{/* <div className="sc-y05v5v-4 iydZZJ">$276.8M</div> */}
-											<div className="sc-y05v5v-4 iydZZJ">{`$${data.volume.toFixed(2)}`}</div>
+											<div className="sc-y05v5v-4 iydZZJ">{`${fiatFormatter.format(
+												token.volumeUSD.toFixed(2),
+											)}`}</div>
 										</div>
 									</div>
-									<div className="sc-y05v5v-2 fJhHgf">
-										<div data-cy="52w-low" className="sc-y05v5v-0 iJvfTG">
-											<div className="sc-d5tbhs-1 cSretk">
-												<div>52W low</div>
-											</div>
-											<div className="sc-y05v5v-4 iydZZJ">$1.1K</div>
-										</div>
-										<div data-cy="52w-high" className="sc-y05v5v-0 iJvfTG">
-											<div className="sc-d5tbhs-1 cSretk">
-												<div>52W high</div>
-											</div>
-											<div className="sc-y05v5v-4 iydZZJ">$2.1K</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<hr className="sc-qwzj9s-0 hsvmWZ" />
-							<div data-testid="token-details-about-section" className="sc-15bxms1-3 ghcBpv">
-								<div className="sc-sx9n2y-0 kivXvb sc-15bxms1-4 ebTQjO css-1b492mu">About</div>
-								<div className="sc-15bxms1-1 MTIbS textclr">
-									{showMore ? data.bioData : data.bioData.slice(0, 60)}
-									{data.bioData.length > 100 && (
-										<div
-											className="sc-15bxms1-2 iHKewj"
-											style={{ cursor: 'pointer' }}
-											onClick={toggleShowMore}
-										>
-											{showMore ? 'Show less' : 'Show more'}
-										</div>
-									)}
-								</div>
-								<br />
-								<div className="sc-sx9n2y-0 bftkTM css-1aekuku">Links</div>
-								<div data-cy="resources-container" className="sc-15bxms1-5 gTErEb">
-									<a
-										target="_blank"
-										rel="noopener noreferrer"
-										href="https://etherscan.io/"
-										className="sc-7yzmni-9 jnMVFj sc-xu83lq-0 oSKSq"
-									>
-										Etherscan<sup>↗</sup>
-									</a>
-									<a
-										target="_blank"
-										rel="noopener noreferrer"
-										href="https://info.uniswap.org/#/tokens/NATIVE"
-										className="sc-7yzmni-9 jnMVFj sc-xu83lq-0 oSKSq"
-									>
-										More analytics<sup>↗</sup>
-									</a>
-									<a
-										target="_blank"
-										rel="noopener noreferrer"
-										href="https://ethereum.org/"
-										className="sc-7yzmni-9 jnMVFj sc-xu83lq-0 oSKSq"
-									>
-										Website<sup>↗</sup>
-									</a>
-									<a
-										target="_blank"
-										rel="noopener noreferrer"
-										href="https://twitter.com/ethereum"
-										className="sc-7yzmni-9 jnMVFj sc-xu83lq-0 oSKSq"
-									>
-										Twitter<sup>↗</sup>
-									</a>
 								</div>
 							</div>
 						</div>
-					))}
 
-					<div className="kFzxb">
-						<Swap />
+						<div className="kFzxb">
+							<SwapWidget initialQuoteToken={token} />
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 		</div>
 	);

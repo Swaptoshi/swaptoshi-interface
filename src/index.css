@@ -191,7 +191,7 @@ a {
 }
 
 a:hover {
-	color: unset;
+	color: var(--color-white);
 }
 
 ul {
