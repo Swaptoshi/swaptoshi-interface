@@ -140,12 +140,31 @@ export function WalletConnectProvider({ children }) {
 		[sessions, signClient, reset],
 	);
 
+	const reloadAuth = React.useCallback(async () => {
+		if (senderPublicKey) {
+			const authResponse = await getAccountAuth(
+				{
+					address: cryptography.address.getLisk32AddressFromPublicKey(
+						Buffer.from(senderPublicKey, 'hex'),
+					),
+				},
+				selectedService.serviceURLs,
+			);
+			if (authResponse && authResponse.data) {
+				setAuth(authResponse.data);
+				return authResponse.data;
+			}
+		}
+	}, [selectedService, senderPublicKey]);
+
 	const sign = React.useCallback(
 		async (transaction, callback) => {
 			try {
+				const updatedAuth = await reloadAuth();
 				const payload = codec
 					.encode(transactionSchema, {
 						...(await transformTransaction(transaction)),
+						nonce: BigInt(updatedAuth.nonce),
 						senderPublicKey: Buffer.from(senderPublicKey, 'hex'),
 						signatures: [],
 					})
@@ -180,24 +199,8 @@ export function WalletConnectProvider({ children }) {
 				return undefined;
 			}
 		},
-		[senderPublicKey, selectedService, signClient, sessions, chain],
+		[reloadAuth, senderPublicKey, selectedService, signClient, sessions, chain],
 	);
-
-	const reloadAuth = React.useCallback(async () => {
-		if (senderPublicKey) {
-			const authResponse = await getAccountAuth(
-				{
-					address: cryptography.address.getLisk32AddressFromPublicKey(
-						Buffer.from(senderPublicKey, 'hex'),
-					),
-				},
-				selectedService.serviceURLs,
-			);
-			if (authResponse && authResponse.data) {
-				setAuth(authResponse.data);
-			}
-		}
-	}, [selectedService, senderPublicKey]);
 
 	const updateBalance = React.useCallback(async () => {
 		let balance = [];
@@ -277,6 +280,7 @@ export function WalletConnectProvider({ children }) {
 			balances,
 			auth,
 			reloadAuth,
+			updateBalance,
 		}),
 		[
 			signClient,
@@ -289,6 +293,7 @@ export function WalletConnectProvider({ children }) {
 			balances,
 			auth,
 			reloadAuth,
+			updateBalance,
 		],
 	);
 

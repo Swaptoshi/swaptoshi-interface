@@ -11,7 +11,7 @@ import Card from '../Card/Card';
 import { useLastBalance } from '../../context/LastBalanceProvider';
 
 export default function WalletAccount({ show }) {
-	const { senderPublicKey, balances } = useWalletConnect();
+	const { senderPublicKey, balances, updateBalance } = useWalletConnect();
 	const { chain, selectedService } = useChain();
 	const { prices, fiatFormatter } = useLiskPrice();
 	const { getLastBalance, updateLastBalance } = useLastBalance();
@@ -39,6 +39,10 @@ export default function WalletAccount({ show }) {
 	);
 
 	const requestRef = React.useRef(false);
+
+	React.useEffect(() => {
+		updateBalance();
+	}, [updateBalance]);
 
 	React.useEffect(() => {
 		if (currentWalletBalance > 0 && senderPublicKey) {
