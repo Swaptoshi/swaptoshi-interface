@@ -2,7 +2,7 @@ import React from 'react';
 import Dialog from '../../components/Tooltip/Dialog';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import SwitchBox from '../../components/SwitchBox/SwitchBox';
-import { DEFAULT_DEADLINE_MINUTE, DEFAULT_SLIPPAGE } from './Swap';
+import { DEFAULT_DEADLINE_MINUTE, DEFAULT_SLIPPAGE } from './SwapWidget';
 
 export default function SwapConfig({
 	show,

@@ -37,10 +37,7 @@ function App() {
 	const [isCartVisible, setIsCartVisible] = useState(false);
 
 	//Swap .js
-	const [selectedToken, setSelectedToken] = useState(swapTokens[0]);
-	const [selectedTokenSecond, setSelectedTokenSecond] = useState({
-		symbol: 'Select Token',
-	});
+	const [selectedToken] = useState(swapTokens[0]);
 	const [currentCurrencyId, setCurrentCurrencyId] = useState(null);
 
 	const [liquidityTokenOne, setLiquidityTokenOne] = useState(swapTokens[0]);
@@ -61,17 +58,6 @@ function App() {
 		setIsCartVisible(!isCartVisible);
 	};
 
-	//Swaptokensfunc
-	const handleTokenSelect = token => {
-		const newToken = { ...token };
-		if (currentCurrencyId === 'ethId') {
-			setSelectedToken(newToken);
-		} else {
-			setSelectedTokenSecond(newToken);
-		}
-		setSwapModal(false);
-	};
-
 	//SwapTokensfunc-liquidty0
 	const handleLiquidityTokenSelect = token => {
 		const newToken = { ...token };
@@ -86,8 +72,6 @@ function App() {
 	const handleSelect = (token, isLiquidity) => {
 		if (isLiquidity) {
 			handleLiquidityTokenSelect(token);
-		} else {
-			handleTokenSelect(token);
 		}
 		setSwapModal(false);
 	};
@@ -104,25 +88,7 @@ function App() {
 				<Routes>
 					<Route exact path="/" element={<Home />} />
 
-					<Route
-						path="/swap"
-						element={
-							<Swap
-								swapTokens={swapTokens}
-								handleSwapModal={handleSwapModal}
-								swapModal={swapModal}
-								setSwapModal={setSwapModal}
-								selectedToken={selectedToken}
-								setSelectedToken={setSelectedToken}
-								selectedTokenSecond={selectedTokenSecond}
-								setSelectedTokenSecond={setSelectedTokenSecond}
-								// handleTokenSelect={handleTokenSelect}
-								handleSelect={(token, isLiquidity) => handleSelect(token, isLiquidity)}
-								currentCurrencyId={currentCurrencyId}
-							/>
-						}
-						setCurrentCurrencyId={setCurrentCurrencyId}
-					/>
+					<Route path="/swap" element={<Swap />} setCurrentCurrencyId={setCurrentCurrencyId} />
 
 					<Route
 						path="/tokens"

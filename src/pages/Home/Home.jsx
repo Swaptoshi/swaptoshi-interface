@@ -4,6 +4,8 @@ import React from 'react';
 import './Home.css';
 import Footer from '../../components/Footer/Footer';
 import { NavLink } from 'react-router-dom';
+import SwapWidget from '../Swap/SwapWidget';
+import { liskTokenCompact } from '../../constants/tokens';
 
 const Home = () => {
 	const sectionRef = React.useRef(null);
@@ -28,133 +30,13 @@ const Home = () => {
 			<div className="home-page">
 				{/* <div className='swap-card'> */}
 				<div className="card-wrapper">
-					<a className="card-anchor" href="/swap">
-						<div className="card-section">
-							<main className="card-home-bg">
-								<div id="card-home-top" className="card-top-parent">
-									<div id="btns-top" className="top-btns">
-										<span className="swap-btn">Swap</span>
-										<div className="buy">
-											<button id="btn-id" className="buy-btn">
-												Buy
-											</button>
-										</div>
-									</div>
-
-									<div className="gear">
-										<button className="gear-btn">
-											<div>
-												<i className="ri-settings-3-fill gear-icon"></i>
-											</div>
-										</button>
-									</div>
-								</div>
-
-								{/* You Pay Tab */}
-								<div>
-									<div className="you-pay">
-										<div id="swap-currency-input" className="swap-currency">
-											<div className="input-wrapper">
-												<label className="youPay-label">You pay</label>
-												<div className="paying-wrapper">
-													<input
-														id="token-amount"
-														className="token-amount-input token-home"
-														inputMode="numeric"
-														autoComplete="off"
-														autoCorrect="off"
-														type="text"
-														name="you-pay"
-														placeholder="0"
-														minLength="1"
-														maxLength="79"
-														spellCheck="false"
-													/>
-
-													<div>
-														<button id="open-currency-select" className="open-currency-btn-top">
-															<span className="span-one">
-																<div className="cryptocurrency-wrapper">
-																	<div className="image-wrapper ">
-																		<div>
-																			<img
-																				className="icon-image"
-																				src="./assets/images/tokens/lisk-token.png"
-																				alt="lisk-logo"
-																			/>
-																		</div>
-																	</div>
-																	<span className="token-name">LSK</span>
-																</div>
-																<div className="dropdown-icon">
-																	<i className="ri-arrow-down-s-line"></i>{' '}
-																</div>
-															</span>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div className="switch-button">
-										<div className="switch-bg">
-											<i className="arrow-down ri-arrow-down-line"></i>
-										</div>
-									</div>
-
-									<div className="grid">
-										<div className="you-receive">
-											<div id="swap-currency-input" className="swap-currency">
-												<div className="input-wrapper">
-													<label className="youPay-label">You receive</label>
-													<div className="paying-wrapper">
-														<input
-															id="token-amount"
-															className="token-amount-input token-home"
-															inputMode="numeric"
-															autoComplete="off"
-															autoCorrect="off"
-															name="you-receive"
-															type="text"
-															placeholder="0"
-															minLength="1"
-															maxLength="79"
-															spellCheck="false"
-														/>
-
-														<div>
-															<button
-																id="open-currency-select"
-																className="open-currency-btn-bottom"
-															>
-																<span className="span-two">
-																	<div className="cryptocurrency-wrapper">
-																		<div className="text-wrapper">
-																			<span className="select-token">Select token</span>
-																		</div>
-																	</div>
-																	<div className="dropdown-icon">
-																		<i className="ri-arrow-down-s-line"></i>{' '}
-																	</div>
-																</span>
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div>
-											<button fontWeight="600" id="connectId" className="connect-wallet">
-												<div className=""></div>
-												Connect Wallet
-											</button>
-										</div>
-									</div>
-								</div>
-							</main>
+					<NavLink className="card-anchor" to="/swap">
+						<div className="card-section card-home">
+							<div className={'card-home-bg'} style={{ borderRadius: '24px' }}>
+								<SwapWidget disabled initialBaseToken={liskTokenCompact} />
+							</div>
 						</div>
-					</a>
+					</NavLink>
 				</div>
 
 				<div className="backdrop"></div>

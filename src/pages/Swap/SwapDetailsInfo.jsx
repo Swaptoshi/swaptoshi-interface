@@ -1,7 +1,7 @@
 import React from 'react';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import Loader from '../../components/Loader/Loader';
-import { DEFAULT_SLIPPAGE } from './Swap';
+import { DEFAULT_SLIPPAGE } from './SwapWidget';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import { useDebouncedCallback } from 'use-debounce';
 import { tryToast } from '../../utils/Toast/tryToast';
