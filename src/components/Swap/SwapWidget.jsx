@@ -13,13 +13,15 @@ import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { tryToast } from '../../utils/Toast/tryToast';
 import BigNumber from 'bignumber.js';
 import { getTransactionEstimateFee } from '../../service/transaction';
+import { useTransactionModal } from '../../context/TransactionModalProvider';
 
 export const DEFAULT_DEADLINE_MINUTE = 10;
 export const DEFAULT_SLIPPAGE = 0.5;
 
-const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken, onSwapClick }) => {
+const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	const { selectedService } = useChain();
 	const { balances, auth, senderPublicKey } = useWalletConnect();
+	const { sendTransaction } = useTransactionModal();
 
 	const [currentPrice, setCurrentPrice] = useState();
 
@@ -425,6 +427,17 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken, onSwapClick
 			}
 		}
 	}, []);
+
+	const onSwapClick = React.useCallback(() => {
+		sendTransaction({
+			transaction,
+			onSuccess: () => {
+				setBaseValue('');
+				setQuoteValue('');
+				setError(false);
+			},
+		});
+	}, [sendTransaction, transaction]);
 
 	return (
 		<React.Fragment>

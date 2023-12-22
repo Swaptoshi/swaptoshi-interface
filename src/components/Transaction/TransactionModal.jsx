@@ -21,7 +21,14 @@ const jsonTheme = {
 	dark: darkStyles,
 };
 
-export default function TransactionModal({ show, transaction, onClose, customSendHandler }) {
+export default function TransactionModal({
+	show,
+	transaction,
+	onClose,
+	onFailed,
+	onSuccess,
+	customSendHandler,
+}) {
 	const [theme] = useTheme();
 	const { selectedService } = useChain();
 	const { sign } = useWalletConnect();
@@ -57,15 +64,18 @@ export default function TransactionModal({ show, transaction, onClose, customSen
 						);
 					}
 
+					onSuccess && onSuccess();
 					toast.success('Transaction submitted');
 				},
-				undefined,
+				err => {
+					onFailed && onFailed(err);
+				},
 				() => {
 					onClose && onClose();
 				},
 			);
 		},
-		[customSendHandler, onClose, selectedService, sign],
+		[customSendHandler, onClose, onFailed, onSuccess, selectedService, sign],
 	);
 
 	const dryRun = useDebouncedCallback(async transaction => {
@@ -80,7 +90,7 @@ export default function TransactionModal({ show, transaction, onClose, customSen
 					throw new Error(run.data.errorMessage);
 				}
 				if (run.data.result === 0) {
-					throw new Error('Dry run transaction failed, try again later');
+					throw new Error('Dry run transaction failed, please re-check your parameter');
 				}
 				setReady(true);
 				setIsFecting(false);

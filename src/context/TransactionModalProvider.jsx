@@ -10,14 +10,20 @@ export function useTransactionModal() {
 export default function TransactionModalProvider({ children }) {
 	const [show, setShow] = useState(false);
 	const [onClose, setOnClose] = useState();
+	const [onSuccess, setOnSuccess] = useState();
+	const [onFailed, setOnFailed] = useState();
+	const [customHandler, setCustomHandler] = useState();
 	const [transaction, setTransaction] = useState();
 
 	const onDismount = React.useCallback(() => {
 		setOnClose();
+		setOnSuccess();
+		setOnFailed();
+		setCustomHandler();
 	}, []);
 
 	const sendTransaction = React.useCallback(
-		async ({ transaction, onClose }) => {
+		async ({ transaction, onClose, onSuccess, onFailed, customHandler }) => {
 			setTransaction(transaction);
 
 			setOnClose(() => () => {
@@ -25,6 +31,22 @@ export default function TransactionModalProvider({ children }) {
 				setShow(false);
 				onDismount();
 			});
+
+			setOnSuccess(() => () => {
+				onSuccess && onSuccess();
+			});
+
+			setOnFailed(() => err => {
+				onFailed && onFailed(err);
+			});
+
+			setCustomHandler(
+				customHandler
+					? () => async payload => {
+							customHandler && (await customHandler(payload));
+						}
+					: undefined,
+			);
 
 			setShow(true);
 		},
@@ -37,7 +59,16 @@ export default function TransactionModalProvider({ children }) {
 				sendTransaction,
 			}}
 		>
-			{show ? <TransactionModal show={show} transaction={transaction} onClose={onClose} /> : null}
+			{show ? (
+				<TransactionModal
+					show={show}
+					transaction={transaction}
+					onClose={onClose}
+					onSuccess={onSuccess}
+					onFailed={onFailed}
+					customSendHandler={customHandler}
+				/>
+			) : null}
 			{children}
 		</TransactionModalContext.Provider>
 	);
