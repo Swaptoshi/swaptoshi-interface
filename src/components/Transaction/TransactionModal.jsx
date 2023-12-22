@@ -5,9 +5,8 @@ import SwitchBox from '../SwitchBox/SwitchBox';
 import { useTheme } from '../../context/ThemeProvider';
 import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
 import { useDebouncedCallback } from 'use-debounce';
-import { getTransactionEstimateFee } from '../../service/transaction';
+import { dryRunTransaction, getTransactionEstimateFee } from '../../service/transaction';
 import { useChain } from '../../context/ChainProvider';
-import { tryToast } from '../../utils/Toast/tryToast';
 import Loader from '../Loader';
 
 const jsonTheme = {
@@ -19,29 +18,57 @@ export default function TransactionModal({ show, transaction, onClose }) {
 	const [theme] = useTheme();
 	const { selectedService } = useChain();
 
+	const [ready, setReady] = React.useState(false);
+	const [status, setStatus] = React.useState('Intializing transaction...');
+	const [error, setError] = React.useState();
 	const [parsedTransaction, setParsedTransaction] = React.useState();
 	const [isFetching, setIsFecting] = React.useState(true);
 	const [mode, setMode] = React.useState('summary');
 
-	const calculateMinimumFee = useDebouncedCallback(async transaction => {
-		tryToast(
-			'Fetch transaction info failed',
-			async () => {
-				const estimatedFee = await getTransactionEstimateFee(
-					transaction,
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
-				if (estimatedFee && estimatedFee.data) {
-					setParsedTransaction({
-						...transaction,
-						fee: estimatedFee.data.transaction.fee.minimum,
-						signatures: [],
-					});
-					setIsFecting(false);
+	const dryRun = useDebouncedCallback(async transaction => {
+		try {
+			setStatus('Dry running transaction...');
+			const run = await dryRunTransaction(
+				{ ...transaction, id: '0'.repeat(64) },
+				selectedService ? selectedService.serviceURLs : undefined,
+			);
+			if (run && run.data) {
+				if (run.data.result === -1) {
+					throw new Error(run.data.errorMessage);
 				}
-			},
-			() => onClose && onClose(),
-		);
+				if (run.data.result === 0) {
+					console.log(run.data);
+					throw new Error('Dry run transaction failed, try again later');
+				}
+				setReady(true);
+				setIsFecting(false);
+				setStatus('Valid transaction!');
+			}
+		} catch (err) {
+			setError(err.message);
+			setIsFecting(false);
+		}
+	}, 500);
+
+	const calculateMinimumFee = useDebouncedCallback(async transaction => {
+		try {
+			setStatus('Calculating transacton fee...');
+			const estimatedFee = await getTransactionEstimateFee(
+				transaction,
+				selectedService ? selectedService.serviceURLs : undefined,
+			);
+			if (estimatedFee && estimatedFee.data) {
+				setParsedTransaction({
+					...transaction,
+					fee: estimatedFee.data.transaction.fee.minimum,
+					signatures: [],
+				});
+				dryRun(transaction);
+			}
+		} catch (err) {
+			setError(err.message);
+			setIsFecting(false);
+		}
 	}, 500);
 
 	React.useEffect(() => {
@@ -121,7 +148,7 @@ export default function TransactionModal({ show, transaction, onClose }) {
 								}}
 							>
 								<i
-									className="ri-mail-send-line"
+									className="ri-mail-line"
 									style={{
 										fontSize: '60px',
 										color: 'var(--text-clr)',
@@ -162,6 +189,7 @@ export default function TransactionModal({ show, transaction, onClose }) {
 									</div>
 								) : isFetching ? (
 									<div
+										className="text"
 										style={{
 											height: '110px',
 											display: 'flex',
@@ -169,7 +197,7 @@ export default function TransactionModal({ show, transaction, onClose }) {
 											alignItems: 'center',
 										}}
 									>
-										<Loader size={10} />{' '}
+										{error ? "Something's not right, try again later" : <Loader size={10} />}
 									</div>
 								) : (
 									<div>
@@ -251,7 +279,12 @@ export default function TransactionModal({ show, transaction, onClose }) {
 
 							<div style={{ margin: '8px 0' }} />
 
-							<PrimaryButton style={{ width: '75%', height: '48px' }}>Sign And Send</PrimaryButton>
+							<PrimaryButton
+								disabled={!ready}
+								style={{ width: '75%', height: '48px', opacity: !ready ? 0.5 : 1 }}
+							>
+								Sign And Send
+							</PrimaryButton>
 
 							<div
 								style={{
@@ -261,7 +294,13 @@ export default function TransactionModal({ show, transaction, onClose }) {
 									marginTop: '16px',
 								}}
 							>
-								<Loader size={15} />
+								{error ? (
+									<i className="text ri-error-warning-line"></i>
+								) : isFetching ? (
+									<Loader size={15} />
+								) : (
+									<i className="text ri-checkbox-circle-line"></i>
+								)}
 								<div
 									style={{
 										color: 'var(--color-white)',
@@ -270,7 +309,7 @@ export default function TransactionModal({ show, transaction, onClose }) {
 										marginLeft: '8px',
 									}}
 								>
-									Dry running transaction
+									{error ? error : status}
 								</div>
 							</div>
 

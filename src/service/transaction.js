@@ -8,3 +8,12 @@ export const getTransactionEstimateFee = async (transaction, serviceUrl) => {
 	);
 	return estimatedFee;
 };
+
+export const dryRunTransaction = async (transaction, serviceUrl) => {
+	const estimatedFee = await servicePOST(
+		`/api/v3/transactions/dryrun`,
+		{ transaction },
+		serviceUrl,
+	);
+	return estimatedFee;
+};
