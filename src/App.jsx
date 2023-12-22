@@ -11,9 +11,6 @@ import LiquidityModal from './pages/LiquidityModal/LiquidityModal';
 
 import './App.css';
 import TokenDetails from './components/TokenDetails/TokenDetails';
-
-//Navbar Data
-import { searchOptions } from './service/navbar';
 //Tokens Data
 import { allTableData, chartData } from './service/tokens';
 //Swap Modal Tokens Data
@@ -30,12 +27,6 @@ function App() {
 	//Swap Modal
 	const [swapModal, setSwapModal] = useState(false);
 
-	//Privacy Modal
-	const [privacyModal, setPrivacyModal] = useState(false);
-
-	//NFT BAG
-	const [isCartVisible, setIsCartVisible] = useState(false);
-
 	//Swap .js
 	const [selectedToken] = useState(swapTokens[0]);
 	const [currentCurrencyId, setCurrentCurrencyId] = useState(null);
@@ -51,11 +42,6 @@ function App() {
 		setSwapModal(true);
 		setCurrentCurrencyId(currencyId);
 		setIsLiquidityTokenSelected(currencyId);
-	};
-
-	//Cart
-	const handleCart = () => {
-		setIsCartVisible(!isCartVisible);
 	};
 
 	//SwapTokensfunc-liquidty0
@@ -79,12 +65,7 @@ function App() {
 	return (
 		<div className="App" data-theme={theme === 'system' ? getSystemTheme() : theme}>
 			<AppContextProvider>
-				<Navbar
-					searchOptions={searchOptions}
-					privacyModal={privacyModal}
-					setPrivacyModal={setPrivacyModal}
-					handleCart={handleCart}
-				/>
+				<Navbar />
 				<Routes>
 					<Route exact path="/" element={<Home />} />
 

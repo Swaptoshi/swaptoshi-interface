@@ -13,18 +13,27 @@ import { getSwaptoshiIcon } from '../../service/icon';
 import PrimaryButton from '../Button/PrimaryButton';
 import { useWalletModal } from '../../context/WalletModalProvider';
 import Dropdown from './Dropdown';
+import { useDebouncedCallback } from 'use-debounce';
+import { tryToast } from '../../utils/Toast/tryToast';
+import { intervalToSecond } from '../../utils/Time/intervalToSecond';
+import { getDEXToken } from '../../service/dex';
+import { useLiskPrice } from '../../context/LiskPriceProvider';
 
-const Navbar = ({ searchOptions }) => {
+const Navbar = () => {
 	const location = useLocation();
 	const logoImage = '/assets/images/logo/swaptoshi-logo.svg';
+
 	const [isActiveHeader, setIsActiveHeader] = useState(false);
-	const [searchTerm, setSearchTerm] = useState('');
+	const [initialResult, setInitialResult] = useState();
+	const [searchResult, setSearchResult] = useState();
+	const [isLoading, setIsLoading] = useState(false);
 	const [isSearchOpen, setSearchOpen] = useState(false);
 	const [isDropdownVisible, setDropdownVisibility] = useState(false);
 
 	const { connect, wcUri, signClient, senderPublicKey } = useWalletConnect();
 	const { availableService, selectedService, setChain } = useChain();
 	const [isModalOpen, setIsModalOpen] = useWalletModal();
+	const { fiatFormatter } = useLiskPrice();
 
 	const centerSearchRef = useRef(null);
 	const rightSearchRef = useRef(null);
@@ -87,13 +96,59 @@ const Navbar = ({ searchOptions }) => {
 		setSelectedOption(option);
 	};
 
-	const handleSearchChange = e => {
-		setSearchTerm(e.target.value);
-	};
+	const fetchToken = useDebouncedCallback(async search => {
+		await tryToast(
+			'Fetch token list failed',
+			async () => {
+				const param = {
+					offset: 0,
+					limit: 3,
+					changeWindow: process.env.REACT_APP_TOKENS_LIST_DEFAULT_WINDOW,
+					start:
+						Math.floor(Date.now() / 1000) -
+						intervalToSecond[process.env.REACT_APP_TOKENS_LIST_DEFAULT_WINDOW],
+					end: Math.floor(Date.now() / 1000),
+				};
+				if (search) param.search = search;
+				const tokens = await getDEXToken(
+					param,
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (tokens && tokens.data) {
+					if (!search) setInitialResult(tokens.data);
+					setSearchResult(tokens.data);
+				}
+			},
+			undefined,
+			() => setIsLoading(false),
+		);
+	}, 500);
 
-	const filteredOptions = searchOptions.filter(option =>
-		option.label.toLowerCase().includes(searchTerm.toLowerCase()),
+	const searchToken = useDebouncedCallback(async search => {
+		await fetchToken(search);
+	}, 500);
+
+	const handleSearchChange = React.useCallback(
+		e => {
+			setSearchOpen(true);
+			setIsLoading(true);
+			if (!e || e.target.value || !searchResult || (searchResult && searchResult.length === 0)) {
+				searchToken(e ? e.target.value : undefined);
+			} else {
+				setSearchResult(initialResult);
+				setIsLoading(false);
+			}
+		},
+		[initialResult, searchResult, searchToken],
 	);
+
+	const handleSearchClick = React.useCallback(() => {
+		setSearchOpen(true);
+		if (!searchResult || (searchResult && searchResult.length === 0)) {
+			setIsLoading(true);
+			searchToken();
+		}
+	}, [searchResult, searchToken]);
 
 	useEffect(() => {
 		if (!isSearchOpen && !isDropdownVisible) return; // If both dropdowns are closed, no need for the listener
@@ -119,22 +174,22 @@ const Navbar = ({ searchOptions }) => {
 		};
 	}, [isSearchOpen, isDropdownVisible, centerSearchRef, rightSearchRef, rightSearchInsideRef]);
 
-	function determineTrendIcon(current, old) {
-		if (current > old) {
+	function determineTrendIcon(priceChangeUSD) {
+		if (priceChangeUSD > 0) {
 			return (
 				<i
 					style={{ color: 'rgb(118, 209, 145)' }}
 					className="trends-up-icon ri-arrow-right-up-line"
 				></i>
 			);
-		} else if (current < old) {
+		} else if (priceChangeUSD < 0) {
 			return (
 				<i
 					style={{ color: 'rgb(252, 83, 83)' }}
 					className="trends-down-icon ri-arrow-right-down-line"
 				></i>
 			);
-		} else if (current === old) {
+		} else if (priceChangeUSD === 0) {
 			return (
 				<i
 					style={{ color: 'rgb(118, 209, 145)' }}
@@ -143,11 +198,6 @@ const Navbar = ({ searchOptions }) => {
 			);
 		}
 		return null;
-	}
-
-	//Calculate Search `dropdown` rates
-	function calculatePercentChange(current, old) {
-		return Math.abs(((current - old) / old) * 100);
 	}
 
 	return (
@@ -236,9 +286,8 @@ const Navbar = ({ searchOptions }) => {
 										className=""
 										type="search"
 										placeholder="Search tokens"
-										value={searchTerm}
 										onChange={handleSearchChange}
-										onClick={() => setSearchOpen(true)}
+										onClick={handleSearchClick}
 									/>
 									<div className="slash" style={{ display: isSearchOpen ? 'none' : 'block' }}>
 										/
@@ -250,116 +299,97 @@ const Navbar = ({ searchOptions }) => {
 										<div className="options-box">
 											<div className="so">
 												<div className="">
-													{filteredOptions.map((option, index) => (
-														<React.Fragment key={index}>
-															{option.price && !filteredOptions[index - 1]?.price && (
-																<div className="popular-tokens">
-																	<div className="popular-title">
-																		<img
-																			className="rotate-arrow"
-																			src="assets/images/trends-arrow.png"
-																		/>
-
-																		<div>Popular Tokens</div>
-																	</div>
-																</div>
-															)}
-															{/* title for popular NFTs */}
-															{option.floor && !searchOptions[index - 1]?.floor && (
-																<div className="popular-tokens">
-																	<div className="popular-title">
-																		<img
-																			className="rotate-arrow"
-																			src="assets/images/trends-arrow.png"
-																		/>
-																		<div>Popular NFTs</div>
-																	</div>
-																</div>
-															)}
-															<React.Fragment>
-																<div className="popular-tokens-item">
-																	<a
-																		href="/tokens"
-																		className="tokens-options"
-																		onClick={() => {
-																			handleOptionClick(option);
-																			setSearchTerm(option.label);
-																			setSearchOpen(false);
-																		}}
-																	>
-																		<div className="left-item">
-																			<div>
-																				<div className="img-div">
-																					<img src={option.imgSrc} alt={option.label} />
+													{isLoading ? (
+														<div
+															style={{
+																display: 'flex',
+																justifyContent: 'center',
+																alignItems: 'center',
+																width: '100%',
+																margin: '64px 0px',
+															}}
+														>
+															<Loader size={30} />{' '}
+														</div>
+													) : searchResult && searchResult.length > 0 ? (
+														searchResult.map(option => (
+															<React.Fragment key={option.tokenId}>
+																<React.Fragment>
+																	<div className="popular-tokens-item">
+																		<NavLink
+																			to={`/tokens/${option.tokenId}`}
+																			className="tokens-options"
+																			onClick={() => {
+																				handleOptionClick(option);
+																				setSearchOpen(false);
+																			}}
+																		>
+																			<div className="left-item">
+																				<div>
+																					<div className="img-div">
+																						<img src={option.logo} alt={option.tokenName} />
+																					</div>
+																					<div className="dCJIvZ"></div>
 																				</div>
-																				<div className="dCJIvZ"></div>
-																			</div>
-																			<div className="token-name">
-																				<div className="token-name-value">
-																					<span>{option.label}</span>
-																				</div>
-																				<div className="symbol">
-																					{option.symbol && <span>{option.symbol}</span>}
-																					<div className="">
-																						{option.items && (
-																							<span> {option.items.toLocaleString()} items</span>
-																						)}
+																				<div className="token-name">
+																					<div className="token-name-value">
+																						<span>{option.tokenName}</span>
+																					</div>
+																					<div className="symbol">
+																						{option.symbol && <span>{option.symbol}</span>}
 																					</div>
 																				</div>
 																			</div>
-																		</div>
-																		<div className="right-item">
-																			{/* data for Tokens */}
-																			{option.price && (
-																				<React.Fragment>
-																					<div>
-																						<div className="price-item">
-																							<span className="price-text">
-																								${option.price.toFixed(2)}
+
+																			<div className="right-item">
+																				{/* data for Tokens */}
+																				{option.priceUSD && (
+																					<React.Fragment>
+																						<div>
+																							<div className="price-item">
+																								<span className="price-text">
+																									{fiatFormatter.format(option.priceUSD.toFixed(4))}
+																								</span>
+																							</div>
+																						</div>
+																						<div className="percentage">
+																							<span>
+																								{determineTrendIcon(option.priceChangeUSD)}
+																							</span>
+																							<span
+																								className="percentage-text"
+																								style={{
+																									color:
+																										option.priceChangeUSD > 0
+																											? 'rgb(118, 209, 145)'
+																											: 'rgb(252, 83, 83)',
+																								}}
+																							>
+																								<span>{option.priceChangeUSD.toFixed(2)}%</span>
 																							</span>
 																						</div>
-																					</div>
-																					<div className="percentage">
-																						<span>
-																							{determineTrendIcon(option.price, option.oldPrice)}
-																						</span>
-																						<span
-																							className="percentage-text"
-																							style={{
-																								color:
-																									option.price > option.oldPrice
-																										? 'rgb(118, 209, 145)'
-																										: 'rgb(252, 83, 83)',
-																							}}
-																						>
-																							<span>
-																								{calculatePercentChange(
-																									option.price,
-																									option.oldPrice,
-																								).toFixed(2)}
-																								%
-																							</span>
-																						</span>
-																					</div>
-																				</React.Fragment>
-																			)}
-																			{/* data for Floor */}
-																			{option.floor && (
-																				<React.Fragment>
-																					<div className="floor-rate">
-																						<span>{option.floor.toFixed(2)} ETH</span>
-																					</div>
-																					<span className="floor-text">
-																						<p>Floor</p>
-																					</span>
-																				</React.Fragment>
-																			)}
-																		</div>
-																	</a>
-																</div>
+																					</React.Fragment>
+																				)}
+																			</div>
+																		</NavLink>
+																	</div>
+																</React.Fragment>
 															</React.Fragment>
-														</React.Fragment>
-													))}
+														))
+													) : (
+														<div
+															style={{
+																display: 'flex',
+																justifyContent: 'center',
+																alignItems: 'center',
+																width: '100%',
+																margin: '64px 0px',
+																color: 'var(--color-white)',
+															}}
+														>
+															Nothing to show
+														</div>
+													)}
 												</div>
 											</div>
 										</div>
@@ -385,9 +415,8 @@ const Navbar = ({ searchOptions }) => {
 													className=""
 													type="search"
 													placeholder="Search tokens"
-													value={searchTerm}
 													onChange={handleSearchChange}
-													onClick={() => setSearchOpen(true)}
+													onClick={handleSearchClick}
 												/>
 												<div className="slash" style={{ display: isSearchOpen ? 'none' : 'block' }}>
 													/
@@ -398,122 +427,100 @@ const Navbar = ({ searchOptions }) => {
 														<div className="options-box">
 															<div className="so">
 																<div className="">
-																	{filteredOptions.map((option, index) => (
-																		<React.Fragment key={index}>
-																			{option.price && !filteredOptions[index - 1]?.price && (
-																				<div className="popular-tokens">
-																					<div className="popular-title">
-																						<img
-																							className="rotate-arrow"
-																							src="assets/images/trends-arrow.png"
-																						/>
-
-																						<div>Popular Tokens</div>
-																					</div>
-																				</div>
-																			)}
-																			{/* title for popular NFTs */}
-																			{option.floor && !searchOptions[index - 1]?.floor && (
-																				<div className="popular-tokens">
-																					<div className="popular-title">
-																						<img
-																							className="rotate-arrow"
-																							src="assets/images/trends-arrow.png"
-																						/>
-																						<div>Popular NFTs</div>
-																					</div>
-																				</div>
-																			)}
-																			<React.Fragment>
-																				<div className="popular-tokens-item">
-																					<a
-																						href="/tokens"
-																						className="tokens-options"
-																						onClick={() => {
-																							handleOptionClick(option);
-																							setSearchTerm(option.label);
-																							setSearchOpen(false);
-																						}}
-																					>
-																						<div className="left-item">
-																							<div>
-																								<div className="img-div">
-																									<img src={option.imgSrc} alt={option.label} />
+																	{isLoading ? (
+																		<div
+																			style={{
+																				display: 'flex',
+																				justifyContent: 'center',
+																				alignItems: 'center',
+																				width: '100%',
+																				margin: '64px 0px',
+																			}}
+																		>
+																			<Loader size={30} />{' '}
+																		</div>
+																	) : searchResult && searchResult.length > 0 ? (
+																		searchResult.map(option => (
+																			<React.Fragment key={option.tokenId}>
+																				<React.Fragment>
+																					<div className="popular-tokens-item">
+																						<NavLink
+																							to={`/tokens/${option.tokenId}`}
+																							className="tokens-options"
+																							onClick={() => {
+																								handleOptionClick(option);
+																								setSearchOpen(false);
+																							}}
+																						>
+																							<div className="left-item">
+																								<div>
+																									<div className="img-div">
+																										<img src={option.logo} alt={option.tokenName} />
+																									</div>
+																									<div className="dCJIvZ"></div>
 																								</div>
-																								<div className="dCJIvZ"></div>
-																							</div>
-																							<div className="token-name">
-																								<div className="token-name-value">
-																									<span>{option.label}</span>
-																								</div>
-																								<div className="symbol">
-																									{option.symbol && <span>{option.symbol}</span>}
-																									<div className="">
-																										{option.items && (
-																											<span>
-																												{' '}
-																												{option.items.toLocaleString()} items
-																											</span>
-																										)}
+																								<div className="token-name">
+																									<div className="token-name-value">
+																										<span>{option.tokenName}</span>
+																									</div>
+																									<div className="symbol">
+																										{option.symbol && <span>{option.symbol}</span>}
 																									</div>
 																								</div>
 																							</div>
-																						</div>
-																						<div className="right-item">
-																							{/* data for Tokens */}
-																							{option.price && (
-																								<React.Fragment>
-																									<div>
-																										<div className="price-item">
-																											<span className="price-text">
-																												${option.price.toFixed(2)}
+																							<div className="right-item">
+																								{/* data for Tokens */}
+																								{option.priceUSD && (
+																									<React.Fragment>
+																										<div>
+																											<div className="price-item">
+																												<span className="price-text">
+																													{fiatFormatter.format(
+																														option.priceUSD.toFixed(4),
+																													)}
+																												</span>
+																											</div>
+																										</div>
+																										<div className="percentage">
+																											<span>
+																												{determineTrendIcon(option.priceChangeUSD)}
+																											</span>
+																											<span
+																												className="percentage-text"
+																												style={{
+																													color:
+																														option.priceChangeUSD > 0
+																															? 'rgb(118, 209, 145)'
+																															: 'rgb(252, 83, 83)',
+																												}}
+																											>
+																												<span>
+																													{option.priceChangeUSD.toFixed(4)}%
+																												</span>
 																											</span>
 																										</div>
-																									</div>
-																									<div className="percentage">
-																										<span>
-																											{determineTrendIcon(
-																												option.price,
-																												option.oldPrice,
-																											)}
-																										</span>
-																										<span
-																											className="percentage-text"
-																											style={{
-																												color:
-																													option.price > option.oldPrice
-																														? 'rgb(118, 209, 145)'
-																														: 'rgb(252, 83, 83)',
-																											}}
-																										>
-																											<span>
-																												{calculatePercentChange(
-																													option.price,
-																													option.oldPrice,
-																												).toFixed(2)}
-																												%
-																											</span>
-																										</span>
-																									</div>
-																								</React.Fragment>
-																							)}
-																							{/* data for Floor */}
-																							{option.floor && (
-																								<React.Fragment>
-																									<div className="floor-rate">
-																										<span>{option.floor.toFixed(2)} ETH</span>
-																									</div>
-																									<span className="floor-text">
-																										<p>Floor</p>
-																									</span>
-																								</React.Fragment>
-																							)}
-																						</div>
-																					</a>
-																				</div>
+																									</React.Fragment>
+																								)}
+																							</div>
+																						</NavLink>
+																					</div>
+																				</React.Fragment>
 																			</React.Fragment>
-																		</React.Fragment>
-																	))}
+																		))
+																	) : (
+																		<div
+																			style={{
+																				display: 'flex',
+																				justifyContent: 'center',
+																				alignItems: 'center',
+																				width: '100%',
+																				margin: '64px 0px',
+																				color: 'var(--color-white)',
+																			}}
+																		>
+																			Nothing to show
+																		</div>
+																	)}
 																</div>
 															</div>
 														</div>
