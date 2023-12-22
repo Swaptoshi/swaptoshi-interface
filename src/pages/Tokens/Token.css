@@ -1,3 +1,13 @@
+.timeframe-selector {
+	top: 56px;
+	left: 0;
+	right: auto;
+}
+
+.timeframe-selector-anchor {
+	background-color: var(--open-currency-btn-bg);
+}
+
 .token-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -249,7 +259,7 @@
 }
 
 .token-input {
-	background: url("/public/assets/images/search-icon.svg") 12px center / 20px 20px no-repeat scroll
+	background: url('/public/assets/images/search-icon.svg') 12px center / 20px 20px no-repeat scroll
 		var(--card-inside-color);
 	border-radius: 12px;
 	border: 1.5px solid rgb(152 161 192 / 24%);
@@ -257,13 +267,13 @@
 	width: min(200px, 100%);
 	font-size: 14px;
 	padding-left: 40px;
+	padding-right: 10px;
 	color: var(--text-color);
 	transition-duration: 125ms;
 }
 
 .token-input:focus {
 	outline: none;
-	background-color: rgb(13 17 28);
 	border-color: rgb(76 130 251 / 24%);
 }
 
@@ -303,7 +313,7 @@
 	min-width: 240px;
 	max-height: 300px;
 	overflow: auto;
-	background-color: rgb(13 17 28);
+	background-color: var(--nav-drop);
 	box-shadow:
 		rgb(0 0 0 / 24%) 12px 16px 24px,
 		rgb(0 0 0 / 24%) 12px 8px 12px,
@@ -332,10 +342,14 @@
 	cursor: pointer;
 }
 
+.iCcgEc:hover {
+	background-color: var(--hover-background);
+}
+
 .chstga {
 	flex: 1 1 0%;
 	padding: 8px;
-	color: rgb(255 255 255);
+	color: var(--color-white);
 	border-radius: 8px;
 }
 
@@ -567,6 +581,10 @@
 	text-decoration: none;
 }
 
+.cQmpaP:hover {
+	background-color: var(--open-currency-btn-bg);
+}
+
 .cQmpaP {
 	background-color: transparent;
 	display: grid;
@@ -755,8 +773,18 @@
 	}
 }
 
+@media (width > 540px) {
+	.hide-above-540 {
+		display: none;
+	}
+}
+
 @media (width <= 540px) {
 	/* header row  */
+	.show-below-540 {
+		display: block;
+	}
+
 	#giptel {
 		-webkit-box-pack: justify;
 		justify-content: space-between;

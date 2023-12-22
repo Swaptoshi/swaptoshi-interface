@@ -12,6 +12,7 @@ export function useLiskPrice() {
 export default function LiskPriceProvider({ children }) {
 	const [prices, setPrices] = React.useState([]);
 	const [fiatFormatter, setFiatFormatter] = React.useState();
+	const [compactFiatFormatter, setCompactFiatFormatter] = React.useState();
 	const [cryptoFormatter, setCryptoFormatter] = React.useState();
 	const [currency, setCurrency] = React.useState('USD');
 	const { selectedService } = useChain();
@@ -22,6 +23,14 @@ export default function LiskPriceProvider({ children }) {
 				style: 'currency',
 				currency: currency,
 				maximumFractionDigits: 20,
+			}),
+		);
+		setCompactFiatFormatter(
+			new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: currency,
+				maximumFractionDigits: 2,
+				notation: 'compact',
 			}),
 		);
 		setCryptoFormatter(new Intl.NumberFormat(undefined, { maximumFractionDigits: 20 }));
@@ -56,10 +65,11 @@ export default function LiskPriceProvider({ children }) {
 			setPrices,
 			currency,
 			setCurrency,
+			compactFiatFormatter,
 			fiatFormatter,
 			cryptoFormatter,
 		}),
-		[cryptoFormatter, currency, fiatFormatter, prices],
+		[compactFiatFormatter, cryptoFormatter, currency, fiatFormatter, prices],
 	);
 
 	return <LiskPriceContext.Provider value={context}>{children}</LiskPriceContext.Provider>;

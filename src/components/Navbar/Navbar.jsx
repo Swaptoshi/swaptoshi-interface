@@ -177,6 +177,7 @@ const Navbar = ({ searchOptions }) => {
 									<Loader size={12} />
 								) : optionsLabel.length > 0 && selectedOption ? (
 									<Dropdown
+										className={'chain-selector'}
 										selectedOption={selectedOption}
 										optionsLabel={optionsLabel}
 										handleOptionClick={handleOptionClick}
@@ -534,6 +535,7 @@ const Navbar = ({ searchOptions }) => {
 										<Loader size={12} />
 									) : optionsLabel.length > 0 && selectedOption ? (
 										<Dropdown
+											className={'chain-selector'}
 											selectedOption={selectedOption}
 											optionsLabel={optionsLabel}
 											handleOptionClick={handleOptionClick}

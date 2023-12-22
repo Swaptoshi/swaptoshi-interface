@@ -2,68 +2,113 @@ import React, { useState, useEffect } from 'react';
 import './Token.css';
 import { Link, NavLink } from 'react-router-dom';
 import PrimaryButton from '../../components/Button/PrimaryButton';
+import { timeframes } from '../../constants/timeframe';
+import { tryToast } from '../../utils/Toast/tryToast';
+import { getDEXToken } from '../../service/dex';
+import { useChain } from '../../context/ChainProvider';
+import Loader from '../../components/Loader';
+import { intervalToSecond } from '../../utils/Time/intervalToSecond';
+import { useDebouncedCallback } from 'use-debounce';
+import Dropdown from '../../components/Navbar/Dropdown';
+import { useLiskPrice } from '../../context/LiskPriceProvider';
 
-const Token = ({ allTableData, updateTime, options }) => {
-	const [sortBy, setSortBy] = useState(null);
+const Token = () => {
+	const { selectedService } = useChain();
+	const { compactFiatFormatter } = useLiskPrice();
+
+	const [isLoading, setIsLoading] = useState(true);
+	const [sortBy, setSortBy] = useState('totalTvlUSD');
 	const [sortOrder, setSortOrder] = useState('desc');
 
-	const [selectedOption, setSelectedOption] = useState(options[0]);
-	const [updateOption, setUpdateOption] = useState(updateTime[1]);
-	const [isOpen, setIsOpen] = useState(false);
-	const [handleOpen, setHandleOpen] = useState(false);
+	const [selectedTimeframe, setSelectedTimeframe] = useState(
+		timeframes.find(t => t.value === process.env.REACT_APP_TOKENS_LIST_DEFAULT_WINDOW),
+	);
+	const [tokens, setTokens] = useState();
+	const [filteredTableData, setFilteredTableData] = useState();
 
-	const [filteredTableData, setFilteredTableData] = useState(allTableData);
+	const fetchToken = useDebouncedCallback(async (changeWindow, search) => {
+		await tryToast(
+			'Fetch token list failed',
+			async () => {
+				const param = {
+					offset: 0,
+					limit: 100,
+					changeWindow,
+					start: Math.floor(Date.now() / 1000) - intervalToSecond[changeWindow],
+					end: Math.floor(Date.now() / 1000),
+					sortBy,
+					sortOrder,
+				};
+				if (search) param.search = search;
+				const tokens = await getDEXToken(
+					param,
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (tokens && tokens.data) {
+					if (!search) setTokens(tokens.data);
+					setFilteredTableData(tokens.data);
+				}
+			},
+			undefined,
+			() => setIsLoading(false),
+		);
+	}, 500);
 
-	const sortData = criteria => {
-		const newSortOrder = sortBy === criteria && sortOrder === 'asc' ? 'desc' : 'asc';
-		setSortBy(criteria);
-		setSortOrder(newSortOrder);
+	const filterToken = useDebouncedCallback(async search => {
+		await fetchToken(selectedTimeframe.value, search);
+	}, 500);
 
-		const sortedData = [...allTableData].sort((a, b) => {
-			const aValue = a[criteria];
-			const bValue = b[criteria];
-
-			if (newSortOrder === 'asc') {
-				return aValue - bValue;
+	const handleFilterToken = React.useCallback(
+		e => {
+			setIsLoading(true);
+			if (e.target.value) {
+				filterToken(e.target.value);
 			} else {
-				return bValue - aValue;
+				setFilteredTableData(tokens);
+				setIsLoading(false);
 			}
-		});
+		},
+		[filterToken, tokens],
+	);
 
-		setFilteredTableData(sortedData);
-	};
+	const sortData = React.useCallback(
+		async criteria => {
+			setIsLoading(true);
 
-	const handleCryptoOpen = () => {
-		setIsOpen(!isOpen);
-		setHandleOpen(false);
-	};
+			const newSortOrder = sortBy === criteria && sortOrder === 'asc' ? 'desc' : 'asc';
+			setSortBy(criteria);
+			setSortOrder(newSortOrder);
 
-	const handleUpdateOpen = () => {
-		setHandleOpen(!handleOpen);
-		setIsOpen(false);
-	};
+			await fetchToken(selectedTimeframe.value);
+		},
+		[fetchToken, selectedTimeframe, sortBy, sortOrder],
+	);
+
 	useEffect(() => {
-		const filteredData = allTableData.filter(data => data.label === selectedOption.label);
+		const run = async () => {
+			setIsLoading(true);
+			fetchToken(selectedTimeframe.value);
+		};
 
-		setFilteredTableData(filteredData);
-	}, [allTableData, selectedOption]);
+		run();
+	}, [fetchToken, selectedTimeframe]);
 
-	function determineTrendIcon(current, old) {
-		if (current > old) {
+	const determineTrendIcon = React.useCallback(priceChange => {
+		if (priceChange > 0) {
 			return (
 				<i
 					style={{ color: 'rgb(118, 209, 145)' }}
 					className="trends-up-icon ri-arrow-right-up-line"
 				></i>
 			);
-		} else if (current < old) {
+		} else if (priceChange < 0) {
 			return (
 				<i
 					style={{ color: 'rgb(252, 83, 83)' }}
 					className="trends-down-icon ri-arrow-right-down-line"
 				></i>
 			);
-		} else if (current === old) {
+		} else if (priceChange === 0) {
 			return (
 				<i
 					style={{ color: 'rgb(118, 209, 145)' }}
@@ -72,12 +117,11 @@ const Token = ({ allTableData, updateTime, options }) => {
 			);
 		}
 		return null;
-	}
+	}, []);
 
-	//Calculate Search `dropdown` rates
-	function calculatePercentChange(current, old) {
-		return Math.abs(((current - old) / old) * 100);
-	}
+	const handleTimeframeOptionClick = React.useCallback(option => {
+		setSelectedTimeframe(option);
+	}, []);
 
 	return (
 		<React.Fragment>
@@ -85,85 +129,21 @@ const Token = ({ allTableData, updateTime, options }) => {
 				<div className="token-container">
 					<div className="token-title-wrapper">
 						<div className="token-title">
-							<p>Top tokens on Uniswap</p>
+							<p>Top Tokens on Swaptoshi</p>
 						</div>
 					</div>
 
 					<div className="filter-wrapper">
 						<div className="filter-dropdowns">
 							<div className="crypto-currency-drop">
-								{/* token-btn */}
-								<button id="crypto-btn " className="me-2" onClick={handleCryptoOpen}>
-									<div className="crypto-btn-content">
-										<div className="text-and-img">
-											<img src={selectedOption.imgSrc} alt="selected-crypto-icon" />
-											{selectedOption.label}
-										</div>
-										<span className={`icon-drop ${isOpen ? 'rotated' : ''}`}>
-											<i className="ri-arrow-down-s-line"></i>
-										</span>
-									</div>
-								</button>
-
-								{/* token-btn dropdown */}
-								{isOpen && (
-									<ul className="dropdown-items-wrapper">
-										{options.map(option => (
-											<li id="dropdownItem" className="dropdown-item" key={Math.random()}>
-												<div
-													className="item-crypto"
-													onClick={() => {
-														setSelectedOption(option);
-														setIsOpen(false);
-													}}
-												>
-													<img src={option.imgSrc} />
-													{option.label}
-												</div>
-												<div className="">
-													{selectedOption.value === option.value && (
-														<i className="tick-icon ri-check-line"></i>
-													)}
-												</div>
-											</li>
-										))}
-									</ul>
-								)}
-
-								{/* token update button */}
 								<div className="token-update">
-									<button id="updateBtn" className="update-btn" onClick={handleUpdateOpen}>
-										<div className="token-update-text">
-											{updateOption.label}
-											<span className={`icon-drop ${handleOpen ? 'rotated' : ''}`}>
-												<i className="ri-arrow-down-s-line"></i>
-											</span>
-										</div>
-									</button>
-
-									{/* //token update button dropdown */}
-									{handleOpen && (
-										<ul className="igfebL">
-											{updateTime.map(op => (
-												<li id="" className="chstga iCcgEc" key={op.value}>
-													<div
-														className=""
-														onClick={() => {
-															setUpdateOption(op);
-															setHandleOpen(false);
-														}}
-													>
-														{op.label}
-													</div>
-													<div className="">
-														{updateOption.value === op.value && (
-															<i className="tick-icon ri-check-line"></i>
-														)}
-													</div>
-												</li>
-											))}
-										</ul>
-									)}
+									<Dropdown
+										className={'timeframe-selector'}
+										anchorClassName={'timeframe-selector-anchor'}
+										selectedOption={selectedTimeframe}
+										optionsLabel={timeframes}
+										handleOptionClick={handleTimeframeOptionClick}
+									/>
 								</div>
 							</div>
 							<div
@@ -195,6 +175,7 @@ const Token = ({ allTableData, updateTime, options }) => {
 									autoComplete="off"
 									className="token-input"
 									defaultValue=""
+									onChange={handleFilterToken}
 								/>
 							</div>
 						</div>
@@ -220,8 +201,8 @@ const Token = ({ allTableData, updateTime, options }) => {
 								className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-9 hJyIyF knzTRi igka-dA"
 							>
 								<span className="sc-1bit9h6-13 jxjqhR">
-									<div onClick={() => sortData('price')}>Price</div>
-									{sortBy === 'price' && (
+									<div onClick={() => sortData('priceUSD')}>Price</div>
+									{sortBy === 'priceUSD' && (
 										<div className="sc-d5tbhs-1 cSretk">
 											<div>
 												<div className="sc-1bit9h6-26 bcYQwk">
@@ -241,8 +222,8 @@ const Token = ({ allTableData, updateTime, options }) => {
 								className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-10 hJyIyF knzTRi fLOBMM"
 							>
 								<span className="sc-1bit9h6-13 jxjqhR">
-									<div onClick={() => sortData('oldPrice')}>Change</div>
-									{sortBy === 'oldPrice' && (
+									<div onClick={() => sortData('priceChangeUSD')}>Change</div>
+									{sortBy === 'priceChangeUSD' && (
 										<div className="sc-d5tbhs-1 cSretk">
 											<div>
 												<div className="sc-1bit9h6-26 bcYQwk">
@@ -263,8 +244,8 @@ const Token = ({ allTableData, updateTime, options }) => {
 								className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-7 hJyIyF knzTRi fLGPoq"
 							>
 								<span className="sc-1bit9h6-13 jxjqhR">
-									<div onClick={() => sortData('tvl')}>TVL</div>
-									{sortBy === 'tvl' && (
+									<div onClick={() => sortData('totalTvlUSD')}>TVL</div>
+									{sortBy === 'totalTvlUSD' && (
 										<div className="sc-d5tbhs-1 cSretk">
 											<div>
 												<div className="sc-1bit9h6-26 bcYQwk">
@@ -281,8 +262,8 @@ const Token = ({ allTableData, updateTime, options }) => {
 							</div>
 							<div id="volume-celll" data-testid="volume-cell" className="hJyIyF knzTRi gEaRbj">
 								<span className="sc-1bit9h6-13 jxjqhR">
-									<div onClick={() => sortData('volume')}>Volume</div>
-									{sortBy === 'volume' && (
+									<div onClick={() => sortData('volumeUSD')}>Volume</div>
+									{sortBy === 'volumeUSD' && (
 										<div className="sc-d5tbhs-1 cSretk">
 											<div>
 												<div className="sc-1bit9h6-26 bcYQwk">
@@ -301,96 +282,167 @@ const Token = ({ allTableData, updateTime, options }) => {
 
 						{/* Data Body */}
 						<div className="sc-19z0ycm-1 ejgNi">
-							{filteredTableData.map((data, index) => (
-								<div key={data.id} data-testid="token-table-row-NATIVE">
-									<Link className="sc-1bit9h6-16 kiPA-dv" to={`/tokens/${data.id}`}>
-										<div className="sc-1bit9h6-1 cQmpaP">
-											<div className="sc-1bit9h6-0 sc-1bit9h6-5 hJyIyF bwVaNf">{index + 1}</div>
-											<div
-												data-testid="name-cell"
-												className="sc-1bit9h6-0 sc-1bit9h6-8 hJyIyF fLXlBW"
-											>
-												<div className="sc-1bit9h6-2 sc-1bit9h6-3 bvHTKj jqxpYK">
-													<div className="sc-12k1pn4-3 eLvYRk">
-														<div className="sc-12k1pn4-2 ckpBIe">
-															<img
-																src={data.image}
-																alt="Token logo"
-																className="sc-12k1pn4-1 bwVixy"
-															/>
+							{isLoading ? (
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										width: '100%',
+										margin: '64px 0px',
+									}}
+								>
+									<Loader size={30} />{' '}
+								</div>
+							) : filteredTableData.length > 0 ? (
+								filteredTableData.map(data => (
+									<div key={data.tokenId} data-testid="token-table-row-NATIVE">
+										<Link className="sc-1bit9h6-16 kiPA-dv" to={`/tokens/${data.tokenId}`}>
+											<div className="sc-1bit9h6-1 cQmpaP">
+												<div className="sc-1bit9h6-0 sc-1bit9h6-5 hJyIyF bwVaNf">{data.rank}</div>
+												<div
+													data-testid="name-cell"
+													className="sc-1bit9h6-0 sc-1bit9h6-8 hJyIyF fLXlBW"
+												>
+													<div className="sc-1bit9h6-2 sc-1bit9h6-3 bvHTKj jqxpYK">
+														<div className="sc-12k1pn4-3 eLvYRk">
+															<div className="sc-12k1pn4-2 ckpBIe">
+																<img
+																	src={data.logo}
+																	alt="Token logo"
+																	className="sc-12k1pn4-1 bwVixy"
+																/>
+															</div>
+															<div className="sc-12k1pn4-4 epsCee" />
 														</div>
-														<div className="sc-12k1pn4-4 epsCee" />
-													</div>
-													<div className="sc-1bit9h6-0 sc-1bit9h6-17 hJyIyF gKCxsP">
-														<div data-cy="token-name" className="sc-1bit9h6-18 kSNzln">
-															{data.name}
-														</div>
-														<div className="sc-1bit9h6-0 sc-1bit9h6-19 hJyIyF jRVRlR">
-															{data.symbol}
+														<div className="sc-1bit9h6-0 sc-1bit9h6-17 hJyIyF gKCxsP">
+															<div data-cy="token-name" className="sc-1bit9h6-18 kSNzln">
+																{data.tokenName}
+															</div>
+															<div className="sc-1bit9h6-0 sc-1bit9h6-19 hJyIyF jRVRlR">
+																{data.symbol}
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-											<div
-												data-testid="price-cell"
-												className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-9 hJyIyF dQscKx igka-dA"
-											>
-												<div className="sc-1bit9h6-2 bvHTKj">
-													<div className="sc-1bit9h6-0 sc-1bit9h6-12 hJyIyF eNYLXF">
-														{`$${data.price.toFixed(2)}`}
-														<div className="sc-1bit9h6-0 sc-1bit9h6-11 hJyIyF iQNhmM">
-															<div className="sc-1nu6e54-7 cLYUzV"></div>
+												<div
+													data-testid="price-cell"
+													className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-9 hJyIyF dQscKx igka-dA"
+													style={{
+														display: 'flex',
+														flexDirection: 'column',
+														alignItems: 'end',
+														justifyContent: 'center',
+													}}
+												>
+													<div className="sc-1bit9h6-2 bvHTKj">
+														<div className="sc-1bit9h6-0 sc-1bit9h6-12 hJyIyF eNYLXF">
+															{`$${data.priceUSD.toFixed(4)}`}
+															<div className="sc-1bit9h6-0 sc-1bit9h6-11 hJyIyF iQNhmM">
+																<div className="sc-1nu6e54-7 cLYUzV"></div>
+															</div>
 														</div>
 													</div>
-												</div>
-											</div>
-											<div
-												data-testid="percent-change-cell"
-												className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-10 hJyIyF dQscKx fLOBMM"
-											>
-												<div className="sc-1bit9h6-2 bvHTKj">
-													<div className="sc-1nu6e54-7 cLYUzV"></div>
-													<span className="sc-1nu6e54-2 braSjM">
-														<span>{determineTrendIcon(data.price, data.oldPrice)}</span>
-														<span
-															className=""
-															style={{
-																color:
-																	data.price > data.oldPrice
-																		? 'rgb(118, 209, 145)'
-																		: data.price === data.oldPrice
+													<div className="sc-1bit9h6-2 bvHTKj show-below-540 hide-above-540">
+														<div className="sc-1nu6e54-7 cLYUzV"></div>
+														<span className="sc-1nu6e54-2 braSjM">
+															<span>{determineTrendIcon(data.priceChangeUSD)}</span>
+															<span
+																className=""
+																style={{
+																	color:
+																		data.priceChangeUSD > 0
 																			? 'rgb(118, 209, 145)'
-																			: 'rgb(252, 83, 83)',
-															}}
-														>
-															<span>
-																{calculatePercentChange(data.price, data.oldPrice).toFixed(2)}%
+																			: data.priceChangeUSD === 0
+																				? 'rgb(118, 209, 145)'
+																				: 'rgb(252, 83, 83)',
+																}}
+															>
+																<span>{data.priceChangeUSD.toFixed(2)}%</span>
 															</span>
 														</span>
-													</span>
+													</div>
+												</div>
+												<div
+													data-testid="percent-change-cell"
+													className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-10 hJyIyF dQscKx fLOBMM"
+												>
+													<div className="sc-1bit9h6-2 bvHTKj">
+														<div className="sc-1nu6e54-7 cLYUzV"></div>
+														<span className="sc-1nu6e54-2 braSjM">
+															<span>{determineTrendIcon(data.priceChangeUSD)}</span>
+															<span
+																className=""
+																style={{
+																	color:
+																		data.priceChangeUSD > 0
+																			? 'rgb(118, 209, 145)'
+																			: data.priceChangeUSD === 0
+																				? 'rgb(118, 209, 145)'
+																				: 'rgb(252, 83, 83)',
+																}}
+															>
+																<span>{data.priceChangeUSD.toFixed(2)}%</span>
+															</span>
+														</span>
+													</div>
+												</div>
+												<div
+													data-testid="tvl-cell"
+													className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-7 hJyIyF dQscKx fLGPoq"
+												>
+													<div className="sc-1bit9h6-2 bvHTKj">{`${compactFiatFormatter.format(
+														data.totalTvlUSD.toFixed(2),
+													)}`}</div>
+												</div>
+												<div
+													data-testid="volume-cell"
+													className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-20 hJyIyF dQscKx gEaRbj"
+												>
+													<div className="sc-1bit9h6-2 bvHTKj">{`${compactFiatFormatter.format(
+														data.volumeUSD.toFixed(2),
+													)}`}</div>
+												</div>
+												<div className="sc-1bit9h6-0 sc-1bit9h6-14 hJyIyF NpKpm">
+													<div className="sc-1bit9h6-0 sc-1bit9h6-15 hJyIyF FLymZ">
+														<div style={{ width: '100%', height: '100%' }}>
+															{selectedService ? (
+																<img
+																	src={`${selectedService.serviceURLs}/static/img/sparklines/${
+																		selectedTimeframe.value
+																	}-${data.symbol.toLowerCase()}usd.svg`}
+																/>
+															) : (
+																<div
+																	style={{
+																		width: '100%',
+																		display: 'flex',
+																		justifyContent: 'center',
+																		alignItems: 'center',
+																	}}
+																>
+																	<Loader size={20} />{' '}
+																</div>
+															)}
+														</div>
+													</div>
 												</div>
 											</div>
-											<div
-												data-testid="tvl-cell"
-												className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-7 hJyIyF dQscKx fLGPoq"
-											>
-												<div className="sc-1bit9h6-2 bvHTKj">{`$${data.tvl}`}</div>
-											</div>
-											<div
-												data-testid="volume-cell"
-												className="sc-1bit9h6-0 sc-1bit9h6-6 sc-1bit9h6-20 hJyIyF dQscKx gEaRbj"
-											>
-												<div className="sc-1bit9h6-2 bvHTKj">{`$${data.volume}`}</div>
-											</div>
-											<div className="sc-1bit9h6-0 sc-1bit9h6-14 hJyIyF NpKpm">
-												<div className="sc-1bit9h6-0 sc-1bit9h6-15 hJyIyF FLymZ">
-													<div style={{ width: '100%', height: '100%' }}>graph-img</div>
-												</div>
-											</div>
-										</div>
-									</Link>
+										</Link>
+									</div>
+								))
+							) : (
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										width: '100%',
+										margin: '64px 0px',
+									}}
+								>
+									Nothing to show
 								</div>
-							))}
+							)}
 						</div>
 					</div>
 				</div>

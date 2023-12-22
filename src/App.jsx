@@ -15,7 +15,7 @@ import TokenDetails from './components/TokenDetails/TokenDetails';
 //Navbar Data
 import { searchOptions } from './service/navbar';
 //Tokens Data
-import { allTableData, updateTime, options, chartData } from './service/tokens';
+import { allTableData, chartData } from './service/tokens';
 //Swap Modal Tokens Data
 import { swapTokens } from './service/swapTokens';
 
@@ -90,12 +90,7 @@ function App() {
 
 					<Route path="/swap" element={<Swap />} setCurrentCurrencyId={setCurrentCurrencyId} />
 
-					<Route
-						path="/tokens"
-						element={
-							<Token allTableData={allTableData} updateTime={updateTime} options={options} />
-						}
-					/>
+					<Route path="/tokens" element={<Token />} />
 					<Route path="/pools" element={<Pools />} />
 					<Route
 						path="/tokens/:id"
