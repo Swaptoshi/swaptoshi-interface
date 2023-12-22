@@ -384,11 +384,11 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken, onSwapClick
 		setQuoteToken(oldBaseToken);
 		setQuoteValue(oldBaseValue);
 
-		if (baseToken && quoteToken) {
+		if (priceReady) {
 			setBaseLoading(true);
 			handleExactOut(baseToken, quoteToken, oldBaseValue);
 		}
-	}, [baseToken, baseValue, handleExactOut, quoteToken, quoteValue]);
+	}, [baseToken, baseValue, handleExactOut, priceReady, quoteToken, quoteValue]);
 
 	const onConfigClick = React.useCallback(() => {
 		setShowSwapSetting(s => !s);

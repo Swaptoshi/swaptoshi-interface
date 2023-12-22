@@ -5,25 +5,68 @@ import SwitchBox from '../SwitchBox/SwitchBox';
 import { useTheme } from '../../context/ThemeProvider';
 import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
 import { useDebouncedCallback } from 'use-debounce';
-import { dryRunTransaction, getTransactionEstimateFee } from '../../service/transaction';
+import {
+	dryRunTransaction,
+	getTransactionEstimateFee,
+	postTransaction,
+} from '../../service/transaction';
 import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader';
+import { useWalletConnect } from '../../context/WalletConnectProvider';
+import { toast } from 'react-toastify';
+import { tryToast } from '../../utils/Toast/tryToast';
 
 const jsonTheme = {
 	light: defaultStyles,
 	dark: darkStyles,
 };
 
-export default function TransactionModal({ show, transaction, onClose }) {
+export default function TransactionModal({ show, transaction, onClose, customSendHandler }) {
 	const [theme] = useTheme();
 	const { selectedService } = useChain();
+	const { sign } = useWalletConnect();
 
+	const [isSending, setIsSending] = React.useState(false);
 	const [ready, setReady] = React.useState(false);
 	const [status, setStatus] = React.useState('Intializing transaction...');
 	const [error, setError] = React.useState();
 	const [parsedTransaction, setParsedTransaction] = React.useState();
 	const [isFetching, setIsFecting] = React.useState(true);
 	const [mode, setMode] = React.useState('summary');
+
+	const onSend = React.useCallback(
+		async tx => {
+			await tryToast(
+				'Submit transaction failed',
+				async () => {
+					setStatus('Sending transaction, please proceed in your Lisk Wallet...');
+					setIsSending(true);
+
+					const signed = await sign(tx);
+
+					if (!signed) {
+						throw new Error('Sign transaction failed');
+					}
+
+					if (customSendHandler) {
+						await customSendHandler(signed);
+					} else {
+						await postTransaction(
+							signed,
+							selectedService ? selectedService.serviceURLs : undefined,
+						);
+					}
+
+					toast.success('Transaction submitted');
+				},
+				undefined,
+				() => {
+					onClose && onClose();
+				},
+			);
+		},
+		[customSendHandler, onClose, selectedService, sign],
+	);
 
 	const dryRun = useDebouncedCallback(async transaction => {
 		try {
@@ -37,7 +80,6 @@ export default function TransactionModal({ show, transaction, onClose }) {
 					throw new Error(run.data.errorMessage);
 				}
 				if (run.data.result === 0) {
-					console.log(run.data);
 					throw new Error('Dry run transaction failed, try again later');
 				}
 				setReady(true);
@@ -58,12 +100,13 @@ export default function TransactionModal({ show, transaction, onClose }) {
 				selectedService ? selectedService.serviceURLs : undefined,
 			);
 			if (estimatedFee && estimatedFee.data) {
-				setParsedTransaction({
+				const parsed = {
 					...transaction,
 					fee: estimatedFee.data.transaction.fee.minimum,
 					signatures: [],
-				});
-				dryRun(transaction);
+				};
+				setParsedTransaction(parsed);
+				dryRun(parsed);
 			}
 		} catch (err) {
 			setError(err.message);
@@ -148,7 +191,7 @@ export default function TransactionModal({ show, transaction, onClose }) {
 								}}
 							>
 								<i
-									className="ri-mail-line"
+									className={isSending ? 'ri-mail-send-line' : 'ri-mail-line'}
 									style={{
 										fontSize: '60px',
 										color: 'var(--text-clr)',
@@ -164,7 +207,7 @@ export default function TransactionModal({ show, transaction, onClose }) {
 									margin: '16px 0',
 								}}
 							>
-								Review Transaction
+								{isSending ? 'Sending Transaction' : 'Review Transaction'}
 							</div>
 
 							<div
@@ -280,7 +323,9 @@ export default function TransactionModal({ show, transaction, onClose }) {
 							<div style={{ margin: '8px 0' }} />
 
 							<PrimaryButton
+								loading={isSending ? 'true' : undefined}
 								disabled={!ready}
+								onClick={() => onSend(parsedTransaction)}
 								style={{ width: '75%', height: '48px', opacity: !ready ? 0.5 : 1 }}
 							>
 								Sign And Send
@@ -296,7 +341,7 @@ export default function TransactionModal({ show, transaction, onClose }) {
 							>
 								{error ? (
 									<i className="text ri-error-warning-line"></i>
-								) : isFetching ? (
+								) : isFetching || isSending ? (
 									<Loader size={15} />
 								) : (
 									<i className="text ri-checkbox-circle-line"></i>

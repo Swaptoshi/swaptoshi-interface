@@ -1,5 +1,6 @@
 import React from 'react';
 import './Button.css';
+import Loader from '../Loader';
 
 export default function PrimaryButton(props) {
 	let className = 'primary-button-container ';
@@ -7,7 +8,13 @@ export default function PrimaryButton(props) {
 
 	return (
 		<button {...props} className={className}>
-			<div className="primary-button-content">{props.children}</div>
+			{props.loading ? (
+				<div>
+					<Loader size={20} />{' '}
+				</div>
+			) : (
+				<div className="primary-button-content">{props.children}</div>
+			)}
 		</button>
 	);
 }
