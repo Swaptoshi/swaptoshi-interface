@@ -9,6 +9,7 @@ import { getTokenBalances } from '../service/token';
 import { tryToast } from '../utils/Toast/tryToast';
 import { getFactoryTokenMeta } from '../service/factory';
 import { getDEXTokenCompact } from '../service/dex';
+import { getAccountAuth } from '../service/auth';
 
 const WalletConnectContext = React.createContext();
 
@@ -21,6 +22,7 @@ export function WalletConnectProvider({ children }) {
 	const [wcUri, setWcUri] = React.useState();
 	const [sessions, setSessions] = React.useState();
 	const [balances, setBalances] = React.useState();
+	const [auth, setAuth] = React.useState();
 	const [senderPublicKey, setSenderPublicKey] = React.useState();
 	const { chain, selectedService } = useChain();
 
@@ -156,6 +158,22 @@ export function WalletConnectProvider({ children }) {
 		[senderPublicKey, chain, sessions, signClient],
 	);
 
+	const reloadAuth = React.useCallback(async () => {
+		if (senderPublicKey) {
+			const authResponse = await getAccountAuth(
+				{
+					address: cryptography.address.getLisk32AddressFromPublicKey(
+						Buffer.from(senderPublicKey, 'hex'),
+					),
+				},
+				selectedService.serviceURLs,
+			);
+			if (authResponse && authResponse.data) {
+				setAuth(authResponse.data);
+			}
+		}
+	}, [selectedService, senderPublicKey]);
+
 	const context = React.useMemo(
 		() => ({
 			signClient,
@@ -169,8 +187,21 @@ export function WalletConnectProvider({ children }) {
 			sign,
 			wcUri,
 			balances,
+			auth,
+			reloadAuth,
 		}),
-		[signClient, sessions, senderPublicKey, connect, disconnect, sign, wcUri, balances],
+		[
+			signClient,
+			sessions,
+			senderPublicKey,
+			connect,
+			disconnect,
+			sign,
+			wcUri,
+			balances,
+			auth,
+			reloadAuth,
+		],
 	);
 
 	// chain change side-effects
@@ -263,11 +294,12 @@ export function WalletConnectProvider({ children }) {
 					break;
 				}
 				setBalances(balance);
+				await reloadAuth();
 			}
 		};
 
 		tryToast('Balance update failed', run);
-	}, [selectedService, senderPublicKey]);
+	}, [reloadAuth, selectedService, senderPublicKey]);
 
 	return <WalletConnectContext.Provider value={context}>{children}</WalletConnectContext.Provider>;
 }

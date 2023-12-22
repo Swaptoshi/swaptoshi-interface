@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import './Swap.css';
+import * as cryptography from '@liskhq/lisk-cryptography';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import SwapTokenInput from './SwapTokenInput';
 import { useDebouncedCallback } from 'use-debounce';
-import { getPrice, getQuote } from '../../service/dex';
+import { getDEXConfig, getPrice, getQuote } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { liskTokenCompact } from '../../constants/tokens';
 import SwapConfig from './SwapConfig';
 import SwapWarning from './SwapWarning';
 import SwapDetailsInfo from './SwapDetailsInfo';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
+import { tryToast } from '../../utils/Toast/tryToast';
+import BigNumber from 'bignumber.js';
+import { getTransactionEstimateFee } from '../../service/transaction';
 
 export const DEFAULT_DEADLINE_MINUTE = 10;
 export const DEFAULT_SLIPPAGE = 0.5;
 
 const Swap = () => {
 	const { selectedService } = useChain();
-	const { balances } = useWalletConnect();
+	const { balances, auth, senderPublicKey } = useWalletConnect();
 
 	const [currentPrice, setCurrentPrice] = useState();
 
@@ -36,6 +40,10 @@ const Swap = () => {
 	const [error, setError] = useState();
 	const [path, setPath] = useState();
 	const [command, setCommand] = useState();
+
+	const [networkFee, setNetworkFee] = useState();
+	const [dexConfig, setDexConfig] = useState();
+	const [transaction, setTransaction] = useState();
 
 	const baseBalance = React.useMemo(() => {
 		if (baseToken && balances && balances.length > 0) {
@@ -71,7 +79,83 @@ const Swap = () => {
 		}
 	}, [baseLoading, baseValue, currentPrice, priceReady, quoteLoading, quoteValue]);
 
-	console.log(path, command);
+	console.log(dexConfig);
+	console.log(transaction);
+
+	const updateNetworkFee = useDebouncedCallback(async transaction => {
+		const estimatedFee = await getTransactionEstimateFee(
+			transaction,
+			selectedService ? selectedService.serviceURLs : undefined,
+		);
+		if (estimatedFee && estimatedFee.data) {
+			setNetworkFee(estimatedFee.data.transaction.fee);
+		}
+	}, 500);
+
+	React.useEffect(() => {
+		if (command === 'exactInput') {
+			const amount = Number(quoteValue) * 10 ** quoteToken.decimal;
+			const tx = {
+				module: 'dex',
+				command: 'exactInput',
+				fee: '1000000',
+				params: {
+					path,
+					recipient: cryptography.address
+						.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
+						.toString('hex'),
+					deadline: Math.floor(Date.now() / 1000) + (deadline ?? DEFAULT_DEADLINE_MINUTE) * 60,
+					amountIn: Number(baseValue) * 10 ** baseToken.decimal,
+					amountOutMinimum: new BigNumber(amount)
+						.minus(new BigNumber(amount).multipliedBy(slippage ?? DEFAULT_SLIPPAGE).dividedBy(100))
+						.toFixed(0)
+						.toString(),
+				},
+				nonce: auth.nonce,
+				senderPublicKey: senderPublicKey,
+				signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),
+			};
+			setTransaction(tx);
+			updateNetworkFee(tx);
+		}
+		if (command === 'exactOutput') {
+			const amount = Number(baseValue) * 10 ** baseToken.decimal;
+			const tx = {
+				module: 'dex',
+				command: 'exactOutput',
+				fee: '1000000',
+				params: {
+					path,
+					recipient: cryptography.address
+						.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
+						.toString('hex'),
+					deadline: Math.floor(Date.now() / 1000) + (deadline ?? DEFAULT_DEADLINE_MINUTE) * 60,
+					amountOut: Number(quoteValue) * 10 ** quoteToken.decimal,
+					amountInMaximum: new BigNumber(amount)
+						.plus(new BigNumber(amount).multipliedBy(slippage ?? DEFAULT_SLIPPAGE).dividedBy(100))
+						.toFixed(0)
+						.toString(),
+				},
+				nonce: auth.nonce,
+				senderPublicKey: senderPublicKey,
+				signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),
+			};
+			setTransaction(tx);
+			updateNetworkFee(tx);
+		}
+	}, [
+		auth,
+		baseToken,
+		baseValue,
+		command,
+		deadline,
+		path,
+		quoteToken,
+		quoteValue,
+		senderPublicKey,
+		slippage,
+		updateNetworkFee,
+	]);
 
 	React.useEffect(() => {
 		if (baseBalance && baseValue && baseBalance < baseValue) {
@@ -107,6 +191,16 @@ const Swap = () => {
 	React.useEffect(() => {
 		setBaseToken(liskTokenCompact);
 	}, []);
+
+	React.useEffect(() => {
+		const run = async () => {
+			const config = await getDEXConfig(selectedService ? selectedService.serviceURLs : undefined);
+
+			setDexConfig(config.data);
+		};
+
+		tryToast('Fetching DEX config failed', run);
+	}, [selectedService]);
 
 	const handleExactIn = useDebouncedCallback(async (baseToken, quoteToken, amountIn) => {
 		try {
@@ -394,6 +488,7 @@ const Swap = () => {
 								baseValue={baseValue}
 								quoteToken={quoteToken}
 								quoteValue={quoteValue}
+								networkFee={networkFee}
 							/>
 
 							<div style={{ marginTop: '4px' }} />

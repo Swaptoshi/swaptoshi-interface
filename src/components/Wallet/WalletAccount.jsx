@@ -111,7 +111,7 @@ export default function WalletAccount({ show }) {
 					}}
 				>
 					{priceChange > 0 ? '+' : ''}
-					{fiatFormatter.format(currentWalletBalance - getLastBalance(chain))} (
+					{fiatFormatter.format((currentWalletBalance - getLastBalance(chain)).toFixed(2))} (
 					{priceChange > 0 ? '+' : ''}
 					{priceChange}%)
 				</div>

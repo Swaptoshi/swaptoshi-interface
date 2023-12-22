@@ -1,4 +1,16 @@
-import { serviceGET } from './node';
+import { serviceGET, servicePOST } from './node';
+
+export const getDEXConfig = async serviceUrl => {
+	const pool = await servicePOST(
+		`/api/v3/invoke`,
+		{
+			endpoint: 'dex_getConfig',
+			params: {},
+		},
+		serviceUrl,
+	);
+	return pool;
+};
 
 export const getDEXPool = async (param, serviceUrl) => {
 	const searchParams = new URLSearchParams(param);

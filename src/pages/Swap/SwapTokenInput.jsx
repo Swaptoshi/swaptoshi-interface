@@ -148,7 +148,7 @@ export default function SwapTokenInput({
 							{isFetchingPrice
 								? '-'
 								: selectedFiatValue
-									? fiatFormatter.format(selectedFiatValue)
+									? fiatFormatter.format(selectedFiatValue.toFixed(2))
 									: '-'}
 						</div>
 						{selectedBalance !== undefined && (

@@ -2,6 +2,11 @@ import React from 'react';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import Loader from '../../components/Loader/Loader';
 import { DEFAULT_SLIPPAGE } from './Swap';
+import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useDebouncedCallback } from 'use-debounce';
+import { tryToast } from '../../utils/Toast/tryToast';
+import { getPrice } from '../../service/dex';
+import { useChain } from '../../context/ChainProvider';
 
 export default function SwapDetailsInfo({
 	isLoading,
@@ -14,14 +19,50 @@ export default function SwapDetailsInfo({
 	baseValue,
 	quoteToken,
 	quoteValue,
+	networkFee,
 }) {
+	const { prices, fiatFormatter, cryptoFormatter } = useLiskPrice();
+	const { selectedService, chain } = useChain();
 	const [collapsed, setCollapsed] = React.useState(false);
+	const [feeFiat, setFeeFiat] = React.useState();
+	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
+
+	const fetchFeeFiat = useDebouncedCallback(async (networkFee, lskPrice) => {
+		await tryToast(
+			'Quote fee price failed',
+			async () => {
+				const tokenToLskPrice = await getPrice(
+					{
+						baseTokenId: networkFee.tokenID,
+						quoteTokenId: `${chain}00000000000000`,
+					},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (tokenToLskPrice && tokenToLskPrice.data) {
+					setFeeFiat(
+						(Number(networkFee.minimum) / 10 ** process.env.REACT_APP_WC_TOKEN_DECIMAL) *
+							tokenToLskPrice.data.price *
+							lskPrice,
+					);
+				}
+			},
+			undefined,
+			() => setIsFectingPrice(false),
+		);
+	}, 600);
 
 	const slippageValue = React.useMemo(() => {
 		return slippage ? slippage : DEFAULT_SLIPPAGE;
 	}, [slippage]);
 
 	const toogleCollapsed = React.useCallback(() => setCollapsed(s => !s), []);
+
+	React.useEffect(() => {
+		if (networkFee && prices) {
+			setIsFectingPrice(true);
+			fetchFeeFiat(networkFee, prices);
+		}
+	}, [fetchFeeFiat, networkFee, prices]);
 
 	return priceReady ? (
 		<div
@@ -120,8 +161,10 @@ export default function SwapDetailsInfo({
 											command === 'exactInput' ? 'receive less' : 'pay more'
 										} than ${
 											command === 'exactInput'
-												? quoteValue - (quoteValue * slippageValue) / 100
-												: baseValue + (baseValue * slippageValue) / 100
+												? (quoteValue - (quoteValue * slippageValue) / 100).toFixed(
+														quoteToken.decimal,
+													)
+												: (baseValue + (baseValue * slippageValue) / 100).toFixed(baseToken.decimal)
 										} ${
 											command === 'exactInput'
 												? quoteToken.symbol.toUpperCase()
@@ -161,12 +204,26 @@ export default function SwapDetailsInfo({
 										alignItems: 'center',
 									}}
 								>
-									Price impact
-									<Tooltip content={'This is a new tooltip that we just created'}>
+									Network fee
+									<Tooltip
+										content={`Network cost is paid in ${
+											process.env.REACT_APP_WC_TOKEN_SYMBOL
+										} on the ${
+											process.env.REACT_APP_WC_PROJECT_NAME
+										} network in order to transact. Minimum required fee is ${cryptoFormatter.format(
+											Number(networkFee.minimum) / 10 ** process.env.REACT_APP_WC_TOKEN_DECIMAL,
+										)} ${process.env.REACT_APP_WC_TOKEN_SYMBOL}`}
+									>
 										<i style={{ margin: '0 2px' }} className="ri-information-line"></i>
 									</Tooltip>
 								</div>
-								<div className="text">1.12%</div>
+								{isFetchingPrice ? (
+									<div>
+										<Loader size={10} />{' '}
+									</div>
+								) : (
+									<div className="text">{fiatFormatter.format(feeFiat.toFixed(8))}</div>
+								)}
 							</div>
 						</div>
 					)}

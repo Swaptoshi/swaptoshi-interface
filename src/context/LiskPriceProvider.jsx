@@ -21,6 +21,7 @@ export default function LiskPriceProvider({ children }) {
 			new Intl.NumberFormat('en-US', {
 				style: 'currency',
 				currency: currency,
+				maximumFractionDigits: 20,
 			}),
 		);
 		setCryptoFormatter(new Intl.NumberFormat(undefined, { maximumFractionDigits: 20 }));

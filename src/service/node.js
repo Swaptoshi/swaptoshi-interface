@@ -16,7 +16,7 @@ export const servicePOST = async (url, data, serviceUrl) => {
 	if (response && Object.keys(response).includes('error') && response.error) {
 		throw new Error(response.message);
 	}
-	return response;
+	return response.data;
 };
 
 export const checkServiceNode = async serviceHttp => {
