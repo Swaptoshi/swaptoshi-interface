@@ -4,8 +4,8 @@ import React from 'react';
 import './Home.css';
 import Footer from '../../components/Footer/Footer';
 import { NavLink } from 'react-router-dom';
-import SwapWidget from '../Swap/SwapWidget';
 import { liskTokenCompact } from '../../constants/tokens';
+import SwapWidget from '../../components/Swap/SwapWidget';
 
 const Home = () => {
 	const sectionRef = React.useRef(null);

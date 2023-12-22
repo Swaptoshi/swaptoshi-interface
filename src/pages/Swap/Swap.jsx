@@ -1,6 +1,6 @@
 import React from 'react';
-import SwapWidget from './SwapWidget';
 import { liskTokenCompact } from '../../constants/tokens';
+import SwapWidget from '../../components/Swap/SwapWidget';
 
 const Swap = () => {
 	return (
