@@ -58,6 +58,7 @@
 	--model-cards: rgb(19 26 42);
 	--model-text: rgb(152 161 192);
 	--model-bg-text: rgb(255 255 255);
+	--model-btn-switch: rgb(255 255 255);
 
 	/* Vote page */
 	--vote-card-color: rgb(13 17 28);
@@ -144,6 +145,7 @@
 	--model-cards: rgb(245 246 252);
 	--model-text: rgb(251 17 142);
 	--model-bg-text: rgb(13 17 28);
+	--model-btn-switch: rgb(251 17 142);
 
 	/* Vote page */
 	--vote-card-color: rgb(255 255 255);

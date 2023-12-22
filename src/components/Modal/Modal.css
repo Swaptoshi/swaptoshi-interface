@@ -456,7 +456,7 @@ button {
 
 .jsjUXs {
 	animation: 0.1s ease-in 0s 1 normal none running none;
-	background: var(--model-btn-hover);
+	background: var(--model-btn-switch);
 	border-radius: 50%;
 	height: 24px;
 	margin-left: 2.2em;

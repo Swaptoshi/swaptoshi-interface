@@ -106,8 +106,11 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 					recipient: cryptography.address
 						.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
 						.toString('hex'),
-					deadline: Math.floor(Date.now() / 1000) + (deadline ?? DEFAULT_DEADLINE_MINUTE) * 60,
-					amountIn: Number(baseValue) * 10 ** baseToken.decimal,
+					deadline: (
+						Math.floor(Date.now() / 1000) +
+						(deadline ?? DEFAULT_DEADLINE_MINUTE) * 60
+					).toString(),
+					amountIn: (Number(baseValue) * 10 ** baseToken.decimal).toString(),
 					amountOutMinimum: new BigNumber(amount)
 						.minus(new BigNumber(amount).multipliedBy(slippage ?? DEFAULT_SLIPPAGE).dividedBy(100))
 						.toFixed(0)
@@ -131,8 +134,11 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 					recipient: cryptography.address
 						.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
 						.toString('hex'),
-					deadline: Math.floor(Date.now() / 1000) + (deadline ?? DEFAULT_DEADLINE_MINUTE) * 60,
-					amountOut: Number(quoteValue) * 10 ** quoteToken.decimal,
+					deadline: (
+						Math.floor(Date.now() / 1000) +
+						(deadline ?? DEFAULT_DEADLINE_MINUTE) * 60
+					).toString(),
+					amountOut: (Number(quoteValue) * 10 ** quoteToken.decimal).toString(),
 					amountInMaximum: new BigNumber(amount)
 						.plus(new BigNumber(amount).multipliedBy(slippage ?? DEFAULT_SLIPPAGE).dividedBy(100))
 						.toFixed(0)
