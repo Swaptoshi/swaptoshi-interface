@@ -1,8 +1,53 @@
 import React from 'react';
+import { JsonView, allExpanded, darkStyles, defaultStyles } from 'react-json-view-lite';
 import PrimaryButton from '../Button/PrimaryButton';
 import SwitchBox from '../SwitchBox/SwitchBox';
+import { useTheme } from '../../context/ThemeProvider';
+import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
+import { useDebouncedCallback } from 'use-debounce';
+import { getTransactionEstimateFee } from '../../service/transaction';
+import { useChain } from '../../context/ChainProvider';
+import { tryToast } from '../../utils/Toast/tryToast';
+import Loader from '../Loader';
 
-export default function TransactionModal({ show, onClose }) {
+const jsonTheme = {
+	light: defaultStyles,
+	dark: darkStyles,
+};
+
+export default function TransactionModal({ show, transaction, onClose }) {
+	const [theme] = useTheme();
+	const { selectedService } = useChain();
+
+	const [parsedTransaction, setParsedTransaction] = React.useState();
+	const [isFetching, setIsFecting] = React.useState(true);
+	const [mode, setMode] = React.useState('summary');
+
+	const calculateMinimumFee = useDebouncedCallback(async transaction => {
+		tryToast(
+			'Fetch transaction info failed',
+			async () => {
+				const estimatedFee = await getTransactionEstimateFee(
+					transaction,
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (estimatedFee && estimatedFee.data) {
+					setParsedTransaction({
+						...transaction,
+						fee: estimatedFee.data.transaction.fee.minimum,
+						signatures: [],
+					});
+					setIsFecting(false);
+				}
+			},
+			() => onClose && onClose(),
+		);
+	}, 500);
+
+	React.useEffect(() => {
+		calculateMinimumFee(transaction);
+	}, [calculateMinimumFee, transaction]);
+
 	return (
 		<div>
 			<div
@@ -28,10 +73,18 @@ export default function TransactionModal({ show, onClose }) {
 								<div style={{ width: '30%' }}>
 									<SwitchBox
 										style={{ width: '100%' }}
-										value={'summary'}
+										value={mode}
 										items={[
-											{ value: 'summary', component: <i className="text ri-pencil-line"></i> },
-											{ value: 'json', component: <i className="text ri-code-box-line"></i> },
+											{
+												value: 'summary',
+												component: <i className="text ri-information-line"></i>,
+												onClick: () => setMode('summary'),
+											},
+											{
+												value: 'json',
+												component: <i className="text ri-code-box-line"></i>,
+												onClick: () => setMode('json'),
+											},
 										]}
 									/>
 								</div>
@@ -96,66 +149,130 @@ export default function TransactionModal({ show, onClose }) {
 									borderRadius: '16px',
 									padding: '12px 16px',
 									fontSize: '14px',
+									maxHeight: '230px',
 								}}
 							>
-								<div
-									style={{ display: 'flex', alignItems: 'center', margin: '12px 0', width: '100%' }}
-								>
+								{mode === 'json' ? (
+									<div style={{ height: '100%', overflow: 'scroll' }}>
+										<JsonView
+											data={parsedTransaction}
+											shouldExpandNode={allExpanded}
+											style={theme === 'system' ? jsonTheme[getSystemTheme()] : jsonTheme[theme]}
+										/>
+									</div>
+								) : isFetching ? (
 									<div
-										className="text"
 										style={{
-											width: 'fit-content',
-											flex: 1,
-											color: 'var(--text-color)',
+											height: '110px',
 											display: 'flex',
+											justifyContent: 'center',
 											alignItems: 'center',
 										}}
 									>
-										Module
+										<Loader size={10} />{' '}
 									</div>
-									<div className="text">dex</div>
-								</div>
+								) : (
+									<div>
+										<div
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												margin: '12px 0',
+												width: '100%',
+											}}
+										>
+											<div
+												className="text"
+												style={{
+													width: 'fit-content',
+													flex: 1,
+													color: 'var(--text-color)',
+													display: 'flex',
+													alignItems: 'center',
+												}}
+											>
+												Module
+											</div>
+											<div className="text">{parsedTransaction.module}</div>
+										</div>
 
-								<div
-									style={{ display: 'flex', alignItems: 'center', margin: '12px 0', width: '100%' }}
-								>
-									<div
-										className="text"
-										style={{
-											width: 'fit-content',
-											flex: 1,
-											color: 'var(--text-color)',
-											display: 'flex',
-											alignItems: 'center',
-										}}
-									>
-										Module
-									</div>
-									<div className="text">dex</div>
-								</div>
+										<div
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												margin: '12px 0',
+												width: '100%',
+											}}
+										>
+											<div
+												className="text"
+												style={{
+													width: 'fit-content',
+													flex: 1,
+													color: 'var(--text-color)',
+													display: 'flex',
+													alignItems: 'center',
+												}}
+											>
+												Command
+											</div>
+											<div className="text">{parsedTransaction.command}</div>
+										</div>
 
-								<div
-									style={{ display: 'flex', alignItems: 'center', margin: '12px 0', width: '100%' }}
-								>
-									<div
-										className="text"
-										style={{
-											width: 'fit-content',
-											flex: 1,
-											color: 'var(--text-color)',
-											display: 'flex',
-											alignItems: 'center',
-										}}
-									>
-										Module
+										<div
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												margin: '12px 0',
+												width: '100%',
+											}}
+										>
+											<div
+												className="text"
+												style={{
+													width: 'fit-content',
+													flex: 1,
+													color: 'var(--text-color)',
+													display: 'flex',
+													alignItems: 'center',
+												}}
+											>
+												Fee
+											</div>
+											<div className="text">
+												{Number(parsedTransaction.fee) /
+													10 ** process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL}{' '}
+												{process.env.REACT_APP_WC_TOKEN_SYMBOL}
+											</div>
+										</div>
 									</div>
-									<div className="text">dex</div>
-								</div>
+								)}
 							</div>
 
 							<div style={{ margin: '8px 0' }} />
 
-							<PrimaryButton style={{ width: '75%', height: '48px' }}>Send</PrimaryButton>
+							<PrimaryButton style={{ width: '75%', height: '48px' }}>Sign And Send</PrimaryButton>
+
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+									marginTop: '16px',
+								}}
+							>
+								<Loader size={15} />
+								<div
+									style={{
+										color: 'var(--color-white)',
+										fontWeight: 200,
+										fontSize: '12px',
+										marginLeft: '8px',
+									}}
+								>
+									Dry running transaction
+								</div>
+							</div>
 
 							<div style={{ marginBottom: '36px' }} />
 						</div>

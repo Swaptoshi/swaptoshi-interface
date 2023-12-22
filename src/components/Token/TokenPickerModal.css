@@ -9,8 +9,8 @@
 	width: 50vw;
 	overflow: hidden auto;
 	max-width: 420px;
-	max-height: 71vh;
-	min-height: 71vh;
+	max-height: 75vh;
+	min-height: 75vh;
 	display: flex;
 	border-radius: 20px;
 }

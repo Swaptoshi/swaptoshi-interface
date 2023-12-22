@@ -6,6 +6,7 @@ import App from './App';
 import ThemeProvider from './context/ThemeProvider';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-tooltip/dist/react-tooltip.css';
+import 'react-json-view-lite/dist/index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

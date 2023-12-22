@@ -10,13 +10,16 @@ export function useTransactionModal() {
 export default function TransactionModalProvider({ children }) {
 	const [show, setShow] = useState(false);
 	const [onClose, setOnClose] = useState();
+	const [transaction, setTransaction] = useState();
 
 	const onDismount = React.useCallback(() => {
 		setOnClose();
 	}, []);
 
 	const sendTransaction = React.useCallback(
-		async ({ onClose }) => {
+		async ({ transaction, onClose }) => {
+			setTransaction(transaction);
+
 			setOnClose(() => () => {
 				onClose && onClose();
 				setShow(false);
@@ -34,7 +37,7 @@ export default function TransactionModalProvider({ children }) {
 				sendTransaction,
 			}}
 		>
-			{show ? <TransactionModal show={show} onClose={onClose} /> : null}
+			{show ? <TransactionModal show={show} transaction={transaction} onClose={onClose} /> : null}
 			{children}
 		</TransactionModalContext.Provider>
 	);

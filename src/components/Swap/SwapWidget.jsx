@@ -41,7 +41,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken, onSwapClick
 	const [command, setCommand] = useState();
 
 	const [networkFee, setNetworkFee] = useState();
-	const [dexConfig, setDexConfig] = useState();
+	const [, setDexConfig] = useState();
 	const [transaction, setTransaction] = useState();
 
 	const baseBalance = React.useMemo(() => {
@@ -78,9 +78,6 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken, onSwapClick
 		}
 	}, [baseLoading, baseValue, currentPrice, priceReady, quoteLoading, quoteValue]);
 
-	console.log(dexConfig);
-	console.log(transaction);
-
 	const updateNetworkFee = useDebouncedCallback(async transaction => {
 		const estimatedFee = await getTransactionEstimateFee(
 			transaction,
@@ -88,6 +85,10 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken, onSwapClick
 		);
 		if (estimatedFee && estimatedFee.data) {
 			setNetworkFee(estimatedFee.data.transaction.fee);
+			setTransaction(tx => ({
+				...tx,
+				fee: estimatedFee.data.transaction.fee.minimum,
+			}));
 		}
 	}, 500);
 
@@ -514,7 +515,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken, onSwapClick
 
 					<WalletActionButton
 						disabled={!isSwappable}
-						onClick={onSwapClick}
+						onClick={() => onSwapClick(transaction)}
 						style={{ width: '100%', height: '60px', borderRadius: '16px' }}
 					>
 						{error ? error : 'Swap'}
