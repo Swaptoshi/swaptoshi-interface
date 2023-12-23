@@ -90,6 +90,7 @@ export default function TransactionModal({
 					throw new Error(run.data.errorMessage);
 				}
 				if (run.data.result === 0) {
+					console.error('Dry Run Result:', run.data);
 					throw new Error('Dry run transaction failed, please re-check your parameter');
 				}
 				setReady(true);

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './TokenDetails.css';
 import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
-import SwapWidget from '../Swap/SwapWidget';
+import SwapWidget from '../../components/Swap/SwapWidget';
 import { intervalToSecond } from '../../utils/Time/intervalToSecond';
 import { getDEXToken, getPriceTick } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/Toast/tryToast';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
-import SwitchBox from '../SwitchBox/SwitchBox';
-import Loader from '../Loader';
-import { PriceChart } from '../Chart/PriceChart';
+import SwitchBox from '../../components/SwitchBox/SwitchBox';
+import Loader from '../../components/Loader';
+import { PriceChart } from '../../components/Chart/PriceChart';
 import { intervalToLimit } from '../../utils/Time/intervalToLimit';
 import { timeframeToInterval } from '../../utils/Time/timeframeToInterval';
 
@@ -26,13 +26,14 @@ const TokenDetails = () => {
 
 	useEffect(() => {
 		const run = async () => {
+			const now = Math.floor(Date.now() / 1000);
 			const param = {
 				search: id,
 				offset: 0,
 				limit: 100,
 				changeWindow: timeframe,
-				start: Math.floor(Date.now() / 1000) - intervalToSecond[timeframe],
-				end: Math.floor(Date.now() / 1000),
+				start: now - intervalToSecond[timeframe],
+				end: now,
 			};
 			const tokens = await getDEXToken(
 				param,
@@ -46,6 +47,7 @@ const TokenDetails = () => {
 					quote: 'USD',
 					interval: timeframeToInterval[timeframe],
 					limit: intervalToLimit[timeframe],
+					start: now - intervalToSecond[timeframe],
 				});
 				if (tokens.data[0].symbol !== 'LSK') {
 					const tokenTick = await getPriceTick({
@@ -53,6 +55,7 @@ const TokenDetails = () => {
 						quote: 'LSK',
 						interval: timeframeToInterval[timeframe],
 						limit: intervalToLimit[timeframe],
+						start: now - intervalToSecond[timeframe],
 					});
 
 					if (tokenTick && tokenTick.data && lskUsdTick && lskUsdTick.data) {
@@ -157,7 +160,7 @@ const TokenDetails = () => {
 													className="percentage-text"
 													style={{
 														color:
-															token.priceChangeUSD > 0 ? 'rgb(118, 209, 145)' : 'rgb(252, 83, 83)',
+															token.priceChangeUSD >= 0 ? 'rgb(118, 209, 145)' : 'rgb(252, 83, 83)',
 													}}
 												>
 													<span>{token.priceChangeUSD.toFixed(2)}%</span>
@@ -188,6 +191,12 @@ const TokenDetails = () => {
 								<div className="sc-sx9n2y-0 kivXvb sc-y05v5v-3 cwCXFN css-1b492mu">Stats</div>
 								<div className="sc-y05v5v-1 djRLxT">
 									<div className="sc-y05v5v-2 fJhHgf">
+										<div data-cy="rank" className="sc-y05v5v-0 iJvfTG">
+											<div className="sc-d5tbhs-1 cSretk">
+												<div>Rank</div>
+											</div>
+											<div className="sc-y05v5v-4 iydZZJ">#{token.rank}</div>
+										</div>
 										<div data-cy="tvl" className="sc-y05v5v-0 iJvfTG">
 											<div className="sc-d5tbhs-1 cSretk">
 												<div>TVL</div>

@@ -1,17 +1,23 @@
 import React from 'react';
 import './CreateToken.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import TextInput from '../../components/Forms/TextInput';
 import SecondaryButton from '../../components/Button/SecondaryButton';
 import { FileUploader } from 'react-drag-drop-files';
-import { useTheme } from '../../context/ThemeProvider';
-import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
-import { toast } from 'react-toastify';
 import WalletActionButton from '../../components/Button/WalletActionButton';
+import { useWalletConnect } from '../../context/WalletConnectProvider';
+import { codec } from '@liskhq/lisk-codec';
+import { factoryMetadataSchema } from '../../schema/token_factory_create_metadata.js';
+import { useTransactionModal } from '../../context/TransactionModalProvider';
+import { useChain } from '../../context/ChainProvider';
+import { postFactoryCreate } from '../../service/factory';
 
 const CreateTokenModal = () => {
-	const [theme] = useTheme();
-	const [, setCurrentTheme] = React.useState(theme);
+	const navigate = useNavigate();
+	const { auth, senderPublicKey } = useWalletConnect();
+	const { sendTransaction } = useTransactionModal();
+	const { selectedService } = useChain();
+
 	const [showAdvanced, setShowAdvanced] = React.useState(false);
 	const [error, setError] = React.useState('');
 
@@ -22,6 +28,7 @@ const CreateTokenModal = () => {
 	const [baseDenom, setBaseDenom] = React.useState('unit');
 	const [decimal, setDecimal] = React.useState('8');
 	const [logo, setLogo] = React.useState();
+	const [logoHex, setLogoHex] = React.useState();
 
 	const handleTokenName = event => setTokenName(event.target.value);
 	const handleTokenSymbol = event => setTokenSymbol(event.target.value);
@@ -30,39 +37,80 @@ const CreateTokenModal = () => {
 	const handleDenomination = event => setBaseDenom(event.target.value);
 	const handleDecimal = event => setDecimal(event.target.value);
 
-	React.useEffect(() => {
-		theme === 'system' ? setCurrentTheme(getSystemTheme()) : setCurrentTheme(theme);
-	}, [setCurrentTheme, theme]);
+	const isReady = React.useMemo(() => {
+		return (
+			tokenName && tokenSymbol && amount && description && baseDenom && decimal && logo && logoHex
+		);
+	}, [amount, baseDenom, decimal, description, logo, logoHex, tokenName, tokenSymbol]);
 
 	const toogleShowAdvanced = React.useCallback(() => {
 		if (showAdvanced) setShowAdvanced(false);
 		else setShowAdvanced(true);
 	}, [showAdvanced]);
 
-	function handleFileError(e) {
+	const handleFileError = React.useCallback(e => {
 		setError(e);
-	}
+	}, []);
 
-	function handleChange(e) {
+	const handleChange = React.useCallback(async e => {
+		setLogoHex(Buffer.from(await e.arrayBuffer()).toString('base64'));
 		setLogo(URL.createObjectURL(e));
 		setError();
-	}
+	}, []);
 
-	function onFileDelete() {
+	const onFileDelete = React.useCallback(() => {
 		setLogo();
 		setError();
-	}
+	}, []);
 
 	const handleSubmit = React.useCallback(
 		e => {
 			e.preventDefault();
-			console.log(tokenName, tokenSymbol, amount, description, baseDenom, decimal, logo);
-			toast('🦄 Wow so easy!', {
-				progress: undefined,
-				theme: 'dark',
+			const transaction = {
+				module: 'tokenFactory',
+				command: 'create',
+				fee: '1000000',
+				params: { amount: (Number(amount) * 10 ** Number(decimal)).toString() },
+				nonce: auth.nonce,
+				senderPublicKey: senderPublicKey,
+				signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),
+			};
+			const metadata = codec
+				.encode(factoryMetadataSchema, {
+					tokenName,
+					description,
+					decimal,
+					baseDenom,
+					symbol: tokenSymbol,
+				})
+				.toString('hex');
+			const logo = logoHex;
+
+			sendTransaction({
+				transaction,
+				onSuccess: () => navigate('/tokens'),
+				customHandler: async signed => {
+					await postFactoryCreate(
+						{ transaction: signed, metadata, logo },
+						selectedService ? selectedService.serviceURLs : undefined,
+					);
+				},
 			});
 		},
-		[tokenName, tokenSymbol, amount, description, baseDenom, decimal, logo],
+		[
+			navigate,
+			amount,
+			auth,
+			senderPublicKey,
+			tokenName,
+			description,
+			decimal,
+			baseDenom,
+			tokenSymbol,
+			logoHex,
+			sendTransaction,
+			selectedService,
+		],
 	);
 
 	return (
@@ -168,9 +216,9 @@ const CreateTokenModal = () => {
 													<FileUploader
 														multiple={false}
 														required
-														types={['jpg', 'png', 'svg']}
+														types={['png']}
 														onTypeError={handleFileError}
-														maxSize={0.064}
+														maxSize={0.512}
 														onSizeError={handleFileError}
 														handleChange={handleChange}
 														classes="custom-file-upload"
@@ -212,7 +260,7 @@ const CreateTokenModal = () => {
 															>
 																select or drop token icon here
 																<br />
-																(.jpg, .png, .svg, Max 2MB)
+																(.png only, Max 512kb)
 																{error && <div style={{ color: 'red' }}>{error}</div>}
 															</div>
 														</div>
@@ -280,7 +328,7 @@ const CreateTokenModal = () => {
 											)}
 										</div>
 									</div>
-									<WalletActionButton type="submit" style={{ height: '60px' }}>
+									<WalletActionButton disabled={!isReady} type="submit" style={{ height: '60px' }}>
 										Create Token
 									</WalletActionButton>
 								</div>

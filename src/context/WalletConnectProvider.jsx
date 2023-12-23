@@ -224,20 +224,21 @@ export function WalletConnectProvider({ children }) {
 					for (let i = 0; i < tokens.data.length; i++) {
 						const meta = tokenMeta.data.find(t => t.tokenID === tokens.data[i].tokenID);
 
-						let symbol = meta ? meta.symbol : '???';
-						let logo = meta ? meta.logo.png : undefined;
-						let tokenName = meta ? meta.tokenName : undefined;
-						let decimal = meta
-							? meta.denomUnits.find(t => t.denom === symbol.toLowerCase()).decimals
-							: undefined;
+						let symbol = meta && meta.symbol ? meta.symbol : '???';
+						let logo = meta ? meta.logo.png : '';
+						let tokenName = meta ? meta.tokenName : '';
+						let decimal =
+							meta && symbol !== '???'
+								? meta.denomUnits.find(t => t.denom === symbol.toLowerCase()).decimals
+								: process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;
 
 						if (!meta) {
 							const dexMeta = await getDEXTokenCompact({
 								search: tokens.data[i].tokenID,
 							});
-							symbol = dexMeta ? dexMeta.data[0].symbol : '???';
+							symbol = dexMeta && dexMeta.data[0].symbol ? dexMeta.data[0].symbol : '???';
 							logo = dexMeta ? dexMeta.data[0].logo : '';
-							tokenName = dexMeta ? dexMeta.data[0].tokenName : undefined;
+							tokenName = dexMeta ? dexMeta.data[0].tokenName : '';
 							decimal = dexMeta
 								? dexMeta.data[0].decimal
 								: process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;

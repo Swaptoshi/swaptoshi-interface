@@ -293,7 +293,7 @@ const Token = () => {
 								>
 									<Loader size={30} />{' '}
 								</div>
-							) : filteredTableData.length > 0 ? (
+							) : filteredTableData && filteredTableData.length > 0 ? (
 								filteredTableData.map(data => (
 									<div key={data.tokenId} data-testid="token-table-row-NATIVE">
 										<Link className="sc-1bit9h6-16 kiPA-dv" to={`/tokens/${data.tokenId}`}>

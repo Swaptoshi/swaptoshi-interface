@@ -10,7 +10,7 @@ import Pools from './pages/Pools/Pools';
 import LiquidityModal from './pages/LiquidityModal/LiquidityModal';
 
 import './App.css';
-import TokenDetails from './components/TokenDetails/TokenDetails';
+import TokenDetails from './pages/TokenDetails/TokenDetails';
 //Tokens Data
 import { allTableData, chartData } from './service/tokens';
 //Swap Modal Tokens Data
