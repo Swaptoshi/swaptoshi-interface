@@ -21,7 +21,7 @@ export default function ChainProvider({ children }) {
 	React.useEffect(() => {
 		setLskTokenInfo(s => ({
 			...s,
-			tokenId: chain.concat(s.tokenId),
+			tokenId: chain.concat('0'.repeat(14)),
 		}));
 	}, [chain]);
 
