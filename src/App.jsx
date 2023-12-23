@@ -20,6 +20,7 @@ import { getSystemTheme } from './utils/Theme/getSystemTheme';
 import CreateTokenModal from './pages/CreateToken/CreateToken';
 import { useTheme } from './context/ThemeProvider';
 import AppContextProvider from './context/AppContextProvider';
+import CreatePool from './pages/CreatePool/CreatePool';
 
 function App() {
 	const [theme] = useTheme();
@@ -71,6 +72,7 @@ function App() {
 					<Route path="/swap" element={<Swap />} setCurrentCurrencyId={setCurrentCurrencyId} />
 					<Route path="/tokens" element={<Token />} />
 					<Route path="/pools" element={<Pools />} />
+					<Route path="/create-pool" element={<CreatePool />} />
 					<Route
 						path="/tokens/:id"
 						element={<TokenDetails allTableData={allTableData} chartData={chartData} />}
