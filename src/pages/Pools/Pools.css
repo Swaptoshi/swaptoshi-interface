@@ -215,7 +215,7 @@
 
 /* Connect WALLET CARD */
 .pools-connect-wallet-card {
-	background-color: var(--card-bg);
+	background-color: var(--card-inside-color);
 	border: 1px solid rgb(152 161 192 / 24%);
 	border-radius: 16px;
 	display: flex;
