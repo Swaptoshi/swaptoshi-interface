@@ -394,3 +394,24 @@
 	font-size: 16px;
 	color: var(--color-white);
 }
+
+.pool-button {
+	min-width: 150px;
+}
+
+@media screen and (width < 425px) {
+	.pools-head-content {
+		display: flex;
+		flex-direction: column;
+		align-items: start;
+	}
+
+	.pool-right {
+		width: 100% !important;
+	}
+
+	.pool-button {
+		flex: 1;
+		margin-top: 8px;
+	}
+}
