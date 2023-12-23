@@ -17,6 +17,7 @@
 		"buffer": "^6.0.3",
 		"chart.js": "^4.4.0",
 		"crypto-browserify": "^3.12.0",
+		"decimal.js": "^10.4.3",
 		"lightweight-charts": "^4.1.1",
 		"os-browserify": "^0.3.0",
 		"path-browserify": "^1.0.1",
