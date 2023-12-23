@@ -1,6 +1,14 @@
 import React from 'react';
 
-export default function TokenPickerBase({ value, blocked, onClose, onSelect, picker }) {
+export default function TokenPickerBase({
+	value,
+	blocked,
+	onClose,
+	onSelect,
+	picker,
+	style,
+	theme,
+}) {
 	const handlePick = React.useCallback(() => {
 		picker({ selected: value, blocked, onClose, onSelect });
 	}, [blocked, onClose, onSelect, picker, value]);
@@ -10,11 +18,19 @@ export default function TokenPickerBase({ value, blocked, onClose, onSelect, pic
 			id={`open-currency-select-${value.symbol}`}
 			className={'open-currency-btn-top'}
 			onClick={handlePick}
+			style={style}
 		>
 			<span className={'span-one'}>
 				<div className="cryptocurrency-wrapper">
 					<div className="image-wrapper">
-						<div>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								paddingLeft: '8px',
+							}}
+						>
 							<img className="icon-image" src={value.logo} alt={value.symbol} />
 						</div>
 					</div>
@@ -28,8 +44,9 @@ export default function TokenPickerBase({ value, blocked, onClose, onSelect, pic
 	) : (
 		<button
 			id={`open-currency-select-unselected`}
-			className="open-currency-btn-bottom"
+			className={`open-currency-btn-bottom picker-${theme}`}
 			onClick={handlePick}
+			style={style}
 		>
 			<span className="span-two">
 				<div className="cryptocurrency-wrapper">
