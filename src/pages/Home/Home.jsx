@@ -4,10 +4,11 @@ import React from 'react';
 import './Home.css';
 import Footer from '../../components/Footer/Footer';
 import { NavLink } from 'react-router-dom';
-import { liskTokenCompact } from '../../constants/tokens';
 import SwapWidget from '../../components/Swap/SwapWidget';
+import { useChain } from '../../context/ChainProvider';
 
 const Home = () => {
+	const { lskTokenInfo } = useChain();
 	const sectionRef = React.useRef(null);
 
 	const handleClick = () => {
@@ -33,7 +34,7 @@ const Home = () => {
 					<NavLink className="card-anchor" to="/swap">
 						<div className="card-section card-home">
 							<div className={'card-home-bg'} style={{ borderRadius: '24px' }}>
-								<SwapWidget disabled initialBaseToken={liskTokenCompact} />
+								<SwapWidget disabled initialBaseToken={lskTokenInfo} />
 							</div>
 						</div>
 					</NavLink>

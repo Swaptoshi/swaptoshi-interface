@@ -2,6 +2,7 @@ import React from 'react';
 import { checkServiceNode } from '../service/node';
 import { getBlockchainApps } from '../service/apps';
 import { tryToast } from '../utils/Toast/tryToast';
+import { liskTokenCompact } from '../constants/tokens';
 
 const ChainContext = React.createContext();
 
@@ -13,8 +14,16 @@ export default function ChainProvider({ children }) {
 	const [chain, setChain] = React.useState(process.env.REACT_APP_DEFAULT_CHAIN);
 	const [availableService, setAvailableService] = React.useState();
 	const [selectedService, setSelectedService] = React.useState();
+	const [lskTokenInfo, setLskTokenInfo] = React.useState(liskTokenCompact);
 
 	const fetchBlock = React.useRef(false);
+
+	React.useEffect(() => {
+		setLskTokenInfo(s => ({
+			...s,
+			tokenId: chain.concat(s.tokenId),
+		}));
+	}, [chain]);
 
 	React.useEffect(() => {
 		if (!availableService) return;
@@ -71,8 +80,9 @@ export default function ChainProvider({ children }) {
 			availableService,
 			selectedService,
 			setSelectedService,
+			lskTokenInfo,
 		}),
-		[availableService, chain, selectedService],
+		[availableService, chain, lskTokenInfo, selectedService],
 	);
 
 	return <ChainContext.Provider value={context}>{children}</ChainContext.Provider>;

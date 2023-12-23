@@ -533,7 +533,7 @@ a {
 }
 
 .jgrgoQ {
-	border: 1px solid rgb(41 50 73);
+	border: 1px solid var(--border);
 	animation: 0.6s linear 0s 1 normal none running none;
 	align-self: center;
 }
