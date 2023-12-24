@@ -11,7 +11,13 @@ const TEN = new BigNumber(10);
 const FIVE_SIG_FIGS_POW = new Decimal(10).pow(5);
 const Q128 = BigInt(0x100000000000000000000000000000000);
 
-function decodePriceSqrt(sqrtRatioX96, decimalsToken0 = 8, decimalsToken1 = 8, inverse = false) {
+function decodePriceSqrt(
+	sqrtRatioX96,
+	decimalsToken0 = 8,
+	decimalsToken1 = 8,
+	inverse = false,
+	disableFiveSigPrevision = false,
+) {
 	let ratio = new Decimal(sqrtRatioX96).div(2 ** 96).pow(2);
 
 	if (decimalsToken1 < decimalsToken0) {
@@ -24,7 +30,7 @@ function decodePriceSqrt(sqrtRatioX96, decimalsToken0 = 8, decimalsToken1 = 8, i
 		ratio = ratio.pow(-1);
 	}
 
-	if (ratio.lessThan(FIVE_SIG_FIGS_POW)) {
+	if (!disableFiveSigPrevision && ratio.lessThan(FIVE_SIG_FIGS_POW)) {
 		return ratio.toPrecision(5);
 	}
 
@@ -52,7 +58,13 @@ function decodeTickPrice(tick, decimalsToken0 = 8, decimalsToken1 = 8, inverse =
 	return decodePriceSqrt(sqrtPriceX96, decimalsToken0, decimalsToken1, inverse);
 }
 
+function inversePriceSqrt(sqrtRatioX96, decimalsToken0 = 8, decimalsToken1 = 8) {
+	const price = decodePriceSqrt(sqrtRatioX96, decimalsToken0, decimalsToken1, true, true);
+	return encodePriceSqrt(price, 1);
+}
+
 module.exports = {
+	inversePriceSqrt,
 	decodeTickPrice,
 	decodeFeeGrowth,
 	decodePriceSqrt,

@@ -1,6 +1,11 @@
 import React from 'react';
 import { addByTick, normalizePriceByTick, subByTick } from '../../utils/Tick/price_tick';
-import { decodeTickPrice } from '../../utils/Math/priceFormatter';
+import {
+	decodePriceSqrt,
+	decodeTickPrice,
+	encodePriceSqrt,
+	inversePriceSqrt,
+} from '../../utils/Math/priceFormatter';
 import { MAX_TICK, MIN_TICK } from '../../utils/Tick/tick_math';
 
 export default function PriceInput({ value, disabled, setValue, title, subTitle }) {
@@ -28,6 +33,17 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle 
 	}, [setValue, value]);
 
 	const onPlus = React.useCallback(() => {
+		const price = 1.36456456456;
+		const sqrt = encodePriceSqrt(price, 1);
+
+		const invertedPrice = price ** -1;
+		const invertedsqrt = encodePriceSqrt(1, price);
+		const fromInvertedSqrt = decodePriceSqrt(invertedsqrt);
+		const fromInvertedSqrt2 = decodePriceSqrt(inversePriceSqrt(sqrt));
+
+		console.log('check this', inversePriceSqrt(sqrt), invertedsqrt);
+		console.log(invertedPrice, fromInvertedSqrt, fromInvertedSqrt2);
+
 		if (value && value !== '0') {
 			const added = addByTick(value, 10);
 			setValue(added);
