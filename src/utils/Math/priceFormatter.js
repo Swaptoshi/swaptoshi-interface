@@ -1,4 +1,5 @@
-const { getSqrtRatioAtTick } = require('../Tick/tick_math');
+const { INFINITE, ZERO } = require('../../constants/tick');
+const { getSqrtRatioAtTick, MAX_SQRT_RATIO, MIN_SQRT_RATIO } = require('../Tick/tick_math');
 
 /* eslint-disable import/no-extraneous-dependencies */
 const Decimal = require('decimal.js').default;
@@ -38,6 +39,12 @@ function decodePriceSqrt(
 }
 
 function encodePriceSqrt(reserve1, reserve0) {
+	if (reserve1 === INFINITE || reserve0 === INFINITE) {
+		return MAX_SQRT_RATIO;
+	}
+	if (reserve1 === ZERO || reserve0 === ZERO) {
+		return MIN_SQRT_RATIO;
+	}
 	return new Decimal(reserve1.toString())
 		.div(reserve0)
 		.sqrt()
