@@ -594,7 +594,7 @@
 	max-width: 1200px;
 	min-width: 390px;
 	height: 72px;
-	padding: 8px 12px 0;
+	padding: 0px 12px;
 	transition: background-color 125ms ease 0s;
 	width: 100%;
 }

@@ -23,6 +23,7 @@ export default function TokenPickerBase({
 		>
 			<span className={'span-one'}>
 				<div className="cryptocurrency-wrapper">
+					<div style={{ margin: '0px 2px' }} />
 					<div className="image-wrapper">
 						<div
 							style={{
