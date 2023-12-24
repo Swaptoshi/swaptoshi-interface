@@ -1,5 +1,5 @@
 import React from 'react';
-import './ModaContainer.css';
+import './ModalContainer.css';
 import { NavLink } from 'react-router-dom';
 
 export default function ModalContainer({ children, title, backTo, topRightComponent }) {

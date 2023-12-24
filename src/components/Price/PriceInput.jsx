@@ -97,6 +97,7 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle 
 						disabled={disabled}
 						data-testid="increment-price-range"
 						onClick={onPlus}
+						style={{ width: '35px', height: '35px' }}
 						className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 InputStepCounter__SmallButton-sc-98d37844-1 hWKjgZ bdLEKg eKOJak"
 					>
 						<div className="text__TextWrapper-sc-9327e48a-0 blhgKn InputStepCounter__ButtonLabel-sc-98d37844-6 ojMTq css-15li2d9">
@@ -119,6 +120,7 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle 
 					<button
 						disabled={disabled}
 						data-testid="decrement-price-range"
+						style={{ width: '35px', height: '35px' }}
 						onClick={onMinus}
 						className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 InputStepCounter__SmallButton-sc-98d37844-1 hWKjgZ bdLEKg eKOJak"
 					>
