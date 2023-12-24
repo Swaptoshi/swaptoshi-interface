@@ -7,11 +7,17 @@ import {
 	inversePriceSqrt,
 } from '../../utils/Math/priceFormatter';
 import { MAX_TICK, MIN_TICK } from '../../utils/Tick/tick_math';
+import { INFINITE, ZERO } from '../../constants/tick';
 
 export default function PriceInput({ value, disabled, setValue, title, subTitle }) {
 	const onChange = React.useCallback(
 		event => {
 			const inputValue = event.target.value;
+
+			if (inputValue === INFINITE) {
+				setValue(INFINITE);
+				return;
+			}
 
 			if (inputValue === '') {
 				setValue('');
@@ -26,7 +32,7 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle 
 	);
 
 	const onBlur = React.useCallback(() => {
-		if (value && value !== '0') {
+		if (value && value !== ZERO && value !== INFINITE) {
 			const normalized = normalizePriceByTick(value, 10);
 			setValue(normalized);
 		}
@@ -44,7 +50,7 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle 
 		console.log('check this', inversePriceSqrt(sqrt), invertedsqrt);
 		console.log(invertedPrice, fromInvertedSqrt, fromInvertedSqrt2);
 
-		if (value && value !== '0') {
+		if (value && value !== ZERO && value !== INFINITE) {
 			const added = addByTick(value, 10);
 			setValue(added);
 		} else {
@@ -53,7 +59,7 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle 
 	}, [setValue, value]);
 
 	const onMinus = React.useCallback(() => {
-		if (value && value !== '0') {
+		if (value && value !== ZERO && value !== INFINITE) {
 			const subtracted = subByTick(value, 10);
 			setValue(subtracted);
 		} else {
