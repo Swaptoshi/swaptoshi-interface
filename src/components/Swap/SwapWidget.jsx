@@ -64,7 +64,10 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		() =>
 			baseToken !== undefined &&
 			quoteToken !== undefined &&
-			((baseValue !== '' && baseValue !== '0') || (quoteValue !== '' && quoteValue !== '0')),
+			baseValue !== '' &&
+			baseValue !== '0' &&
+			quoteValue !== '' &&
+			quoteValue !== '0',
 		[baseToken, baseValue, quoteToken, quoteValue],
 	);
 
@@ -170,7 +173,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 			setError('Select a token');
 			return;
 		}
-		if (!baseValue || !quoteValue) {
+		if (!baseValue && !quoteValue) {
 			setError('Enter an amount');
 			return;
 		}
@@ -178,7 +181,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 			setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
 			return;
 		}
-	}, [baseBalance, baseToken, baseValue, quoteToken, quoteValue]);
+	}, [baseBalance, baseToken, baseValue, error, quoteToken, quoteValue]);
 
 	React.useEffect(() => {
 		const run = async () => {
