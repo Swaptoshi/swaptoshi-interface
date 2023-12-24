@@ -29,9 +29,12 @@ export default function PoolFeeSelector({ selected, onSelect }) {
 			if (dexConfig && dexConfig.data) {
 				setConfig(dexConfig.data);
 			}
-			process.env.REACT_APP_DEFAULT_FEE_TIER &&
-				onSelect &&
-				onSelect(process.env.REACT_APP_DEFAULT_FEE_TIER);
+			if (process.env.REACT_APP_DEFAULT_FEE_TIER) {
+				const matched = dexConfig.data.feeAmountTickSpacing.find(
+					t => t[0] === process.env.REACT_APP_DEFAULT_FEE_TIER,
+				);
+				onSelect && onSelect(matched);
+			}
 			setIsLoading(false);
 		};
 
@@ -75,14 +78,16 @@ export default function PoolFeeSelector({ selected, onSelect }) {
 										return (
 											<button
 												key={fees[0]}
-												onClick={() => onSelect(fees[0])}
+												onClick={() => onSelect(fees)}
 												style={{
 													border: '1px solid var(--border)',
 													padding: '16px',
 													borderRadius: '16px',
 													overflow: 'hidden',
 													backgroundColor:
-														selected === fees[0] ? 'var(--card-inside-color)' : undefined,
+														Number(selected) === Number(fees[0])
+															? 'var(--card-inside-color)'
+															: undefined,
 												}}
 												className="sc-bczRLJ lbXqUa Button__BaseButton-sc-4f96dcd8-1 Button__ButtonOutlined-sc-4f96dcd8-7 eOoGds aQTri"
 											>

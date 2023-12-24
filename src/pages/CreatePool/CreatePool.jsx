@@ -13,6 +13,7 @@ import { useChain } from '../../context/ChainProvider';
 import { getDEXPool } from '../../service/dex';
 import { computePoolAddress, getPoolKey } from '../../utils/Address/poolAddress';
 import { tryToast } from '../../utils/Toast/tryToast';
+import WarningBox from '../../components/Error/WarningBox';
 
 export default function CreatePool() {
 	const navigate = useNavigate();
@@ -25,6 +26,7 @@ export default function CreatePool() {
 	const [tokenA, setTokenA] = React.useState();
 	const [tokenB, setTokenB] = React.useState();
 	const [fee, setFee] = React.useState();
+	const [tickSpacing, setTickSpacing] = React.useState();
 	const [price, setPrice] = React.useState();
 
 	React.useEffect(() => {
@@ -62,7 +64,8 @@ export default function CreatePool() {
 	}, [isSpecifyPriceReady, price]);
 
 	const handleSelectFee = React.useCallback(selected => {
-		setFee(selected);
+		setFee(Number(selected[0]));
+		setTickSpacing(Number(selected[1]));
 	}, []);
 
 	const handleTokenAChange = React.useCallback(selected => {
@@ -121,6 +124,8 @@ export default function CreatePool() {
 
 			<PoolFeeSelector selected={fee} onSelect={handleSelectFee} />
 
+			{error ? <WarningBox type={'error'}>{error}</WarningBox> : null}
+
 			<div
 				style={{
 					color: 'var(--color-white)',
@@ -134,6 +139,7 @@ export default function CreatePool() {
 
 			<PriceInput
 				disabled={!isSpecifyPriceReady || error}
+				tickSpacing={tickSpacing}
 				title={
 					isSpecifyPriceReady
 						? `1 ${tokenB.symbol.toUpperCase()} equal to`
@@ -149,7 +155,7 @@ export default function CreatePool() {
 				onClick={handleCreatePool}
 				style={{ height: '60px' }}
 			>
-				{isLoading ? 'Loading...' : error ? error : 'Create Pool'}
+				{isLoading ? 'Loading...' : 'Create Pool'}
 			</WalletActionButton>
 		</ModalContainer>
 	);

@@ -4,7 +4,7 @@ import { decodeTickPrice } from '../../utils/Math/priceFormatter';
 import { MAX_TICK, MIN_TICK } from '../../utils/Tick/tick_math';
 import { INFINITE, ZERO } from '../../constants/tick';
 
-export default function PriceInput({ value, disabled, setValue, title, subTitle }) {
+export default function PriceInput({ value, disabled, setValue, title, subTitle, tickSpacing }) {
 	const onChange = React.useCallback(
 		event => {
 			const inputValue = event.target.value;
@@ -35,21 +35,21 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle 
 
 	const onPlus = React.useCallback(() => {
 		if (value && value !== ZERO && value !== INFINITE) {
-			const added = addByTick(value, 10);
+			const added = addByTick(value, tickSpacing);
 			setValue(added);
 		} else {
 			setValue(decodeTickPrice(MIN_TICK));
 		}
-	}, [setValue, value]);
+	}, [setValue, tickSpacing, value]);
 
 	const onMinus = React.useCallback(() => {
 		if (value && value !== ZERO && value !== INFINITE) {
-			const subtracted = subByTick(value, 10);
+			const subtracted = subByTick(value, tickSpacing);
 			setValue(subtracted);
 		} else {
 			setValue(decodeTickPrice(MAX_TICK));
 		}
-	}, [setValue, value]);
+	}, [setValue, tickSpacing, value]);
 
 	return (
 		<div
