@@ -2,11 +2,16 @@ import React from 'react';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import WalletTokenPicker from '../../components/Token/WalletTokenPicker';
 import PoolFeeSelector from '../../components/Fee/PoolFeeSelector';
+import PriceInput from '../../components/Price/PriceInput';
+import WalletActionButton from '../../components/Button/WalletActionButton';
 
 export default function CreatePool() {
 	const [tokenA, setTokenA] = React.useState();
 	const [tokenB, setTokenB] = React.useState();
 	const [fee, setFee] = React.useState();
+	const [price, setPrice] = React.useState();
+
+	const isReady = true;
 
 	const handleSelectFee = React.useCallback(selected => {
 		setFee(selected);
@@ -50,6 +55,12 @@ export default function CreatePool() {
 			>
 				Specify Price
 			</div>
+
+			<PriceInput title={'1 ETH equal to'} subTitle={'UNI'} value={price} setValue={setPrice} />
+
+			<WalletActionButton disabled={!isReady} style={{ height: '60px' }}>
+				Create Pool
+			</WalletActionButton>
 		</ModalContainer>
 	);
 }

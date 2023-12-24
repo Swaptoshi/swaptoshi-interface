@@ -25,19 +25,18 @@ function decodePriceSqrt(sqrtRatioX96, decimalsToken0 = 8, decimalsToken1 = 8, i
 	}
 
 	if (ratio.lessThan(FIVE_SIG_FIGS_POW)) {
-		return parseFloat(ratio.toPrecision(5));
+		return ratio.toPrecision(5);
 	}
 
-	return parseFloat(ratio.toString());
+	return ratio.toString();
 }
 
 function encodePriceSqrt(reserve1, reserve0) {
-	return new BigNumber(reserve1.toString())
-		.div(reserve0.toString())
+	return new Decimal(reserve1.toString())
+		.div(reserve0)
 		.sqrt()
-		.multipliedBy(new BigNumber(2).pow(96))
-		.integerValue(3)
-		.toString();
+		.mul(new Decimal(2).pow(96))
+		.toFixed(0);
 }
 
 function encodeFeeGrowth(feeGrowth, liquidity) {

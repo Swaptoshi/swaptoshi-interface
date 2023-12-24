@@ -1,5 +1,4 @@
 import React from 'react';
-import './CreateToken.css';
 import { useNavigate } from 'react-router-dom';
 import TextInput from '../../components/Forms/TextInput';
 import SecondaryButton from '../../components/Button/SecondaryButton';
