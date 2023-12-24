@@ -13,6 +13,7 @@ import { computePoolAddress, getPoolKey } from '../../utils/Address/poolAddress'
 import { getDEXPool, getDEXPoolTick } from '../../service/dex';
 import SwapTokenInput from '../../components/Swap/SwapTokenInput';
 import { calculateAmount0, calculateAmount1 } from '../../utils/Liquidity/liquidityAmount';
+import Decimal from 'decimal.js';
 
 const LiquidityModal = () => {
 	const { lskTokenInfo, selectedService } = useChain();
@@ -30,6 +31,8 @@ const LiquidityModal = () => {
 	const [ticks, setTicks] = React.useState();
 	const [feeAmountTickSpacing, setFeeAmountTickSpacing] = React.useState();
 	const [pool, setPool] = React.useState();
+	const [inverted, setInverted] = React.useState();
+	const [price, setPrice] = React.useState();
 
 	const handleAmountAInputChange = React.useCallback(
 		event => {
@@ -44,12 +47,12 @@ const LiquidityModal = () => {
 			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 				setAmountA(inputValue);
 				if (lowPrice && highPrice && pool) {
-					const amountB = calculateAmount1(inputValue, pool.price, highPrice, lowPrice);
+					const amountB = calculateAmount1(inputValue, price, highPrice, lowPrice);
 					setAmountB(amountB);
 				}
 			}
 		},
-		[highPrice, lowPrice, pool],
+		[highPrice, lowPrice, pool, price],
 	);
 
 	const handleAmountAMax = React.useCallback(max => {
@@ -69,17 +72,23 @@ const LiquidityModal = () => {
 			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 				setAmountB(inputValue);
 				if (lowPrice && highPrice && pool) {
-					const amountA = calculateAmount0(inputValue, pool.price, highPrice, lowPrice);
+					const amountA = calculateAmount0(inputValue, price, highPrice, lowPrice);
 					setAmountA(amountA);
 				}
 			}
 		},
-		[highPrice, lowPrice, pool],
+		[highPrice, lowPrice, pool, price],
 	);
 
 	const handleAmountBMax = React.useCallback(max => {
 		setAmountB(max);
 	}, []);
+
+	React.useEffect(() => {
+		if (tokenA && tokenB) {
+			setInverted(tokenA.tokenId >= tokenB.tokenId);
+		}
+	}, [tokenA, tokenB]);
 
 	React.useEffect(() => {
 		setTokenA(lskTokenInfo);
@@ -110,12 +119,17 @@ const LiquidityModal = () => {
 						setNoPoolError("Pool Doesn't Exists");
 					} else {
 						setPool(pools.data[0]);
+						setPrice(
+							inverted
+								? new Decimal(pools.data[0].price).pow(-1).toPrecision(5)
+								: pools.data[0].price,
+						);
 
 						const poolTick = await getDEXPoolTick(
 							{ poolAddress },
 							selectedService ? selectedService.serviceURLs : undefined,
 						);
-						if (poolTick && poolTick.data) {
+						if (poolTick && poolTick.data && poolTick.data.length > 0) {
 							const data = [];
 							let liquidity = 0;
 							for (
@@ -138,7 +152,7 @@ const LiquidityModal = () => {
 		};
 
 		tryToast('Check pool failed', checkPool, () => setIsLoading(false));
-	}, [fee, feeAmountTickSpacing, selectedService, tokenA, tokenB]);
+	}, [fee, feeAmountTickSpacing, inverted, selectedService, tokenA, tokenB]);
 
 	const isSpecifyPriceReady = React.useMemo(() => {
 		return tokenA !== undefined && tokenB !== undefined && fee !== undefined && pool !== undefined;
@@ -246,9 +260,10 @@ const LiquidityModal = () => {
 						<div style={{ opacity: !isSpecifyPriceReady || noPoolError ? 0.5 : 1 }}>
 							<div style={{ marginLeft: '16px', color: 'var(--color-white)' }}>
 								<div style={{ fontSize: '12px' }}>Current price:</div>
-								<div style={{ fontWeight: 600 }}>{pool.price}</div>
+								<div style={{ fontWeight: 600 }}>{price}</div>
 								<div style={{ fontSize: '12px' }}>
-									{pool.token0Symbol} per {pool.token1Symbol}
+									{inverted ? pool.token0Symbol : pool.token1Symbol} per{' '}
+									{inverted ? pool.token1Symbol : pool.token0Symbol}
 								</div>
 							</div>
 							{ticks && ticks.length > 0 ? (

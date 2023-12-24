@@ -11,6 +11,13 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 
 	const [filteredData, setFilteredData] = React.useState([]);
 	const [options, setOptions] = React.useState({});
+	const [inverted, setInverted] = React.useState();
+
+	React.useEffect(() => {
+		if (token0 && token1) {
+			setInverted(token0.tokenId >= token1.tokenId);
+		}
+	}, [token0, token1]);
 
 	React.useEffect(() => {
 		if (data && currentTick && data.length > 0) {
@@ -19,27 +26,39 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 
 			const currentIndex = data.findIndex(t => t[0] === currentTick);
 			const slicedWithSpace = [];
-			for (
-				let i = currentIndex - desiredLength * spacing;
-				i < currentIndex + desiredLength * spacing;
-				i += spacing
-			) {
-				slicedWithSpace.push(data[i]);
+
+			// TODO: check here
+			if (inverted) {
+				for (
+					let i = currentIndex + desiredLength * spacing;
+					i >= currentIndex - desiredLength * spacing;
+					i -= spacing
+				) {
+					slicedWithSpace.push(data[i]);
+				}
+			} else {
+				for (
+					let i = currentIndex - desiredLength * spacing;
+					i < currentIndex + desiredLength * spacing;
+					i += spacing
+				) {
+					slicedWithSpace.push(data[i]);
+				}
 			}
 
 			setFilteredData(slicedWithSpace);
-			decodeTickPrice;
 		}
-	}, [currentTick, data]);
+	}, [currentTick, data, inverted]);
 
 	const updateChart = useDebouncedCallback(() => {
 		try {
 			const annotations = [];
 
 			if (currentTick) {
-				const currentPrice = decodeTickPrice(currentTick, token0.decimal, token1.decimal);
+				const currentPrice = decodeTickPrice(currentTick, token0.decimal, token1.decimal, inverted);
+				const sqrtPirce = encodePriceSqrt(inverted ? 1 : currentPrice, inverted ? currentPrice : 1);
 				annotations.push({
-					x: currentTick,
+					x: getTickAtSqrtRatio(sqrtPirce),
 					borderColor: theme === 'dark' ? '#fff' : '#000',
 					label: {
 						style: {
@@ -51,7 +70,7 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 			}
 
 			if (lowPrice) {
-				const sqrtPirce = encodePriceSqrt(lowPrice, 1);
+				const sqrtPirce = encodePriceSqrt(inverted ? 1 : lowPrice, inverted ? lowPrice : 1);
 				annotations.push({
 					x: getTickAtSqrtRatio(sqrtPirce),
 					borderColor: theme === 'dark' ? '#fff' : '#000',
@@ -65,7 +84,7 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 			}
 
 			if (highPrice) {
-				const sqrtPirce = encodePriceSqrt(highPrice, 1);
+				const sqrtPirce = encodePriceSqrt(inverted ? 1 : highPrice, inverted ? highPrice : 1);
 				annotations.push({
 					x: getTickAtSqrtRatio(sqrtPirce),
 					borderColor: theme === 'dark' ? '#fff' : '#000',
