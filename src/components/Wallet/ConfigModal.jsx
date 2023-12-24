@@ -42,7 +42,7 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 										]}
 									/>
 								</div>
-								<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
+								{/* <div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
 									<div className="sc-1kykgp9-0 sc-1opkkz6-0 iCxowP kMuqSe">
 										<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
 											<div className="sc-sx9n2y-0 kivXvb css-1aekuku">Hide small balances</div>
@@ -51,24 +51,18 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 									<button role="option" aria-selected="true" className="sc-1poje5t-0 jANAGB">
 										<span className="sc-1poje5t-1 jsjUXs" />
 									</button>
-								</div>
-								<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
+								</div> */}
+								{/* <div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
 									<div className="sc-1kykgp9-0 sc-1opkkz6-0 iCxowP kMuqSe">
 										<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
 											<div className="sc-sx9n2y-0 kivXvb css-1aekuku">Allow analytics</div>
-										</div>
-										<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
-											{/* <div className="bftkTM css-mx5ldy">
-                                                                        We use anonymized data to enhance your experience with
-                                                                        Swaptoshi Labs products.
-                                                                    </div> */}
 										</div>
 									</div>
 									<button role="option" aria-selected="true" className="sc-1poje5t-0 jANAGB">
 										<span className="sc-1poje5t-1 jsjUXs" />
 									</button>
-								</div>
-								<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
+								</div> */}
+								{/* <div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
 									<div className="sc-1kykgp9-0 sc-1opkkz6-0 iCxowP kMuqSe">
 										<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
 											<div className="sc-sx9n2y-0 kivXvb css-1aekuku">Show testnets</div>
@@ -83,7 +77,7 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 									>
 										<span className="sc-1poje5t-1 bQBOQe" />
 									</button>
-								</div>
+								</div> */}
 							</div>
 							<div
 								data-testid="wallet-header"
