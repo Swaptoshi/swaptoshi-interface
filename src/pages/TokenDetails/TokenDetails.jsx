@@ -79,8 +79,9 @@ const TokenDetails = () => {
 					}
 				}
 			}
+			setIsLoading(false);
 		};
-		tryToast('Fetch token price failed', run, undefined, () => setIsLoading(false));
+		tryToast('Fetch token price failed', run, () => setIsLoading(false));
 	}, [id, selectedService, timeframe]);
 
 	function determineTrendIcon(priceChangeUSD) {
@@ -207,7 +208,7 @@ const TokenDetails = () => {
 										</div>
 										<div data-cy="volume-24h" className="sc-y05v5v-0 iJvfTG">
 											<div className="sc-d5tbhs-1 cSretk">
-												<div>24H volume</div>
+												<div>{timeframe} Volume</div>
 											</div>
 											{/* <div className="sc-y05v5v-4 iydZZJ">$276.8M</div> */}
 											<div className="sc-y05v5v-4 iydZZJ">{`${fiatFormatter.format(

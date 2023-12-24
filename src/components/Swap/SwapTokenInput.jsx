@@ -38,8 +38,8 @@ export default function SwapTokenInput({
 				if (tokenToLskPrice && tokenToLskPrice.data) {
 					setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
 				}
+				setIsFectingPrice(false);
 			},
-			undefined,
 			() => setIsFectingPrice(false),
 		);
 	}, 500);

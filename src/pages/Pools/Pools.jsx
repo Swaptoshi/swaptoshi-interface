@@ -37,10 +37,11 @@ const Pools = () => {
 				if (ownedPosition && ownedPosition.data) {
 					setPosition(ownedPosition.data);
 				}
+				setIsLoading(false);
 			}
 		};
 
-		tryToast('Fetch owned position failed', run, undefined, () => setIsLoading(false));
+		tryToast('Fetch owned position failed', run, () => setIsLoading(false));
 	}, [selectedService, senderPublicKey]);
 
 	return (

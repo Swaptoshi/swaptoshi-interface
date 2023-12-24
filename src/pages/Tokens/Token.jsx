@@ -48,8 +48,8 @@ const Token = () => {
 					if (!search) setTokens(tokens.data);
 					setFilteredTableData(tokens.data);
 				}
+				setIsLoading(false);
 			},
-			undefined,
 			() => setIsLoading(false),
 		);
 	}, 500);

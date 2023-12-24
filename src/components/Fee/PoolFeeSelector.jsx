@@ -32,9 +32,10 @@ export default function PoolFeeSelector({ selected, onSelect }) {
 			process.env.REACT_APP_DEFAULT_FEE_TIER &&
 				onSelect &&
 				onSelect(process.env.REACT_APP_DEFAULT_FEE_TIER);
+			setIsLoading(false);
 		};
 
-		tryToast('Fetch DEX config failed', run, undefined, () => setIsLoading(false));
+		tryToast('Fetch DEX config failed', run, () => setIsLoading(false));
 	}, [onSelect, selectedService]);
 
 	return (

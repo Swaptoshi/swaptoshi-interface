@@ -68,9 +68,11 @@ export default function ChainProvider({ children }) {
 					break;
 				}
 			}
+
+			fetchBlock.current = false;
 		};
 
-		tryToast('Fetch chain information failed', run, undefined, () => (fetchBlock.current = false));
+		tryToast('Fetch chain information failed', run, () => (fetchBlock.current = false));
 	}, []);
 
 	const context = React.useMemo(

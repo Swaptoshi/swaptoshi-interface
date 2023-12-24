@@ -118,8 +118,8 @@ const Navbar = () => {
 					if (!search) setInitialResult(tokens.data);
 					setSearchResult(tokens.data);
 				}
+				setIsLoading(false);
 			},
-			undefined,
 			() => setIsLoading(false),
 		);
 	}, 500);

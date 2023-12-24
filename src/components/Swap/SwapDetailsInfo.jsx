@@ -45,8 +45,8 @@ export default function SwapDetailsInfo({
 							lskPrice,
 					);
 				}
+				setIsFectingPrice(false);
 			},
-			undefined,
 			() => setIsFectingPrice(false),
 		);
 	}, 600);
