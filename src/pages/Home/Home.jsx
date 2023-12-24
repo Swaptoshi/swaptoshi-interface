@@ -72,10 +72,11 @@ const Home = () => {
 						{/* Card One */}
 						<a className="swap-tokens-card card-one" href="#/swap">
 							<div className="trade-title">
-								<p className="">Swap tokens</p>
+								<p className="">Swap Tokens</p>
 							</div>
 							<div className="c-container-bottom">
-								Buy, sell, and explore tokens on Ethereum, Polygon, Optimism, and more.
+								Dive into the dynamic universe of Swaptoshi! Buy, sell, and explore tokens on our
+								interconnected network.
 								<div id="cContainerLink" className="c-container-link">
 									Trade Tokens
 								</div>
@@ -85,30 +86,29 @@ const Home = () => {
 						{/* Card Two */}
 						<a className="swap-tokens-card card-two" href="#/ntfs">
 							<div className="trade-title">
-								<p className="">Trade NFTs</p>
+								<p className="">Create Tokens</p>
 							</div>
 							<div className="c-container-bottom">
-								Buy and sell NFTs across marketplaces to find more listings at better prices.
+								Effortlessly generate tokens that seamlessly interact with others— no-code, no
+								node-setup, and absolutely no hassle!
 								<div id="cContainerLink" className="c-container-link">
-									Explore NFTs
+									Create Tokens
 								</div>
 							</div>
 						</a>
 					</div>
 
 					<div className="col-3 small-container-wrapper">
-						<a
-							className=""
-							href="https://support.uniswap.org/hc/en-us/articles/11306574799117-How-to-use-Moon-Pay-on-the-Uniswap-web-app-"
-						>
+						<a className="">
 							<div className="crypto-guide c-one">
-								<p>Buy crypto</p>
+								<p>New Opportunities</p>
 								<img className="" src="/assets/images/dollar-image.png" alt="Earn" />
 							</div>
 							<div className="guide-text">
-								Buy crypto with your credit card or bank account at the best rates.
+								Generate tokens, set up pools, and unlock new opportunities within the Swaptoshi
+								network.
 								<div id="btnLink" className="button-link">
-									Buy now
+									Explore more
 								</div>
 							</div>
 						</a>
@@ -122,7 +122,7 @@ const Home = () => {
 								<img className="" src="/assets/images/earn-image.png" alt="Earn" />
 							</div>
 							<div className="guide-text">
-								Provide liquidity to pools on Uniswap and earn fees on swaps.
+								Provide liquidity to pools on Swaptoshi and earn fees on swaps.
 								<div id="btnLink" className="button-link">
 									Provide liquidity
 								</div>
@@ -130,16 +130,17 @@ const Home = () => {
 						</a>
 						<a
 							className=""
-							href="https://support.uniswap.org/hc/en-us/articles/11306574799117-How-to-use-Moon-Pay-on-the-Uniswap-web-app-"
+							href={`https://petstore.swagger.io/?url=${process.env.REACT_APP_LISK_SERVICE_URL}/api/v3/spec`}
 						>
 							<div className="crypto-guide c-three">
 								<p>Build dApps</p>
 								<img className="" src="/assets/images/build-dapps-image.png" alt="Earn" />
 							</div>
 							<div className="guide-text">
-								Build apps and tools on the largest DeFi protocol on Ethereum.
+								Discover the possibilities with Swaptoshi developer API and craft your own
+								incredible use cases.
 								<div id="btnLink" className="button-link">
-									Developer docs
+									API Documentation
 								</div>
 							</div>
 						</a>
@@ -147,15 +148,21 @@ const Home = () => {
 
 					<div className="protocol-card">
 						<div className="protocol-left">
-							<span className="protocol-title">Powered by the Uniswap Protocol</span>
+							<span className="protocol-title">Powered by the Swaptoshi Protocol</span>
 							<p className="protocol-text">
-								The leading decentralized crypto trading protocol, governed by a global community.
+								{"SWT, with a 21 million supply, powers Swaptoshi Protocol's fees and governance."}
 							</p>
 						</div>
 						<div className="protocol-right">
-							<a id="learnMoreBtn" className="learn-more-btn lmb" href="https://uniswap.org/">
+							<div style={{ width: 100 }} />
+							{/* <a
+								disabled
+								id="learnMoreBtn"
+								className="learn-more-btn lmb"
+								href="https://swaptoshi.io/"
+							>
 								Learn more
-							</a>
+							</a> */}
 						</div>
 					</div>
 

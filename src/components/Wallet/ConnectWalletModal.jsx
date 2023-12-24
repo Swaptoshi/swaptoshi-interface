@@ -170,7 +170,7 @@ export default function ConnectWalletModal() {
 				</div>
 				{/* <div className="sc-1hmbv05-2 ilYVNX">
           <div className="sc-sx9n2y-0 bftkTM css-4u0e4f">
-            By connecting a wallet, you agree to Uniswap Labs'{" "}
+            By connecting a wallet, you agree to Swaptoshi Labs'{" "}
             <a
               target="_blank"
               rel="noopener noreferrer"

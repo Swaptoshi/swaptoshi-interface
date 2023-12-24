@@ -60,7 +60,7 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 										<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
 											{/* <div className="bftkTM css-mx5ldy">
                                                                         We use anonymized data to enhance your experience with
-                                                                        Uniswap Labs products.
+                                                                        Swaptoshi Labs products.
                                                                     </div> */}
 										</div>
 									</div>
