@@ -47,8 +47,12 @@ const LiquidityModal = () => {
 			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 				setAmountA(inputValue);
 				if (lowPrice && highPrice && pool) {
-					const amountB = calculateAmount1(inputValue, price, highPrice, lowPrice);
-					setAmountB(amountB);
+					if (Number(lowPrice) > Number(price) && Number(highPrice) > Number(price)) {
+						setAmountB('0');
+					} else {
+						const amountB = calculateAmount1(inputValue, price, highPrice, lowPrice);
+						setAmountB(amountB);
+					}
 				}
 			}
 		},
@@ -72,8 +76,12 @@ const LiquidityModal = () => {
 			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 				setAmountB(inputValue);
 				if (lowPrice && highPrice && pool) {
-					const amountA = calculateAmount0(inputValue, price, highPrice, lowPrice);
-					setAmountA(amountA);
+					if (Number(lowPrice) < Number(price) && Number(highPrice) < Number(price)) {
+						setAmountA('0');
+					} else {
+						const amountA = calculateAmount0(inputValue, price, highPrice, lowPrice);
+						setAmountA(amountA);
+					}
 				}
 			}
 		},
@@ -320,23 +328,27 @@ const LiquidityModal = () => {
 					Deposit Amounts
 				</div>
 
-				<SwapTokenInput
-					isLoading={!isSpecifyPriceReady || !isDepositReady}
-					disableSelect={true}
-					inputValue={amountA}
-					onInputChange={handleAmountAInputChange}
-					selectedToken={tokenA}
-					onMaxClick={handleAmountAMax}
-				/>
+				{Number(lowPrice) > Number(price) && Number(highPrice) > Number(price) ? (
+					<SwapTokenInput
+						isLoading={!isSpecifyPriceReady || !isDepositReady}
+						disableSelect={true}
+						inputValue={amountA}
+						onInputChange={handleAmountAInputChange}
+						selectedToken={tokenA}
+						onMaxClick={handleAmountAMax}
+					/>
+				) : null}
 
-				<SwapTokenInput
-					isLoading={!isSpecifyPriceReady || !isDepositReady}
-					disableSelect={true}
-					inputValue={amountB}
-					onInputChange={handleAmountBInputChange}
-					selectedToken={tokenB}
-					onMaxClick={handleAmountBMax}
-				/>
+				{Number(lowPrice) < Number(price) && Number(highPrice) < Number(price) ? (
+					<SwapTokenInput
+						isLoading={!isSpecifyPriceReady || !isDepositReady}
+						disableSelect={true}
+						inputValue={amountB}
+						onInputChange={handleAmountBInputChange}
+						selectedToken={tokenB}
+						onMaxClick={handleAmountBMax}
+					/>
+				) : null}
 
 				<WalletActionButton
 					disabled={!isEverythingReady || noPoolError}
