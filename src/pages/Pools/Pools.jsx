@@ -19,7 +19,7 @@ const Pools = () => {
 	const { senderPublicKey } = useWalletConnect();
 	const { selectedService } = useChain();
 
-	const [position, setPosition] = React.useState();
+	const [position, setPosition] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 
 	React.useEffect(() => {
@@ -37,8 +37,8 @@ const Pools = () => {
 				if (ownedPosition && ownedPosition.data) {
 					setPosition(ownedPosition.data);
 				}
-				setIsLoading(false);
 			}
+			setIsLoading(false);
 		};
 
 		tryToast('Fetch owned position failed', run, () => setIsLoading(false));
