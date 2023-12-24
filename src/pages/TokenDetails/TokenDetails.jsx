@@ -13,6 +13,7 @@ import Loader from '../../components/Loader';
 import { PriceChart } from '../../components/Chart/PriceChart';
 import { intervalToLimit } from '../../utils/Time/intervalToLimit';
 import { timeframeToInterval } from '../../utils/Time/timeframeToInterval';
+import TokenAvatar from '../../components/Avatar/token';
 
 const TokenDetails = () => {
 	const { id } = useParams();
@@ -137,7 +138,7 @@ const TokenDetails = () => {
 								<div className="sc-qwzj9s-7 hfZYqf">
 									<div className="sc-12k1pn4-3 eLvYRk">
 										<div className="sc-12k1pn4-2 fEQuSm">
-											<img src={token.logo} alt="ETH logo" className="sc-12k1pn4-1 ejtfTW" />
+											<TokenAvatar src={token.logo} size={30} tokenId={token.tokenId} />
 										</div>
 										<div className="sc-12k1pn4-4 izFcWZ" />
 									</div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import TokenAvatar from '../Avatar/token';
 
 export default function TokenPickerBase({
 	value,
@@ -28,10 +29,9 @@ export default function TokenPickerBase({
 								display: 'flex',
 								justifyContent: 'center',
 								alignItems: 'center',
-								paddingLeft: '8px',
 							}}
 						>
-							<img className="icon-image" src={value.logo} alt={value.symbol} />
+							<TokenAvatar src={value.logo} size={25} tokenId={value.tokenId} />
 						</div>
 					</div>
 					<span className="token-name">{value.symbol}</span>

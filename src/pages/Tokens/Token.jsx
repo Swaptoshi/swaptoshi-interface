@@ -11,6 +11,7 @@ import { intervalToSecond } from '../../utils/Time/intervalToSecond';
 import { useDebouncedCallback } from 'use-debounce';
 import Dropdown from '../../components/Navbar/Dropdown';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
+import TokenAvatar from '../../components/Avatar/token';
 
 const Token = () => {
 	const { selectedService } = useChain();
@@ -306,10 +307,11 @@ const Token = () => {
 													<div className="sc-1bit9h6-2 sc-1bit9h6-3 bvHTKj jqxpYK">
 														<div className="sc-12k1pn4-3 eLvYRk">
 															<div className="sc-12k1pn4-2 ckpBIe">
-																<img
+																<TokenAvatar
 																	src={data.logo}
-																	alt="Token logo"
-																	className="sc-12k1pn4-1 bwVixy"
+																	style={{ marginRight: '8px' }}
+																	size={25}
+																	tokenId={data.tokenId}
 																/>
 															</div>
 															<div className="sc-12k1pn4-4 epsCee" />
@@ -410,6 +412,7 @@ const Token = () => {
 																	src={`${selectedService.serviceURLs}/static/img/sparklines/${
 																		selectedTimeframe.value
 																	}-${data.symbol.toLowerCase()}usd.svg`}
+																	onError={e => (e.target.style.display = 'none')}
 																/>
 															) : (
 																<div

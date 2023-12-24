@@ -374,7 +374,6 @@
 .left-item div {
 	display: flex;
 	position: relative;
-	padding-right: 8px;
 }
 
 .left-item div .img-div {

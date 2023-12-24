@@ -18,6 +18,7 @@ import { tryToast } from '../../utils/Toast/tryToast';
 import { intervalToSecond } from '../../utils/Time/intervalToSecond';
 import { getDEXToken } from '../../service/dex';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
+import TokenAvatar from '../Avatar/token';
 
 const Navbar = () => {
 	const location = useLocation();
@@ -326,7 +327,11 @@ const Navbar = () => {
 																			<div className="left-item">
 																				<div>
 																					<div className="img-div">
-																						<img src={option.logo} alt={option.tokenName} />
+																						<TokenAvatar
+																							src={option.logo}
+																							size={35}
+																							tokenId={option.tokenId}
+																						/>
 																					</div>
 																					<div className="dCJIvZ"></div>
 																				</div>
@@ -453,7 +458,11 @@ const Navbar = () => {
 																							<div className="left-item">
 																								<div>
 																									<div className="img-div">
-																										<img src={option.logo} alt={option.tokenName} />
+																										<TokenAvatar
+																											src={option.logo}
+																											size={35}
+																											tokenId={option.tokenId}
+																										/>
 																									</div>
 																									<div className="dCJIvZ"></div>
 																								</div>
