@@ -1,4 +1,5 @@
 import React from 'react';
+import * as cryptography from '@liskhq/lisk-cryptography';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import WalletTokenPicker from '../../components/Token/WalletTokenPicker';
 import PoolFeeSelector from '../../components/Fee/PoolFeeSelector';
@@ -9,6 +10,9 @@ import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { encodePriceSqrt } from '../../utils/Math/priceFormatter';
 import { useChain } from '../../context/ChainProvider';
+import { getDEXPool } from '../../service/dex';
+import { computePoolAddress, getPoolKey } from '../../utils/Address/poolAddress';
+import { tryToast } from '../../utils/Toast/tryToast';
 
 export default function CreatePool() {
 	const navigate = useNavigate();
@@ -16,6 +20,8 @@ export default function CreatePool() {
 	const { auth, senderPublicKey } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
 
+	const [isLoading, setIsLoading] = React.useState(false);
+	const [error, setError] = React.useState();
 	const [tokenA, setTokenA] = React.useState();
 	const [tokenB, setTokenB] = React.useState();
 	const [fee, setFee] = React.useState();
@@ -25,19 +31,35 @@ export default function CreatePool() {
 		setTokenA(lskTokenInfo);
 	}, [lskTokenInfo]);
 
+	React.useEffect(() => {
+		const checkPool = async () => {
+			if (tokenA !== undefined && tokenB !== undefined && fee !== undefined) {
+				setIsLoading(true);
+				setError();
+				const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
+				const poolAddress = cryptography.address.getLisk32AddressFromAddress(
+					computePoolAddress(poolKey),
+				);
+				const pools = await getDEXPool({ search: poolAddress, limit: 1 });
+				if (pools && pools.data) {
+					if (pools.data.length > 0) {
+						setError('Pool Already Exists');
+					}
+					setIsLoading(false);
+				}
+			}
+		};
+
+		tryToast('Check pool failed', checkPool, () => setIsLoading(false));
+	}, [fee, tokenA, tokenB]);
+
 	const isSpecifyPriceReady = React.useMemo(() => {
-		return tokenA !== undefined && tokenB !== undefined;
-	}, [tokenA, tokenB]);
+		return tokenA !== undefined && tokenB !== undefined && fee !== undefined;
+	}, [fee, tokenA, tokenB]);
 
 	const isEverythingReady = React.useMemo(() => {
-		return (
-			isSpecifyPriceReady &&
-			fee !== undefined &&
-			price !== undefined &&
-			price !== '' &&
-			price !== '0'
-		);
-	}, [fee, isSpecifyPriceReady, price]);
+		return isSpecifyPriceReady && price !== undefined && price !== '' && price !== '0';
+	}, [isSpecifyPriceReady, price]);
 
 	const handleSelectFee = React.useCallback(selected => {
 		setFee(selected);
@@ -111,7 +133,7 @@ export default function CreatePool() {
 			</div>
 
 			<PriceInput
-				disabled={!isSpecifyPriceReady}
+				disabled={!isSpecifyPriceReady || error}
 				title={
 					isSpecifyPriceReady
 						? `1 ${tokenB.symbol.toUpperCase()} equal to`
@@ -123,11 +145,11 @@ export default function CreatePool() {
 			/>
 
 			<WalletActionButton
-				disabled={!isEverythingReady}
+				disabled={!isEverythingReady || error}
 				onClick={handleCreatePool}
 				style={{ height: '60px' }}
 			>
-				Create Pool
+				{isLoading ? 'Loading...' : error ? error : 'Create Pool'}
 			</WalletActionButton>
 		</ModalContainer>
 	);
