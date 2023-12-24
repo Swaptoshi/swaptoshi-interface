@@ -15,10 +15,16 @@ import SwapTokenInput from '../../components/Swap/SwapTokenInput';
 import { calculateAmount0, calculateAmount1 } from '../../utils/Liquidity/liquidityAmount';
 import Decimal from 'decimal.js';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
+import { useTransactionModal } from '../../context/TransactionModalProvider';
+import { encodePriceSqrt } from '../../utils/Math/priceFormatter';
+import { getTickAtSqrtRatio } from '../../utils/Tick/tick_math';
+import { useNavigate } from 'react-router-dom';
 
 const LiquidityModal = () => {
+	const navigate = useNavigate();
 	const { lskTokenInfo, selectedService } = useChain();
-	const { balances } = useWalletConnect();
+	const { balances, senderPublicKey, auth } = useWalletConnect();
+	const { sendTransaction } = useTransactionModal();
 
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [noPoolError, setNoPoolError] = React.useState();
@@ -151,6 +157,9 @@ const LiquidityModal = () => {
 			) {
 				setIsLoading(true);
 				setNoPoolError();
+				setTicks();
+				setPool();
+				setPrice();
 
 				const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
 				const poolAddress = cryptography.address.getLisk32AddressFromAddress(
@@ -245,7 +254,68 @@ const LiquidityModal = () => {
 		setAmountB('');
 	}, []);
 
-	const handleAddLiquidity = React.useCallback(() => {}, []);
+	const handleAddLiquidity = React.useCallback(() => {
+		const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
+
+		const lowerSqrtPirce = encodePriceSqrt(inverted ? 1 : lowPrice, inverted ? lowPrice : 1);
+		const tickLower =
+			Number(getTickAtSqrtRatio(lowerSqrtPirce)) -
+			(Number(getTickAtSqrtRatio(lowerSqrtPirce)) % tickSpacing);
+		const higherSqrtPirce = encodePriceSqrt(inverted ? 1 : highPrice, inverted ? highPrice : 1);
+		const tickUpper =
+			Number(getTickAtSqrtRatio(higherSqrtPirce)) -
+			(Number(getTickAtSqrtRatio(higherSqrtPirce)) % tickSpacing);
+
+		const token0 = inverted ? tokenB : tokenA;
+		const token1 = inverted ? tokenA : tokenB;
+
+		const amount0Desired = Math.floor(Number(inverted ? amountB : amountA) * 10 ** token0.decimal);
+		const amount1Desired = Math.floor(Number(inverted ? amountA : amountB) * 10 ** token1.decimal);
+
+		const transaction = {
+			module: 'dex',
+			command: 'mint',
+			fee: '1000000',
+			params: {
+				token0: poolKey.token0,
+				token1: poolKey.token1,
+				fee,
+				tickLower,
+				tickUpper,
+				amount0Desired: amount0Desired.toString(),
+				amount1Desired: amount1Desired.toString(),
+				amount0Min: (BigInt(amount0Desired) - BigInt(amount0Desired) / BigInt(20)).toString(),
+				amount1Min: (BigInt(amount1Desired) - BigInt(amount1Desired) / BigInt(20)).toString(),
+				recipient: cryptography.address
+					.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
+					.toString('hex'),
+				deadline: (Math.floor(Date.now() / 1000) + 10 * 60).toString(),
+			},
+			nonce: auth.nonce,
+			senderPublicKey: senderPublicKey,
+			signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),
+		};
+		sendTransaction({
+			transaction,
+			onSuccess: () => {
+				navigate('/pools');
+			},
+		});
+	}, [
+		amountA,
+		amountB,
+		auth,
+		fee,
+		highPrice,
+		inverted,
+		lowPrice,
+		navigate,
+		sendTransaction,
+		senderPublicKey,
+		tickSpacing,
+		tokenA,
+		tokenB,
+	]);
 
 	return (
 		<div>

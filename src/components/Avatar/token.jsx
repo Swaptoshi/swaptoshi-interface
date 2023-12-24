@@ -25,6 +25,8 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 				borderRadius: size,
 				height: size,
 				width: size,
+				minHeight: size,
+				minWidth: size,
 				overflow: 'hidden',
 				display: 'flex',
 				alignItems: 'center',

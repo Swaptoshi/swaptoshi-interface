@@ -12,6 +12,7 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 	const [filteredData, setFilteredData] = React.useState([]);
 	const [options, setOptions] = React.useState({});
 	const [inverted, setInverted] = React.useState();
+	const [key, setKey] = React.useState();
 
 	React.useEffect(() => {
 		if (token0 && token1) {
@@ -138,8 +139,12 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 		updateChart();
 	}, [highPrice, lowPrice, theme, token0, token1, updateChart]);
 
+	React.useEffect(() => {
+		setKey(Math.random());
+	}, [data, currentTick, token0, token1, lowPrice, highPrice]);
+
 	return data.length > 0 ? (
-		<React.Fragment>
+		<React.Fragment key={key}>
 			<div>
 				<ReactApexChart
 					options={options}

@@ -15,6 +15,7 @@ import Loader from '../Loader';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { toast } from 'react-toastify';
 import { tryToast } from '../../utils/Toast/tryToast';
+import { getBaseFee } from '../../utils/Transaction/fee';
 
 const jsonTheme = {
 	light: defaultStyles,
@@ -111,9 +112,12 @@ export default function TransactionModal({
 				selectedService ? selectedService.serviceURLs : undefined,
 			);
 			if (estimatedFee && estimatedFee.data) {
+				let fee =
+					BigInt(estimatedFee.data.transaction.fee.minimum) +
+					BigInt(getBaseFee(transaction.module, transaction.command));
 				const parsed = {
 					...transaction,
-					fee: estimatedFee.data.transaction.fee.minimum,
+					fee: fee.toString(),
 					signatures: [],
 				};
 				setParsedTransaction(parsed);
@@ -241,7 +245,7 @@ export default function TransactionModal({
 											style={theme === 'system' ? jsonTheme[getSystemTheme()] : jsonTheme[theme]}
 										/>
 									</div>
-								) : isFetching ? (
+								) : isFetching || !parsedTransaction ? (
 									<div
 										className="text"
 										style={{
