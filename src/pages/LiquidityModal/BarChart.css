@@ -33,3 +33,7 @@
 .apexcharts-zoomout-icon {
 	transform: scale(1.5);
 }
+
+.apexcharts-toolbar {
+	display: none;
+}

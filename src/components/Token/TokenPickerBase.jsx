@@ -2,6 +2,7 @@ import React from 'react';
 import TokenAvatar from '../Avatar/token';
 
 export default function TokenPickerBase({
+	disableSelect,
 	value,
 	blocked,
 	onClose,
@@ -16,6 +17,7 @@ export default function TokenPickerBase({
 
 	return value ? (
 		<button
+			disabled={disableSelect}
 			id={`open-currency-select-${value.symbol}`}
 			className={'open-currency-btn-top'}
 			onClick={handlePick}
@@ -37,13 +39,16 @@ export default function TokenPickerBase({
 					</div>
 					<span className="token-name">{value.symbol}</span>
 				</div>
-				<div className="dropdown-icon">
-					<i className="ri-arrow-down-s-line"></i>
-				</div>
+				{!disableSelect ? (
+					<div className="dropdown-icon">
+						<i className="ri-arrow-down-s-line"></i>
+					</div>
+				) : null}
 			</span>
 		</button>
 	) : (
 		<button
+			disabled={disableSelect}
 			id={`open-currency-select-unselected`}
 			className={`open-currency-btn-bottom picker-${theme}`}
 			onClick={handlePick}
@@ -55,9 +60,11 @@ export default function TokenPickerBase({
 						<span className="select-token">Select token</span>
 					</div>
 				</div>
-				<div className="dropdown-icon">
-					<i className="ri-arrow-down-s-line"></i>
-				</div>
+				{!disableSelect ? (
+					<div className="dropdown-icon">
+						<i className="ri-arrow-down-s-line"></i>
+					</div>
+				) : null}
 			</span>
 		</button>
 	);

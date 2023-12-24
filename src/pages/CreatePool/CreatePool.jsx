@@ -17,7 +17,7 @@ import WarningBox from '../../components/Error/WarningBox';
 
 export default function CreatePool() {
 	const navigate = useNavigate();
-	const { lskTokenInfo } = useChain();
+	const { lskTokenInfo, selectedService } = useChain();
 	const { auth, senderPublicKey } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
 
@@ -42,7 +42,10 @@ export default function CreatePool() {
 				const poolAddress = cryptography.address.getLisk32AddressFromAddress(
 					computePoolAddress(poolKey),
 				);
-				const pools = await getDEXPool({ search: poolAddress, limit: 1 });
+				const pools = await getDEXPool(
+					{ search: poolAddress, limit: 1 },
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
 				if (pools && pools.data) {
 					if (pools.data.length > 0) {
 						setError('Pool Already Exists');
@@ -53,7 +56,7 @@ export default function CreatePool() {
 		};
 
 		tryToast('Check pool failed', checkPool, () => setIsLoading(false));
-	}, [fee, tokenA, tokenB]);
+	}, [fee, selectedService, tokenA, tokenB]);
 
 	const isSpecifyPriceReady = React.useMemo(() => {
 		return tokenA !== undefined && tokenB !== undefined && fee !== undefined;

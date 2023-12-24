@@ -10,6 +10,7 @@ import { tryToast } from '../../utils/Toast/tryToast';
 export default function SwapTokenInput({
 	title,
 	isLoading,
+	disableSelect,
 	inputValue,
 	onInputChange,
 	selectedToken,
@@ -104,9 +105,11 @@ export default function SwapTokenInput({
 			)}
 			<div id="swap-currency-input" className="swap-currency" style={{ padding: '16px' }}>
 				<div className="input-wrapper">
-					<label className="youPay-label" style={{ marginBottom: '4px' }}>
-						{title}
-					</label>
+					{title ? (
+						<label className="youPay-label" style={{ marginBottom: '4px' }}>
+							{title}
+						</label>
+					) : null}
 					<div className="paying-wrapper">
 						<input
 							id="token-amount"
@@ -127,6 +130,7 @@ export default function SwapTokenInput({
 						<div>
 							{
 								<TradableTokenPicker
+									disableSelect={disableSelect}
 									value={selectedToken}
 									blocked={blockedToken}
 									onSelect={onSelect}

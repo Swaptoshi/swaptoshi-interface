@@ -27,9 +27,13 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle,
 	);
 
 	const onBlur = React.useCallback(() => {
-		if (value && value !== ZERO && value !== INFINITE) {
-			const normalized = normalizePriceByTick(value, 10);
-			setValue(normalized);
+		try {
+			if (value && value !== ZERO && value !== INFINITE) {
+				const normalized = normalizePriceByTick(value, 10);
+				setValue(normalized);
+			}
+		} catch {
+			setValue('');
 		}
 	}, [setValue, value]);
 

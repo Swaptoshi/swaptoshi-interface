@@ -1,640 +1,336 @@
-import React, { useEffect, useState } from 'react';
-import SwapModal from '../../components/SwapModal/SwapModal';
-import { NavLink } from 'react-router-dom';
-import axios from 'axios';
-import BarChart from './BarChart/BarChart';
+import React from 'react';
+import * as cryptography from '@liskhq/lisk-cryptography';
+import LiquidityChart from './LiquidityChart';
+import ModalContainer from '../../components/Modal/ModalContainer';
+import WalletTokenPicker from '../../components/Token/WalletTokenPicker';
+import { useChain } from '../../context/ChainProvider';
+import WalletActionButton from '../../components/Button/WalletActionButton';
+import PriceInput from '../../components/Price/PriceInput';
+import WarningBox from '../../components/Error/WarningBox';
+import PoolFeeSelector from '../../components/Fee/PoolFeeSelector';
+import { tryToast } from '../../utils/Toast/tryToast';
+import { computePoolAddress, getPoolKey } from '../../utils/Address/poolAddress';
+import { getDEXPool, getDEXPoolTick } from '../../service/dex';
+import SwapTokenInput from '../../components/Swap/SwapTokenInput';
+import { calculateAmount0, calculateAmount1 } from '../../utils/Liquidity/liquidityAmount';
 
-const LiquidityModal = ({
-	swapTokens,
-	handleSwapModal,
-	swapModal,
-	setSwapModal,
-	handleSelect,
-	currentCurrencyId,
-	setCurrentCurrencyId,
-	liquidityTokenOne,
-	liquidityTokenTwo,
-	isLiquidityTokenSelected,
-	minInputValue,
-	maxInputValue,
-}) => {
-	const [, setData] = useState([]);
+const LiquidityModal = () => {
+	const { lskTokenInfo, selectedService } = useChain();
 
-	const fetchData = async () => {
-		try {
-			const response = await axios.get('https://mocki.io/v1/5aee862d-4403-46a6-8b57-948563486117');
-			setData(response.data);
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	};
+	const [isLoading, setIsLoading] = React.useState(false);
+	const [noPoolError, setNoPoolError] = React.useState();
+	const [tokenA, setTokenA] = React.useState();
+	const [tokenB, setTokenB] = React.useState();
+	const [fee, setFee] = React.useState();
+	const [tickSpacing, setTickSpacing] = React.useState();
+	const [lowPrice, setLowPrice] = React.useState();
+	const [highPrice, setHighPrice] = React.useState();
+	const [amountA, setAmountA] = React.useState();
+	const [amountB, setAmountB] = React.useState();
+	const [ticks, setTicks] = React.useState();
+	const [feeAmountTickSpacing, setFeeAmountTickSpacing] = React.useState();
+	const [pool, setPool] = React.useState();
 
-	useEffect(() => {
-		fetchData();
+	const handleAmountAInputChange = React.useCallback(
+		event => {
+			const inputValue = event.target.value;
+
+			if (inputValue === '' || inputValue === '0') {
+				setAmountA('');
+				setAmountB('');
+				return;
+			}
+
+			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+				setAmountA(inputValue);
+				if (lowPrice && highPrice && pool) {
+					const amountB = calculateAmount1(inputValue, pool.price, highPrice, lowPrice);
+					setAmountB(amountB);
+				}
+			}
+		},
+		[highPrice, lowPrice, pool],
+	);
+
+	const handleAmountAMax = React.useCallback(max => {
+		setAmountA(max);
 	}, []);
 
-	// console.log(selectedToken)
-	const [hideButton, setHideButton] = useState(false);
+	const handleAmountBInputChange = React.useCallback(
+		event => {
+			const inputValue = event.target.value;
 
-	// const [minInputValue, setMinInputValue] = useState("320,323")
-	// const [maxInputValue, setMaxInputValue] = useState("160,304")
+			if (inputValue === '' || inputValue === '0') {
+				setAmountB('');
+				setAmountA('');
+				return;
+			}
 
-	// const handleInputValue = (e) => {
+			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+				setAmountB(inputValue);
+				if (lowPrice && highPrice && pool) {
+					const amountA = calculateAmount0(inputValue, pool.price, highPrice, lowPrice);
+					setAmountA(amountA);
+				}
+			}
+		},
+		[highPrice, lowPrice, pool],
+	);
 
-	// }
+	const handleAmountBMax = React.useCallback(max => {
+		setAmountB(max);
+	}, []);
 
-	const handleButtonHide = () => {
-		setHideButton(prev => !prev);
-	};
+	React.useEffect(() => {
+		setTokenA(lskTokenInfo);
+	}, [lskTokenInfo]);
 
-	const renderLiquidityButtonContent = currencyId => {
-		let currentToken = currencyId === 'liquidityEthId' ? liquidityTokenOne : liquidityTokenTwo;
-		if (
-			currencyId === 'liquidityEthId' ||
-			(currencyId !== 'liquidityEthId' && currentToken?.symbol !== 'Select Token')
-		) {
-			return (
-				<button
-					id={`open-currency-select-${currencyId}`}
-					className={`sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 CurrencyInputPanel__CurrencySelect-sc-73f91aaf-2 hWKjgZ jAJJVP hcUXCv ${
-						currencyId === 'liquidityEthId'
-							? 'open-currency-selected-top'
-							: 'open-currency-selected-bottom'
-					}`}
-					onClick={() => handleSwapModal(currencyId)}
-				>
-					<span className="CurrencyInputPanel__Aligner-sc-73f91aaf-6 kkiXeD">
-						<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 hJYFVB gOYHMo jeYuAz">
-							<div
-								className="AssetLogo__LogoContainer-sc-1d2e0d12-3 hOvXWG"
-								style={{
-									height: 24,
-									width: 24,
-									marginRight: '0.5rem',
-								}}
-							>
-								<div className="AssetLogo__LogoImageWrapper-sc-1d2e0d12-2 iZhrtN">
-									<img
-										src={currentToken?.imgSrc}
-										alt="ETH logo"
-										className="AssetLogo__LogoImage-sc-1d2e0d12-1 IJysW"
-									/>
-								</div>
-							</div>
-							<span className="CurrencyInputPanel__StyledTokenName-sc-73f91aaf-8 reOdD token-symbol-container colorrr">
-								{currentToken?.symbol}
-							</span>
-						</div>
-						<div className="dropdown-icon">
-							<i className="ri-arrow-down-s-line"></i>
-						</div>
-					</span>
-				</button>
-			);
-		} else {
-			return (
-				<button
-					id={`open-currency-select-${currencyId}`}
-					className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 CurrencyInputPanel__CurrencySelect-sc-73f91aaf-2 hWKjgZ jAJJVP iGQvak open-currency-selected-bottom"
-					onClick={() => handleSwapModal(currencyId)}
-				>
-					<span className="CurrencyInputPanel__Aligner-sc-73f91aaf-6 kkiXeD">
-						<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 hJYFVB gOYHMo jeYuAz">
-							<span className="CurrencyInputPanel__StyledTokenName-sc-73f91aaf-8 reOdD token-symbol-container">
-								Select a token
-							</span>
-						</div>
-						<div className="dropdown-icon">
-							<i className="ri-arrow-down-s-line"></i>
-						</div>
-					</span>
-				</button>
-			);
-		}
-	};
+	React.useEffect(() => {
+		const checkPool = async () => {
+			if (
+				tokenA !== undefined &&
+				tokenB !== undefined &&
+				fee !== undefined &&
+				feeAmountTickSpacing !== undefined
+			) {
+				setIsLoading(true);
+				setNoPoolError();
+
+				const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
+				const poolAddress = cryptography.address.getLisk32AddressFromAddress(
+					computePoolAddress(poolKey),
+				);
+				const pools = await getDEXPool(
+					{ search: poolAddress, limit: 1 },
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+
+				if (pools && pools.data) {
+					if (pools.data.length === 0) {
+						setNoPoolError("Pool Doesn't Exists");
+					} else {
+						setPool(pools.data[0]);
+
+						const poolTick = await getDEXPoolTick(
+							{ poolAddress },
+							selectedService ? selectedService.serviceURLs : undefined,
+						);
+						if (poolTick && poolTick.data) {
+							const data = [];
+							let liquidity = 0;
+							for (
+								let i = poolTick.data[0].tick;
+								i < poolTick.data[poolTick.data.length - 1].tick;
+								i += 1
+							) {
+								const matched = poolTick.data.find(t => t.tick === i);
+								if (matched) {
+									liquidity += matched.liquidityNet;
+								}
+								data.push([i, liquidity]);
+							}
+							setTicks(data);
+						}
+					}
+					setIsLoading(false);
+				}
+			}
+		};
+
+		tryToast('Check pool failed', checkPool, () => setIsLoading(false));
+	}, [fee, feeAmountTickSpacing, selectedService, tokenA, tokenB]);
+
+	const isSpecifyPriceReady = React.useMemo(() => {
+		return tokenA !== undefined && tokenB !== undefined && fee !== undefined && pool !== undefined;
+	}, [fee, pool, tokenA, tokenB]);
+
+	const isDepositReady = React.useMemo(() => {
+		return lowPrice !== undefined && lowPrice !== '' && highPrice !== undefined && highPrice !== '';
+	}, [highPrice, lowPrice]);
+
+	const isEverythingReady = React.useMemo(() => {
+		return (
+			isSpecifyPriceReady &&
+			isDepositReady &&
+			amountA !== undefined &&
+			amountA !== '' &&
+			amountB !== undefined &&
+			amountB !== ''
+		);
+	}, [amountA, amountB, isDepositReady, isSpecifyPriceReady]);
+
+	const handleSelectFee = React.useCallback(selected => {
+		setFee(Number(selected[0]));
+		setTickSpacing(Number(selected[1]));
+	}, []);
+
+	const handleTokenAChange = React.useCallback(selected => {
+		setTokenA(selected);
+	}, []);
+
+	const handleTokenBChange = React.useCallback(selected => {
+		setTokenB(selected);
+	}, []);
+
+	const handleAddLiquidity = React.useCallback(() => {}, []);
 
 	return (
 		<div>
-			<div className="App__BodyWrapper-sc-7e45ae4f-0 clIMsa">
-				<div className="styled__ScrollablePage-sc-a3e32a7b-1 kVNjZg">
-					<main
-						className={`AppBody_BodyWrapper-sc-19e20e47-0 AddLiquidity_StyledBodyWrapper-sc-91848848-0 GfTH ${
-							hideButton ? 'FuZnx-expanded' : 'FuZnx'
-						}`}
-					>
-						<div className="NavigationTabs__Tabs-sc-b4540a6e-0 kmmojd">
-							<div
-								className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr"
-								style={{ padding: '1rem 1rem 0px' }}
-							>
-								<NavLink
-									flex={1}
-									className="NavigationTabs__StyledLink-sc-b4540a6e-1 dIAqzj"
-									to="/pools"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width={24}
-										height={24}
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="#98A1C0"
-										strokeWidth={2}
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										className="NavigationTabs__StyledArrowLeft-sc-b4540a6e-3 jpkEeW"
-									>
-										<line x1={19} y1={12} x2={5} y2={12} />
-										<polyline points="12 19 5 12 12 5" />
-									</svg>
-								</NavLink>
-								<div className="text__TextWrapper-sc-9327e48a-0 blhgKn NavigationTabs__AddRemoveTitleText-sc-b4540a6e-4 cMHLWt css-12uvan3">
-									Add Liquidity
-								</div>
-								<div className="css-vurnku" style={{ marginRight: '0.5rem' }}>
-									<div
-										className="sc-bczRLJ Row-sc-34df4f97-0 fgCeff gOYHMo"
-										style={{ width: 'fit-content', minWidth: 'fit-content' }}
-									>
-										<div className="styled__MediumOnly-sc-a3e32a7b-6 cYrhOe">
-											<button className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonText-sc-4f96dcd8-9 hWKjgZ jtnClT">
-												<div className="text__TextWrapper-sc-9327e48a-0 cWDToC css-15li2d9">
-													Clear All
-												</div>
-											</button>
-										</div>
-									</div>
-								</div>
-								<div className="Settings__Menu-sc-6676197f-0 imhdhD">
-									<button
-										id="open-settings-dialog-button"
-										data-testid="open-settings-dialog-button"
-										aria-label="Transaction Settings"
-										className="MenuButton__Button-sc-773d3ba1-1 kHIRPQ"
-									>
-										<div className="sc-bczRLJ Row-sc-34df4f97-0 MenuButton__IconContainer-sc-773d3ba1-2 hJYFVB gOYHMo hrkQLI">
-											<i className="text-white  ri-settings-3-fill"></i>
-										</div>
-									</button>
-								</div>
-							</div>
-						</div>
-
-						<div className="styled__Wrapper-sc-a3e32a7b-0 vSeCC">
-							<div className="styled__ResponsiveTwoColumns-sc-a3e32a7b-5 dXokMm">
-								<div className="Column__AutoColumn-sc-72c388fb-2 ereGUg">
-									<div className="Column__AutoColumn-sc-72c388fb-2 erfjwt">
-										<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 eYHTYx gOYHMo BkVYr">
-											<div className="text__TextWrapper-sc-9327e48a-0 blhgKn css-1lohbqv">
-												Select Pair
-											</div>
-										</div>
-										<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr">
-											<div
-												id="add-liquidity-input-tokena "
-												className="CurrencyInputPanel__InputPanel-sc-73f91aaf-0 bhoFAK styled__CurrencyDropdown-sc-a3e32a7b-3 gkamEi"
-											>
-												<div className="CurrencyInputPanel__Container-sc-73f91aaf-1 epZvyg">
-													<div
-														id="liquidityEthId"
-														className="CurrencyInputPanel__InputRow-sc-73f91aaf-3 jGjrwu"
-														style={{ padding: 0, borderRadius: 8 }}
-													>
-														{/* ETH BUTTON */}
-														{renderLiquidityButtonContent('liquidityEthId')}
-													</div>
-												</div>
-											</div>
-											<div style={{ width: 12 }} />
-											<div
-												id="add-liquidity-input-tokenb "
-												className="CurrencyInputPanel__InputPanel-sc-73f91aaf-0 bhoFAK styled__CurrencyDropdown-sc-a3e32a7b-3 gkamEi"
-											>
-												<div className="CurrencyInputPanel__Container-sc-73f91aaf-1 epZvyg">
-													<div
-														id="liquidityTokenId"
-														className="CurrencyInputPanel__InputRow-sc-73f91aaf-3 jGjrwu"
-														style={{ padding: 0, borderRadius: 8 }}
-													>
-														{/* Select A token BUTTON */}
-														{renderLiquidityButtonContent('liquidityTokenId')}
-													</div>
-												</div>
-											</div>
-										</div>
-										<div className="Column__AutoColumn-sc-72c388fb-2 ereioh">
-											<div
-												disabled=""
-												className={`Column__AutoColumn-sc-72c388fb-2 styled__DynamicSection-sc-a3e32a7b-2 erfjwt isLiqudity ${
-													isLiquidityTokenSelected ? 'token-selected' : ''
-												}`}
-											>
-												<div className="sc-bczRLJ Card-sc-8b665604-0 FeeSelector__FocusedOutlineCard-sc-2b537477-0 hJYFVB jlQAxw jgrgoQ">
-													<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr">
-														<div
-															id="add-liquidity-selected-fee"
-															className="Column__AutoColumn-sc-72c388fb-2 gXqkQO"
-														>
-															<div className="text__TextWrapper-sc-9327e48a-0 blhgKn css-1lohbqv">
-																0.3% fee tier
-															</div>
-															<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-fczr0v">
-																The % you will earn in fees.
-															</div>
-														</div>
-														<button
-															width="auto"
-															className="sc-bczRLJ cBKomN Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 ixVlAp jAJJVP"
-															onClick={handleButtonHide}
-														>
-															{hideButton ? 'Hide' : 'Edit'}
-														</button>
-													</div>
-												</div>
-												{hideButton && (
-													<div className="FeeSelector__Select-sc-2b537477-1 dpNkPS">
-														<button className="sc-bczRLJ lbXqUa Button__BaseButton-sc-4f96dcd8-1 Button__ButtonOutlined-sc-4f96dcd8-7 eOoGds aQTri">
-															<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr">
-																<div className="Column__AutoColumn-sc-72c388fb-2 ezHOjM">
-																	<div className="Column__AutoColumn-sc-72c388fb-2 gajsee">
-																		<div className="text__TextWrapper-sc-9327e48a-0 blhgKn FeeOption__ResponsiveText-sc-6b7ccec1-0 fYKQxG css-1lohbqv">
-																			0.01%
-																		</div>
-																		<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-fczr0v">
-																			Best for very stable pairs.
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</button>
-														<button className="sc-bczRLJ lbXqUa Button__BaseButton-sc-4f96dcd8-1 Button__ButtonOutlined-sc-4f96dcd8-7 eOoGds aQTri">
-															<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr">
-																<div className="Column__AutoColumn-sc-72c388fb-2 ezHOjM">
-																	<div className="Column__AutoColumn-sc-72c388fb-2 gajsee">
-																		<div className="text__TextWrapper-sc-9327e48a-0 blhgKn FeeOption__ResponsiveText-sc-6b7ccec1-0 fYKQxG css-1lohbqv">
-																			0.05%
-																		</div>
-																		<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-fczr0v">
-																			Best for stable pairs.
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</button>
-														<button className="sc-bczRLJ lbXqUa Button__BaseButton-sc-4f96dcd8-1 Button__ButtonOutlined-sc-4f96dcd8-7 eOoGds aQTri">
-															<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr">
-																<div className="Column__AutoColumn-sc-72c388fb-2 ezHOjM">
-																	<div className="Column__AutoColumn-sc-72c388fb-2 gajsee">
-																		<div className="text__TextWrapper-sc-9327e48a-0 blhgKn FeeOption__ResponsiveText-sc-6b7ccec1-0 fYKQxG css-1lohbqv">
-																			0.3%
-																		</div>
-																		<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-fczr0v">
-																			Best for most pairs.
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</button>
-														<button className="sc-bczRLJ lbXqUa Button__BaseButton-sc-4f96dcd8-1 Button__ButtonOutlined-sc-4f96dcd8-7 eOoGds aQTri">
-															<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr">
-																<div className="Column__AutoColumn-sc-72c388fb-2 ezHOjM">
-																	<div className="Column__AutoColumn-sc-72c388fb-2 gajsee">
-																		<div className="text__TextWrapper-sc-9327e48a-0 blhgKn FeeOption__ResponsiveText-sc-6b7ccec1-0 fYKQxG css-1lohbqv">
-																			1%
-																		</div>
-																		<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-fczr0v">
-																			Best for exotic pairs.
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</button>
-													</div>
-												)}
-											</div>
-										</div>
-									</div>{' '}
-								</div>
-								<div
-									disabled=""
-									className={`Column__AutoColumn-sc-72c388fb-2 styled__DynamicSection-sc-a3e32a7b-2 erfjwt isLiqudity ${
-										isLiquidityTokenSelected ? 'token-selected' : ''
-									} `}
-								>
-									minInputValue
-									<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr">
-										<div className="text__TextWrapper-sc-9327e48a-0 blhgKn css-1lohbqv">
-											Set Price Range
-										</div>
-									</div>
-									<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__AutoRow-sc-34df4f97-3 hJYFVB bObhWT bEIXES">
-										<div className="sc-bczRLJ Card-sc-8b665604-0 Card__OutlineCard-sc-8b665604-5 InputStepCounter__FocusedOutlineCard-sc-98d37844-2 hJYFVB jlQAxw hapmMj hXXOVF">
-											<div className="InputStepCounter__InputRow-sc-98d37844-0 ddcmlg">
-												<div className="Column__AutoColumn-sc-72c388fb-2 InputStepCounter__InputColumn-sc-98d37844-4 iHjCXw cVcAns">
-													<div className="text__TextWrapper-sc-9327e48a-0 iJbhaU InputStepCounter__InputTitle-sc-98d37844-5 eRovVv css-9bv76i">
-														Low price
-													</div>
-													<input
-														className="NumericalInput__StyledInput-sc-e2342ddc-0 gZlbTK InputStepCounter__StyledInput-sc-98d37844-3 jgKZAt rate-input-0"
-														fontSize="20px"
-														inputMode="decimal"
-														autoComplete="off"
-														autoCorrect="off"
-														type="text"
-														pattern="^[0-9]*[.,]?[0-9]*$"
-														placeholder={0}
-														minLength={1}
-														maxLength={79}
-														spellCheck="false"
-														value={minInputValue}
-													/>
-													<div className="text__TextWrapper-sc-9327e48a-0 iJbhaU InputStepCounter__InputTitle-sc-98d37844-5 eRovVv css-2qpl5c">
-														per ETH
-													</div>
-												</div>
-												<div className="Column__AutoColumn-sc-72c388fb-2 dCQVZu">
-													<button
-														data-testid="increment-price-range"
-														disabled=""
-														className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 InputStepCounter__SmallButton-sc-98d37844-1 hWKjgZ bdLEKg eKOJak"
-													>
-														<div
-															disabled=""
-															className="text__TextWrapper-sc-9327e48a-0 blhgKn InputStepCounter__ButtonLabel-sc-98d37844-6 ojMTq css-15li2d9"
-														>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																width={18}
-																height={18}
-																viewBox="0 0 24 24"
-																fill="none"
-																stroke="currentColor"
-																strokeWidth={2}
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															>
-																<line x1={12} y1={5} x2={12} y2={19} />
-																<line x1={5} y1={12} x2={19} y2={12} />
-															</svg>
-														</div>
-													</button>
-													<button
-														data-testid="decrement-price-range"
-														disabled=""
-														className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 InputStepCounter__SmallButton-sc-98d37844-1 hWKjgZ bdLEKg eKOJak"
-													>
-														<div
-															disabled=""
-															className="text__TextWrapper-sc-9327e48a-0 blhgKn InputStepCounter__ButtonLabel-sc-98d37844-6 ojMTq css-15li2d9"
-														>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																width={18}
-																height={18}
-																viewBox="0 0 24 24"
-																fill="none"
-																stroke="currentColor"
-																strokeWidth={2}
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															>
-																<line x1={5} y1={12} x2={19} y2={12} />
-															</svg>
-														</div>
-													</button>
-												</div>
-											</div>
-										</div>
-										<div className="sc-bczRLJ Card-sc-8b665604-0 Card__OutlineCard-sc-8b665604-5 InputStepCounter__FocusedOutlineCard-sc-98d37844-2 hJYFVB jlQAxw hapmMj hXXOVF">
-											<div className="InputStepCounter__InputRow-sc-98d37844-0 ddcmlg">
-												<div className="Column__AutoColumn-sc-72c388fb-2 InputStepCounter__InputColumn-sc-98d37844-4 iHjCXw cVcAns">
-													<div className="text__TextWrapper-sc-9327e48a-0 iJbhaU InputStepCounter__InputTitle-sc-98d37844-5 eRovVv css-9bv76i">
-														High price
-													</div>
-													<input
-														className="NumericalInput__StyledInput-sc-e2342ddc-0 gZlbTK InputStepCounter__StyledInput-sc-98d37844-3 jgKZAt rate-input-0"
-														fontSize="20px"
-														inputMode="decimal"
-														autoComplete="off"
-														autoCorrect="off"
-														type="text"
-														pattern="^[0-9]*[.,]?[0-9]*$"
-														placeholder={0}
-														minLength={1}
-														maxLength={79}
-														spellCheck="false"
-														value={maxInputValue}
-													/>
-													<div className="text__TextWrapper-sc-9327e48a-0 iJbhaU InputStepCounter__InputTitle-sc-98d37844-5 eRovVv css-2qpl5c">
-														per ETH
-													</div>
-												</div>
-												<div className="Column__AutoColumn-sc-72c388fb-2 dCQVZu">
-													<button
-														data-testid="increment-price-range"
-														disabled=""
-														className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 InputStepCounter__SmallButton-sc-98d37844-1 hWKjgZ bdLEKg eKOJak"
-													>
-														<div
-															disabled=""
-															className="text__TextWrapper-sc-9327e48a-0 blhgKn InputStepCounter__ButtonLabel-sc-98d37844-6 ojMTq css-15li2d9"
-														>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																width={18}
-																height={18}
-																viewBox="0 0 24 24"
-																fill="none"
-																stroke="currentColor"
-																strokeWidth={2}
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															>
-																<line x1={12} y1={5} x2={12} y2={19} />
-																<line x1={5} y1={12} x2={19} y2={12} />
-															</svg>
-														</div>
-													</button>
-													<button
-														data-testid="decrement-price-range"
-														disabled=""
-														className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 InputStepCounter__SmallButton-sc-98d37844-1 hWKjgZ bdLEKg eKOJak"
-													>
-														<div
-															disabled=""
-															className="text__TextWrapper-sc-9327e48a-0 blhgKn InputStepCounter__ButtonLabel-sc-98d37844-6 ojMTq css-15li2d9"
-														>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																width={18}
-																height={18}
-																viewBox="0 0 24 24"
-																fill="none"
-																stroke="currentColor"
-																strokeWidth={2}
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															>
-																<line x1={5} y1={12} x2={19} y2={12} />
-															</svg>
-														</div>
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div
-									disabled=""
-									className={`Column__AutoColumn-sc-72c388fb-2 styled__DynamicSection-sc-a3e32a7b-2 erfjwt isLiqudity ${
-										isLiquidityTokenSelected ? 'token-selected' : ''
-									}`}
-								>
-									{/* CHART */}
-									<div
-										className="Column__AutoColumn-sc-72c388fb-2 erfjwt"
-										style={{ minHeight: 200 }}
-									>
-										<BarChart />
-										<div className="LiquidityChartRangeInput__ChartWrapper-sc-4b8a30c6-0 AKZXT"></div>
-									</div>
-								</div>
-								<div>
-									<div
-										disabled=""
-										className={`Column__AutoColumn-sc-72c388fb-2 styled__DynamicSection-sc-a3e32a7b-2 gXqkQO isLiqudity ${
-											isLiquidityTokenSelected ? 'token-selected' : ''
-										}`}
-									>
-										<div className="Column__AutoColumn-sc-72c388fb-2 erfjwt">
-											<div className="text__TextWrapper-sc-9327e48a-0 blhgKn css-1lohbqv">
-												Deposit Amounts
-											</div>
-											<div
-												id="add-liquidity-input-tokena"
-												className="CurrencyInputPanel__InputPanel-sc-73f91aaf-0 fdQVur"
-											>
-												<div className="CurrencyInputPanel__Container-sc-73f91aaf-1 cOqmuC">
-													<div className="CurrencyInputPanel__InputRow-sc-73f91aaf-3 hyQXvD">
-														<input
-															className="NumericalInput__StyledInput-sc-e2342ddc-0 hmakIi CurrencyInputPanel__StyledNumericalInput-sc-73f91aaf-10 byCAPU token-amount-input"
-															inputMode="decimal"
-															autoComplete="off"
-															autoCorrect="off"
-															type="text"
-															pattern="^[0-9]*[.,]?[0-9]*$"
-															placeholder={0}
-															minLength={1}
-															maxLength={79}
-															spellCheck="false"
-															defaultValue=""
-														/>
-														<button
-															className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 CurrencyInputPanel__CurrencySelect-sc-73f91aaf-2 hWKjgZ jAJJVP cCMOgz open-currency-select-button"
-															pointerEvents="none"
-														>
-															<span className="CurrencyInputPanel__Aligner-sc-73f91aaf-6 kkiXeD">
-																<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 hJYFVB gOYHMo jeYuAz">
-																	<div
-																		className="AssetLogo__LogoContainer-sc-1d2e0d12-3 hOvXWG"
-																		style={{
-																			height: 24,
-																			width: 24,
-																			marginRight: '0.5rem',
-																		}}
-																	>
-																		<div className="AssetLogo__LogoImageWrapper-sc-1d2e0d12-2 iZhrtN">
-																			<img
-																				src="/assets/images/tokens/eth-icon.png"
-																				alt="ETH logo"
-																				className="AssetLogo__LogoImage-sc-1d2e0d12-1 IJysW"
-																			/>
-																		</div>
-																	</div>
-																	<span className="CurrencyInputPanel__StyledTokenName-sc-73f91aaf-8 reOdD token-symbol-container">
-																		ETH
-																	</span>
-																</div>
-															</span>
-														</button>
-													</div>
-													<div className="CurrencyInputPanel__LabelRow-sc-73f91aaf-4 CurrencyInputPanel__FiatRow-sc-73f91aaf-5 gRWQqi kjAAwT">
-														<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 hJYFVB gOYHMo BkVYr">
-															<div className="styled__LoadingOpacityContainer-sc-f9cbe2c6-1 bmCdZH">
-																<div className="sc-bczRLJ Row-sc-34df4f97-0 hJYFVB cPkaXY">
-																	<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-zhpkf8">
-																		<div className="Popover__ReferenceElement-sc-f19d15a-1 bndAvc">
-																			<div>-</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div
-												id="add-liquidity-input-tokenb"
-												className="CurrencyInputPanel__InputPanel-sc-73f91aaf-0 fdQVur"
-											>
-												<div className="CurrencyInputPanel__Container-sc-73f91aaf-1 cOqmuC">
-													<div className="CurrencyInputPanel__InputRow-sc-73f91aaf-3 hyQXvD">
-														<input
-															className="NumericalInput__StyledInput-sc-e2342ddc-0 hmakIi CurrencyInputPanel__StyledNumericalInput-sc-73f91aaf-10 byCAPU token-amount-input"
-															inputMode="decimal"
-															autoComplete="off"
-															autoCorrect="off"
-															type="text"
-															pattern="^[0-9]*[.,]?[0-9]*$"
-															placeholder={0}
-															minLength={1}
-															maxLength={79}
-															spellCheck="false"
-															defaultValue=""
-														/>
-														<button
-															className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonGray-sc-4f96dcd8-5 CurrencyInputPanel__CurrencySelect-sc-73f91aaf-2 hWKjgZ jAJJVP gHpyEg open-currency-select-button"
-															pointerEvents="none"
-														>
-															<span className="CurrencyInputPanel__Aligner-sc-73f91aaf-6 kkiXeD">
-																<div className="sc-bczRLJ Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 hJYFVB gOYHMo jeYuAz">
-																	<span className="CurrencyInputPanel__StyledTokenName-sc-73f91aaf-8 reOdD token-symbol-container">
-																		Select a token
-																	</span>
-																</div>
-															</span>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<button className="sc-bczRLJ gIjoKy Button__BaseButton-sc-4f96dcd8-1 Button__BaseButtonLight-sc-4f96dcd8-4 dkaNOU fCkFnu">
-									<div className="Button__ButtonOverlay-sc-4f96dcd8-0 fNUVbK" />
-									Connect Wallet
-								</button>
-							</div>
-						</div>
-					</main>
+			<ModalContainer title={'Add Liquidity'} backTo={'/pools'}>
+				<div style={{ display: 'flex' }}>
+					<WalletTokenPicker
+						value={tokenA}
+						blocked={tokenB}
+						onSelect={handleTokenAChange}
+						style={{ borderRadius: '20px', overflow: 'hidden', width: '50%' }}
+						theme={'secondary'}
+					/>
+					<div style={{ margin: '0px 4px' }} />
+					<WalletTokenPicker
+						value={tokenB}
+						blocked={tokenA}
+						onSelect={handleTokenBChange}
+						style={{ borderRadius: '20px', overflow: 'hidden', width: '50%' }}
+						theme={'secondary'}
+					/>
 				</div>
 
-				<SwapModal
-					swapTokens={swapTokens}
-					// selectedToken={selectedToken}
-					selectedToken={
-						currentCurrencyId === 'liquidityEthId' ? liquidityTokenOne : liquidityTokenTwo
-					}
-					swapModal={swapModal}
-					setSwapModal={setSwapModal}
-					isLiquidity={true}
-					handleSelect={handleSelect}
-					currentCurrencyId={currentCurrencyId}
-					setCurrentCurrencyId={setCurrentCurrencyId}
-					liquidityTokenOne={liquidityTokenOne}
-					liquidityTokenTwo={liquidityTokenTwo}
+				<PoolFeeSelector
+					selected={fee}
+					onSelect={handleSelectFee}
+					onLoad={setFeeAmountTickSpacing}
 				/>
-			</div>
+
+				{noPoolError ? <WarningBox type={'error'}>{noPoolError}</WarningBox> : null}
+
+				<div
+					style={{
+						color: 'var(--color-white)',
+						fontWeight: 600,
+						fontSize: '16px',
+						margin: '8px 0px',
+						opacity: !isSpecifyPriceReady || noPoolError ? 0.5 : 1,
+					}}
+				>
+					Set Price Range
+				</div>
+
+				<PriceInput
+					disabled={!isSpecifyPriceReady || noPoolError}
+					tickSpacing={tickSpacing}
+					title={'Low price'}
+					subTitle={
+						isSpecifyPriceReady
+							? `${tokenB.symbol.toUpperCase()} per ${tokenA.symbol.toUpperCase()}`
+							: '-'
+					}
+					value={lowPrice}
+					setValue={setLowPrice}
+				/>
+
+				<PriceInput
+					disabled={!isSpecifyPriceReady || noPoolError}
+					tickSpacing={tickSpacing}
+					title={'High price'}
+					subTitle={
+						isSpecifyPriceReady
+							? `${tokenB.symbol.toUpperCase()} per ${tokenA.symbol.toUpperCase()}`
+							: '-'
+					}
+					value={highPrice}
+					setValue={setHighPrice}
+				/>
+
+				<div className="Column__AutoColumn-sc-72c388fb-2 erfjwt" style={{ minHeight: 200 }}>
+					{pool ? (
+						<div style={{ opacity: !isSpecifyPriceReady || noPoolError ? 0.5 : 1 }}>
+							<div style={{ marginLeft: '16px', color: 'var(--color-white)' }}>
+								<div style={{ fontSize: '12px' }}>Current price:</div>
+								<div style={{ fontWeight: 600 }}>{pool.price}</div>
+								<div style={{ fontSize: '12px' }}>
+									{pool.token0Symbol} per {pool.token1Symbol}
+								</div>
+							</div>
+							{ticks && ticks.length > 0 ? (
+								<LiquidityChart
+									data={ticks}
+									currentTick={pool.tick}
+									token0={tokenA}
+									token1={tokenB}
+									lowPrice={lowPrice}
+									highPrice={highPrice}
+								/>
+							) : (
+								<div
+									style={{
+										display: 'flex',
+										flexDirection: 'column',
+										alignItems: 'center',
+										justifyContent: 'center',
+										color: 'var(--color-white)',
+										opacity: 0.5,
+									}}
+								>
+									<i className="ri-bar-chart-grouped-line" style={{ fontSize: '45px' }} />
+									<div>No liquidity data.</div>
+								</div>
+							)}
+						</div>
+					) : (
+						<div
+							style={{
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'center',
+								justifyContent: 'center',
+								color: 'var(--color-white)',
+								opacity: 0.5,
+							}}
+						>
+							<i className="ri-inbox-2-line" style={{ fontSize: '45px' }} />
+							<div>Your active liquidity positions will appear here.</div>
+						</div>
+					)}
+				</div>
+
+				<div
+					style={{
+						color: 'var(--color-white)',
+						fontWeight: 600,
+						fontSize: '16px',
+						margin: '8px 0px',
+						opacity: !isSpecifyPriceReady || !isDepositReady ? 0.5 : 1,
+					}}
+				>
+					Deposit Amounts
+				</div>
+
+				<SwapTokenInput
+					isLoading={!isSpecifyPriceReady || !isDepositReady}
+					disableSelect={true}
+					inputValue={amountA}
+					onInputChange={handleAmountAInputChange}
+					selectedToken={tokenA}
+					onMaxClick={handleAmountAMax}
+				/>
+
+				<SwapTokenInput
+					isLoading={!isSpecifyPriceReady || !isDepositReady}
+					disableSelect={true}
+					inputValue={amountB}
+					onInputChange={handleAmountBInputChange}
+					selectedToken={tokenB}
+					onMaxClick={handleAmountBMax}
+				/>
+
+				<WalletActionButton
+					disabled={!isEverythingReady || noPoolError}
+					onClick={handleAddLiquidity}
+					style={{ height: '60px' }}
+				>
+					{isLoading ? 'Loading...' : 'Add Liquidity'}
+				</WalletActionButton>
+			</ModalContainer>
 		</div>
 	);
 };

@@ -10,7 +10,7 @@ const feeDescriptionMap = {
 	[10000]: 'Best for exotic pairs.',
 };
 
-export default function PoolFeeSelector({ selected, onSelect }) {
+export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 	const { selectedService } = useChain();
 
 	const [isLoading, setIsLoading] = React.useState(true);
@@ -28,6 +28,7 @@ export default function PoolFeeSelector({ selected, onSelect }) {
 			);
 			if (dexConfig && dexConfig.data) {
 				setConfig(dexConfig.data);
+				onLoad && onLoad(dexConfig.data.feeAmountTickSpacing);
 			}
 			if (process.env.REACT_APP_DEFAULT_FEE_TIER) {
 				const matched = dexConfig.data.feeAmountTickSpacing.find(
@@ -39,7 +40,7 @@ export default function PoolFeeSelector({ selected, onSelect }) {
 		};
 
 		tryToast('Fetch DEX config failed', run, () => setIsLoading(false));
-	}, [onSelect, selectedService]);
+	}, [onLoad, onSelect, selectedService]);
 
 	return (
 		<div className="Column__AutoColumn-sc-72c388fb-2 ereioh">
