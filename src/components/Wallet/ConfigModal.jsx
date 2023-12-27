@@ -42,42 +42,6 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 										]}
 									/>
 								</div>
-								{/* <div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
-									<div className="sc-1kykgp9-0 sc-1opkkz6-0 iCxowP kMuqSe">
-										<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
-											<div className="sc-sx9n2y-0 kivXvb css-1aekuku">Hide small balances</div>
-										</div>
-									</div>
-									<button role="option" aria-selected="true" className="sc-1poje5t-0 jANAGB">
-										<span className="sc-1poje5t-1 jsjUXs" />
-									</button>
-								</div> */}
-								{/* <div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
-									<div className="sc-1kykgp9-0 sc-1opkkz6-0 iCxowP kMuqSe">
-										<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
-											<div className="sc-sx9n2y-0 kivXvb css-1aekuku">Allow analytics</div>
-										</div>
-									</div>
-									<button role="option" aria-selected="true" className="sc-1poje5t-0 jANAGB">
-										<span className="sc-1poje5t-1 jsjUXs" />
-									</button>
-								</div> */}
-								{/* <div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
-									<div className="sc-1kykgp9-0 sc-1opkkz6-0 iCxowP kMuqSe">
-										<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB xyz12">
-											<div className="sc-sx9n2y-0 kivXvb css-1aekuku">Show testnets</div>
-										</div>
-									</div>
-									<button
-										id="testnets-toggle"
-										data-testid="testnets-toggle"
-										role="option"
-										aria-selected="false"
-										className="sc-1poje5t-0 ffxhvk"
-									>
-										<span className="sc-1poje5t-1 bQBOQe" />
-									</button>
-								</div> */}
 							</div>
 							<div
 								data-testid="wallet-header"
@@ -118,7 +82,17 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
                           </a> */}
 							<div className="sc-1lgoclx-0 zoyEF">
 								<div className="sc-d5tbhs-1 cSretk">
-									<div className="sc-sx9n2y-0 bqwbXT css-zhpkf8">Version: 7edf32</div>
+									<a
+										target="_blank"
+										href={`https://github.com/Swaptoshi/swaptoshi-interface/tree/${process.env.REACT_APP_VERSION.slice(
+											0,
+											6,
+										)}`}
+										className="sc-sx9n2y-0 bqwbXT css-zhpkf8"
+										rel="noreferrer"
+									>
+										Version: {process.env.REACT_APP_VERSION.slice(0, 6)}
+									</a>
 								</div>
 							</div>
 						</div>
