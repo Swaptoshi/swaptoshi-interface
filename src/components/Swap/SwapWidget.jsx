@@ -98,6 +98,9 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	}, 500);
 
 	React.useEffect(() => {
+		const senderBuffer = senderPublicKey ? Buffer.from(senderPublicKey, 'hex') : Buffer.alloc(32);
+		const nonce = auth ? auth.nonce : '0';
+
 		if (command === 'exactInput') {
 			const amount = Number(quoteValue) * 10 ** quoteToken.decimal;
 			const tx = {
@@ -106,9 +109,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 				fee: '1000000',
 				params: {
 					path,
-					recipient: cryptography.address
-						.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
-						.toString('hex'),
+					recipient: cryptography.address.getAddressFromPublicKey(senderBuffer).toString('hex'),
 					deadline: (
 						Math.floor(Date.now() / 1000) +
 						(deadline ?? DEFAULT_DEADLINE_MINUTE) * 60
@@ -119,13 +120,14 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 						.toFixed(0)
 						.toString(),
 				},
-				nonce: auth.nonce,
-				senderPublicKey: senderPublicKey,
-				signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),
+				nonce,
+				senderPublicKey: senderBuffer.toString('hex'),
+				signatures: new Array(auth ? auth.numberOfSignatures || 1 : 1).fill('0'.repeat(128)),
 			};
 			setTransaction(tx);
 			updateNetworkFee(tx);
 		}
+
 		if (command === 'exactOutput') {
 			const amount = Number(baseValue) * 10 ** baseToken.decimal;
 			const tx = {
@@ -134,9 +136,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 				fee: '1000000',
 				params: {
 					path,
-					recipient: cryptography.address
-						.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
-						.toString('hex'),
+					recipient: cryptography.address.getAddressFromPublicKey(senderBuffer).toString('hex'),
 					deadline: (
 						Math.floor(Date.now() / 1000) +
 						(deadline ?? DEFAULT_DEADLINE_MINUTE) * 60
@@ -147,9 +147,9 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 						.toFixed(0)
 						.toString(),
 				},
-				nonce: auth.nonce,
-				senderPublicKey: senderPublicKey,
-				signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),
+				nonce,
+				senderPublicKey: senderBuffer.toString('hex'),
+				signatures: new Array(auth ? auth.numberOfSignatures || 1 : 1).fill('0'.repeat(128)),
 			};
 			setTransaction(tx);
 			updateNetworkFee(tx);
