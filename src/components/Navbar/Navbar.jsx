@@ -22,7 +22,7 @@ import TokenAvatar from '../Avatar/token';
 
 const Navbar = () => {
 	const location = useLocation();
-	const logoImage = '/assets/images/logo/Swaptoshi-Logo.svg';
+	const logoImage = '/assets/images/logo/swaptoshi-logo.svg';
 
 	const [isActiveHeader, setIsActiveHeader] = useState(false);
 	const [initialResult, setInitialResult] = useState();
