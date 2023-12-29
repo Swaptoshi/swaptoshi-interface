@@ -8,11 +8,11 @@ import WalletActionButton from '../../components/Button/WalletActionButton';
 import { useNavigate } from 'react-router-dom';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
-import { encodePriceSqrt } from '../../utils/Math/priceFormatter';
+import { encodePriceSqrt } from '../../utils/math/priceFormatter';
 import { useChain } from '../../context/ChainProvider';
 import { getDEXPool } from '../../service/dex';
-import { computePoolAddress, getPoolKey } from '../../utils/Address/poolAddress';
-import { tryToast } from '../../utils/Toast/tryToast';
+import { computePoolAddress, getPoolKey } from '../../utils/address/poolAddress';
+import { tryToast } from '../../utils/toast/tryToast';
 import WarningBox from '../../components/Error/WarningBox';
 
 export default function CreatePool() {

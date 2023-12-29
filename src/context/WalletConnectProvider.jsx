@@ -4,14 +4,14 @@ import { SignClient } from '@walletconnect/sign-client';
 import { useChain } from './ChainProvider';
 import { codec } from '@liskhq/lisk-codec';
 import * as cryptography from '@liskhq/lisk-cryptography';
-import { transactionSchema } from '../schema/transactionSchema';
+import { transactionSchema } from '../utils/schema/transactionSchema';
 import { getTokenBalances } from '../service/token';
-import { tryToast } from '../utils/Toast/tryToast';
+import { tryToast } from '../utils/toast/tryToast';
 import { getFactoryTokenMeta } from '../service/factory';
 import { getDEXTokenCompact } from '../service/dex';
 import { getAccountAuth } from '../service/auth';
 import { getSchema } from '../service/schemas';
-import { transformTransaction } from '../utils/Transaction/transformer';
+import { transformTransaction } from '../utils/transaction/transformer';
 import { useDebouncedCallback } from 'use-debounce';
 
 const WalletConnectContext = React.createContext();

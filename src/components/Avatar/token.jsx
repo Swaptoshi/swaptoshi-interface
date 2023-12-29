@@ -1,5 +1,5 @@
 import React from 'react';
-import { tokenToColorHex } from '../../utils/Color/tokenToColor';
+import { tokenToColorHex } from '../../utils/color/tokenToColor';
 
 export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 	const [loaded, setIsLoaded] = React.useState(false);

@@ -1,4 +1,4 @@
-import { knownSchema } from '../schema';
+import { knownSchema } from '../utils/schema';
 import { serviceGET } from './node';
 
 export const getSchema = async (transaction, serviceUrl) => {

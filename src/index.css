@@ -251,28 +251,46 @@ ul {
 	background-color: transparent !important;
 }
 
-/* .gtxiKG {
-  position: absolute;
-  display: flex;
-  overflow: hidden;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  top: 0px;
-  bottom: 0px;
-  width: 100%;
-  overflow-y: hidden;
-  height: calc(100vh - 52px);
-} */
-
 @media screen and (width >= 768px) {
 	.backdrop {
 		height: 100vh;
 	}
+}
 
-	/* 
-  .gtxiKG {
-    height: 100vh;
-  } */
+.App {
+	background: var(--body-bg);
+}
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--text-color) transparent;
+}
+
+*::-webkit-scrollbar {
+	width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: var(--text-color);
+	border-radius: 20px;
+	border: 3px solid var(--text-color);
+}
+
+::-webkit-scrollbar-corner {
+	background: rgb(0 0 0 / 0%);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+	-moz-appearance: textfield;
 }

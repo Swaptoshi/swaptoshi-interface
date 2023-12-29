@@ -1,7 +1,7 @@
 import React from 'react';
 import { useChain } from './ChainProvider';
 import { getLiskMarket } from '../service/market';
-import { tryToast } from '../utils/Toast/tryToast';
+import { tryToast } from '../utils/toast/tryToast';
 import { useDebouncedCallback } from 'use-debounce';
 
 const LiskPriceContext = React.createContext();

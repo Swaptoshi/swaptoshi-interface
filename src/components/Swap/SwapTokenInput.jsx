@@ -5,7 +5,7 @@ import { useLiskPrice } from '../../context/LiskPriceProvider';
 import { useDebouncedCallback } from 'use-debounce';
 import { getPrice } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
-import { tryToast } from '../../utils/Toast/tryToast';
+import { tryToast } from '../../utils/toast/tryToast';
 
 export default function SwapTokenInput({
 	title,

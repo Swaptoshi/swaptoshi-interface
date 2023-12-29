@@ -1,5 +1,5 @@
-const { INFINITE, ZERO } = require('../../constants/tick');
-const { getSqrtRatioAtTick, MAX_SQRT_RATIO, MIN_SQRT_RATIO } = require('../Tick/tick_math');
+const { INFINITE, ZERO } = require('../constants/tick');
+const { getSqrtRatioAtTick, MAX_SQRT_RATIO, MIN_SQRT_RATIO } = require('../tick/tick_math');
 
 /* eslint-disable import/no-extraneous-dependencies */
 const Decimal = require('decimal.js').default;

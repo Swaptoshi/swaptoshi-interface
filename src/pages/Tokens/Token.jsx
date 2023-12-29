@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './Token.css';
 import { Link, NavLink } from 'react-router-dom';
 import PrimaryButton from '../../components/Button/PrimaryButton';
-import { timeframes } from '../../constants/timeframe';
-import { tryToast } from '../../utils/Toast/tryToast';
+import { timeframes } from '../../utils/constants/timeframe';
+import { tryToast } from '../../utils/toast/tryToast';
 import { getDEXToken } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import Loader from '../../components/Loader';
-import { intervalToSecond } from '../../utils/Time/intervalToSecond';
+import { intervalToSecond } from '../../utils/time/intervalToSecond';
 import { useDebouncedCallback } from 'use-debounce';
 import Dropdown from '../../components/Navbar/Dropdown';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
@@ -27,33 +27,36 @@ const Token = () => {
 	const [tokens, setTokens] = useState();
 	const [filteredTableData, setFilteredTableData] = useState();
 
-	const fetchToken = useDebouncedCallback(async (changeWindow, search) => {
-		await tryToast(
-			'Fetch token list failed',
-			async () => {
-				const param = {
-					offset: 0,
-					limit: 100,
-					changeWindow,
-					start: Math.floor(Date.now() / 1000) - intervalToSecond[changeWindow],
-					end: Math.floor(Date.now() / 1000),
-					sortBy,
-					sortOrder,
-				};
-				if (search) param.search = search;
-				const tokens = await getDEXToken(
-					param,
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
-				if (tokens && tokens.data) {
-					if (!search) setTokens(tokens.data);
-					setFilteredTableData(tokens.data);
-				}
-				setIsLoading(false);
-			},
-			() => setIsLoading(false),
-		);
-	}, Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500));
+	const fetchToken = useDebouncedCallback(
+		async (changeWindow, search) => {
+			await tryToast(
+				'Fetch token list failed',
+				async () => {
+					const param = {
+						offset: 0,
+						limit: 100,
+						changeWindow,
+						start: Math.floor(Date.now() / 1000) - intervalToSecond[changeWindow],
+						end: Math.floor(Date.now() / 1000),
+						sortBy,
+						sortOrder,
+					};
+					if (search) param.search = search;
+					const tokens = await getDEXToken(
+						param,
+						selectedService ? selectedService.serviceURLs : undefined,
+					);
+					if (tokens && tokens.data) {
+						if (!search) setTokens(tokens.data);
+						setFilteredTableData(tokens.data);
+					}
+					setIsLoading(false);
+				},
+				() => setIsLoading(false),
+			);
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	const handleFilterToken = React.useCallback(
 		e => {

@@ -1,4 +1,4 @@
-import { decodeTickPrice, encodePriceSqrt } from '../Math/priceFormatter';
+import { decodeTickPrice, encodePriceSqrt } from '../math/priceFormatter';
 import { getTickAtSqrtRatio } from './tick_math';
 
 export const normalizePriceByTick = (price, tickSpacing) => {

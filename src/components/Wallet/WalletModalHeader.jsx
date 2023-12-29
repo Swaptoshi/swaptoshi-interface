@@ -4,7 +4,7 @@ import * as cryptography from '@liskhq/lisk-cryptography';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import Avatar from '../Avatar';
-import { addressCompact } from '../../utils/Address';
+import { addressCompact } from '../../utils/address';
 import Loader from '../Loader';
 import { useTheme } from '../../context/ThemeProvider';
 

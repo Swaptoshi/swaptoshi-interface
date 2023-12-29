@@ -6,7 +6,7 @@ import { FileUploader } from 'react-drag-drop-files';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { codec } from '@liskhq/lisk-codec';
-import { factoryMetadataSchema } from '../../schema/token_factory_create_metadata.js';
+import { factoryMetadataSchema } from '../../utils/schema/token_factory_create_metadata.js.js';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { useChain } from '../../context/ChainProvider';
 import { postFactoryCreate } from '../../service/factory';

@@ -3,7 +3,7 @@ import Tooltip from '../../components/Tooltip/Tooltip';
 import Loader from '../../components/Loader/Loader';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import { useDebouncedCallback } from 'use-debounce';
-import { tryToast } from '../../utils/Toast/tryToast';
+import { tryToast } from '../../utils/toast/tryToast';
 import { getPrice } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 

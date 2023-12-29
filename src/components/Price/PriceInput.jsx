@@ -1,8 +1,8 @@
 import React from 'react';
-import { addByTick, normalizePriceByTick, subByTick } from '../../utils/Tick/price_tick';
-import { decodeTickPrice } from '../../utils/Math/priceFormatter';
-import { MAX_TICK, MIN_TICK } from '../../utils/Tick/tick_math';
-import { INFINITE, ZERO } from '../../constants/tick';
+import { addByTick, normalizePriceByTick, subByTick } from '../../utils/tick/price_tick';
+import { decodeTickPrice } from '../../utils/math/priceFormatter';
+import { MAX_TICK, MIN_TICK } from '../../utils/tick/tick_math';
+import { INFINITE, ZERO } from '../../utils/constants/tick';
 
 export default function PriceInput({ value, disabled, setValue, title, subTitle, tickSpacing }) {
 	const onChange = React.useCallback(

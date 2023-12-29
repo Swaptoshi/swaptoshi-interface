@@ -1,9 +1,9 @@
 import React from 'react';
 import BalanceCard from './BalanceCard';
-import { tryToast } from '../../utils/Toast/tryToast';
+import { tryToast } from '../../utils/toast/tryToast';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { getPrice } from '../../service/dex';
-import { getLSKTokenId } from '../../utils/Token/getLSKTokenId';
+import { getLSKTokenId } from '../../utils/token/getLSKTokenId';
 import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader';
 import { useLiskPrice } from '../../context/LiskPriceProvider';

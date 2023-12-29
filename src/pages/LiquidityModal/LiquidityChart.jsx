@@ -2,8 +2,8 @@ import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 import './BarChart.css';
 import { useTheme } from '../../context/ThemeProvider';
-import { decodeTickPrice, encodePriceSqrt } from '../../utils/Math/priceFormatter';
-import { getTickAtSqrtRatio } from '../../utils/Tick/tick_math';
+import { decodeTickPrice, encodePriceSqrt } from '../../utils/math/priceFormatter';
+import { getTickAtSqrtRatio } from '../../utils/tick/tick_math';
 import { useDebouncedCallback } from 'use-debounce';
 
 const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice }) => {

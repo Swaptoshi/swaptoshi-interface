@@ -9,10 +9,10 @@ import WalletActionButton from '../../components/Button/WalletActionButton';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { getDEXPosition } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
-import { tryToast } from '../../utils/Toast/tryToast';
+import { tryToast } from '../../utils/toast/tryToast';
 import Loader from '../../components/Loader';
-import { MAX_TICK, MIN_TICK } from '../../constants/tick';
-import { decodeTickPrice } from '../../utils/Math/priceFormatter';
+import { MAX_TICK, MIN_TICK } from '../../utils/constants/tick';
+import { decodeTickPrice } from '../../utils/math/priceFormatter';
 import { useDebouncedCallback } from 'use-debounce';
 
 const Pools = () => {

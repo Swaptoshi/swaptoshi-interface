@@ -1,8 +1,8 @@
 import React from 'react';
 import { checkServiceNode } from '../service/node';
 import { getBlockchainApps } from '../service/apps';
-import { tryToast } from '../utils/Toast/tryToast';
-import { liskTokenCompact } from '../constants/tokens';
+import { tryToast } from '../utils/toast/tryToast';
+import { liskTokenCompact } from '../utils/constants/tokens';
 import { getDEXConfig } from '../service/dex';
 
 const ChainContext = React.createContext();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Modal.css';
-import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
+import { getSystemTheme } from '../../utils/theme/getSystemTheme';
 import { useTheme } from '../../context/ThemeProvider';
 import { useWalletModal } from '../../context/WalletModalProvider';
 import ConfigModal from '../Wallet/ConfigModal';

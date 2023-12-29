@@ -8,16 +8,16 @@ import WalletActionButton from '../../components/Button/WalletActionButton';
 import PriceInput from '../../components/Price/PriceInput';
 import WarningBox from '../../components/Error/WarningBox';
 import PoolFeeSelector from '../../components/Fee/PoolFeeSelector';
-import { tryToast } from '../../utils/Toast/tryToast';
-import { computePoolAddress, getPoolKey } from '../../utils/Address/poolAddress';
+import { tryToast } from '../../utils/toast/tryToast';
+import { computePoolAddress, getPoolKey } from '../../utils/address/poolAddress';
 import { getDEXPool, getDEXPoolTick } from '../../service/dex';
 import SwapTokenInput from '../../components/Swap/SwapTokenInput';
-import { calculateAmount0, calculateAmount1 } from '../../utils/Liquidity/liquidityAmount';
+import { calculateAmount0, calculateAmount1 } from '../../utils/liquidity/liquidityAmount';
 import Decimal from 'decimal.js';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
-import { encodePriceSqrt } from '../../utils/Math/priceFormatter';
-import { getTickAtSqrtRatio } from '../../utils/Tick/tick_math';
+import { encodePriceSqrt } from '../../utils/math/priceFormatter';
+import { getTickAtSqrtRatio } from '../../utils/tick/tick_math';
 import { useNavigate } from 'react-router-dom';
 
 const LiquidityModal = () => {

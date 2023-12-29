@@ -1,6 +1,6 @@
 import React from 'react';
 import './Loader.css';
-import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
+import { getSystemTheme } from '../../utils/theme/getSystemTheme';
 import { useTheme } from '../../context/ThemeProvider';
 
 const colorMap = {

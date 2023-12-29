@@ -8,9 +8,8 @@ import Token from './pages/Tokens/Token';
 import Pools from './pages/Pools/Pools';
 import LiquidityModal from './pages/LiquidityModal/LiquidityModal';
 
-import './App.css';
 import TokenDetails from './pages/TokenDetails/TokenDetails';
-import { getSystemTheme } from './utils/Theme/getSystemTheme';
+import { getSystemTheme } from './utils/theme/getSystemTheme';
 import CreateTokenModal from './pages/CreateToken/CreateToken';
 import { useTheme } from './context/ThemeProvider';
 import AppContextProvider from './context/AppContextProvider';

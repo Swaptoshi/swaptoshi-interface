@@ -7,7 +7,7 @@ exports.getTickAtSqrtRatio =
 	exports.MAX_TICK =
 	exports.MIN_TICK =
 		void 0;
-const int_1 = require('../Math/int/index');
+const int_1 = require('../math/int/index');
 exports.MIN_TICK = '-887272';
 exports.MAX_TICK = '887272';
 exports.MIN_SQRT_RATIO = '4295128739';

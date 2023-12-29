@@ -3,7 +3,7 @@ import { JsonView, allExpanded, darkStyles, defaultStyles } from 'react-json-vie
 import PrimaryButton from '../Button/PrimaryButton';
 import SwitchBox from '../SwitchBox/SwitchBox';
 import { useTheme } from '../../context/ThemeProvider';
-import { getSystemTheme } from '../../utils/Theme/getSystemTheme';
+import { getSystemTheme } from '../../utils/theme/getSystemTheme';
 import { useDebouncedCallback } from 'use-debounce';
 import {
 	dryRunTransaction,
@@ -14,8 +14,8 @@ import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { toast } from 'react-toastify';
-import { tryToast } from '../../utils/Toast/tryToast';
-import { getBaseFee } from '../../utils/Transaction/fee';
+import { tryToast } from '../../utils/toast/tryToast';
+import { getBaseFee } from '../../utils/transaction/fee';
 
 const jsonTheme = {
 	light: defaultStyles,

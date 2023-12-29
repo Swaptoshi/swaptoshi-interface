@@ -1,7 +1,7 @@
 import React from 'react';
 import useLocalStorage from 'use-local-storage';
 import { useChain } from './ChainProvider';
-import { getPreviousDayTimestamp } from '../utils/Time/getPreviousDayTimestamp';
+import { getPreviousDayTimestamp } from '../utils/time/getPreviousDayTimestamp';
 import { useWalletConnect } from './WalletConnectProvider';
 
 const LastBalanceContext = React.createContext();
