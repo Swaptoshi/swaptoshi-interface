@@ -23,26 +23,33 @@ const Pools = () => {
 	const [position, setPosition] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 
-	const fetchPositions = useDebouncedCallback(async () => {
-		if (senderPublicKey) {
-			const ownedPosition = await getDEXPosition(
-				{
-					search: cryptography.address.getLisk32AddressFromPublicKey(
-						Buffer.from(senderPublicKey, 'hex'),
-					),
-					limit: 100,
-				},
-				selectedService ? selectedService.serviceURLs : undefined,
-			);
-			if (ownedPosition && ownedPosition.data) {
-				setPosition(ownedPosition.data);
-			}
-		}
-		setIsLoading(false);
-	}, 500);
+	const fetchPositions = useDebouncedCallback(
+		async () => {
+			const run = async () => {
+				if (senderPublicKey) {
+					const ownedPosition = await getDEXPosition(
+						{
+							search: cryptography.address.getLisk32AddressFromPublicKey(
+								Buffer.from(senderPublicKey, 'hex'),
+							),
+							limit: 100,
+						},
+						selectedService ? selectedService.serviceURLs : undefined,
+					);
+					if (ownedPosition && ownedPosition.data) {
+						setPosition(ownedPosition.data);
+					}
+				}
+				setIsLoading(false);
+			};
+
+			tryToast('Fetch owned position failed', run, () => setIsLoading(false));
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
-		tryToast('Fetch owned position failed', fetchPositions, () => setIsLoading(false));
+		fetchPositions();
 	}, [fetchPositions, selectedService, senderPublicKey]);
 
 	return (

@@ -19,19 +19,22 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 		setCollapsed(s => !s);
 	}, []);
 
-	const fetchDexConfig = useDebouncedCallback(async config => {
-		if (!config) return;
-		if (config) {
-			onLoad && onLoad(config.feeAmountTickSpacing);
-		}
-		if (process.env.REACT_APP_DEFAULT_FEE_TIER) {
-			const matched = config.feeAmountTickSpacing.find(
-				t => t[0] === process.env.REACT_APP_DEFAULT_FEE_TIER,
-			);
-			onSelect && onSelect(matched);
-		}
-		setIsLoading(false);
-	}, 500);
+	const fetchDexConfig = useDebouncedCallback(
+		async config => {
+			if (!config) return;
+			if (config) {
+				onLoad && onLoad(config.feeAmountTickSpacing);
+			}
+			if (process.env.REACT_APP_DEFAULT_FEE_TIER) {
+				const matched = config.feeAmountTickSpacing.find(
+					t => t[0] === process.env.REACT_APP_DEFAULT_FEE_TIER,
+				);
+				onSelect && onSelect(matched);
+			}
+			setIsLoading(false);
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
 		fetchDexConfig(dexConfig);

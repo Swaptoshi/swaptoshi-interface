@@ -1,7 +1,6 @@
 import React from 'react';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import Loader from '../../components/Loader/Loader';
-import { DEFAULT_SLIPPAGE } from './SwapWidget';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import { useDebouncedCallback } from 'use-debounce';
 import { tryToast } from '../../utils/Toast/tryToast';
@@ -27,32 +26,35 @@ export default function SwapDetailsInfo({
 	const [feeFiat, setFeeFiat] = React.useState();
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
 
-	const fetchFeeFiat = useDebouncedCallback(async (networkFee, lskPrice) => {
-		await tryToast(
-			'Quote fee price failed',
-			async () => {
-				const tokenToLskPrice = await getPrice(
-					{
-						baseTokenId: networkFee.tokenID,
-						quoteTokenId: `${chain}00000000000000`,
-					},
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
-				if (tokenToLskPrice && tokenToLskPrice.data) {
-					setFeeFiat(
-						(Number(networkFee.minimum) / 10 ** process.env.REACT_APP_WC_TOKEN_DECIMAL) *
-							tokenToLskPrice.data.price *
-							lskPrice,
+	const fetchFeeFiat = useDebouncedCallback(
+		async (networkFee, lskPrice) => {
+			await tryToast(
+				'Quote fee price failed',
+				async () => {
+					const tokenToLskPrice = await getPrice(
+						{
+							baseTokenId: networkFee.tokenID,
+							quoteTokenId: `${chain}00000000000000`,
+						},
+						selectedService ? selectedService.serviceURLs : undefined,
 					);
-				}
-				setIsFectingPrice(false);
-			},
-			() => setIsFectingPrice(false),
-		);
-	}, 600);
+					if (tokenToLskPrice && tokenToLskPrice.data) {
+						setFeeFiat(
+							(Number(networkFee.minimum) / 10 ** process.env.REACT_APP_WC_TOKEN_DECIMAL) *
+								tokenToLskPrice.data.price *
+								lskPrice,
+						);
+					}
+					setIsFectingPrice(false);
+				},
+				() => setIsFectingPrice(false),
+			);
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500) + 100,
+	);
 
 	const slippageValue = React.useMemo(() => {
-		return slippage ? slippage : DEFAULT_SLIPPAGE;
+		return slippage ? slippage : Number(process.env.REACT_APP_DEFAULT_DEFAULT_SLIPPAGE ?? 0.5);
 	}, [slippage]);
 
 	const toogleCollapsed = React.useCallback(() => setCollapsed(s => !s), []);

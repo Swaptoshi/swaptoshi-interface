@@ -26,65 +26,72 @@ const TokenDetails = () => {
 	const [timeframe, setTimeframe] = useState('24h');
 	const [isLoading, setIsLoading] = useState(true);
 
-	const fetchTokenPrice = useDebouncedCallback(async () => {
-		const now = Math.floor(Date.now() / 1000);
-		const param = {
-			search: id,
-			offset: 0,
-			limit: 100,
-			changeWindow: timeframe,
-			start: now - intervalToSecond[timeframe],
-			end: now,
-		};
-		const tokens = await getDEXToken(
-			param,
-			selectedService ? selectedService.serviceURLs : undefined,
-		);
-		if (tokens && tokens.data) {
-			setToken(tokens.data[0]);
-
-			const lskUsdTick = await getPriceTick({
-				base: 'LSK',
-				quote: 'USD',
-				interval: timeframeToInterval[timeframe],
-				limit: intervalToLimit[timeframe],
-				start: now - intervalToSecond[timeframe],
-			});
-			if (tokens.data[0].symbol !== 'LSK') {
-				const tokenTick = await getPriceTick({
-					base: tokens.data[0].symbol,
-					quote: 'LSK',
-					interval: timeframeToInterval[timeframe],
-					limit: intervalToLimit[timeframe],
+	const fetchTokenPrice = useDebouncedCallback(
+		async () => {
+			const run = async () => {
+				const now = Math.floor(Date.now() / 1000);
+				const param = {
+					search: id,
+					offset: 0,
+					limit: 100,
+					changeWindow: timeframe,
 					start: now - intervalToSecond[timeframe],
-				});
+					end: now,
+				};
+				const tokens = await getDEXToken(
+					param,
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (tokens && tokens.data) {
+					setToken(tokens.data[0]);
 
-				if (tokenTick && tokenTick.data && lskUsdTick && lskUsdTick.data) {
-					setChart(
-						tokenTick.data.map(t => {
-							const matched = lskUsdTick.data.find(s => s.time === t.time);
-							if (matched) {
-								return {
-									time: t.time,
-									value: t.value * matched.value,
-								};
-							} else {
-								return t;
-							}
-						}),
-					);
+					const lskUsdTick = await getPriceTick({
+						base: 'LSK',
+						quote: 'USD',
+						interval: timeframeToInterval[timeframe],
+						limit: intervalToLimit[timeframe],
+						start: now - intervalToSecond[timeframe],
+					});
+					if (tokens.data[0].symbol !== 'LSK') {
+						const tokenTick = await getPriceTick({
+							base: tokens.data[0].symbol,
+							quote: 'LSK',
+							interval: timeframeToInterval[timeframe],
+							limit: intervalToLimit[timeframe],
+							start: now - intervalToSecond[timeframe],
+						});
+
+						if (tokenTick && tokenTick.data && lskUsdTick && lskUsdTick.data) {
+							setChart(
+								tokenTick.data.map(t => {
+									const matched = lskUsdTick.data.find(s => s.time === t.time);
+									if (matched) {
+										return {
+											time: t.time,
+											value: t.value * matched.value,
+										};
+									} else {
+										return t;
+									}
+								}),
+							);
+						}
+					} else {
+						if (lskUsdTick && lskUsdTick.data) {
+							setChart(lskUsdTick.data);
+						}
+					}
 				}
-			} else {
-				if (lskUsdTick && lskUsdTick.data) {
-					setChart(lskUsdTick.data);
-				}
-			}
-		}
-		setIsLoading(false);
-	}, 500);
+				setIsLoading(false);
+			};
+
+			tryToast('Fetch token price failed', run, () => setIsLoading(false));
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	useEffect(() => {
-		tryToast('Fetch token price failed', fetchTokenPrice, () => setIsLoading(false));
+		fetchTokenPrice();
 	}, [fetchTokenPrice, id, selectedService, timeframe]);
 
 	function determineTrendIcon(priceChangeUSD) {

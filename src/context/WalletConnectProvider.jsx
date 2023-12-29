@@ -171,7 +171,10 @@ export function WalletConnectProvider({ children }) {
 					})
 					.toString('hex');
 
-				const schema = await getSchema(transaction, selectedService.serviceURLs);
+				const schema = await getSchema(
+					transaction,
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
 				if (!schema) throw new Error('schema not found');
 
 				const result = await signClient.request({
@@ -326,15 +329,22 @@ export function WalletConnectProvider({ children }) {
 		if (!signClient) createClient();
 	}, [createClient, signClient]);
 
-	const updateAccount = useDebouncedCallback(async () => {
-		if (senderPublicKey && selectedService) {
-			await updateBalance();
-			await reloadAuth();
-		}
-	}, 500);
+	const updateAccount = useDebouncedCallback(
+		async () => {
+			const run = async () => {
+				if (senderPublicKey && selectedService) {
+					await updateBalance();
+					await reloadAuth();
+				}
+			};
+
+			tryToast('Balance update failed', run);
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
-		tryToast('Balance update failed', updateAccount);
+		updateAccount();
 	}, [reloadAuth, selectedService, senderPublicKey, updateAccount, updateBalance]);
 
 	return <WalletConnectContext.Provider value={context}>{children}</WalletConnectContext.Provider>;

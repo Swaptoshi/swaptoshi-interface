@@ -79,59 +79,65 @@ export default function TransactionModal({
 		[customSendHandler, onClose, onFailed, onSuccess, selectedService, sign],
 	);
 
-	const dryRun = useDebouncedCallback(async transaction => {
-		try {
-			setStatus('Dry running transaction...');
-			const run = await dryRunTransaction(
-				{ ...transaction, id: '0'.repeat(64) },
-				selectedService ? selectedService.serviceURLs : undefined,
-			);
-			if (run && run.data) {
-				if (run.data.result === -1) {
-					throw new Error(run.data.errorMessage);
+	const dryRun = React.useCallback(
+		async transaction => {
+			try {
+				setStatus('Dry running transaction...');
+				const run = await dryRunTransaction(
+					{ ...transaction, id: '0'.repeat(64) },
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (run && run.data) {
+					if (run.data.result === -1) {
+						throw new Error(run.data.errorMessage);
+					}
+					if (run.data.result === 0) {
+						console.error('Dry Run Result:', run.data);
+						throw new Error('Dry run transaction failed, please re-check your parameter');
+					}
+					setReady(true);
+					setIsFecting(false);
+					setStatus('Valid transaction!');
 				}
-				if (run.data.result === 0) {
-					console.error('Dry Run Result:', run.data);
-					throw new Error('Dry run transaction failed, please re-check your parameter');
-				}
-				setReady(true);
+			} catch (err) {
+				setError(err.message);
 				setIsFecting(false);
-				setStatus('Valid transaction!');
 			}
-		} catch (err) {
-			setError(err.message);
-			setIsFecting(false);
-		}
-	}, 500);
+		},
+		[selectedService],
+	);
 
-	const calculateMinimumFee = useDebouncedCallback(async transaction => {
-		try {
-			setStatus('Calculating transacton fee...');
-			const estimatedFee = await getTransactionEstimateFee(
-				transaction,
-				selectedService ? selectedService.serviceURLs : undefined,
-			);
-			if (estimatedFee && estimatedFee.data) {
-				let fee =
-					BigInt(estimatedFee.data.transaction.fee.minimum) +
-					BigInt(getBaseFee(transaction.module, transaction.command));
-				const parsed = {
-					...transaction,
-					fee: fee.toString(),
-					signatures: [],
-				};
-				setParsedTransaction(parsed);
-				dryRun(parsed);
+	const calculateMinimumFee = useDebouncedCallback(
+		async transaction => {
+			try {
+				setStatus('Calculating transacton fee...');
+				const estimatedFee = await getTransactionEstimateFee(
+					transaction,
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (estimatedFee && estimatedFee.data) {
+					let fee =
+						BigInt(estimatedFee.data.transaction.fee.minimum) +
+						BigInt(getBaseFee(transaction.module, transaction.command));
+					const parsed = {
+						...transaction,
+						fee: fee.toString(),
+						signatures: [],
+					};
+					setParsedTransaction(parsed);
+					dryRun(parsed);
+				}
+			} catch (err) {
+				setError(err.message);
+				setIsFecting(false);
 			}
-		} catch (err) {
-			setError(err.message);
-			setIsFecting(false);
-		}
-	}, 500);
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
 		calculateMinimumFee(transaction);
-	}, [calculateMinimumFee, transaction]);
+	}, [calculateMinimumFee, transaction, selectedService]);
 
 	return (
 		<div>

@@ -51,89 +51,100 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 		}
 	}, [currentTick, data, inverted]);
 
-	const updateChart = useDebouncedCallback(() => {
-		try {
-			const annotations = [];
+	const updateChart = useDebouncedCallback(
+		() => {
+			try {
+				const annotations = [];
 
-			if (currentTick) {
-				const currentPrice = decodeTickPrice(currentTick, token0.decimal, token1.decimal, inverted);
-				const sqrtPirce = encodePriceSqrt(inverted ? 1 : currentPrice, inverted ? currentPrice : 1);
-				annotations.push({
-					x: getTickAtSqrtRatio(sqrtPirce),
-					borderColor: theme === 'dark' ? '#fff' : '#000',
-					label: {
-						style: {
-							color: '#000',
+				if (currentTick) {
+					const currentPrice = decodeTickPrice(
+						currentTick,
+						token0.decimal,
+						token1.decimal,
+						inverted,
+					);
+					const sqrtPirce = encodePriceSqrt(
+						inverted ? 1 : currentPrice,
+						inverted ? currentPrice : 1,
+					);
+					annotations.push({
+						x: getTickAtSqrtRatio(sqrtPirce),
+						borderColor: theme === 'dark' ? '#fff' : '#000',
+						label: {
+							style: {
+								color: '#000',
+							},
+							text: `Current Price (${currentPrice})`,
 						},
-						text: `Current Price (${currentPrice})`,
-					},
-				});
-			}
+					});
+				}
 
-			if (lowPrice) {
-				const sqrtPirce = encodePriceSqrt(inverted ? 1 : lowPrice, inverted ? lowPrice : 1);
-				annotations.push({
-					x: getTickAtSqrtRatio(sqrtPirce),
-					borderColor: theme === 'dark' ? '#fff' : '#000',
-					label: {
-						style: {
-							color: '#000',
+				if (lowPrice) {
+					const sqrtPirce = encodePriceSqrt(inverted ? 1 : lowPrice, inverted ? lowPrice : 1);
+					annotations.push({
+						x: getTickAtSqrtRatio(sqrtPirce),
+						borderColor: theme === 'dark' ? '#fff' : '#000',
+						label: {
+							style: {
+								color: '#000',
+							},
+							text: `Low Price (${lowPrice})`,
 						},
-						text: `Low Price (${lowPrice})`,
-					},
-				});
-			}
+					});
+				}
 
-			if (highPrice) {
-				const sqrtPirce = encodePriceSqrt(inverted ? 1 : highPrice, inverted ? highPrice : 1);
-				annotations.push({
-					x: getTickAtSqrtRatio(sqrtPirce),
-					borderColor: theme === 'dark' ? '#fff' : '#000',
-					label: {
-						style: {
-							color: '#000',
+				if (highPrice) {
+					const sqrtPirce = encodePriceSqrt(inverted ? 1 : highPrice, inverted ? highPrice : 1);
+					annotations.push({
+						x: getTickAtSqrtRatio(sqrtPirce),
+						borderColor: theme === 'dark' ? '#fff' : '#000',
+						label: {
+							style: {
+								color: '#000',
+							},
+							text: `High Price (${highPrice})`,
 						},
-						text: `High Price (${highPrice})`,
-					},
-				});
-			}
+					});
+				}
 
-			const op = {
-				chart: {
+				const op = {
+					chart: {
+						zoom: {
+							enabled: false,
+						},
+					},
+					dataLabels: {
+						enabled: false,
+					},
+					toolbar: {
+						show: false,
+					},
 					zoom: {
 						enabled: false,
 					},
-				},
-				dataLabels: {
-					enabled: false,
-				},
-				toolbar: {
-					show: false,
-				},
-				zoom: {
-					enabled: false,
-				},
-				xaxis: {
-					labels: {
+					xaxis: {
+						labels: {
+							show: false,
+						},
+					},
+					yaxis: {
 						show: false,
 					},
-				},
-				yaxis: {
-					show: false,
-				},
-				grid: {
-					show: false,
-				},
-				annotations: {
-					xaxis: annotations,
-				},
-			};
+					grid: {
+						show: false,
+					},
+					annotations: {
+						xaxis: annotations,
+					},
+				};
 
-			setOptions(op);
-		} catch (err) {
-			/* empty */
-		}
-	}, 500);
+				setOptions(op);
+			} catch (err) {
+				/* empty */
+			}
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
 		updateChart();

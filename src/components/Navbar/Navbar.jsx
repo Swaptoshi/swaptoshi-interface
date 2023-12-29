@@ -97,7 +97,7 @@ const Navbar = () => {
 		setSelectedOption(option);
 	};
 
-	const fetchToken = useDebouncedCallback(async search => {
+	const searchToken = useDebouncedCallback(async search => {
 		await tryToast(
 			'Fetch token list failed',
 			async () => {
@@ -123,10 +123,6 @@ const Navbar = () => {
 			},
 			() => setIsLoading(false),
 		);
-	}, 500);
-
-	const searchToken = useDebouncedCallback(async search => {
-		await fetchToken(search);
 	}, 500);
 
 	const handleSearchChange = React.useCallback(

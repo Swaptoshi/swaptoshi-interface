@@ -3,7 +3,6 @@ import { checkServiceNode } from '../service/node';
 import { getBlockchainApps } from '../service/apps';
 import { tryToast } from '../utils/Toast/tryToast';
 import { liskTokenCompact } from '../constants/tokens';
-import { useDebouncedCallback } from 'use-debounce';
 import { getDEXConfig } from '../service/dex';
 
 const ChainContext = React.createContext();
@@ -21,10 +20,10 @@ export default function ChainProvider({ children }) {
 
 	const fetchBlock = React.useRef(false);
 
-	const fetchDexConfig = useDebouncedCallback(async service => {
+	const fetchDexConfig = React.useCallback(async service => {
 		const config = await getDEXConfig(service);
 		setDexConfig(config.data);
-	}, 500);
+	}, []);
 
 	React.useEffect(() => {
 		setLskTokenInfo(s => ({

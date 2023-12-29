@@ -130,36 +130,42 @@ const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 		[handleScrollEnd, searchTerm, withPaginationNormal, withPaginationSearch],
 	);
 
-	const fetchToken = useDebouncedCallback(async () => {
-		try {
-			if (fetchBlock.current) return;
-			fetchBlock.current = true;
+	const fetchToken = useDebouncedCallback(
+		async () => {
+			try {
+				if (fetchBlock.current) return;
+				fetchBlock.current = true;
 
-			setIsLoading(true);
+				setIsLoading(true);
 
-			if (mode === 'tradable') {
-				if (!selectedService) throw new Error('Network error');
-				const tradableToken = await getDEXTokenCompact({}, selectedService.serviceURLs);
-				if (tradableToken && tradableToken.data && tradableToken.meta) {
-					setData(tradableToken.data);
-					setTotal(tradableToken.meta.total);
+				if (mode === 'tradable') {
+					if (!selectedService) throw new Error('Network error');
+					const tradableToken = await getDEXTokenCompact(
+						{},
+						selectedService ? selectedService.serviceURLs : undefined,
+					);
+					if (tradableToken && tradableToken.data && tradableToken.meta) {
+						setData(tradableToken.data);
+						setTotal(tradableToken.meta.total);
+					}
 				}
-			}
 
-			if (mode === 'wallet') {
-				if (balances) {
-					setData(balances);
-				} else {
-					throw new Error('Wallet not connected');
+				if (mode === 'wallet') {
+					if (balances) {
+						setData(balances);
+					} else {
+						throw new Error('Wallet not connected');
+					}
 				}
+			} catch (err) {
+				setError(err.message);
+			} finally {
+				setIsLoading(false);
+				fetchBlock.current = false;
 			}
-		} catch (err) {
-			setError(err.message);
-		} finally {
-			setIsLoading(false);
-			fetchBlock.current = false;
-		}
-	}, 500);
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
 		fetchToken();

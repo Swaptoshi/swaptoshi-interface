@@ -53,23 +53,19 @@ const Token = () => {
 			},
 			() => setIsLoading(false),
 		);
-	}, 500);
-
-	const filterToken = useDebouncedCallback(async search => {
-		await fetchToken(selectedTimeframe.value, search);
-	}, 500);
+	}, Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500));
 
 	const handleFilterToken = React.useCallback(
 		e => {
 			setIsLoading(true);
 			if (e.target.value) {
-				filterToken(e.target.value);
+				fetchToken(selectedTimeframe.value, e.target.value);
 			} else {
 				setFilteredTableData(tokens);
 				setIsLoading(false);
 			}
 		},
-		[filterToken, tokens],
+		[fetchToken, selectedTimeframe, tokens],
 	);
 
 	const sortData = React.useCallback(

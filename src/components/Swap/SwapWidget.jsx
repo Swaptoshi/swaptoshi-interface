@@ -14,9 +14,6 @@ import BigNumber from 'bignumber.js';
 import { getTransactionEstimateFee } from '../../service/transaction';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 
-export const DEFAULT_DEADLINE_MINUTE = 10;
-export const DEFAULT_SLIPPAGE = 0.5;
-
 const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	const { selectedService } = useChain();
 	const { balances, auth, senderPublicKey } = useWalletConnect();
@@ -81,22 +78,34 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		}
 	}, [baseLoading, baseValue, currentPrice, priceReady, quoteLoading, quoteValue]);
 
-	const updateNetworkFee = useDebouncedCallback(async transaction => {
-		const estimatedFee = await getTransactionEstimateFee(
-			transaction,
-			selectedService ? selectedService.serviceURLs : undefined,
-		);
-		if (estimatedFee && estimatedFee.data) {
-			setNetworkFee(estimatedFee.data.transaction.fee);
-			setTransaction(tx => ({
-				...tx,
-				fee: estimatedFee.data.transaction.fee.minimum,
-			}));
-		}
-	}, 500);
+	// TODO: change to local calculation
+	const updateNetworkFee = useDebouncedCallback(
+		async transaction => {
+			try {
+				const estimatedFee = await getTransactionEstimateFee(
+					transaction,
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (estimatedFee && estimatedFee.data) {
+					setNetworkFee(estimatedFee.data.transaction.fee);
+					setTransaction(tx => ({
+						...tx,
+						fee: estimatedFee.data.transaction.fee.minimum,
+					}));
+				}
+			} catch {
+				setError('Please try again later');
+			}
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
 		if (disabled) return;
+
+		const deadlineFactor = deadline ?? Number(process.env.REACT_APP_DEFAULT_DEADLINE_MINUTE ?? 10);
+		const slippageFactor =
+			slippage ?? Number(process.env.REACT_APP_DEFAULT_DEFAULT_SLIPPAGE ?? 0.5);
 
 		const senderBuffer = senderPublicKey ? Buffer.from(senderPublicKey, 'hex') : Buffer.alloc(32);
 		const nonce = auth ? auth.nonce : '0';
@@ -110,13 +119,10 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 				params: {
 					path,
 					recipient: cryptography.address.getAddressFromPublicKey(senderBuffer).toString('hex'),
-					deadline: (
-						Math.floor(Date.now() / 1000) +
-						(deadline ?? DEFAULT_DEADLINE_MINUTE) * 60
-					).toString(),
+					deadline: (Math.floor(Date.now() / 1000) + deadlineFactor * 60).toString(),
 					amountIn: (Number(baseValue) * 10 ** baseToken.decimal).toString(),
 					amountOutMinimum: new BigNumber(amount)
-						.minus(new BigNumber(amount).multipliedBy(slippage ?? DEFAULT_SLIPPAGE).dividedBy(100))
+						.minus(new BigNumber(amount).multipliedBy(slippageFactor).dividedBy(100))
 						.toFixed(0)
 						.toString(),
 				},
@@ -137,13 +143,10 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 				params: {
 					path,
 					recipient: cryptography.address.getAddressFromPublicKey(senderBuffer).toString('hex'),
-					deadline: (
-						Math.floor(Date.now() / 1000) +
-						(deadline ?? DEFAULT_DEADLINE_MINUTE) * 60
-					).toString(),
+					deadline: (Math.floor(Date.now() / 1000) + deadlineFactor * 60).toString(),
 					amountOut: (Number(quoteValue) * 10 ** quoteToken.decimal).toString(),
 					amountInMaximum: new BigNumber(amount)
-						.plus(new BigNumber(amount).multipliedBy(slippage ?? DEFAULT_SLIPPAGE).dividedBy(100))
+						.plus(new BigNumber(amount).multipliedBy(slippageFactor).dividedBy(100))
 						.toFixed(0)
 						.toString(),
 				},
@@ -186,26 +189,29 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		}
 	}, [baseBalance, baseToken, baseValue, disabled, error, quoteToken, quoteValue]);
 
-	const fetchPrice = useDebouncedCallback(async () => {
-		try {
-			if (priceReady) {
-				const price = await getPrice(
-					{
-						baseTokenId: quoteToken.tokenId,
-						quoteTokenId: baseToken.tokenId,
-					},
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
-				if (price && price.data) {
-					setCurrentPrice(price.data.price);
-				} else {
-					setError('Please try again later');
+	const fetchPrice = useDebouncedCallback(
+		async () => {
+			try {
+				if (priceReady) {
+					const price = await getPrice(
+						{
+							baseTokenId: quoteToken.tokenId,
+							quoteTokenId: baseToken.tokenId,
+						},
+						selectedService ? selectedService.serviceURLs : undefined,
+					);
+					if (price && price.data) {
+						setCurrentPrice(price.data.price);
+					} else {
+						setError('Please try again later');
+					}
 				}
+			} catch {
+				setError('Please try again later');
 			}
-		} catch {
-			setError('Please try again later');
-		}
-	}, 500);
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
 		if (disabled) return;

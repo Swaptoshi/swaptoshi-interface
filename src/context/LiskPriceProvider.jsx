@@ -37,23 +37,31 @@ export default function LiskPriceProvider({ children }) {
 		setCryptoFormatter(new Intl.NumberFormat(undefined, { maximumFractionDigits: 20 }));
 	}, [currency]);
 
-	const fetchPrice = useDebouncedCallback(async () => {
-		if (selectedService) {
-			const market = await getLiskMarket(selectedService.serviceURLs);
-			if (market && market.data && market.data.length > 0) {
-				const price = market.data.find(t => t.from === 'LSK' && t.to === currency.toUpperCase());
-				if (!price) setPrices(0);
-				else setPrices(Number(price.rate));
-			}
-		}
-	}, 500);
+	const fetchPrice = useDebouncedCallback(
+		async () => {
+			const run = async () => {
+				if (selectedService) {
+					const market = await getLiskMarket(
+						selectedService ? selectedService.serviceURLs : undefined,
+					);
+					if (market && market.data && market.data.length > 0) {
+						const price = market.data.find(
+							t => t.from === 'LSK' && t.to === currency.toUpperCase(),
+						);
+						if (!price) setPrices(0);
+						else setPrices(Number(price.rate));
+					}
+				}
+			};
+
+			tryToast('Fetch LSK/USD price failed', run);
+		},
+		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
+	);
 
 	React.useEffect(() => {
-		tryToast('Fetch LSK/USD price failed', fetchPrice);
-		const updateLiskPriceInterval = setInterval(
-			() => tryToast('Fetch LSK/USD price failed', fetchPrice),
-			60000,
-		);
+		fetchPrice();
+		const updateLiskPriceInterval = setInterval(fetchPrice, 60000);
 
 		return () => {
 			clearInterval(updateLiskPriceInterval);
