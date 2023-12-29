@@ -6,6 +6,7 @@ import { getDEXTokenCompact } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import TokenAvatar from '../Avatar/token';
+import * as env from '../../utils/config/env';
 
 const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 	const { selectedService } = useChain();
@@ -130,42 +131,39 @@ const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 		[handleScrollEnd, searchTerm, withPaginationNormal, withPaginationSearch],
 	);
 
-	const fetchToken = useDebouncedCallback(
-		async () => {
-			try {
-				if (fetchBlock.current) return;
-				fetchBlock.current = true;
+	const fetchToken = useDebouncedCallback(async () => {
+		try {
+			if (fetchBlock.current) return;
+			fetchBlock.current = true;
 
-				setIsLoading(true);
+			setIsLoading(true);
 
-				if (mode === 'tradable') {
-					if (!selectedService) throw new Error('Network error');
-					const tradableToken = await getDEXTokenCompact(
-						{},
-						selectedService ? selectedService.serviceURLs : undefined,
-					);
-					if (tradableToken && tradableToken.data && tradableToken.meta) {
-						setData(tradableToken.data);
-						setTotal(tradableToken.meta.total);
-					}
+			if (mode === 'tradable') {
+				if (!selectedService) throw new Error('Network error');
+				const tradableToken = await getDEXTokenCompact(
+					{},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (tradableToken && tradableToken.data && tradableToken.meta) {
+					setData(tradableToken.data);
+					setTotal(tradableToken.meta.total);
 				}
-
-				if (mode === 'wallet') {
-					if (balances) {
-						setData(balances);
-					} else {
-						throw new Error('Wallet not connected');
-					}
-				}
-			} catch (err) {
-				setError(err.message);
-			} finally {
-				setIsLoading(false);
-				fetchBlock.current = false;
 			}
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+
+			if (mode === 'wallet') {
+				if (balances) {
+					setData(balances);
+				} else {
+					throw new Error('Wallet not connected');
+				}
+			}
+		} catch (err) {
+			setError(err.message);
+		} finally {
+			setIsLoading(false);
+			fetchBlock.current = false;
+		}
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		fetchToken();

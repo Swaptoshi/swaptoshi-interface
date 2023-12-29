@@ -6,6 +6,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { getPrice } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/toast/tryToast';
+import * as env from '../../utils/config/env';
 
 export default function SwapTokenInput({
 	title,
@@ -25,28 +26,25 @@ export default function SwapTokenInput({
 	const [selectedFiatValue, setSelectedFiatValue] = React.useState();
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
 
-	const fetchFiatPrice = useDebouncedCallback(
-		async (amount, tokenId, lskPrice) => {
-			await tryToast(
-				'Quote price failed',
-				async () => {
-					const tokenToLskPrice = await getPrice(
-						{
-							baseTokenId: tokenId,
-							quoteTokenId: `${chain}00000000000000`,
-						},
-						selectedService ? selectedService.serviceURLs : undefined,
-					);
-					if (tokenToLskPrice && tokenToLskPrice.data) {
-						setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
-					}
-					setIsFectingPrice(false);
-				},
-				() => setIsFectingPrice(false),
-			);
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+	const fetchFiatPrice = useDebouncedCallback(async (amount, tokenId, lskPrice) => {
+		await tryToast(
+			'Quote price failed',
+			async () => {
+				const tokenToLskPrice = await getPrice(
+					{
+						baseTokenId: tokenId,
+						quoteTokenId: `${chain}00000000000000`,
+					},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (tokenToLskPrice && tokenToLskPrice.data) {
+					setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
+				}
+				setIsFectingPrice(false);
+			},
+			() => setIsFectingPrice(false),
+		);
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	const onSelect = React.useCallback(
 		selected => {

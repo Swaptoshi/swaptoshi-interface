@@ -13,6 +13,7 @@ import { useWalletConnect } from '../../context/WalletConnectProvider';
 import BigNumber from 'bignumber.js';
 import { getTransactionEstimateFee } from '../../service/transaction';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
+import * as env from '../../utils/config/env';
 
 const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	const { selectedService } = useChain();
@@ -79,33 +80,29 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	}, [baseLoading, baseValue, currentPrice, priceReady, quoteLoading, quoteValue]);
 
 	// TODO: change to local calculation
-	const updateNetworkFee = useDebouncedCallback(
-		async transaction => {
-			try {
-				const estimatedFee = await getTransactionEstimateFee(
-					transaction,
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
-				if (estimatedFee && estimatedFee.data) {
-					setNetworkFee(estimatedFee.data.transaction.fee);
-					setTransaction(tx => ({
-						...tx,
-						fee: estimatedFee.data.transaction.fee.minimum,
-					}));
-				}
-			} catch {
-				setError('Please try again later');
+	const updateNetworkFee = useDebouncedCallback(async transaction => {
+		try {
+			const estimatedFee = await getTransactionEstimateFee(
+				transaction,
+				selectedService ? selectedService.serviceURLs : undefined,
+			);
+			if (estimatedFee && estimatedFee.data) {
+				setNetworkFee(estimatedFee.data.transaction.fee);
+				setTransaction(tx => ({
+					...tx,
+					fee: estimatedFee.data.transaction.fee.minimum,
+				}));
 			}
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+		} catch {
+			setError('Please try again later');
+		}
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		if (disabled) return;
 
-		const deadlineFactor = deadline ?? Number(process.env.REACT_APP_DEFAULT_DEADLINE_MINUTE ?? 10);
-		const slippageFactor =
-			slippage ?? Number(process.env.REACT_APP_DEFAULT_DEFAULT_SLIPPAGE ?? 0.5);
+		const deadlineFactor = deadline ?? Number(env.DEFAULT_DEADLINE_MINUTE);
+		const slippageFactor = slippage ?? Number(env.DEFAULT_SLIPPAGE);
 
 		const senderBuffer = senderPublicKey ? Buffer.from(senderPublicKey, 'hex') : Buffer.alloc(32);
 		const nonce = auth ? auth.nonce : '0';
@@ -189,29 +186,26 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		}
 	}, [baseBalance, baseToken, baseValue, disabled, error, quoteToken, quoteValue]);
 
-	const fetchPrice = useDebouncedCallback(
-		async () => {
-			try {
-				if (priceReady) {
-					const price = await getPrice(
-						{
-							baseTokenId: quoteToken.tokenId,
-							quoteTokenId: baseToken.tokenId,
-						},
-						selectedService ? selectedService.serviceURLs : undefined,
-					);
-					if (price && price.data) {
-						setCurrentPrice(price.data.price);
-					} else {
-						setError('Please try again later');
-					}
+	const fetchPrice = useDebouncedCallback(async () => {
+		try {
+			if (priceReady) {
+				const price = await getPrice(
+					{
+						baseTokenId: quoteToken.tokenId,
+						quoteTokenId: baseToken.tokenId,
+					},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (price && price.data) {
+					setCurrentPrice(price.data.price);
+				} else {
+					setError('Please try again later');
 				}
-			} catch {
-				setError('Please try again later');
 			}
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+		} catch {
+			setError('Please try again later');
+		}
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		if (disabled) return;

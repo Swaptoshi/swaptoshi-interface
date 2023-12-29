@@ -6,9 +6,10 @@ import Footer from '../../components/Footer/Footer';
 import { NavLink } from 'react-router-dom';
 import SwapWidget from '../../components/Swap/SwapWidget';
 import { useChain } from '../../context/ChainProvider';
+import * as env from '../../utils/config/env';
 
 const Home = () => {
-	const { lskTokenInfo } = useChain();
+	const { lskTokenInfo, selectedService } = useChain();
 	const sectionRef = React.useRef(null);
 
 	const handleClick = () => {
@@ -130,7 +131,9 @@ const Home = () => {
 						</a>
 						<a
 							className=""
-							href={`https://petstore.swagger.io/?url=${process.env.REACT_APP_LISK_SERVICE_URL}/api/v3/spec`}
+							href={`https://petstore.swagger.io/?url=${
+								selectedService ? selectedService.serviceUrls : env.LISK_SERVICE_URL
+							}/api/v3/spec`}
 						>
 							<div className="crypto-guide c-three">
 								<p>Build dApps</p>

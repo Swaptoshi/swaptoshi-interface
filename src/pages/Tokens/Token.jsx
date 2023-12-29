@@ -12,6 +12,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import Dropdown from '../../components/Navbar/Dropdown';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import TokenAvatar from '../../components/Avatar/token';
+import * as env from '../../utils/config/env';
 
 const Token = () => {
 	const { selectedService } = useChain();
@@ -22,41 +23,38 @@ const Token = () => {
 	const [sortOrder, setSortOrder] = useState('desc');
 
 	const [selectedTimeframe, setSelectedTimeframe] = useState(
-		timeframes.find(t => t.value === process.env.REACT_APP_TOKENS_LIST_DEFAULT_WINDOW),
+		timeframes.find(t => t.value === env.TOKENS_LIST_DEFAULT_WINDOW),
 	);
 	const [tokens, setTokens] = useState();
 	const [filteredTableData, setFilteredTableData] = useState();
 
-	const fetchToken = useDebouncedCallback(
-		async (changeWindow, search) => {
-			await tryToast(
-				'Fetch token list failed',
-				async () => {
-					const param = {
-						offset: 0,
-						limit: 100,
-						changeWindow,
-						start: Math.floor(Date.now() / 1000) - intervalToSecond[changeWindow],
-						end: Math.floor(Date.now() / 1000),
-						sortBy,
-						sortOrder,
-					};
-					if (search) param.search = search;
-					const tokens = await getDEXToken(
-						param,
-						selectedService ? selectedService.serviceURLs : undefined,
-					);
-					if (tokens && tokens.data) {
-						if (!search) setTokens(tokens.data);
-						setFilteredTableData(tokens.data);
-					}
-					setIsLoading(false);
-				},
-				() => setIsLoading(false),
-			);
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+	const fetchToken = useDebouncedCallback(async (changeWindow, search) => {
+		await tryToast(
+			'Fetch token list failed',
+			async () => {
+				const param = {
+					offset: 0,
+					limit: 100,
+					changeWindow,
+					start: Math.floor(Date.now() / 1000) - intervalToSecond[changeWindow],
+					end: Math.floor(Date.now() / 1000),
+					sortBy,
+					sortOrder,
+				};
+				if (search) param.search = search;
+				const tokens = await getDEXToken(
+					param,
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (tokens && tokens.data) {
+					if (!search) setTokens(tokens.data);
+					setFilteredTableData(tokens.data);
+				}
+				setIsLoading(false);
+			},
+			() => setIsLoading(false),
+		);
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	const handleFilterToken = React.useCallback(
 		e => {

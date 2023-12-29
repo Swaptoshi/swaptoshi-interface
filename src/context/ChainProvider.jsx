@@ -4,6 +4,7 @@ import { getBlockchainApps } from '../service/apps';
 import { tryToast } from '../utils/toast/tryToast';
 import { liskTokenCompact } from '../utils/constants/tokens';
 import { getDEXConfig } from '../service/dex';
+import * as env from '../utils/config/env';
 
 const ChainContext = React.createContext();
 
@@ -12,7 +13,7 @@ export function useChain() {
 }
 
 export default function ChainProvider({ children }) {
-	const [chain, setChain] = React.useState(process.env.REACT_APP_DEFAULT_CHAIN);
+	const [chain, setChain] = React.useState(env.DEFAULT_CHAIN);
 	const [dexConfig, setDexConfig] = React.useState();
 	const [availableService, setAvailableService] = React.useState();
 	const [selectedService, setSelectedService] = React.useState();
@@ -71,7 +72,7 @@ export default function ChainProvider({ children }) {
 
 			let selectedIndex = -1;
 			for (let i = 0; i < fetchedService.length; i++) {
-				if (fetchedService[i].chainID.substring(0, 2) === process.env.REACT_APP_DEFAULT_CHAIN) {
+				if (fetchedService[i].chainID.substring(0, 2) === env.DEFAULT_CHAIN) {
 					setSelectedService(fetchedService[i]);
 					selectedIndex = i;
 					break;

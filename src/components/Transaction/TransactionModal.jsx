@@ -16,6 +16,7 @@ import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { toast } from 'react-toastify';
 import { tryToast } from '../../utils/toast/tryToast';
 import { getBaseFee } from '../../utils/transaction/fee';
+import * as env from '../../utils/config/env';
 
 const jsonTheme = {
 	light: defaultStyles,
@@ -107,33 +108,30 @@ export default function TransactionModal({
 		[selectedService],
 	);
 
-	const calculateMinimumFee = useDebouncedCallback(
-		async transaction => {
-			try {
-				setStatus('Calculating transacton fee...');
-				const estimatedFee = await getTransactionEstimateFee(
-					transaction,
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
-				if (estimatedFee && estimatedFee.data) {
-					let fee =
-						BigInt(estimatedFee.data.transaction.fee.minimum) +
-						BigInt(getBaseFee(transaction.module, transaction.command));
-					const parsed = {
-						...transaction,
-						fee: fee.toString(),
-						signatures: [],
-					};
-					setParsedTransaction(parsed);
-					dryRun(parsed);
-				}
-			} catch (err) {
-				setError(err.message);
-				setIsFecting(false);
+	const calculateMinimumFee = useDebouncedCallback(async transaction => {
+		try {
+			setStatus('Calculating transacton fee...');
+			const estimatedFee = await getTransactionEstimateFee(
+				transaction,
+				selectedService ? selectedService.serviceURLs : undefined,
+			);
+			if (estimatedFee && estimatedFee.data) {
+				let fee =
+					BigInt(estimatedFee.data.transaction.fee.minimum) +
+					BigInt(getBaseFee(transaction.module, transaction.command));
+				const parsed = {
+					...transaction,
+					fee: fee.toString(),
+					signatures: [],
+				};
+				setParsedTransaction(parsed);
+				dryRun(parsed);
 			}
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+		} catch (err) {
+			setError(err.message);
+			setIsFecting(false);
+		}
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		calculateMinimumFee(transaction);
@@ -332,9 +330,8 @@ export default function TransactionModal({
 												Fee
 											</div>
 											<div className="text">
-												{Number(parsedTransaction.fee) /
-													10 ** process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL}{' '}
-												{process.env.REACT_APP_WC_TOKEN_SYMBOL}
+												{Number(parsedTransaction.fee) / 10 ** env.DEFAULT_TOKEN_DECIMAL}{' '}
+												{env.WC_TOKEN_SYMBOL}
 											</div>
 										</div>
 									</div>

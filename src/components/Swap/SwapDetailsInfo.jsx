@@ -6,6 +6,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { tryToast } from '../../utils/toast/tryToast';
 import { getPrice } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
+import * as env from '../../utils/config/env';
 
 export default function SwapDetailsInfo({
 	isLoading,
@@ -40,7 +41,7 @@ export default function SwapDetailsInfo({
 					);
 					if (tokenToLskPrice && tokenToLskPrice.data) {
 						setFeeFiat(
-							(Number(networkFee.minimum) / 10 ** process.env.REACT_APP_WC_TOKEN_DECIMAL) *
+							(Number(networkFee.minimum) / 10 ** env.WC_TOKEN_DECIMAL) *
 								tokenToLskPrice.data.price *
 								lskPrice,
 						);
@@ -50,11 +51,11 @@ export default function SwapDetailsInfo({
 				() => setIsFectingPrice(false),
 			);
 		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500) + 100,
+		Number(env.EFFECT_DEBOUNCE_WAIT) + 100,
 	);
 
 	const slippageValue = React.useMemo(() => {
-		return slippage ? slippage : Number(process.env.REACT_APP_DEFAULT_DEFAULT_SLIPPAGE ?? 0.5);
+		return slippage ? slippage : Number(env.DEFAULT_SLIPPAGE);
 	}, [slippage]);
 
 	const toogleCollapsed = React.useCallback(() => setCollapsed(s => !s), []);
@@ -208,13 +209,11 @@ export default function SwapDetailsInfo({
 								>
 									Network fee
 									<Tooltip
-										content={`Network cost is paid in ${
-											process.env.REACT_APP_WC_TOKEN_SYMBOL
-										} on the ${
-											process.env.REACT_APP_WC_PROJECT_NAME
+										content={`Network cost is paid in ${env.WC_TOKEN_SYMBOL} on the ${
+											env.WC_PROJECT_NAME
 										} network in order to transact. Minimum required fee is ${cryptoFormatter.format(
-											Number(networkFee.minimum) / 10 ** process.env.REACT_APP_WC_TOKEN_DECIMAL,
-										)} ${process.env.REACT_APP_WC_TOKEN_SYMBOL}`}
+											Number(networkFee.minimum) / 10 ** env.WC_TOKEN_DECIMAL,
+										)} ${env.WC_TOKEN_SYMBOL}`}
 									>
 										<i style={{ margin: '0 2px' }} className="ri-information-line"></i>
 									</Tooltip>

@@ -10,6 +10,7 @@ import { useLiskPrice } from '../../context/LiskPriceProvider';
 import Card from '../Card/Card';
 import { useLastBalance } from '../../context/LastBalanceProvider';
 import { useDebouncedCallback } from 'use-debounce';
+import * as env from '../../utils/config/env';
 
 export default function WalletAccount({ show }) {
 	const { senderPublicKey, balances, updateBalance } = useWalletConnect();
@@ -51,40 +52,37 @@ export default function WalletAccount({ show }) {
 		}
 	}, [senderPublicKey, currentWalletBalance, updateLastBalance]);
 
-	const updateWallet = useDebouncedCallback(
-		async () => {
-			const run = async () => {
-				if (balances === undefined) {
-					setWalletState([]);
-					return;
-				}
+	const updateWallet = useDebouncedCallback(async () => {
+		const run = async () => {
+			if (balances === undefined) {
+				setWalletState([]);
+				return;
+			}
 
-				requestRef.current = true;
-				const lskTokenId = await getLSKTokenId(chain);
+			requestRef.current = true;
+			const lskTokenId = await getLSKTokenId(chain);
 
-				const accountBalances = [];
-				for (let i = 0; i < balances.length; i++) {
-					const price = await getPrice({
-						baseTokenId: balances[i].tokenId,
-						quoteTokenId: lskTokenId,
-					});
+			const accountBalances = [];
+			for (let i = 0; i < balances.length; i++) {
+				const price = await getPrice({
+					baseTokenId: balances[i].tokenId,
+					quoteTokenId: lskTokenId,
+				});
 
-					const accountBalance = {
-						...balances[i],
-						priceLSK: price.data.price,
-					};
+				const accountBalance = {
+					...balances[i],
+					priceLSK: price.data.price,
+				};
 
-					accountBalances.push(accountBalance);
-				}
+				accountBalances.push(accountBalance);
+			}
 
-				setWalletState(accountBalances);
-				requestRef.current = false;
-			};
+			setWalletState(accountBalances);
+			requestRef.current = false;
+		};
 
-			tryToast('Update wallet failed', run);
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+		tryToast('Update wallet failed', run);
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		if (!show || requestRef.current) return;

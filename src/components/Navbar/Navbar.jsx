@@ -19,6 +19,7 @@ import { intervalToSecond } from '../../utils/time/intervalToSecond';
 import { getDEXToken } from '../../service/dex';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import TokenAvatar from '../Avatar/token';
+import * as env from '../../utils/config/env';
 
 const Navbar = () => {
 	const location = useLocation();
@@ -104,10 +105,8 @@ const Navbar = () => {
 				const param = {
 					offset: 0,
 					limit: 3,
-					changeWindow: process.env.REACT_APP_TOKENS_LIST_DEFAULT_WINDOW,
-					start:
-						Math.floor(Date.now() / 1000) -
-						intervalToSecond[process.env.REACT_APP_TOKENS_LIST_DEFAULT_WINDOW],
+					changeWindow: env.TOKENS_LIST_DEFAULT_WINDOW,
+					start: Math.floor(Date.now() / 1000) - intervalToSecond[env.TOKENS_LIST_DEFAULT_WINDOW],
 					end: Math.floor(Date.now() / 1000),
 				};
 				if (search) param.search = search;

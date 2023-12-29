@@ -13,6 +13,7 @@ import { getAccountAuth } from '../service/auth';
 import { getSchema } from '../service/schemas';
 import { transformTransaction } from '../utils/transaction/transformer';
 import { useDebouncedCallback } from 'use-debounce';
+import * as env from '../utils/config/env';
 
 const WalletConnectContext = React.createContext();
 
@@ -51,11 +52,11 @@ export function WalletConnectProvider({ children }) {
 		async callback => {
 			try {
 				const client = await SignClient.init({
-					projectId: process.env.REACT_APP_WC_PROJECT_ID,
+					projectId: env.WC_PROJECT_ID,
 					metadata: {
-						name: process.env.REACT_APP_WC_PROJECT_NAME,
-						url: process.env.REACT_APP_WC_PROJECT_URL,
-						icons: [process.env.REACT_APP_WC_PROJECT_ICON],
+						name: env.WC_PROJECT_NAME,
+						url: env.WC_PROJECT_URL,
+						icons: [env.WC_PROJECT_ICON],
 					},
 				});
 
@@ -64,9 +65,7 @@ export function WalletConnectProvider({ children }) {
 					.find(
 						t =>
 							Object.keys(t.namespaces).includes('lisk') &&
-							t.namespaces.lisk.chains.includes(
-								`lisk:${chain}${process.env.REACT_APP_CHAIN_SUFFIX}`,
-							),
+							t.namespaces.lisk.chains.includes(`lisk:${chain}${env.CHAIN_SUFFIX}`),
 					);
 				if (session) {
 					setSessions(session);
@@ -90,7 +89,7 @@ export function WalletConnectProvider({ children }) {
 			try {
 				const requiredNamespaces = {
 					lisk: {
-						chains: [`lisk:${chain}${process.env.REACT_APP_CHAIN_SUFFIX}`],
+						chains: [`lisk:${chain}${env.CHAIN_SUFFIX}`],
 						methods: ['sign_transaction', 'sign_message'],
 						events: [
 							'session_proposal',
@@ -184,10 +183,10 @@ export function WalletConnectProvider({ children }) {
 						params: {
 							payload,
 							schema,
-							recipientChainID: `${chain}${process.env.REACT_APP_CHAIN_SUFFIX}`,
+							recipientChainID: `${chain}${env.CHAIN_SUFFIX}`,
 						},
 					},
-					chainId: `lisk:${chain}${process.env.REACT_APP_CHAIN_SUFFIX}`,
+					chainId: `lisk:${chain}${env.CHAIN_SUFFIX}`,
 				});
 
 				callback && callback.onSuccess && callback.onSuccess();
@@ -215,7 +214,7 @@ export function WalletConnectProvider({ children }) {
 				Buffer.from(senderPublicKey, 'hex'),
 			);
 			const tokens = await getTokenBalances(
-				{ address, limit: process.env.REACT_APP_DEFAULT_REQUEST_LIMIT, offset: balance.length },
+				{ address, limit: env.DEFAULT_REQUEST_LIMIT, offset: balance.length },
 				selectedService.serviceURLs,
 			);
 			if (tokens && tokens.data && tokens.meta) {
@@ -234,7 +233,7 @@ export function WalletConnectProvider({ children }) {
 						let decimal =
 							meta && symbol !== '???'
 								? meta.denomUnits.find(t => t.denom === symbol.toLowerCase()).decimals
-								: process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;
+								: env.DEFAULT_TOKEN_DECIMAL;
 
 						if (!meta) {
 							const dexMeta = await getDEXTokenCompact({
@@ -243,9 +242,7 @@ export function WalletConnectProvider({ children }) {
 							symbol = dexMeta && dexMeta.data[0].symbol ? dexMeta.data[0].symbol : '???';
 							logo = dexMeta ? dexMeta.data[0].logo : '';
 							tokenName = dexMeta ? dexMeta.data[0].tokenName : '';
-							decimal = dexMeta
-								? dexMeta.data[0].decimal
-								: process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL;
+							decimal = dexMeta ? dexMeta.data[0].decimal : env.DEFAULT_TOKEN_DECIMAL;
 						}
 
 						const accountBalance = {
@@ -310,7 +307,7 @@ export function WalletConnectProvider({ children }) {
 				.find(
 					t =>
 						Object.keys(t.namespaces).includes('lisk') &&
-						t.namespaces.lisk.chains.includes(`lisk:${chain}${process.env.REACT_APP_CHAIN_SUFFIX}`),
+						t.namespaces.lisk.chains.includes(`lisk:${chain}${env.CHAIN_SUFFIX}`),
 				);
 			if (session) {
 				setSessions(session);
@@ -329,19 +326,16 @@ export function WalletConnectProvider({ children }) {
 		if (!signClient) createClient();
 	}, [createClient, signClient]);
 
-	const updateAccount = useDebouncedCallback(
-		async () => {
-			const run = async () => {
-				if (senderPublicKey && selectedService) {
-					await updateBalance();
-					await reloadAuth();
-				}
-			};
+	const updateAccount = useDebouncedCallback(async () => {
+		const run = async () => {
+			if (senderPublicKey && selectedService) {
+				await updateBalance();
+				await reloadAuth();
+			}
+		};
 
-			tryToast('Balance update failed', run);
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+		tryToast('Balance update failed', run);
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		updateAccount();

@@ -2,6 +2,7 @@ import React from 'react';
 import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader';
 import { useDebouncedCallback } from 'use-debounce';
+import * as env from '../../utils/config/env';
 
 const feeDescriptionMap = {
 	[500]: 'Best for stable pairs.',
@@ -19,22 +20,17 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 		setCollapsed(s => !s);
 	}, []);
 
-	const fetchDexConfig = useDebouncedCallback(
-		async config => {
-			if (!config) return;
-			if (config) {
-				onLoad && onLoad(config.feeAmountTickSpacing);
-			}
-			if (process.env.REACT_APP_DEFAULT_FEE_TIER) {
-				const matched = config.feeAmountTickSpacing.find(
-					t => t[0] === process.env.REACT_APP_DEFAULT_FEE_TIER,
-				);
-				onSelect && onSelect(matched);
-			}
-			setIsLoading(false);
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+	const fetchDexConfig = useDebouncedCallback(async config => {
+		if (!config) return;
+		if (config) {
+			onLoad && onLoad(config.feeAmountTickSpacing);
+		}
+		if (env.DEFAULT_FEE_TIER) {
+			const matched = config.feeAmountTickSpacing.find(t => t[0] === env.DEFAULT_FEE_TIER);
+			onSelect && onSelect(matched);
+		}
+		setIsLoading(false);
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		fetchDexConfig(dexConfig);

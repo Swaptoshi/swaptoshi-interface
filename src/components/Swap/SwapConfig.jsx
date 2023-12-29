@@ -2,6 +2,7 @@ import React from 'react';
 import Dialog from '../../components/Tooltip/Dialog';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import SwitchBox from '../../components/SwitchBox/SwitchBox';
+import * as env from '../../utils/config/env';
 
 export default function SwapConfig({
 	show,
@@ -83,13 +84,7 @@ export default function SwapConfig({
 							}}
 						>
 							<div style={{ fontSize: '14px' }}>
-								{isSlippageAuto
-									? 'Auto'
-									: `${
-											slippage
-												? slippage
-												: Number(process.env.REACT_APP_DEFAULT_DEFAULT_SLIPPAGE ?? 0.5)
-										}%`}
+								{isSlippageAuto ? 'Auto' : `${slippage ? slippage : Number(env.DEFAULT_SLIPPAGE)}%`}
 							</div>
 							{slippageShow ? (
 								<i className="ri-arrow-up-s-line" style={{ fontSize: '20px' }}></i>
@@ -133,7 +128,7 @@ export default function SwapConfig({
 								}}
 							>
 								<input
-									placeholder={process.env.REACT_APP_DEFAULT_DEFAULT_SLIPPAGE ?? '0.5'}
+									placeholder={env.DEFAULT_SLIPPAGE}
 									inputMode="numeric"
 									autoComplete="off"
 									autoCorrect="off"
@@ -212,7 +207,7 @@ export default function SwapConfig({
 							}}
 						>
 							<div style={{ fontSize: '14px' }}>
-								{deadline ? deadline : Number(process.env.REACT_APP_DEFAULT_DEADLINE_MINUTE ?? 10)}m
+								{deadline ? deadline : Number(env.DEFAULT_DEADLINE_MINUTE)}m
 							</div>
 							{deadlineShow ? (
 								<i className="ri-arrow-up-s-line" style={{ fontSize: '20px' }}></i>
@@ -235,7 +230,7 @@ export default function SwapConfig({
 							}}
 						>
 							<input
-								placeholder={process.env.REACT_APP_DEFAULT_DEADLINE_MINUTE ?? '10'}
+								placeholder={env.DEFAULT_DEADLINE_MINUTE}
 								inputMode="numeric"
 								autoComplete="off"
 								autoCorrect="off"

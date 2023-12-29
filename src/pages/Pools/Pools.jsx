@@ -14,6 +14,7 @@ import Loader from '../../components/Loader';
 import { MAX_TICK, MIN_TICK } from '../../utils/constants/tick';
 import { decodeTickPrice } from '../../utils/math/priceFormatter';
 import { useDebouncedCallback } from 'use-debounce';
+import * as env from '../../utils/config/env';
 
 const Pools = () => {
 	const navigate = useNavigate();
@@ -23,30 +24,27 @@ const Pools = () => {
 	const [position, setPosition] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 
-	const fetchPositions = useDebouncedCallback(
-		async () => {
-			const run = async () => {
-				if (senderPublicKey) {
-					const ownedPosition = await getDEXPosition(
-						{
-							search: cryptography.address.getLisk32AddressFromPublicKey(
-								Buffer.from(senderPublicKey, 'hex'),
-							),
-							limit: 100,
-						},
-						selectedService ? selectedService.serviceURLs : undefined,
-					);
-					if (ownedPosition && ownedPosition.data) {
-						setPosition(ownedPosition.data);
-					}
+	const fetchPositions = useDebouncedCallback(async () => {
+		const run = async () => {
+			if (senderPublicKey) {
+				const ownedPosition = await getDEXPosition(
+					{
+						search: cryptography.address.getLisk32AddressFromPublicKey(
+							Buffer.from(senderPublicKey, 'hex'),
+						),
+						limit: 100,
+					},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (ownedPosition && ownedPosition.data) {
+					setPosition(ownedPosition.data);
 				}
-				setIsLoading(false);
-			};
+			}
+			setIsLoading(false);
+		};
 
-			tryToast('Fetch owned position failed', run, () => setIsLoading(false));
-		},
-		Number(process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? 500),
-	);
+		tryToast('Fetch owned position failed', run, () => setIsLoading(false));
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		fetchPositions();
