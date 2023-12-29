@@ -1,7 +1,5 @@
 import React from 'react';
-import { getDEXConfig } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
-import { tryToast } from '../../utils/Toast/tryToast';
 import Loader from '../Loader';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -12,24 +10,22 @@ const feeDescriptionMap = {
 };
 
 export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
-	const { selectedService } = useChain();
+	const { selectedService, dexConfig } = useChain();
 
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [collapsed, setCollapsed] = React.useState(false);
-	const [config, setConfig] = React.useState();
 
 	const handleButtonHide = React.useCallback(() => {
 		setCollapsed(s => !s);
 	}, []);
 
-	const fetchDexConfig = useDebouncedCallback(async () => {
-		const dexConfig = await getDEXConfig(selectedService ? selectedService.serviceURLs : undefined);
-		if (dexConfig && dexConfig.data) {
-			setConfig(dexConfig.data);
-			onLoad && onLoad(dexConfig.data.feeAmountTickSpacing);
+	const fetchDexConfig = useDebouncedCallback(async config => {
+		if (!config) return;
+		if (config) {
+			onLoad && onLoad(config.feeAmountTickSpacing);
 		}
 		if (process.env.REACT_APP_DEFAULT_FEE_TIER) {
-			const matched = dexConfig.data.feeAmountTickSpacing.find(
+			const matched = config.feeAmountTickSpacing.find(
 				t => t[0] === process.env.REACT_APP_DEFAULT_FEE_TIER,
 			);
 			onSelect && onSelect(matched);
@@ -38,8 +34,8 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 	}, 500);
 
 	React.useEffect(() => {
-		tryToast('Fetch DEX config failed', fetchDexConfig, () => setIsLoading(false));
-	}, [fetchDexConfig, onLoad, onSelect, selectedService]);
+		fetchDexConfig(dexConfig);
+	}, [dexConfig, fetchDexConfig, onLoad, onSelect, selectedService]);
 
 	return (
 		<div className="Column__AutoColumn-sc-72c388fb-2 ereioh">
@@ -73,8 +69,8 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 					</div>
 					{collapsed && (
 						<div className="FeeSelector__Select-sc-2b537477-1 dpNkPS">
-							{config && config.feeAmountTickSpacing
-								? config.feeAmountTickSpacing.map(fees => {
+							{dexConfig && dexConfig.feeAmountTickSpacing
+								? dexConfig.feeAmountTickSpacing.map(fees => {
 										return (
 											<button
 												key={fees[0]}

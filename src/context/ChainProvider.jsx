@@ -3,6 +3,8 @@ import { checkServiceNode } from '../service/node';
 import { getBlockchainApps } from '../service/apps';
 import { tryToast } from '../utils/Toast/tryToast';
 import { liskTokenCompact } from '../constants/tokens';
+import { useDebouncedCallback } from 'use-debounce';
+import { getDEXConfig } from '../service/dex';
 
 const ChainContext = React.createContext();
 
@@ -12,11 +14,17 @@ export function useChain() {
 
 export default function ChainProvider({ children }) {
 	const [chain, setChain] = React.useState(process.env.REACT_APP_DEFAULT_CHAIN);
+	const [dexConfig, setDexConfig] = React.useState();
 	const [availableService, setAvailableService] = React.useState();
 	const [selectedService, setSelectedService] = React.useState();
 	const [lskTokenInfo, setLskTokenInfo] = React.useState(liskTokenCompact);
 
 	const fetchBlock = React.useRef(false);
+
+	const fetchDexConfig = useDebouncedCallback(async service => {
+		const config = await getDEXConfig(service);
+		setDexConfig(config.data);
+	}, 500);
 
 	React.useEffect(() => {
 		setLskTokenInfo(s => ({
@@ -62,18 +70,24 @@ export default function ChainProvider({ children }) {
 
 			setAvailableService(fetchedService);
 
+			let selectedIndex = -1;
 			for (let i = 0; i < fetchedService.length; i++) {
 				if (fetchedService[i].chainID.substring(0, 2) === process.env.REACT_APP_DEFAULT_CHAIN) {
 					setSelectedService(fetchedService[i]);
+					selectedIndex = i;
 					break;
 				}
+			}
+
+			if (selectedIndex >= 0) {
+				fetchDexConfig(fetchedService[selectedIndex].serviceURLs);
 			}
 
 			fetchBlock.current = false;
 		};
 
 		tryToast('Fetch chain information failed', run, () => (fetchBlock.current = false));
-	}, []);
+	}, [fetchDexConfig]);
 
 	const context = React.useMemo(
 		() => ({
@@ -83,8 +97,9 @@ export default function ChainProvider({ children }) {
 			selectedService,
 			setSelectedService,
 			lskTokenInfo,
+			dexConfig,
 		}),
-		[availableService, chain, lskTokenInfo, selectedService],
+		[availableService, chain, dexConfig, lskTokenInfo, selectedService],
 	);
 
 	return <ChainContext.Provider value={context}>{children}</ChainContext.Provider>;

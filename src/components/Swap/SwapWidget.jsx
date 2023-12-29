@@ -4,13 +4,12 @@ import * as cryptography from '@liskhq/lisk-cryptography';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import SwapTokenInput from './SwapTokenInput';
 import { useDebouncedCallback } from 'use-debounce';
-import { getDEXConfig, getPrice, getQuote } from '../../service/dex';
+import { getPrice, getQuote } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import SwapConfig from './SwapConfig';
 import SwapWarning from './SwapWarning';
 import SwapDetailsInfo from './SwapDetailsInfo';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
-import { tryToast } from '../../utils/Toast/tryToast';
 import BigNumber from 'bignumber.js';
 import { getTransactionEstimateFee } from '../../service/transaction';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
@@ -43,7 +42,6 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	const [command, setCommand] = useState();
 
 	const [networkFee, setNetworkFee] = useState();
-	const [, setDexConfig] = useState();
 	const [transaction, setTransaction] = useState();
 
 	const baseBalance = React.useMemo(() => {
@@ -223,17 +221,6 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 			setQuoteToken(initialQuoteToken);
 		}
 	}, [initialBaseToken, initialQuoteToken]);
-
-	const fetchDexConfig = useDebouncedCallback(async () => {
-		const config = await getDEXConfig(selectedService ? selectedService.serviceURLs : undefined);
-		setDexConfig(config.data);
-	}, 500);
-
-	React.useEffect(() => {
-		if (disabled) return;
-
-		tryToast('Fetch DEX config failed', fetchDexConfig);
-	}, [disabled, fetchDexConfig, selectedService]);
 
 	const handleExactIn = useDebouncedCallback(async (baseToken, quoteToken, amountIn) => {
 		try {
