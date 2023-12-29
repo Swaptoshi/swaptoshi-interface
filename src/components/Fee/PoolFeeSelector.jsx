@@ -3,6 +3,7 @@ import { getDEXConfig } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/Toast/tryToast';
 import Loader from '../Loader';
+import { useDebouncedCallback } from 'use-debounce';
 
 const feeDescriptionMap = {
 	[500]: 'Best for stable pairs.',
@@ -21,26 +22,24 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 		setCollapsed(s => !s);
 	}, []);
 
-	React.useEffect(() => {
-		const run = async () => {
-			const dexConfig = await getDEXConfig(
-				selectedService ? selectedService.serviceURLs : undefined,
+	const fetchDexConfig = useDebouncedCallback(async () => {
+		const dexConfig = await getDEXConfig(selectedService ? selectedService.serviceURLs : undefined);
+		if (dexConfig && dexConfig.data) {
+			setConfig(dexConfig.data);
+			onLoad && onLoad(dexConfig.data.feeAmountTickSpacing);
+		}
+		if (process.env.REACT_APP_DEFAULT_FEE_TIER) {
+			const matched = dexConfig.data.feeAmountTickSpacing.find(
+				t => t[0] === process.env.REACT_APP_DEFAULT_FEE_TIER,
 			);
-			if (dexConfig && dexConfig.data) {
-				setConfig(dexConfig.data);
-				onLoad && onLoad(dexConfig.data.feeAmountTickSpacing);
-			}
-			if (process.env.REACT_APP_DEFAULT_FEE_TIER) {
-				const matched = dexConfig.data.feeAmountTickSpacing.find(
-					t => t[0] === process.env.REACT_APP_DEFAULT_FEE_TIER,
-				);
-				onSelect && onSelect(matched);
-			}
-			setIsLoading(false);
-		};
+			onSelect && onSelect(matched);
+		}
+		setIsLoading(false);
+	}, 500);
 
-		tryToast('Fetch DEX config failed', run, () => setIsLoading(false));
-	}, [onLoad, onSelect, selectedService]);
+	React.useEffect(() => {
+		tryToast('Fetch DEX config failed', fetchDexConfig, () => setIsLoading(false));
+	}, [fetchDexConfig, onLoad, onSelect, selectedService]);
 
 	return (
 		<div className="Column__AutoColumn-sc-72c388fb-2 ereioh">

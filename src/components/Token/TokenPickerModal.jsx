@@ -130,38 +130,47 @@ const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 		[handleScrollEnd, searchTerm, withPaginationNormal, withPaginationSearch],
 	);
 
-	React.useEffect(() => {
-		const run = async () => {
-			try {
-				if (fetchBlock.current) return;
-				fetchBlock.current = true;
+	const fetchToken = useDebouncedCallback(async () => {
+		try {
+			if (fetchBlock.current) return;
+			fetchBlock.current = true;
 
-				setIsLoading(true);
+			setIsLoading(true);
 
-				if (mode === 'tradable') {
-					if (!selectedService) throw new Error('Network error');
-					const tradableToken = await getDEXTokenCompact({}, selectedService.serviceURLs);
-					if (tradableToken && tradableToken.data && tradableToken.meta) {
-						setData(tradableToken.data);
-						setTotal(tradableToken.meta.total);
-					}
+			if (mode === 'tradable') {
+				if (!selectedService) throw new Error('Network error');
+				const tradableToken = await getDEXTokenCompact({}, selectedService.serviceURLs);
+				if (tradableToken && tradableToken.data && tradableToken.meta) {
+					setData(tradableToken.data);
+					setTotal(tradableToken.meta.total);
 				}
-
-				if (mode === 'wallet' && balances) {
-					setData(balances);
-				}
-			} catch (err) {
-				setError(err.message);
-			} finally {
-				setIsLoading(false);
-				fetchBlock.current = false;
 			}
-		};
 
-		run();
+			if (mode === 'wallet') {
+				if (balances) {
+					setData(balances);
+				} else {
+					throw new Error('Wallet not connected');
+				}
+			}
+		} catch (err) {
+			setError(err.message);
+		} finally {
+			setIsLoading(false);
+			fetchBlock.current = false;
+		}
+	}, 500);
 
+	React.useEffect(() => {
+		fetchToken();
 		return () => setError();
-	}, [balances, mode, selectedService]);
+	}, [balances, fetchToken, mode, selectedService]);
+
+	React.useEffect(() => {
+		if (data && data.length === 0) {
+			setError('Nothing to show');
+		}
+	}, [data]);
 
 	const tokenDataMapper = React.useCallback(
 		(tokens, loader) => {

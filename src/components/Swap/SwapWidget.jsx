@@ -98,6 +98,8 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	}, 500);
 
 	React.useEffect(() => {
+		if (disabled) return;
+
 		const senderBuffer = senderPublicKey ? Buffer.from(senderPublicKey, 'hex') : Buffer.alloc(32);
 		const nonce = auth ? auth.nonce : '0';
 
@@ -160,6 +162,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		baseValue,
 		command,
 		deadline,
+		disabled,
 		path,
 		quoteToken,
 		quoteValue,
@@ -169,6 +172,8 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	]);
 
 	React.useEffect(() => {
+		if (disabled) return;
+
 		if (!baseToken || !quoteToken) {
 			setError('Select a token');
 			return;
@@ -181,32 +186,34 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 			setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
 			return;
 		}
-	}, [baseBalance, baseToken, baseValue, error, quoteToken, quoteValue]);
+	}, [baseBalance, baseToken, baseValue, disabled, error, quoteToken, quoteValue]);
+
+	const fetchPrice = useDebouncedCallback(async () => {
+		try {
+			if (priceReady) {
+				const price = await getPrice(
+					{
+						baseTokenId: quoteToken.tokenId,
+						quoteTokenId: baseToken.tokenId,
+					},
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (price && price.data) {
+					setCurrentPrice(price.data.price);
+				} else {
+					setError('Please try again later');
+				}
+			}
+		} catch {
+			setError('Please try again later');
+		}
+	}, 500);
 
 	React.useEffect(() => {
-		const run = async () => {
-			try {
-				if (priceReady) {
-					const price = await getPrice(
-						{
-							baseTokenId: quoteToken.tokenId,
-							quoteTokenId: baseToken.tokenId,
-						},
-						selectedService ? selectedService.serviceURLs : undefined,
-					);
-					if (price && price.data) {
-						setCurrentPrice(price.data.price);
-					} else {
-						setError('Please try again later');
-					}
-				}
-			} catch {
-				setError('Please try again later');
-			}
-		};
+		if (disabled) return;
 
-		run();
-	}, [baseToken, priceReady, quoteToken, selectedService]);
+		fetchPrice();
+	}, [baseToken, disabled, fetchPrice, priceReady, quoteToken, selectedService]);
 
 	React.useEffect(() => {
 		if (initialBaseToken) {
@@ -217,15 +224,16 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		}
 	}, [initialBaseToken, initialQuoteToken]);
 
+	const fetchDexConfig = useDebouncedCallback(async () => {
+		const config = await getDEXConfig(selectedService ? selectedService.serviceURLs : undefined);
+		setDexConfig(config.data);
+	}, 500);
+
 	React.useEffect(() => {
-		const run = async () => {
-			const config = await getDEXConfig(selectedService ? selectedService.serviceURLs : undefined);
+		if (disabled) return;
 
-			setDexConfig(config.data);
-		};
-
-		tryToast('Fetching DEX config failed', run);
-	}, [selectedService]);
+		tryToast('Fetch DEX config failed', fetchDexConfig);
+	}, [disabled, fetchDexConfig, selectedService]);
 
 	const handleExactIn = useDebouncedCallback(async (baseToken, quoteToken, amountIn) => {
 		try {

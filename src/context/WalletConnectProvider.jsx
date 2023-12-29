@@ -12,6 +12,7 @@ import { getDEXTokenCompact } from '../service/dex';
 import { getAccountAuth } from '../service/auth';
 import { getSchema } from '../service/schemas';
 import { transformTransaction } from '../utils/Transaction/transformer';
+import { useDebouncedCallback } from 'use-debounce';
 
 const WalletConnectContext = React.createContext();
 
@@ -325,16 +326,16 @@ export function WalletConnectProvider({ children }) {
 		if (!signClient) createClient();
 	}, [createClient, signClient]);
 
-	React.useEffect(() => {
-		const run = async () => {
-			if (senderPublicKey && selectedService) {
-				await updateBalance();
-				await reloadAuth();
-			}
-		};
+	const updateAccount = useDebouncedCallback(async () => {
+		if (senderPublicKey && selectedService) {
+			await updateBalance();
+			await reloadAuth();
+		}
+	}, 500);
 
-		tryToast('Balance update failed', run);
-	}, [reloadAuth, selectedService, senderPublicKey, updateBalance]);
+	React.useEffect(() => {
+		tryToast('Balance update failed', updateAccount);
+	}, [reloadAuth, selectedService, senderPublicKey, updateAccount, updateBalance]);
 
 	return <WalletConnectContext.Provider value={context}>{children}</WalletConnectContext.Provider>;
 }

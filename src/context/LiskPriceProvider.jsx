@@ -2,6 +2,7 @@ import React from 'react';
 import { useChain } from './ChainProvider';
 import { getLiskMarket } from '../service/market';
 import { tryToast } from '../utils/Toast/tryToast';
+import { useDebouncedCallback } from 'use-debounce';
 
 const LiskPriceContext = React.createContext();
 
@@ -36,28 +37,28 @@ export default function LiskPriceProvider({ children }) {
 		setCryptoFormatter(new Intl.NumberFormat(undefined, { maximumFractionDigits: 20 }));
 	}, [currency]);
 
-	React.useEffect(() => {
-		const run = async () => {
-			if (selectedService) {
-				const market = await getLiskMarket(selectedService.serviceURLs);
-				if (market && market.data && market.data.length > 0) {
-					const price = market.data.find(t => t.from === 'LSK' && t.to === currency.toUpperCase());
-					if (!price) setPrices(0);
-					else setPrices(Number(price.rate));
-				}
+	const fetchPrice = useDebouncedCallback(async () => {
+		if (selectedService) {
+			const market = await getLiskMarket(selectedService.serviceURLs);
+			if (market && market.data && market.data.length > 0) {
+				const price = market.data.find(t => t.from === 'LSK' && t.to === currency.toUpperCase());
+				if (!price) setPrices(0);
+				else setPrices(Number(price.rate));
 			}
-		};
+		}
+	}, 500);
 
-		tryToast('Fetch LSK/USD price failed', run);
+	React.useEffect(() => {
+		tryToast('Fetch LSK/USD price failed', fetchPrice);
 		const updateLiskPriceInterval = setInterval(
-			() => tryToast('Fetch LSK/USD price failed', run),
+			() => tryToast('Fetch LSK/USD price failed', fetchPrice),
 			60000,
 		);
 
 		return () => {
 			clearInterval(updateLiskPriceInterval);
 		};
-	}, [currency, selectedService]);
+	}, [currency, fetchPrice, selectedService]);
 
 	const context = React.useMemo(
 		() => ({

@@ -9,6 +9,7 @@ import Loader from '../Loader';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import Card from '../Card/Card';
 import { useLastBalance } from '../../context/LastBalanceProvider';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function WalletAccount({ show }) {
 	const { senderPublicKey, balances, updateBalance } = useWalletConnect();
@@ -50,9 +51,7 @@ export default function WalletAccount({ show }) {
 		}
 	}, [senderPublicKey, currentWalletBalance, updateLastBalance]);
 
-	React.useEffect(() => {
-		if (!show || requestRef.current) return;
-
+	const updateWallet = useDebouncedCallback(async () => {
 		const run = async () => {
 			if (balances === undefined) {
 				setWalletState([]);
@@ -82,7 +81,13 @@ export default function WalletAccount({ show }) {
 		};
 
 		tryToast('Update wallet failed', run);
-	}, [balances, chain, selectedService, senderPublicKey, show]);
+	}, 500);
+
+	React.useEffect(() => {
+		if (!show || requestRef.current) return;
+
+		updateWallet();
+	}, [balances, chain, selectedService, senderPublicKey, show, updateWallet]);
 
 	return walletState !== undefined ? (
 		<div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
