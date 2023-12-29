@@ -132,7 +132,7 @@ const Home = () => {
 						<a
 							className=""
 							href={`https://petstore.swagger.io/?url=${
-								selectedService ? selectedService.serviceUrls : env.LISK_SERVICE_URL
+								selectedService ? selectedService.serviceURLs : env.LISK_SERVICE_URL
 							}/api/v3/spec`}
 						>
 							<div className="crypto-guide c-three">
