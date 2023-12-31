@@ -71,7 +71,7 @@ const Home = () => {
 				<section className="container-cards" ref={sectionRef}>
 					<div className="col-2 container-wrapper">
 						{/* Card One */}
-						<a className="swap-tokens-card card-one" href="#/swap">
+						<NavLink className="swap-tokens-card card-one" to="/swap">
 							<div className="trade-title">
 								<p className="">Swap Tokens</p>
 							</div>
@@ -82,10 +82,10 @@ const Home = () => {
 									Trade Tokens
 								</div>
 							</div>
-						</a>
+						</NavLink>
 
 						{/* Card Two */}
-						<a className="swap-tokens-card card-two" href="#/ntfs">
+						<NavLink className="swap-tokens-card card-two" to="/create-token">
 							<div className="trade-title">
 								<p className="">Create Tokens</p>
 							</div>
@@ -96,31 +96,27 @@ const Home = () => {
 									Create Tokens
 								</div>
 							</div>
-						</a>
+						</NavLink>
 					</div>
 
 					<div className="col-3 small-container-wrapper">
-						<a className="">
-							<div className="crypto-guide c-one">
-								<p>New Opportunities</p>
-								<img className="" src="/assets/images/dollar-image.png" alt="Earn" />
+						<NavLink className="" to="/tokens">
+							<div className="crypto-guide c-one" style={{ marginBottom: '16px' }}>
+								<p style={{ marginBottom: 0 }}>New Opportunities</p>
+								<i className="ri-money-dollar-circle-line" style={{ fontSize: '36px' }} />
 							</div>
 							<div className="guide-text">
-								Generate tokens, set up pools, and unlock new opportunities within the Swaptoshi
-								network.
+								Create tokens, set up pools, and unlock new opportunities at Swaptoshi
 								<div id="btnLink" className="button-link">
 									Explore more
 								</div>
 							</div>
-						</a>
+						</NavLink>
 
-						<a
-							className=""
-							href="https://support.uniswap.org/hc/en-us/articles/11306574799117-How-to-use-Moon-Pay-on-the-Uniswap-web-app-"
-						>
-							<div className="crypto-guide c-two">
-								<p>Earn</p>
-								<img className="" src="/assets/images/earn-image.png" alt="Earn" />
+						<NavLink className="" to="/pools">
+							<div className="crypto-guide c-two" style={{ marginBottom: '16px' }}>
+								<p style={{ marginBottom: 0 }}>Earn</p>
+								<i className="ri-line-chart-fill" style={{ fontSize: '36px' }} />
 							</div>
 							<div className="guide-text">
 								Provide liquidity to pools on Swaptoshi and earn fees on swaps.
@@ -128,20 +124,19 @@ const Home = () => {
 									Provide liquidity
 								</div>
 							</div>
-						</a>
+						</NavLink>
 						<a
 							className=""
 							href={`https://petstore.swagger.io/?url=${
 								selectedService ? selectedService.serviceURLs : env.LISK_SERVICE_URL
 							}/api/v3/spec`}
 						>
-							<div className="crypto-guide c-three">
-								<p>Build dApps</p>
-								<img className="" src="/assets/images/build-dapps-image.png" alt="Earn" />
+							<div className="crypto-guide c-three" style={{ marginBottom: '16px' }}>
+								<p style={{ marginBottom: 0 }}>Build dApps</p>
+								<i className="ri-code-s-slash-fill" style={{ fontSize: '36px' }} />
 							</div>
 							<div className="guide-text">
-								Discover the possibilities with Swaptoshi developer API and craft your own
-								incredible use cases.
+								Discover Swaptoshi developer API and craft your own use cases.
 								<div id="btnLink" className="button-link">
 									API Documentation
 								</div>
@@ -153,7 +148,9 @@ const Home = () => {
 						<div className="protocol-left">
 							<span className="protocol-title">Powered by the Swaptoshi Protocol</span>
 							<p className="protocol-text">
-								{"SWT, with a 21 million supply, powers Swaptoshi Protocol's fees and governance."}
+								{
+									"SWT token, with a 21 million supply, powers Swaptoshi Protocol's fees and governance."
+								}
 							</p>
 						</div>
 						<div className="protocol-right">

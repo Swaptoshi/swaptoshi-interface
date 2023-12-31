@@ -275,7 +275,6 @@ const Navbar = () => {
 						<div className="center-nav">
 							<div className="custom-search-dropdown" ref={centerSearchRef}>
 								<div className="custom-search-inside inside-search">
-									{/* <img className='search-icon' style={{ width: "20px" }} src='/images/search.svg' /> */}
 									<i className="search-icon ri-search-line text"></i>
 
 									<input
@@ -407,7 +406,6 @@ const Navbar = () => {
 												className="custom-search-inside inside-search"
 												ref={rightSearchInsideRef}
 											>
-												{/* <img className='search-icon' style={{ width: "20px" }} src='/images/search.svg' /> */}
 												<i className="search-icon ri-search-line text"></i>
 
 												<input
