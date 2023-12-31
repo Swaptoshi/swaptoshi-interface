@@ -85,7 +85,7 @@ const Home = () => {
 						</NavLink>
 
 						{/* Card Two */}
-						<NavLink className="swap-tokens-card card-two" to="/create-token">
+						<NavLink className="swap-tokens-card card-two" to="/tokens/create">
 							<div className="trade-title">
 								<p className="">Create Tokens</p>
 							</div>

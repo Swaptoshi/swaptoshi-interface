@@ -27,10 +27,10 @@ function App() {
 					<Route path="/swap" element={<Swap />} />
 					<Route path="/tokens" element={<Token />} />
 					<Route path="/pools" element={<Pools />} />
-					<Route path="/create-pool" element={<CreatePool />} />
+					<Route path="/pools/create" element={<CreatePool />} />
 					<Route path="/tokens/:id" element={<TokenDetails />} />
-					<Route path="/create-token" element={<CreateTokenModal />} />
-					<Route path="/liquidity" element={<LiquidityModal />} />
+					<Route path="/tokens/create" element={<CreateTokenModal />} />
+					<Route path="/pools/mint" element={<LiquidityModal />} />
 				</Routes>
 			</AppContextProvider>
 		</div>

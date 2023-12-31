@@ -153,12 +153,12 @@ const Token = () => {
 							>
 								<NavLink
 									className="hide-below-375 show-below-720 hide-above-720"
-									to="/create-token"
+									to="/tokens/create"
 								>
 									<PrimaryButton style={{ width: '130px' }}>Create Token</PrimaryButton>
 								</NavLink>
 
-								<NavLink className="show-below-375 hide-above-375" to="/create-token">
+								<NavLink className="show-below-375 hide-above-375" to="/tokens/create">
 									<PrimaryButton style={{ width: '60px' }}>+</PrimaryButton>
 								</NavLink>
 							</div>
@@ -178,7 +178,7 @@ const Token = () => {
 							</div>
 						</div>
 
-						<NavLink className="hide-below-720" to="/create-token">
+						<NavLink className="hide-below-720" to="/tokens/create">
 							<PrimaryButton style={{ width: '200px' }}>Create Token</PrimaryButton>
 						</NavLink>
 					</div>
