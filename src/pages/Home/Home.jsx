@@ -90,8 +90,8 @@ const Home = () => {
 								<p className="">Create Tokens</p>
 							</div>
 							<div className="c-container-bottom">
-								Effortlessly generate tokens that seamlessly interact with others— no-code, no
-								node-setup, and absolutely no hassle!
+								Effortlessly generate interoperable tokens— no-code, no node-setup, and absolutely
+								no hassle!
 								<div id="cContainerLink" className="c-container-link">
 									Create Tokens
 								</div>
