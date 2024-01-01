@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import * as transactions from '@liskhq/lisk-transactions';
 import { Buffer } from 'buffer';
 import { SignClient } from '@walletconnect/sign-client';
 import { useChain } from './ChainProvider';
@@ -14,6 +15,7 @@ import { getSchema } from '../service/schemas';
 import { transformTransaction } from '../utils/transaction/transformer';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../utils/config/env';
+import useLocalStorage from 'use-local-storage';
 
 const WalletConnectContext = React.createContext();
 
@@ -22,19 +24,71 @@ export function useWalletConnect() {
 }
 
 export function WalletConnectProvider({ children }) {
+	const { chain, selectedService } = useChain();
+	const [encryptedPrivateKey, setEncryptedPrivateKey] = useLocalStorage(`private_key`, {});
+
 	const [signClient, setSignClient] = React.useState();
 	const [wcUri, setWcUri] = React.useState();
 	const [sessions, setSessions] = React.useState();
 	const [balances, setBalances] = React.useState();
 	const [auth, setAuth] = React.useState();
 	const [senderPublicKey, setSenderPublicKey] = React.useState();
-	const { chain, selectedService } = useChain();
+	const [plainPrivateKey, setPlainPrivateKey] = React.useState({});
+
+	const storePrivateKey = React.useCallback(
+		privateKey => {
+			setPlainPrivateKey(t => {
+				const state = t;
+				state[chain] = privateKey;
+				return state;
+			});
+		},
+		[chain],
+	);
+
+	const encryptPrivateKey = React.useCallback(
+		async password => {
+			await tryToast('Encrypt key failed', async () => {
+				if (plainPrivateKey[chain] === undefined) throw new Error('Plain private key is not ready');
+				const publicKey = cryptography.ed
+					.getPublicKeyFromPrivateKey(Buffer.from(plainPrivateKey[chain], 'hex'))
+					.toString('hex');
+				const encrypted = await cryptography.encrypt.encryptMessageWithPassword(
+					plainPrivateKey[chain],
+					password,
+				);
+				setSenderPublicKey(publicKey);
+				setEncryptedPrivateKey(t => {
+					const state = { ...t };
+					state[chain] = { key: encrypted, publicKey };
+					return state;
+				});
+				setPlainPrivateKey(t => {
+					const state = { ...t };
+					delete state[chain];
+					return state;
+				});
+			});
+		},
+		[chain, plainPrivateKey, setEncryptedPrivateKey],
+	);
 
 	const reset = React.useCallback(() => {
 		setSessions(undefined);
 		setSenderPublicKey(undefined);
 		setBalances(undefined);
-	}, []);
+
+		setPlainPrivateKey(t => {
+			const state = { ...t };
+			delete state[chain];
+			return state;
+		});
+		setEncryptedPrivateKey(t => {
+			const state = { ...t };
+			delete state[chain];
+			return state;
+		});
+	}, [chain, setEncryptedPrivateKey]);
 
 	const subscribeToEvents = React.useCallback(
 		async client => {
@@ -74,12 +128,16 @@ export function WalletConnectProvider({ children }) {
 
 				setSignClient(client);
 				subscribeToEvents(client);
+
+				if (encryptedPrivateKey[chain] && encryptedPrivateKey[chain].publicKey) {
+					setSenderPublicKey(encryptedPrivateKey[chain].publicKey);
+				}
 				callback && callback.onSuccess && callback.onSuccess();
 			} catch (e) {
 				callback && callback.onFailed && callback.onFailed();
 			}
 		},
-		[chain, subscribeToEvents],
+		[chain, encryptedPrivateKey, subscribeToEvents],
 	);
 
 	const connect = React.useCallback(
@@ -131,10 +189,11 @@ export function WalletConnectProvider({ children }) {
 					code: 6000,
 					message: 'User disconnected',
 				});
-				reset();
 				callback && callback.onSuccess && callback.onSuccess();
 			} catch (e) {
 				callback && callback.onFailed && callback.onFailed();
+			} finally {
+				reset();
 			}
 		},
 		[sessions, signClient, reset],
@@ -148,7 +207,7 @@ export function WalletConnectProvider({ children }) {
 						Buffer.from(senderPublicKey, 'hex'),
 					),
 				},
-				selectedService.serviceURLs,
+				selectedService ? selectedService.serviceURLs : undefined,
 			);
 			if (authResponse && authResponse.data) {
 				setAuth(authResponse.data);
@@ -158,17 +217,16 @@ export function WalletConnectProvider({ children }) {
 	}, [selectedService, senderPublicKey]);
 
 	const sign = React.useCallback(
-		async (transaction, callback) => {
+		async (transaction, password, callback) => {
 			try {
 				const updatedAuth = await reloadAuth();
-				const payload = codec
-					.encode(transactionSchema, {
-						...(await transformTransaction(transaction)),
-						nonce: BigInt(updatedAuth.nonce),
-						senderPublicKey: Buffer.from(senderPublicKey, 'hex'),
-						signatures: [],
-					})
-					.toString('hex');
+				const unsignedTransaction = {
+					...(await transformTransaction(transaction)),
+					nonce: BigInt(updatedAuth.nonce),
+					senderPublicKey: Buffer.from(senderPublicKey, 'hex'),
+					signatures: [],
+				};
+				const payload = codec.encode(transactionSchema, unsignedTransaction).toString('hex');
 
 				const schema = await getSchema(
 					transaction,
@@ -176,18 +234,42 @@ export function WalletConnectProvider({ children }) {
 				);
 				if (!schema) throw new Error('schema not found');
 
-				const result = await signClient.request({
-					topic: sessions.topic,
-					request: {
-						method: 'sign_transaction',
-						params: {
-							payload,
-							schema,
-							recipientChainID: `${chain}${env.CHAIN_SUFFIX}`,
+				let result;
+
+				if (plainPrivateKey[chain]) {
+					result = transactions.signTransaction(
+						unsignedTransaction,
+						Buffer.from(`${chain}:${env.CHAIN_SUFFIX}`, 'hex'),
+						Buffer.from(plainPrivateKey[chain], 'hex'),
+						schema,
+					);
+				} else if (encryptedPrivateKey[chain] && encryptedPrivateKey[chain].key && password) {
+					const decryptedPrivateKey = await cryptography.encrypt.decryptMessageWithPassword(
+						encryptedPrivateKey[chain].key,
+						password,
+					);
+					result = transactions.signTransaction(
+						unsignedTransaction,
+						Buffer.from(`${chain}:${env.CHAIN_SUFFIX}`, 'hex'),
+						Buffer.from(decryptedPrivateKey, 'hex'),
+						schema,
+					);
+				} else {
+					result = await signClient.request({
+						topic: sessions.topic,
+						request: {
+							method: 'sign_transaction',
+							params: {
+								payload,
+								schema,
+								recipientChainID: `${chain}${env.CHAIN_SUFFIX}`,
+							},
 						},
-					},
-					chainId: `lisk:${chain}${env.CHAIN_SUFFIX}`,
-				});
+						chainId: `lisk:${chain}${env.CHAIN_SUFFIX}`,
+					});
+				}
+
+				if (!result) throw new Error('sign failed');
 
 				callback && callback.onSuccess && callback.onSuccess();
 
@@ -202,7 +284,16 @@ export function WalletConnectProvider({ children }) {
 				return undefined;
 			}
 		},
-		[reloadAuth, senderPublicKey, selectedService, signClient, sessions, chain],
+		[
+			reloadAuth,
+			senderPublicKey,
+			selectedService,
+			plainPrivateKey,
+			encryptedPrivateKey,
+			chain,
+			signClient,
+			sessions,
+		],
 	);
 
 	const updateBalance = React.useCallback(async () => {
@@ -215,7 +306,7 @@ export function WalletConnectProvider({ children }) {
 			);
 			const tokens = await getTokenBalances(
 				{ address, limit: env.DEFAULT_REQUEST_LIMIT, offset: balance.length },
-				selectedService.serviceURLs,
+				selectedService ? selectedService.serviceURLs : undefined,
 			);
 			if (tokens && tokens.data && tokens.meta) {
 				if (tokens.data.length > 0) {
@@ -267,6 +358,21 @@ export function WalletConnectProvider({ children }) {
 		setBalances(balance);
 	}, [selectedService, senderPublicKey]);
 
+	const updateAccount = useDebouncedCallback(async () => {
+		const run = async () => {
+			if (senderPublicKey && selectedService) {
+				await updateBalance();
+				await reloadAuth();
+			}
+		};
+
+		tryToast('Balance update failed', run);
+	}, Number(env.EFFECT_DEBOUNCE_WAIT));
+
+	React.useEffect(() => {
+		updateAccount();
+	}, [reloadAuth, selectedService, senderPublicKey, updateAccount, updateBalance]);
+
 	const context = React.useMemo(
 		() => ({
 			signClient,
@@ -282,7 +388,11 @@ export function WalletConnectProvider({ children }) {
 			balances,
 			auth,
 			reloadAuth,
-			updateBalance,
+			storePrivateKey,
+			encryptPrivateKey,
+			encryptedPrivateKey,
+			plainPrivateKey,
+			updateAccount,
 		}),
 		[
 			signClient,
@@ -295,7 +405,11 @@ export function WalletConnectProvider({ children }) {
 			balances,
 			auth,
 			reloadAuth,
-			updateBalance,
+			updateAccount,
+			storePrivateKey,
+			encryptPrivateKey,
+			encryptedPrivateKey,
+			plainPrivateKey,
 		],
 	);
 
@@ -325,21 +439,6 @@ export function WalletConnectProvider({ children }) {
 	React.useEffect(() => {
 		if (!signClient) createClient();
 	}, [createClient, signClient]);
-
-	const updateAccount = useDebouncedCallback(async () => {
-		const run = async () => {
-			if (senderPublicKey && selectedService) {
-				await updateBalance();
-				await reloadAuth();
-			}
-		};
-
-		tryToast('Balance update failed', run);
-	}, Number(env.EFFECT_DEBOUNCE_WAIT));
-
-	React.useEffect(() => {
-		updateAccount();
-	}, [reloadAuth, selectedService, senderPublicKey, updateAccount, updateBalance]);
 
 	return <WalletConnectContext.Provider value={context}>{children}</WalletConnectContext.Provider>;
 }

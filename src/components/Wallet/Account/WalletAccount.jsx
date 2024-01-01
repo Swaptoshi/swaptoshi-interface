@@ -1,19 +1,19 @@
 import React from 'react';
 import BalanceCard from './BalanceCard';
-import { tryToast } from '../../utils/toast/tryToast';
-import { useWalletConnect } from '../../context/WalletConnectProvider';
-import { getPrice } from '../../service/dex';
-import { getLSKTokenId } from '../../utils/token/getLSKTokenId';
-import { useChain } from '../../context/ChainProvider';
-import Loader from '../Loader';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
-import Card from '../Card/Card';
-import { useLastBalance } from '../../context/LastBalanceProvider';
+import { tryToast } from '../../../utils/toast/tryToast';
+import { useWalletConnect } from '../../../context/WalletConnectProvider';
+import { getPrice } from '../../../service/dex';
+import { getLSKTokenId } from '../../../utils/token/getLSKTokenId';
+import { useChain } from '../../../context/ChainProvider';
+import Loader from '../../Loader';
+import { useLiskPrice } from '../../../context/LiskPriceProvider';
+import Card from '../../Card/Card';
+import { useLastBalance } from '../../../context/LastBalanceProvider';
 import { useDebouncedCallback } from 'use-debounce';
-import * as env from '../../utils/config/env';
+import * as env from '../../../utils/config/env';
 
 export default function WalletAccount({ show }) {
-	const { senderPublicKey, balances, updateBalance } = useWalletConnect();
+	const { senderPublicKey, balances, updateAccount } = useWalletConnect();
 	const { chain, selectedService } = useChain();
 	const { prices, fiatFormatter } = useLiskPrice();
 	const { getLastBalance, updateLastBalance } = useLastBalance();
@@ -43,8 +43,8 @@ export default function WalletAccount({ show }) {
 	const requestRef = React.useRef(false);
 
 	React.useEffect(() => {
-		updateBalance();
-	}, [updateBalance]);
+		updateAccount();
+	}, [updateAccount]);
 
 	React.useEffect(() => {
 		if (currentWalletBalance > 0 && senderPublicKey) {
@@ -139,6 +139,7 @@ export default function WalletAccount({ show }) {
 							overflow: 'hidden',
 							marginBottom: '16px',
 							justifyContent: 'center',
+							color: 'var(--color-white)',
 						}}
 					>
 						No token to show

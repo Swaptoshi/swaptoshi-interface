@@ -1,11 +1,12 @@
 import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import QRCode from 'react-qr-code';
-import Loader from '../Loader';
-import { useTheme } from '../../context/ThemeProvider';
-import { useWalletConnect } from '../../context/WalletConnectProvider';
+import Loader from '../../../Loader';
+import { useTheme } from '../../../../context/ThemeProvider';
+import { useWalletConnect } from '../../../../context/WalletConnectProvider';
+import TertiaryButton from '../../../Button/TertiaryButton';
 
-export default function ConnectWalletModal() {
+export default function WalletConnectModal({ setMode }) {
 	const [currentTheme] = useTheme();
 	const { wcUri } = useWalletConnect();
 
@@ -169,28 +170,34 @@ export default function ConnectWalletModal() {
 					</div>
 				</div>
 				{/* <div className="sc-1hmbv05-2 ilYVNX">
-          <div className="sc-sx9n2y-0 bftkTM css-4u0e4f">
-            By connecting a wallet, you agree to Swaptoshi Labs'{" "}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://uniswap.org/terms-of-service/"
-              className="sc-7yzmni-9 jnMVFjj sc-m8pibl-0 eBkKRJ"
-            >
-              Terms of Service{" "}
-            </a>
-            and consent to its{" "}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://uniswap.org/privacy-policy"
-              className="sc-7yzmni-9 jnMVFjj sc-m8pibl-0 eBkKRJ"
-            >
-              Privacy Policy.
-            </a>
-            <span className="sc-m8pibl-1 hqtSjX"> (Last Updated 6.7.23)</span>
-          </div>
-        </div> */}
+					<div className="sc-sx9n2y-0 bftkTM css-4u0e4f">
+						By connecting a wallet, you agree to Swaptoshi Labs'{' '}
+						<a
+							target="_blank"
+							rel="noopener noreferrer"
+							href="https://uniswap.org/terms-of-service/"
+							className="sc-7yzmni-9 jnMVFjj sc-m8pibl-0 eBkKRJ"
+						>
+							Terms of Service{' '}
+						</a>
+						and consent to its{' '}
+						<a
+							target="_blank"
+							rel="noopener noreferrer"
+							href="https://uniswap.org/privacy-policy"
+							className="sc-7yzmni-9 jnMVFjj sc-m8pibl-0 eBkKRJ"
+						>
+							Privacy Policy.
+						</a>
+						<span className="sc-m8pibl-1 hqtSjX"> (Last Updated 6.7.23)</span>
+					</div>
+				</div> */}
+			</div>
+			<div style={{ flex: 1 }} />
+			<div>
+				<TertiaryButton onClick={() => setMode('key')} style={{ width: '100%' }}>
+					Having trouble connecting?
+				</TertiaryButton>
 			</div>
 		</div>
 	);

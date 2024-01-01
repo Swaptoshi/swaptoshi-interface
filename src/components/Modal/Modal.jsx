@@ -3,7 +3,7 @@ import './Modal.css';
 import { getSystemTheme } from '../../utils/theme/getSystemTheme';
 import { useTheme } from '../../context/ThemeProvider';
 import { useWalletModal } from '../../context/WalletModalProvider';
-import ConfigModal from '../Wallet/ConfigModal';
+import ConfigModal from '../Wallet/Config/ConfigModal';
 import WalletModal from '../Wallet/WalletModal';
 
 const Modal = () => {

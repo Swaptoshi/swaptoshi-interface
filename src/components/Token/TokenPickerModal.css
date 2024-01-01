@@ -48,9 +48,9 @@
 }
 
 .kqzAOQ {
-	display: grid;
-	grid-auto-rows: auto;
-	row-gap: 16px;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 .fqkEGC {

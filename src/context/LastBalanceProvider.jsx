@@ -57,12 +57,12 @@ export default function LastBalanceProvider({ children }) {
 
 	const clearCurrentAccountLastBalance = React.useCallback(() => {
 		setLastBalance(old => {
-			const state = old;
+			const state = { ...old };
 			delete state[`${chain}:${senderPublicKey}`];
 			return state;
 		});
 		setLastBalanceUpdatedOn(old => {
-			const state = old;
+			const state = { ...old };
 			delete state[`${chain}:${senderPublicKey}`];
 			return state;
 		});

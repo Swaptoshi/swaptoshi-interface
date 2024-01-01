@@ -8,7 +8,7 @@ import { addressCompact } from '../../utils/address';
 import Loader from '../Loader';
 import { useTheme } from '../../context/ThemeProvider';
 
-export default function WalletModalHeader({ onConfigClick, closeHandler, theme }) {
+export default function WalletModalHeader({ onConfigClick, closeHandler, theme, mode, setMode }) {
 	const { senderPublicKey, disconnect } = useWalletConnect();
 	const [currentTheme] = useTheme();
 
@@ -119,7 +119,28 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, theme }
 					</div>
 				</CopyToClipboard>
 			) : (
-				<div className="sc-sx9n2y-0 kivXvb css-rjqmed">Connect a wallet</div>
+				<div style={{ display: 'flex', alignItems: 'center' }}>
+					{['key', 'import', 'create'].includes(mode) ? (
+						<i
+							className="back-arrow ri-arrow-left-line"
+							onClick={() => setMode(mode === 'key' ? 'normal' : 'key')}
+							style={{ marginRight: '16px', color: 'var(--color-white)' }}
+						/>
+					) : null}
+					<div className="sc-sx9n2y-0 kivXvb css-rjqmed">
+						{mode === 'normal'
+							? 'Connect a wallet'
+							: mode === 'key'
+								? 'Connect a key'
+								: mode === 'import'
+									? 'Import phrase'
+									: mode === 'create'
+										? 'Create new account'
+										: mode === 'password'
+											? 'Set local key password'
+											: 'Unknown mode'}
+					</div>
+				</div>
 			)}
 			<div style={{ display: 'flex' }}>
 				<button

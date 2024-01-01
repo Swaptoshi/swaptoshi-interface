@@ -49,3 +49,29 @@
 	padding: 10px 12px;
 	color: inherit;
 }
+
+.tertiary-button-container {
+	justify-content: center;
+	display: flex;
+	flex-flow: row;
+	-webkit-box-align: center;
+	align-items: center;
+	background-color: transparent;
+	border-radius: 9999px;
+	border: none;
+	padding: 0;
+	height: 40px;
+	color: var(--color-white);
+	transition: color 125ms ease-in 0s;
+}
+
+.tertiary-button-container .tertiary-button-content {
+	background-color: transparent;
+	border: none;
+	border-top-left-radius: 9999px;
+	border-bottom-left-radius: 9999px;
+	font-weight: 600;
+	font-size: 16px;
+	padding: 10px 12px;
+	color: inherit;
+}

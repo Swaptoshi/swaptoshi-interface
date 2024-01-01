@@ -229,7 +229,7 @@ const CreateTokenModal = () => {
 					/>
 
 					<TextInput
-						style={{
+						inputstyle={{
 							textTransform: tokenSymbol.length > 0 ? 'uppercase' : undefined,
 						}}
 						fontSize="20px"

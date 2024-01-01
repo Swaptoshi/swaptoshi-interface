@@ -1,7 +1,7 @@
 import React from 'react';
-import Card from '../Card/Card';
-import TokenAvatar from '../Avatar/token';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import Card from '../../Card/Card';
+import TokenAvatar from '../../Avatar/token';
+import { useLiskPrice } from '../../../context/LiskPriceProvider';
 
 export default function BalanceCard({ balance }) {
 	const { prices, fiatFormatter, cryptoFormatter } = useLiskPrice();

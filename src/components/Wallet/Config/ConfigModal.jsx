@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTheme } from '../../context/ThemeProvider';
-import SwitchBox from '../SwitchBox/SwitchBox';
+import { useTheme } from '../../../context/ThemeProvider';
+import SwitchBox from '../../SwitchBox/SwitchBox';
 
 export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThemeDark }) {
 	const [currentTheme] = useTheme();

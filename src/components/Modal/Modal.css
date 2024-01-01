@@ -166,9 +166,9 @@
 }
 
 .kqzAOQ {
-	display: grid;
-	grid-auto-rows: auto;
-	row-gap: 16px;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 .hmenal {
@@ -306,8 +306,8 @@ a {
 	margin-bottom: 20px;
 }
 
-.fjOrSN .back-arrow {
-	font-size: 25px;
+.back-arrow {
+	font-size: 18px;
 	cursor: pointer;
 }
 
@@ -573,10 +573,12 @@ button {
 
 .xyz12 {
 	width: 100%;
+	height: 40px;
 	display: flex;
 	padding: 4px;
 	-webkit-box-align: center;
 	align-self: flex-start;
+	cursor: pointer;
 }
 
 @media screen and (width >= 1440px) {
