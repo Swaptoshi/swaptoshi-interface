@@ -317,10 +317,11 @@ const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 					data-reach-dialog-content=""
 				>
 					<div className="sc-1kykgp9-0 sc-1it7zu4-0 iCxowP fUHrnW">
-						<div className="sc-1kykgp9-2 sc-1xp9ndq-0 kqzAOQ eOCLUf">
+						<div className="sc-1kykgp9-2 sc-1xp9ndq-0 kqzAOQ eOCLUf" style={{ height: 'unset' }}>
 							<div
 								id="cross-title"
 								className="sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-1 hJYFVB fhPvJeh frnZMKK"
+								style={{ marginBottom: '8px' }}
 							>
 								<div className="css-xy7yfl">
 									{mode === 'tradable' ? 'Select token from market' : 'Select token from wallet'}

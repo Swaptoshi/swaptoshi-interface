@@ -62,11 +62,11 @@ const Pools = () => {
 						>
 							<p className="pools-left">Pools</p>
 							<div id="poolRight" className="pool-right right knSXeI">
-								<SecondaryButton onClick={() => navigate('/create-pool')} className="pool-button">
+								<SecondaryButton onClick={() => navigate('/pools/create')} className="pool-button">
 									Create Pool
 								</SecondaryButton>
 								<div style={{ margin: '0px 8px' }} />
-								<PrimaryButton className="pool-button" onClick={() => navigate('/liquidity')}>
+								<PrimaryButton className="pool-button" onClick={() => navigate('/pools/mint')}>
 									New Position
 								</PrimaryButton>
 							</div>
