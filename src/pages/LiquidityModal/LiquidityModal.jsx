@@ -2,7 +2,7 @@ import React from 'react';
 import * as cryptography from '@liskhq/lisk-cryptography';
 import LiquidityChart from './LiquidityChart';
 import ModalContainer from '../../components/Modal/ModalContainer';
-import WalletTokenPicker from '../../components/Token/WalletTokenPicker';
+import TradableTokenPicker from '../../components/Token/TradableTokenPicker';
 import { useChain } from '../../context/ChainProvider';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import PriceInput from '../../components/Price/PriceInput';
@@ -321,7 +321,7 @@ const LiquidityModal = () => {
 		<div>
 			<ModalContainer title={'Add Liquidity'} backTo={'/pools'}>
 				<div style={{ display: 'flex' }}>
-					<WalletTokenPicker
+					<TradableTokenPicker
 						value={tokenA}
 						blocked={tokenB}
 						onSelect={handleTokenAChange}
@@ -329,7 +329,7 @@ const LiquidityModal = () => {
 						theme={'secondary'}
 					/>
 					<div style={{ margin: '0px 4px' }} />
-					<WalletTokenPicker
+					<TradableTokenPicker
 						value={tokenB}
 						blocked={tokenA}
 						onSelect={handleTokenBChange}
