@@ -15,13 +15,17 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [collapsed, setCollapsed] = React.useState(false);
+	const [error, setError] = React.useState();
 
 	const handleButtonHide = React.useCallback(() => {
 		setCollapsed(s => !s);
 	}, []);
 
 	const fetchDexConfig = useDebouncedCallback(async config => {
-		if (!config) return;
+		if (!config) {
+			setError('Error retrieving chain config');
+			return;
+		}
 		if (config) {
 			onLoad && onLoad(config.feeAmountTickSpacing);
 		}
@@ -104,6 +108,22 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 								: null}
 						</div>
 					)}
+				</div>
+			) : error ? (
+				<div
+					style={{
+						border: '1px solid var(--border)',
+						width: '100%',
+						height: '80px',
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						borderRadius: '24px',
+						overflow: 'hidden',
+						color: 'var(--color-white)',
+					}}
+				>
+					{error}
 				</div>
 			) : (
 				<div
