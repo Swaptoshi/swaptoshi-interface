@@ -7,8 +7,7 @@ import PrimaryButton from '../../../Button/PrimaryButton';
 import RadioButton from '../../../Radio/RadioButton';
 import Tooltip from '../../../Tooltip/Tooltip';
 import { useWalletConnect } from '../../../../context/WalletConnectProvider';
-
-const defaultKeyPath = "m/44'/134'/0'";
+import { DEFAULT_KEY_PATH } from '../../../../utils/constants/address';
 
 export default function CreateNewKeyModal({ setMode }) {
 	const { storePrivateKey, setSenderPublicKey } = useWalletConnect();
@@ -35,7 +34,10 @@ export default function CreateNewKeyModal({ setMode }) {
 			setPassphrase(generatedPassphrase);
 			setPrivateKey(
 				(
-					await cryptography.ed.getPrivateKeyFromPhraseAndPath(generatedPassphrase, defaultKeyPath)
+					await cryptography.ed.getPrivateKeyFromPhraseAndPath(
+						generatedPassphrase,
+						DEFAULT_KEY_PATH,
+					)
 				).toString('hex'),
 			);
 		};
@@ -81,7 +83,7 @@ export default function CreateNewKeyModal({ setMode }) {
 					<div style={{ color: 'rgb(119 128 160)', fontSize: '12px' }}>
 						Key Derivation Path (default)
 					</div>
-					<div style={{ color: 'var(--color-white)', fontSize: '12px' }}>{defaultKeyPath}</div>
+					<div style={{ color: 'var(--color-white)', fontSize: '12px' }}>{DEFAULT_KEY_PATH}</div>
 
 					<div style={{ height: '16px' }} />
 
