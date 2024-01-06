@@ -10,7 +10,7 @@ import * as env from '../../utils/config/env';
 
 const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 	const { selectedService } = useChain();
-	const { balances } = useWalletConnect();
+	const { balances, senderPublicKey } = useWalletConnect();
 	const fetchBlock = useRef(false);
 
 	const [data, setData] = useState();
@@ -147,14 +147,20 @@ const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 				if (tradableToken && tradableToken.data && tradableToken.meta) {
 					setData(tradableToken.data);
 					setTotal(tradableToken.meta.total);
+				} else {
+					throw new Error('Error fetching tradable tokens');
 				}
 			}
 
 			if (mode === 'wallet') {
 				if (balances) {
 					setData(balances);
-				} else {
+				} else if (!senderPublicKey) {
 					throw new Error('Wallet not connected');
+				} else if (!selectedService) {
+					throw new Error('Network error');
+				} else {
+					throw new Error('Error fetching tokens in wallet');
 				}
 			}
 		} catch (err) {
