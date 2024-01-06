@@ -370,9 +370,7 @@
 .open-currency-btn-bottom {
 	-webkit-box-align: center;
 	align-items: center;
-	background-color: var(--btn-color);
 	opacity: 1;
-	color: var(--open-currency-btn-color);
 	cursor: pointer;
 	height: unset;
 	border-radius: 16px;

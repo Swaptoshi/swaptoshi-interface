@@ -52,7 +52,11 @@ export default function TokenPickerBase({
 			id={`open-currency-select-unselected`}
 			className={`open-currency-btn-bottom picker-${theme}`}
 			onClick={handlePick}
-			style={style}
+			style={{
+				...style,
+				backgroundColor: theme === 'secondary' ? 'var(--open-currency-btn-bg)' : 'var(--btn-color)',
+				color: theme === 'secondary' ? 'var(--color-white)' : 'var(--open-currency-btn-color)',
+			}}
 		>
 			<span className="span-two">
 				<div className="cryptocurrency-wrapper">
