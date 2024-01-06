@@ -330,10 +330,12 @@ export function WalletConnectProvider({ children }) {
 							const dexMeta = await getDEXTokenCompact({
 								search: tokens.data[i].tokenID,
 							});
-							symbol = dexMeta && dexMeta.data[0].symbol ? dexMeta.data[0].symbol : '???';
-							logo = dexMeta ? dexMeta.data[0].logo : '';
-							tokenName = dexMeta ? dexMeta.data[0].tokenName : '';
-							decimal = dexMeta ? dexMeta.data[0].decimal : env.DEFAULT_TOKEN_DECIMAL;
+							symbol =
+								dexMeta.data.length > 0 && dexMeta.data[0].symbol ? dexMeta.data[0].symbol : '???';
+							logo = dexMeta.data.length > 0 ? dexMeta.data[0].logo : '';
+							tokenName = dexMeta.data.length > 0 ? dexMeta.data[0].tokenName : '';
+							decimal =
+								dexMeta.data.length > 0 ? dexMeta.data[0].decimal : env.DEFAULT_TOKEN_DECIMAL;
 						}
 
 						const accountBalance = {
