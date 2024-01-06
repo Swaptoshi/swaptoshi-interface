@@ -2,7 +2,16 @@ import { decodeTickPrice, encodePriceSqrt } from '../math/priceFormatter';
 import { getTickAtSqrtRatio } from '../tick/tick_math';
 
 const normalizeTick = (tick, tickSpacing) => {
-	return tickSpacing ? BigInt(tick) - (BigInt(tick) % BigInt(tickSpacing)) : BigInt(tick);
+	if (tickSpacing) {
+		const halfTickSpacing = BigInt(tickSpacing) / BigInt(2);
+		let normalizator = BigInt(tick) % BigInt(tickSpacing);
+		if (normalizator > halfTickSpacing) {
+			normalizator = -(BigInt(tickSpacing) - normalizator);
+		}
+		return BigInt(tick) - normalizator;
+	} else {
+		return BigInt(tick);
+	}
 };
 
 export const normalizePriceByTick = (price, tickSpacing) => {
@@ -14,6 +23,12 @@ export const normalizePriceByTick = (price, tickSpacing) => {
 export const addByTick = (price, addedTick) => {
 	const sqrtPrice = encodePriceSqrt(price, 1);
 	const tick = getTickAtSqrtRatio(sqrtPrice);
+	console.log(
+		tick,
+		normalizeTick(tick, addedTick),
+		addedTick,
+		normalizeTick(tick, addedTick) + BigInt(addedTick),
+	);
 	return decodeTickPrice((normalizeTick(tick, addedTick) + BigInt(addedTick)).toString());
 };
 
