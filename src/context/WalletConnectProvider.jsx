@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import * as transactions from '@liskhq/lisk-transactions';
 import { Buffer } from 'buffer';
 import { SignClient } from '@walletconnect/sign-client';
 import { useChain } from './ChainProvider';
@@ -16,6 +15,7 @@ import { transformTransaction } from '../utils/transaction/transformer';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../utils/config/env';
 import useLocalStorage from 'use-local-storage';
+import { ARGON2_ITERATIONS, ARGON2_MEMORY } from '../utils/constants/encryption';
 
 const WalletConnectContext = React.createContext();
 
@@ -56,6 +56,13 @@ export function WalletConnectProvider({ children }) {
 				const encrypted = await cryptography.encrypt.encryptMessageWithPassword(
 					plainPrivateKey[chain],
 					password,
+					{
+						kdf: cryptography.encrypt.KDF.ARGON2,
+						kdfparams: {
+							iterations: ARGON2_ITERATIONS,
+							memorySize: ARGON2_MEMORY,
+						},
+					},
 				);
 				setSenderPublicKey(publicKey);
 				setEncryptedPrivateKey(t => {
@@ -237,22 +244,36 @@ export function WalletConnectProvider({ children }) {
 				let result;
 
 				if (plainPrivateKey[chain]) {
-					result = transactions.signTransaction(
-						unsignedTransaction,
-						Buffer.from(`${chain}:${env.CHAIN_SUFFIX}`, 'hex'),
+					const signature = cryptography.ed.signDataWithPrivateKey(
+						cryptography.utils.createMessageTag('TX'),
+						Buffer.from(`${chain}${env.CHAIN_SUFFIX}`, 'hex'),
+						Buffer.from(payload, 'hex'),
 						Buffer.from(plainPrivateKey[chain], 'hex'),
-						schema,
+					);
+					result = {
+						...unsignedTransaction,
+						signatures: [signature],
+					};
+					result.id = cryptography.utils.hash(
+						codec.encode(transactionSchema, await transformTransaction(result)),
 					);
 				} else if (encryptedPrivateKey[chain] && encryptedPrivateKey[chain].key && password) {
 					const decryptedPrivateKey = await cryptography.encrypt.decryptMessageWithPassword(
 						encryptedPrivateKey[chain].key,
 						password,
 					);
-					result = transactions.signTransaction(
-						unsignedTransaction,
-						Buffer.from(`${chain}:${env.CHAIN_SUFFIX}`, 'hex'),
-						Buffer.from(decryptedPrivateKey, 'hex'),
-						schema,
+					const signature = cryptography.ed.signDataWithPrivateKey(
+						cryptography.utils.createMessageTag('TX'),
+						Buffer.from(`${chain}${env.CHAIN_SUFFIX}`, 'hex'),
+						Buffer.from(payload, 'hex'),
+						Buffer.from(decryptedPrivateKey.toString(), 'hex'),
+					);
+					result = {
+						...unsignedTransaction,
+						signatures: [signature],
+					};
+					result.id = cryptography.utils.hash(
+						codec.encode(transactionSchema, await transformTransaction(result)),
 					);
 				} else {
 					result = await signClient.request({
@@ -267,14 +288,14 @@ export function WalletConnectProvider({ children }) {
 						},
 						chainId: `lisk:${chain}${env.CHAIN_SUFFIX}`,
 					});
+					if (!result) throw new Error('sign failed');
+					result = JSON.parse(result);
 				}
-
-				if (!result) throw new Error('sign failed');
 
 				callback && callback.onSuccess && callback.onSuccess();
 
 				const res = codec
-					.encode(transactionSchema, await transformTransaction(JSON.parse(result)))
+					.encode(transactionSchema, await transformTransaction(result))
 					.toString('hex');
 
 				return res;

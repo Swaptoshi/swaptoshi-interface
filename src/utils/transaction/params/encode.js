@@ -3,6 +3,7 @@ import { transformParam } from '.';
 import { getSchema } from '../../../service/schemas';
 
 export const encodeParam = async (module, command, params) => {
+	if (Buffer.isBuffer(params)) return params;
 	const transformed = transformParam(module, command, params);
 	const schema = await getSchema({ module, command, params });
 	return codec.encode(schema, transformed);

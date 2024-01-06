@@ -7,8 +7,7 @@ import PrimaryButton from '../../../Button/PrimaryButton';
 import { addressCompact } from '../../../../utils/address';
 import PasswordInput from '../../../Forms/PasswordInput';
 import Loader from '../../../Loader';
-
-const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+import { PASSWORD_REGEX } from '../../../../utils/constants/password';
 
 export default function SetKeyPasswordModal({ setMode }) {
 	const { chain } = useChain();
@@ -28,7 +27,7 @@ export default function SetKeyPasswordModal({ setMode }) {
 	);
 
 	const checkPasswordStrength = React.useCallback(inputValue => {
-		if (passwordRegex.test(inputValue)) {
+		if (PASSWORD_REGEX.test(inputValue)) {
 			setIsPasswordValid(true);
 		} else {
 			setIsPasswordValid(false);

@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { tryToast } from '../../utils/toast/tryToast';
 import { getBaseFee } from '../../utils/transaction/fee';
 import * as env from '../../utils/config/env';
+import { useTransactionModal } from '../../context/TransactionModalProvider';
 
 const jsonTheme = {
 	light: defaultStyles,
@@ -32,8 +33,9 @@ export default function TransactionModal({
 	customSendHandler,
 }) {
 	const [theme] = useTheme();
-	const { selectedService } = useChain();
-	const { sign } = useWalletConnect();
+	const { selectedService, chain } = useChain();
+	const { sign, encryptedPrivateKey } = useWalletConnect();
+	const { showDecryptModal } = useTransactionModal();
 
 	const [isSending, setIsSending] = React.useState(false);
 	const [ready, setReady] = React.useState(false);
@@ -45,6 +47,17 @@ export default function TransactionModal({
 
 	const onSend = React.useCallback(
 		async tx => {
+			if (encryptedPrivateKey[chain]) {
+				showDecryptModal({
+					transaction: tx,
+					onClose,
+					onSuccess,
+					onFailed,
+					customHandler: customSendHandler,
+				});
+				return;
+			}
+
 			await tryToast(
 				'Submit transaction failed',
 				async () => {
@@ -77,7 +90,17 @@ export default function TransactionModal({
 				},
 			);
 		},
-		[customSendHandler, onClose, onFailed, onSuccess, selectedService, sign],
+		[
+			chain,
+			customSendHandler,
+			encryptedPrivateKey,
+			onClose,
+			onFailed,
+			onSuccess,
+			selectedService,
+			showDecryptModal,
+			sign,
+		],
 	);
 
 	const dryRun = React.useCallback(
