@@ -57,7 +57,9 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 									{selected ? `${selected / 10000}%` : 'Select'} fee tier
 								</div>
 								<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-fczr0v">
-									{selected ? feeDescriptionMap[selected] : 'The % you will earn in fees.'}
+									{selected
+										? feeDescriptionMap[selected] ?? 'New Opportunities'
+										: 'The % you will earn in fees.'}
 								</div>
 							</div>
 							<button
@@ -79,6 +81,8 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 												key={fees[0]}
 												onClick={() => onSelect(fees)}
 												style={{
+													width: '31%',
+													margin: '1% 1%',
 													border: '1px solid var(--border)',
 													padding: '16px',
 													borderRadius: '16px',
@@ -97,7 +101,7 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 																{fees[0] / 10000}%
 															</div>
 															<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-fczr0v">
-																{feeDescriptionMap[fees[0]]}
+																{feeDescriptionMap[fees[0]] ?? 'New Opportunities'}
 															</div>
 														</div>
 													</div>

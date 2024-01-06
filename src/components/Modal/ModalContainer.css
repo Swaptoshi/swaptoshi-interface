@@ -586,10 +586,6 @@ a {
 }
 
 .dpNkPS {
-	align-items: flex-start;
-	display: grid;
-	grid-auto-flow: column;
-	gap: 8px;
 	width: 100%;
 }
 
