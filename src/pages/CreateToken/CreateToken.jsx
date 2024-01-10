@@ -9,8 +9,10 @@ import { codec } from '@liskhq/lisk-codec';
 import { factoryMetadataSchema } from '../../utils/schema/token_factory_create_metadata.js.js';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { useChain } from '../../context/ChainProvider';
-import { postFactoryCreate } from '../../service/factory';
+import { getFactoryIsAvailable, postFactoryCreate } from '../../service/factory';
 import ModalContainer from '../../components/Modal/ModalContainer.jsx';
+import { useDebouncedCallback } from 'use-debounce';
+import { tryToast } from '../../utils/toast/tryToast.js';
 
 const CreateTokenModal = () => {
 	const navigate = useNavigate();
@@ -19,7 +21,8 @@ const CreateTokenModal = () => {
 	const { selectedService } = useChain();
 
 	const [showAdvanced, setShowAdvanced] = React.useState(false);
-	const [error, setError] = React.useState('');
+	const [logoError, setLogoError] = React.useState('');
+	const [availabilityError, setAvailabilityError] = React.useState('');
 
 	const [tokenName, setTokenName] = React.useState('');
 	const [tokenSymbol, setTokenSymbol] = React.useState('');
@@ -30,8 +33,31 @@ const CreateTokenModal = () => {
 	const [logo, setLogo] = React.useState();
 	const [logoHex, setLogoHex] = React.useState();
 
-	const handleTokenName = event => setTokenName(event.target.value);
-	const handleTokenSymbol = event => setTokenSymbol(event.target.value);
+	const checkNameAndSymbolAvailability = useDebouncedCallback(async () => {
+		await tryToast('Check token availablility failed', async () => {
+			if (tokenName && tokenSymbol) {
+				const available = await getFactoryIsAvailable(
+					{ tokenName, symbol: tokenSymbol },
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (available && available.data && !available.data.available) {
+					setAvailabilityError('Token name and/or symbol is already taken');
+				}
+			}
+		});
+	}, 500);
+
+	const handleTokenName = event => {
+		setAvailabilityError();
+		setTokenName(event.target.value);
+		checkNameAndSymbolAvailability();
+	};
+	const handleTokenSymbol = event => {
+		setAvailabilityError();
+		setTokenSymbol(event.target.value);
+		checkNameAndSymbolAvailability();
+	};
+
 	const handleAmount = event => setAmount(event.target.value);
 	const handleDescription = event => setDescription(event.target.value);
 	const handleDenomination = event => setBaseDenom(event.target.value);
@@ -43,24 +69,28 @@ const CreateTokenModal = () => {
 		);
 	}, [amount, baseDenom, decimal, description, logo, logoHex, tokenName, tokenSymbol]);
 
+	const isNoError = React.useMemo(() => {
+		return !availabilityError && !logoError;
+	}, [availabilityError, logoError]);
+
 	const toogleShowAdvanced = React.useCallback(() => {
 		if (showAdvanced) setShowAdvanced(false);
 		else setShowAdvanced(true);
 	}, [showAdvanced]);
 
 	const handleFileError = React.useCallback(e => {
-		setError(e);
+		setLogoError(e);
 	}, []);
 
 	const handleChange = React.useCallback(async e => {
 		setLogoHex(Buffer.from(await e.arrayBuffer()).toString('base64'));
 		setLogo(URL.createObjectURL(e));
-		setError();
+		setLogoError();
 	}, []);
 
 	const onFileDelete = React.useCallback(() => {
 		setLogo();
-		setError();
+		setLogoError();
 	}, []);
 
 	const handleSubmit = React.useCallback(
@@ -213,7 +243,7 @@ const CreateTokenModal = () => {
 										select or drop token icon here
 										<br />
 										(.png only, Max 512kb)
-										{error && <div style={{ color: 'red' }}>{error}</div>}
+										{logoError && <div style={{ color: 'red' }}>{logoError}</div>}
 									</div>
 								</div>
 							</FileUploader>
@@ -221,6 +251,9 @@ const CreateTokenModal = () => {
 					</div>
 
 					<TextInput
+						style={{
+							border: availabilityError ? `1px solid var(--red)` : undefined,
+						}}
 						fontSize="20px"
 						type="text"
 						placeholder={'Token Name'}
@@ -229,6 +262,9 @@ const CreateTokenModal = () => {
 					/>
 
 					<TextInput
+						style={{
+							border: availabilityError ? `1px solid var(--red)` : undefined,
+						}}
 						inputstyle={{
 							textTransform: tokenSymbol.length > 0 ? 'uppercase' : undefined,
 						}}
@@ -278,9 +314,37 @@ const CreateTokenModal = () => {
 							/>
 						</>
 					)}
-					<WalletActionButton disabled={!isReady} type="submit" style={{ height: '60px' }}>
+					<WalletActionButton
+						disabled={!isReady || !isNoError}
+						type="submit"
+						style={{ height: '60px' }}
+					>
 						Create Token
 					</WalletActionButton>
+
+					{availabilityError && (
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								marginTop: '16px',
+								color: 'var(--red)',
+							}}
+						>
+							<i className="text ri-error-warning-line" style={{ color: 'var(--red)' }}></i>
+							<div
+								style={{
+									color: 'var(--red)',
+									fontWeight: 200,
+									fontSize: '12px',
+									marginLeft: '8px',
+								}}
+							>
+								{availabilityError}
+							</div>
+						</div>
+					)}
 				</div>
 			</form>
 		</ModalContainer>
