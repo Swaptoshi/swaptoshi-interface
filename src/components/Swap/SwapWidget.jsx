@@ -24,8 +24,8 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 
 	const [showSwapSetting, setShowSwapSetting] = useState(false);
 	const [isSlippageAuto, setIsSlippageAuto] = useState(true);
-	const [slippage, setSlippage] = useState();
-	const [deadline, setDeadline] = useState();
+	const [slippage, setSlippage] = useState('');
+	const [deadline, setDeadline] = useState('');
 
 	const [baseToken, setBaseToken] = useState();
 	const [baseValue, setBaseValue] = useState('');
