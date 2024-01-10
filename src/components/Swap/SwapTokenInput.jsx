@@ -77,6 +77,8 @@ export default function SwapTokenInput({
 			setSelectedBalance(
 				foundBalance ? Number(foundBalance.balance) / 10 ** foundBalance.decimal : 0,
 			);
+		} else {
+			setSelectedBalance();
 		}
 	}, [balances, selectedToken]);
 
