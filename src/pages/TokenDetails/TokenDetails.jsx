@@ -42,7 +42,7 @@ const TokenDetails = () => {
 				param,
 				selectedService ? selectedService.serviceURLs : undefined,
 			);
-			if (tokens && tokens.data) {
+			if (tokens && tokens.data && tokens.data.length > 0) {
 				setToken(tokens.data[0]);
 
 				const lskUsdTick = await getPriceTick({
@@ -132,6 +132,18 @@ const TokenDetails = () => {
 						}}
 					>
 						<Loader size={20} />{' '}
+					</div>
+				) : !token ? (
+					<div
+						style={{
+							width: '100%',
+							height: '80vh',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
+					>
+						Token not found
 					</div>
 				) : (
 					<div className="sc-qwzj9s-1 fBEeS" style={{ paddingBottom: 0 }}>
