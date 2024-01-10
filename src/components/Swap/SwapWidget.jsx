@@ -11,12 +11,12 @@ import SwapWarning from './SwapWarning';
 import SwapDetailsInfo from './SwapDetailsInfo';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import BigNumber from 'bignumber.js';
-import { getTransactionEstimateFee } from '../../service/transaction';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import * as env from '../../utils/config/env';
+import { getTransactionBytes } from '../../utils/transaction/bytes';
 
 const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
-	const { selectedService } = useChain();
+	const { selectedService, feeConfig } = useChain();
 	const { balances, auth, senderPublicKey } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
 
@@ -79,22 +79,17 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		}
 	}, [baseLoading, baseValue, currentPrice, priceReady, quoteLoading, quoteValue]);
 
-	// TODO: change to local calculation
 	const updateNetworkFee = useDebouncedCallback(async transaction => {
-		try {
-			const estimatedFee = await getTransactionEstimateFee(
-				transaction,
-				selectedService ? selectedService.serviceURLs : undefined,
-			);
-			if (estimatedFee && estimatedFee.data) {
-				setNetworkFee(estimatedFee.data.transaction.fee);
-				setTransaction(tx => ({
-					...tx,
-					fee: estimatedFee.data.transaction.fee.minimum,
-				}));
-			}
-		} catch {
-			setError('Please try again later');
+		if (feeConfig) {
+			const txBytes = await getTransactionBytes(transaction);
+			const minFee = BigInt(txBytes.length) * BigInt(feeConfig.minFeePerByte);
+			setNetworkFee(minFee.toString());
+			setTransaction(tx => ({
+				...tx,
+				fee: minFee.toString(),
+			}));
+		} else {
+			setError('Fee configuration not ready');
 		}
 	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 

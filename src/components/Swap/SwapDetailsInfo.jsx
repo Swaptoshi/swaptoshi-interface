@@ -22,7 +22,7 @@ export default function SwapDetailsInfo({
 	networkFee,
 }) {
 	const { prices, fiatFormatter, cryptoFormatter } = useLiskPrice();
-	const { selectedService, chain } = useChain();
+	const { selectedService, chain, feeConfig } = useChain();
 	const [collapsed, setCollapsed] = React.useState(false);
 	const [feeFiat, setFeeFiat] = React.useState();
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
@@ -34,14 +34,14 @@ export default function SwapDetailsInfo({
 				async () => {
 					const tokenToLskPrice = await getPrice(
 						{
-							baseTokenId: networkFee.tokenID,
+							baseTokenId: feeConfig.feeTokenID,
 							quoteTokenId: `${chain}00000000000000`,
 						},
 						selectedService ? selectedService.serviceURLs : undefined,
 					);
 					if (tokenToLskPrice && tokenToLskPrice.data) {
 						setFeeFiat(
-							(Number(networkFee.minimum) / 10 ** env.WC_TOKEN_DECIMAL) *
+							(Number(networkFee) / 10 ** env.WC_TOKEN_DECIMAL) *
 								tokenToLskPrice.data.price *
 								lskPrice,
 						);
@@ -212,7 +212,7 @@ export default function SwapDetailsInfo({
 										content={`Network cost is paid in ${env.WC_TOKEN_SYMBOL} on the ${
 											env.WC_PROJECT_NAME
 										} network in order to transact. Minimum required fee is ${cryptoFormatter.format(
-											Number(networkFee.minimum) / 10 ** env.WC_TOKEN_DECIMAL,
+											Number(networkFee) / 10 ** env.WC_TOKEN_DECIMAL,
 										)} ${env.WC_TOKEN_SYMBOL}`}
 									>
 										<i style={{ margin: '0 2px' }} className="ri-information-line"></i>

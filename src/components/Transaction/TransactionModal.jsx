@@ -5,11 +5,7 @@ import SwitchBox from '../SwitchBox/SwitchBox';
 import { useTheme } from '../../context/ThemeProvider';
 import { getSystemTheme } from '../../utils/theme/getSystemTheme';
 import { useDebouncedCallback } from 'use-debounce';
-import {
-	dryRunTransaction,
-	getTransactionEstimateFee,
-	postTransaction,
-} from '../../service/transaction';
+import { dryRunTransaction, postTransaction } from '../../service/transaction';
 import { useChain } from '../../context/ChainProvider';
 import Loader from '../Loader';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
@@ -18,6 +14,7 @@ import { tryToast } from '../../utils/toast/tryToast';
 import { getBaseFee } from '../../utils/transaction/fee';
 import * as env from '../../utils/config/env';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
+import { getTransactionBytes } from '../../utils/transaction/bytes';
 
 const jsonTheme = {
 	light: defaultStyles,
@@ -33,7 +30,7 @@ export default function TransactionModal({
 	customSendHandler,
 }) {
 	const [theme] = useTheme();
-	const { selectedService, chain } = useChain();
+	const { selectedService, chain, feeConfig } = useChain();
 	const { sign, encryptedPrivateKey } = useWalletConnect();
 	const { showDecryptModal } = useTransactionModal();
 
@@ -134,22 +131,17 @@ export default function TransactionModal({
 	const calculateMinimumFee = useDebouncedCallback(async transaction => {
 		try {
 			setStatus('Calculating transacton fee...');
-			const estimatedFee = await getTransactionEstimateFee(
-				transaction,
-				selectedService ? selectedService.serviceURLs : undefined,
-			);
-			if (estimatedFee && estimatedFee.data) {
-				let fee =
-					BigInt(estimatedFee.data.transaction.fee.minimum) +
-					BigInt(getBaseFee(transaction.module, transaction.command));
-				const parsed = {
-					...transaction,
-					fee: fee.toString(),
-					signatures: [],
-				};
-				setParsedTransaction(parsed);
-				dryRun(parsed);
-			}
+			const txBytes = await getTransactionBytes(transaction);
+			const minFee = BigInt(txBytes.length) * BigInt(feeConfig.minFeePerByte);
+
+			let fee = minFee + BigInt(getBaseFee(transaction.module, transaction.command));
+			const parsed = {
+				...transaction,
+				fee: fee.toString(),
+				signatures: [],
+			};
+			setParsedTransaction(parsed);
+			dryRun(parsed);
 		} catch (err) {
 			setError(err.message);
 			setIsFecting(false);
