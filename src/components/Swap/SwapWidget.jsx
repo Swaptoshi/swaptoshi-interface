@@ -610,6 +610,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 						blockedToken={quoteToken}
 						onTokenSelect={onSelectBaseToken}
 						onMaxClick={handleBaseMax}
+						showMax={true}
 					/>
 
 					<div className="switch-button" onClick={switchHandler}>
@@ -627,6 +628,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 						blockedToken={baseToken}
 						onTokenSelect={onSelectQuoteToken}
 						onMaxClick={handleQuoteMax}
+						showMax={false}
 					/>
 
 					<div style={{ marginTop: '4px' }} />

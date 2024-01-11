@@ -18,6 +18,7 @@ export default function SwapTokenInput({
 	blockedToken,
 	onTokenSelect,
 	onMaxClick,
+	showMax,
 }) {
 	const { balances, senderPublicKey } = useWalletConnect();
 	const { chain, selectedService } = useChain();
@@ -173,7 +174,7 @@ export default function SwapTokenInput({
 								>
 									Balance: {selectedBalance.toFixed(2)}
 								</div>
-								{selectedBalance !== inputValue && selectedBalance > 0 && (
+								{selectedBalance !== inputValue && selectedBalance > 0 && showMax && (
 									<button
 										style={{
 											marginLeft: '8px',
