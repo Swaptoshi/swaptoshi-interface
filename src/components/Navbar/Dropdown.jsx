@@ -36,7 +36,7 @@ function Dropdown({ selectedOption, optionsLabel, handleOptionClick, className, 
 							<div style={{ width: '8px' }} />
 						</div>
 					) : null}
-					<span className="hide-1024">{selectedOption.label}</span>
+					<span className="hide-below-320">{selectedOption.label}</span>
 					<span className="dropdown">
 						<i className="nav-dropdown ri-arrow-down-s-line"></i>
 					</span>

@@ -597,6 +597,7 @@ const Navbar = () => {
 										Connect
 									</PrimaryButton>
 								)}
+								<div style={{ width: '4px' }} />
 							</div>
 						</div>
 					</nav>

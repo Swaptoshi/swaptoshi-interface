@@ -144,8 +144,6 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 		setKey(Math.random());
 	}, [data, currentTick, token0, token1, lowPrice, highPrice]);
 
-	console.log(filteredData);
-
 	return filteredData.length > 0 ? (
 		<React.Fragment key={key}>
 			<div>

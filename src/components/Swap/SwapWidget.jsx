@@ -14,13 +14,16 @@ import BigNumber from 'bignumber.js';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import * as env from '../../utils/config/env';
 import { getTransactionBytes } from '../../utils/transaction/bytes';
+import { isFeeConversion } from '../../utils/transaction/fee';
 
 const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
-	const { selectedService, feeConfig } = useChain();
+	const { selectedService, feeConfig, dexConfig, chain } = useChain();
 	const { balances, auth, senderPublicKey } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
 
 	const [currentPrice, setCurrentPrice] = useState();
+	const [feeConversion, setFeeConversion] = useState();
+	const [feeConversionLoading, setFeeConversionLoading] = useState(false);
 
 	const [showSwapSetting, setShowSwapSetting] = useState(false);
 	const [isSlippageAuto, setIsSlippageAuto] = useState(true);
@@ -51,9 +54,23 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		return 0;
 	}, [balances, baseToken]);
 
+	const feeBalance = React.useMemo(() => {
+		if (baseToken && balances && balances.length > 0) {
+			const foundToken = balances.find(t => t.tokenId === feeConfig.feeTokenID);
+			const foundBalance = foundToken ? Number(foundToken.balance) / 10 ** foundToken.decimal : 0;
+			return foundBalance;
+		}
+		return 0;
+	}, [balances, baseToken, feeConfig]);
+
 	const isFetchingPrice = React.useMemo(
 		() => baseLoading || quoteLoading,
 		[baseLoading, quoteLoading],
+	);
+
+	const isAllLoading = React.useMemo(
+		() => isFetchingPrice || feeConversionLoading,
+		[feeConversionLoading, isFetchingPrice],
 	);
 
 	const priceReady = React.useMemo(
@@ -96,8 +113,8 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	React.useEffect(() => {
 		if (disabled) return;
 
-		const deadlineFactor = deadline ?? Number(env.DEFAULT_DEADLINE_MINUTE);
-		const slippageFactor = slippage ?? Number(env.DEFAULT_SLIPPAGE);
+		const deadlineFactor = deadline ? deadline : Number(env.DEFAULT_DEADLINE_MINUTE);
+		const slippageFactor = slippage ? slippage : Number(env.DEFAULT_SLIPPAGE);
 
 		const senderBuffer = senderPublicKey ? Buffer.from(senderPublicKey, 'hex') : Buffer.alloc(32);
 		const nonce = auth ? auth.nonce : '0';
@@ -167,23 +184,122 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	React.useEffect(() => {
 		if (disabled) return;
 
+		if (
+			error &&
+			[
+				'Network error',
+				'Insufficient liquidity for this trade',
+				'Please try again later',
+				'Fee configuration not ready',
+			].includes(error)
+		) {
+			return;
+		}
+
 		if (!baseToken || !quoteToken) {
 			setError('Select a token');
 			return;
 		}
+
 		if (!baseValue && !quoteValue) {
 			setError('Enter an amount');
 			return;
 		}
-		if (baseBalance && baseValue && baseBalance < baseValue) {
-			setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
+
+		if (baseToken && feeConfig && baseToken.tokenId === feeConfig.feeTokenID) {
+			if (
+				baseBalance !== undefined &&
+				baseValue &&
+				networkFee &&
+				baseBalance < Number(baseValue) + Number(networkFee) / 10 ** env.WC_TOKEN_DECIMAL
+			) {
+				setError(`Insufficient ${baseToken.symbol.toUpperCase()} for fee`);
+				return;
+			}
+		} else {
+			if (baseBalance !== undefined && baseValue && baseBalance < Number(baseValue)) {
+				setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
+				return;
+			}
+		}
+
+		if (feeConversion && feeConversion.status) {
+			if (!feeConversion.payload.isEligible) {
+				setError(`Insufficient ${feeConversion.payload.tokenIn} for fee`);
+				return;
+			}
+		} else {
+			if (
+				feeBalance !== undefined &&
+				networkFee &&
+				feeBalance < Number(networkFee) / 10 ** env.WC_TOKEN_DECIMAL
+			) {
+				setError(`Insufficient ${env.WC_TOKEN_SYMBOL} for fee`);
+				return;
+			}
+		}
+
+		setError();
+	}, [
+		baseBalance,
+		baseToken,
+		baseValue,
+		chain,
+		disabled,
+		error,
+		feeBalance,
+		feeConfig,
+		feeConversion,
+		networkFee,
+		quoteToken,
+		quoteValue,
+	]);
+
+	React.useEffect(() => {
+		if (!priceReady) {
+			setFeeConversion();
+			setFeeConversionLoading(false);
 			return;
 		}
-	}, [baseBalance, baseToken, baseValue, disabled, error, quoteToken, quoteValue]);
+
+		const run = async () => {
+			try {
+				setFeeConversionLoading(true);
+				const isConversion = await isFeeConversion(
+					balances,
+					senderPublicKey,
+					baseValue,
+					baseToken,
+					networkFee,
+					dexConfig,
+					feeConfig,
+					selectedService,
+				);
+				setFeeConversion(isConversion);
+			} catch {
+				setError('Please try again later');
+			} finally {
+				setFeeConversionLoading(false);
+			}
+		};
+
+		run();
+	}, [
+		balances,
+		baseToken,
+		baseValue,
+		dexConfig,
+		feeConfig,
+		networkFee,
+		priceReady,
+		selectedService,
+		senderPublicKey,
+	]);
 
 	const fetchPrice = useDebouncedCallback(async () => {
 		try {
 			if (priceReady) {
+				setError();
 				const price = await getPrice(
 					{
 						baseTokenId: quoteToken.tokenId,
@@ -219,6 +335,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 
 	const handleExactIn = useDebouncedCallback(async (baseToken, quoteToken, amountIn) => {
 		try {
+			setError();
 			const quote = await getQuote(
 				{
 					base: baseToken.tokenId,
@@ -231,12 +348,6 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 				const value = Number(quote.data.amount) / 10 ** quoteToken.decimal;
 				setQuoteValue(value);
 				handleQuoteInputChange({ target: { event: value } });
-
-				if (baseBalance && baseValue && baseBalance < baseValue) {
-					setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
-				} else {
-					setError();
-				}
 
 				setCommand('exactInput');
 				setPath(quote.data.path);
@@ -260,6 +371,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 
 	const handleExactOut = useDebouncedCallback(async (baseToken, quoteToken, amountOut) => {
 		try {
+			setError();
 			const quote = await getQuote(
 				{
 					base: baseToken.tokenId,
@@ -272,12 +384,6 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 				const value = Number(quote.data.amount) / 10 ** baseToken.decimal;
 				setBaseValue(value);
 				handleBaseInputChange({ target: { event: value } });
-
-				if (baseBalance && baseValue && baseBalance < baseValue) {
-					setError(`Insufficient ${baseToken.symbol.toUpperCase()} balance`);
-				} else {
-					setError();
-				}
 
 				setCommand('exactOutput');
 				setPath(quote.data.path);
@@ -348,7 +454,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 			if (inputValue === '' || inputValue === '0') {
 				setBaseValue('');
 				setQuoteValue('');
-				setError(false);
+				setError();
 				return;
 			}
 
@@ -370,7 +476,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 			if (inputValue === '' || inputValue === '0') {
 				setBaseValue('');
 				setQuoteValue('');
-				setError(false);
+				setError();
 				return;
 			}
 
@@ -398,7 +504,18 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 			setBaseLoading(true);
 			handleExactOut(baseToken, quoteToken, oldBaseValue);
 		}
-	}, [baseToken, baseValue, handleExactOut, priceReady, quoteToken, quoteValue]);
+
+		if (
+			baseToken !== undefined &&
+			quoteToken !== undefined &&
+			(baseValue === '' || baseValue === '0') &&
+			quoteValue !== '' &&
+			quoteValue !== '0'
+		) {
+			setQuoteLoading(true);
+			handleExactIn(baseToken, quoteToken, quoteValue);
+		}
+	}, [baseToken, baseValue, handleExactIn, handleExactOut, priceReady, quoteToken, quoteValue]);
 
 	const onConfigClick = React.useCallback(() => {
 		setShowSwapSetting(s => !s);
@@ -442,7 +559,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 			onSuccess: () => {
 				setBaseValue('');
 				setQuoteValue('');
-				setError(false);
+				setError();
 			},
 		});
 	}, [sendTransaction, transaction]);
@@ -526,6 +643,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 						quoteToken={quoteToken}
 						quoteValue={quoteValue}
 						networkFee={networkFee}
+						feeConversion={feeConversion}
 					/>
 
 					<div style={{ marginTop: '4px' }} />
@@ -535,6 +653,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 					<div style={{ marginTop: '4px' }} />
 
 					<WalletActionButton
+						loading={isAllLoading}
 						disabled={!isSwappable}
 						onClick={() => onSwapClick(transaction)}
 						style={{ width: '100%', height: '60px', borderRadius: '16px' }}

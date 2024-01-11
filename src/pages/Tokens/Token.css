@@ -718,6 +718,20 @@
 	}
 }
 
+@media only screen and (width <= 320px) {
+	.font12-below-320 {
+		font-size: 12px !important;
+	}
+
+	.hide-below-320 {
+		display: none !important;
+	}
+
+	.show-below-320 {
+		display: unset;
+	}
+}
+
 @media only screen and (width <= 375px) {
 	.hide-below-375 {
 		display: none !important;

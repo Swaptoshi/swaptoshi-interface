@@ -300,7 +300,7 @@ export function WalletConnectProvider({ children }) {
 
 				return res;
 			} catch (e) {
-				console.error(e);
+				if (env.NODE_ENV === 'development') console.error(e);
 				callback && callback.onFailed && callback.onFailed();
 				return undefined;
 			}

@@ -12,8 +12,10 @@ export default function Tooltip({ content, children }) {
 			<ReactTooltip
 				id={id}
 				border={'0.5px solid rgb(152 161 192 / 24%)'}
+				opacity={1}
 				style={{
 					backgroundColor: 'var(--card-inside-color)',
+					zIndex: 99999,
 					color: 'var(--color-white)',
 					borderRadius: '8px',
 					maxWidth: '250px',

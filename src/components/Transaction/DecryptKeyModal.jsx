@@ -54,8 +54,6 @@ export default function DecryptKeyModal({
 					throw new Error('Wrong password');
 				}
 
-				console.log(signed);
-
 				if (customSendHandler) {
 					await customSendHandler(signed);
 				} else {

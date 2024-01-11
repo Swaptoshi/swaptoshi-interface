@@ -28,7 +28,7 @@
 
 /* Navbar */
 .header {
-	padding: 20px 12px;
+	padding: 20px 0px;
 	width: 100%;
 	height: 72px;
 	z-index: 2;
@@ -54,7 +54,7 @@
 
 .logo-wrap {
 	display: flex;
-	margin-right: 6px;
+	margin-right: 0;
 	align-items: center;
 	cursor: pointer;
 }

@@ -19,7 +19,7 @@ export default function SwapTokenInput({
 	onTokenSelect,
 	onMaxClick,
 }) {
-	const { balances } = useWalletConnect();
+	const { balances, senderPublicKey } = useWalletConnect();
 	const { chain, selectedService } = useChain();
 	const { prices, fiatFormatter } = useLiskPrice();
 	const [selectedBalance, setSelectedBalance] = React.useState();
@@ -69,18 +69,14 @@ export default function SwapTokenInput({
 	}, [handleInputChange, onMaxClick, selectedBalance]);
 
 	React.useEffect(() => {
-		if (!selectedToken) {
-			setSelectedBalance();
-		}
-		if (selectedToken && balances && balances.length > 0) {
+		setSelectedBalance();
+		if (senderPublicKey && selectedToken && balances) {
 			const foundBalance = balances.find(t => t.tokenId === selectedToken.tokenId);
 			setSelectedBalance(
 				foundBalance ? Number(foundBalance.balance) / 10 ** foundBalance.decimal : 0,
 			);
-		} else {
-			setSelectedBalance();
 		}
-	}, [balances, selectedToken]);
+	}, [balances, selectedToken, senderPublicKey]);
 
 	React.useEffect(() => {
 		if (inputValue === '') {
@@ -177,7 +173,7 @@ export default function SwapTokenInput({
 								>
 									Balance: {selectedBalance.toFixed(2)}
 								</div>
-								{selectedBalance !== inputValue && (
+								{selectedBalance !== inputValue && selectedBalance > 0 && (
 									<button
 										style={{
 											marginLeft: '8px',

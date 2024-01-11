@@ -23,12 +23,6 @@ export const normalizePriceByTick = (price, tickSpacing) => {
 export const addByTick = (price, addedTick) => {
 	const sqrtPrice = encodePriceSqrt(price, 1);
 	const tick = getTickAtSqrtRatio(sqrtPrice);
-	console.log(
-		tick,
-		normalizeTick(tick, addedTick),
-		addedTick,
-		normalizeTick(tick, addedTick) + BigInt(addedTick),
-	);
 	return decodeTickPrice((normalizeTick(tick, addedTick) + BigInt(addedTick)).toString());
 };
 

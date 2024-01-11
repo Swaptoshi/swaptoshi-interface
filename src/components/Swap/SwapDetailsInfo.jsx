@@ -7,6 +7,7 @@ import { tryToast } from '../../utils/toast/tryToast';
 import { getPrice } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import * as env from '../../utils/config/env';
+import { useWalletConnect } from '../../context/WalletConnectProvider';
 
 export default function SwapDetailsInfo({
 	isLoading,
@@ -20,12 +21,19 @@ export default function SwapDetailsInfo({
 	quoteToken,
 	quoteValue,
 	networkFee,
+	feeConversion,
 }) {
 	const { prices, fiatFormatter, cryptoFormatter } = useLiskPrice();
-	const { selectedService, chain, feeConfig } = useChain();
+	const { selectedService, chain, feeConfig, dexConfig } = useChain();
+	const { senderPublicKey, balances } = useWalletConnect();
 	const [collapsed, setCollapsed] = React.useState(false);
 	const [feeFiat, setFeeFiat] = React.useState();
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
+
+	const [isFeeConvert, setIsFeeConvert] = React.useState();
+	const [isEligibleFeeConversion, setIsEligibleFeeConversion] = React.useState();
+	const [convertedBaseToken, setConvertedBaseToken] = React.useState();
+	const [isPoolExistForConversion, setIsPoolExistForConversion] = React.useState();
 
 	const fetchFeeFiat = useDebouncedCallback(
 		async (networkFee, lskPrice) => {
@@ -61,6 +69,35 @@ export default function SwapDetailsInfo({
 	const toogleCollapsed = React.useCallback(() => setCollapsed(s => !s), []);
 
 	React.useEffect(() => {
+		if (!priceReady) {
+			setIsFeeConvert();
+			setIsEligibleFeeConversion();
+			setConvertedBaseToken();
+			return;
+		}
+
+		if (feeConversion) {
+			setIsFeeConvert(feeConversion.status);
+			if (feeConversion.status) {
+				setIsEligibleFeeConversion(feeConversion.payload.isEligible);
+				setConvertedBaseToken(Number(feeConversion.payload.amountIn) / 10 ** baseToken.decimal);
+				setIsPoolExistForConversion(feeConversion.payload.poolExist);
+			}
+		}
+	}, [
+		balances,
+		baseToken,
+		baseValue,
+		dexConfig,
+		feeConfig,
+		feeConversion,
+		networkFee,
+		priceReady,
+		selectedService,
+		senderPublicKey,
+	]);
+
+	React.useEffect(() => {
 		if (networkFee && prices) {
 			setIsFectingPrice(true);
 			fetchFeeFiat(networkFee, prices);
@@ -80,7 +117,10 @@ export default function SwapDetailsInfo({
 				style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
 				onClick={toogleCollapsed}
 			>
-				<div className="text" style={{ width: 'fit-content', flex: 1 }}>
+				<div
+					className="text font12-below-320"
+					style={{ width: 'fit-content', flex: 1, fontSize: '14px' }}
+				>
 					{isLoading
 						? 'Fetching best price...'
 						: baseValue && quoteValue
@@ -89,6 +129,35 @@ export default function SwapDetailsInfo({
 								} ${baseToken.symbol.toUpperCase()}`
 							: 'Quote price failed'}
 				</div>
+				{isFeeConvert && (
+					<Tooltip
+						content={
+							isEligibleFeeConversion
+								? !isPoolExistForConversion
+									? `Automatic fee conversion could be enabled, but since required ${env.WC_TOKEN_SYMBOL}/${baseToken.symbol} pool is not created yet, or no liquidity, fee conversion can't be enabled.`
+									: `Automatic fee conversion is enabled. Since you don't have enough ${env.WC_TOKEN_SYMBOL} balance for network fee, ${convertedBaseToken} ${baseToken.symbol} will be automatically converted by Swaptoshi Protocol for you.`
+								: `Insufficient funds for fee conversion. Since you don't have enough ${env.WC_TOKEN_SYMBOL} balance and you don't have ${convertedBaseToken} ${baseToken.symbol} to be converted for network fee, automatic fee conversion can't be enabled.`
+						}
+					>
+						<div
+							style={{
+								backgroundColor: isEligibleFeeConversion
+									? 'var(--green)'
+									: isPoolExistForConversion
+										? 'var(--red)'
+										: 'var(--yellow)',
+								borderRadius: '24px',
+								height: '24px',
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								padding: '0 8px',
+							}}
+						>
+							<i className="ri-token-swap-line" style={{ color: 'var(--card-bg)' }}></i>
+						</div>
+					</Tooltip>
+				)}
 				<div className="text" style={{ fontSize: '18px' }}>
 					{collapsed ? (
 						<i className="ri-arrow-up-s-line"></i>
@@ -218,6 +287,20 @@ export default function SwapDetailsInfo({
 										<i style={{ margin: '0 2px' }} className="ri-information-line"></i>
 									</Tooltip>
 								</div>
+								{isFeeConvert && isPoolExistForConversion && (
+									<div
+										style={{
+											backgroundColor: 'var(--open-currency-btn-bg)',
+											borderRadius: '16px',
+											padding: '2px 8px',
+											fontSize: '12px',
+											marginRight: '8px',
+											color: 'var(--text-clr)',
+										}}
+									>
+										Conv
+									</div>
+								)}
 								{isFetchingPrice ? (
 									<div>
 										<Loader size={10} />{' '}

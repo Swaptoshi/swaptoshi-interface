@@ -20,3 +20,4 @@ export const DEFAULT_DEADLINE_MINUTE = process.env.REACT_APP_DEFAULT_DEADLINE_MI
 export const DEFAULT_SLIPPAGE = process.env.REACT_APP_DEFAULT_SLIPPAGE ?? '0.5';
 export const EFFECT_DEBOUNCE_WAIT = process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT ?? '500';
 export const LSKUSD_UPDATE_INTERVAL_MS = process.env.REACT_APP_LSKUSD_UPDATE_INTERVAL_MS ?? '60000';
+export const NODE_ENV = process.env.NODE_ENV;
