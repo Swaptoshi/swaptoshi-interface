@@ -655,7 +655,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 					<div style={{ marginTop: '4px' }} />
 
 					<WalletActionButton
-						loading={isAllLoading}
+						loading={isAllLoading ? 'true' : undefined}
 						disabled={!isSwappable}
 						onClick={() => onSwapClick(transaction)}
 						style={{ width: '100%', height: '60px', borderRadius: '16px' }}
