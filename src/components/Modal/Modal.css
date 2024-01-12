@@ -18,6 +18,10 @@
 	right: 8px;
 }
 
+.close-modal-button {
+	display: none !important;
+}
+
 .moon,
 .sun {
 	font-size: 20px;
@@ -163,6 +167,8 @@
 	height: 16px;
 	margin: auto;
 	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .kqzAOQ {
@@ -585,5 +591,19 @@ button {
 	.hyeEN1 {
 		margin-right: 0;
 		width: 390px;
+	}
+}
+
+@media screen and (width <= 320px) {
+	.dLsVJq {
+		top: 0px;
+	}
+
+	.dLsVJq.open {
+		right: 0px;
+	}
+
+	.close-modal-button {
+		display: unset !important;
 	}
 }

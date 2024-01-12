@@ -7,9 +7,11 @@ import Avatar from '../Avatar';
 import { addressCompact } from '../../utils/address';
 import Loader from '../Loader';
 import { useTheme } from '../../context/ThemeProvider';
+import { useWalletModal } from '../../context/WalletModalProvider';
 
 export default function WalletModalHeader({ onConfigClick, closeHandler, theme, mode, setMode }) {
 	const { senderPublicKey, disconnect } = useWalletConnect();
+	const [, setIsModalOpen] = useWalletModal();
 	const [currentTheme] = useTheme();
 
 	const [addressCopied, setAddressRequestCopied] = React.useState(false);
@@ -202,6 +204,16 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, theme, 
 						</span>
 					</button>
 				) : null}
+				<button
+					data-testid="wallet-settings"
+					className="sc-u2uow0-2 kIafUC close-modal-button"
+					style={{ marginLeft: '8px' }}
+					onClick={() => setIsModalOpen(false)}
+				>
+					<span className="sc-u2uow0-3 bLwPSk">
+						<i className="ri-close-circle-line"></i>
+					</span>
+				</button>
 			</div>
 		</div>
 	);

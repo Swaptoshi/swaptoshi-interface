@@ -31,8 +31,11 @@ export default function WalletActionButton(props) {
 		<PrimaryButton
 			{...props}
 			onClick={connectHandler}
-			disabled={signClient === undefined}
-			style={{ ...props.style, opacity: signClient === undefined ? 0.5 : 1 }}
+			disabled={senderPublicKey ? false : signClient === undefined}
+			style={{
+				...props.style,
+				opacity: senderPublicKey ? false : signClient === undefined ? 0.5 : 1,
+			}}
 		>
 			Connect Wallet
 		</PrimaryButton>

@@ -112,6 +112,10 @@ export function WalletConnectProvider({ children }) {
 	const createClient = React.useCallback(
 		async callback => {
 			try {
+				if (encryptedPrivateKey[chain] && encryptedPrivateKey[chain].publicKey) {
+					setSenderPublicKey(encryptedPrivateKey[chain].publicKey);
+				}
+
 				const client = await SignClient.init({
 					projectId: env.WC_PROJECT_ID,
 					metadata: {
@@ -136,9 +140,6 @@ export function WalletConnectProvider({ children }) {
 				setSignClient(client);
 				subscribeToEvents(client);
 
-				if (encryptedPrivateKey[chain] && encryptedPrivateKey[chain].publicKey) {
-					setSenderPublicKey(encryptedPrivateKey[chain].publicKey);
-				}
 				callback && callback.onSuccess && callback.onSuccess();
 			} catch (e) {
 				callback && callback.onFailed && callback.onFailed();

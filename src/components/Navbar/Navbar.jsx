@@ -556,9 +556,9 @@ const Navbar = () => {
 									<button
 										className="hover-shadow"
 										onClick={handleOpenModal}
-										disabled={signClient === undefined}
+										disabled={senderPublicKey ? false : signClient === undefined}
 										style={{
-											opacity: signClient === undefined ? 0.2 : 1,
+											opacity: (senderPublicKey ? false : signClient === undefined) ? 0.2 : 1,
 											display: 'flex',
 											alignItems: 'center',
 											borderWidth: 0,
