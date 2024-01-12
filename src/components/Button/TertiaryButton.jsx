@@ -8,7 +8,7 @@ export default function TertiaryButton(props) {
 
 	return (
 		<button {...props} className={className}>
-			{props.loading ? (
+			{props.loading === true || props.loading === 'true' ? (
 				<div>
 					<Loader size={20} />{' '}
 				</div>
