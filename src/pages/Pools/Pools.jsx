@@ -12,7 +12,6 @@ import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/toast/tryToast';
 import Loader from '../../components/Loader';
 import { MAX_TICK, MIN_TICK } from '../../utils/constants/tick';
-import { decodeTickPrice } from '../../utils/math/priceFormatter';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../../utils/config/env';
 
@@ -151,13 +150,9 @@ const Pools = () => {
 												</div>
 												<div style={{ margin: '12px 0px' }} />
 												<div style={{ fontSize: '14px', color: 'var(--text-clr)' }}>{`${
-													pos.tickLower === MIN_TICK
-														? '0'
-														: decodeTickPrice(pos.tickLower, pos.token0Decimal, pos.token1Decimal)
+													pos.tickLower === MIN_TICK ? '0' : pos.priceLower
 												} ${pos.token0Symbol} per ${pos.token1Symbol} ↔ ${
-													pos.tickUpper === MAX_TICK
-														? '∞'
-														: decodeTickPrice(pos.tickUpper, pos.token0Decimal, pos.token1Decimal)
+													pos.tickUpper === MAX_TICK ? '∞' : pos.priceUpper
 												} ${pos.token0Symbol} per ${pos.token1Symbol}`}</div>
 											</div>
 											<div
