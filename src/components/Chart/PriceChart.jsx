@@ -2,7 +2,7 @@ import { createChart, ColorType } from 'lightweight-charts';
 import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeProvider';
 
-export const PriceChart = ({ data }) => {
+export const PriceChart = ({ data, type }) => {
 	const [theme] = useTheme();
 	const chartContainerRef = useRef();
 
@@ -24,15 +24,28 @@ export const PriceChart = ({ data }) => {
 		});
 		chart.timeScale().fitContent();
 
-		const newSeries = chart.addBaselineSeries({
-			baseValue: { type: 'price', price: data && data[0] && data[0].value ? data[0].value : 0 },
-			topLineColor: 'rgba( 38, 166, 154, 1)',
-			topFillColor1: 'rgba( 38, 166, 154, 0.28)',
-			topFillColor2: 'rgba( 38, 166, 154, 0.05)',
-			bottomLineColor: 'rgba( 239, 83, 80, 1)',
-			bottomFillColor1: 'rgba( 239, 83, 80, 0.05)',
-			bottomFillColor2: 'rgba( 239, 83, 80, 0.28)',
-		});
+		let newSeries;
+
+		if (type === 'tick') {
+			newSeries = chart.addBaselineSeries({
+				baseValue: { type: 'price', price: data && data[0] && data[0].value ? data[0].value : 0 },
+				topLineColor: 'rgba( 38, 166, 154, 1)',
+				topFillColor1: 'rgba( 38, 166, 154, 0.28)',
+				topFillColor2: 'rgba( 38, 166, 154, 0.05)',
+				bottomLineColor: 'rgba( 239, 83, 80, 1)',
+				bottomFillColor1: 'rgba( 239, 83, 80, 0.05)',
+				bottomFillColor2: 'rgba( 239, 83, 80, 0.28)',
+			});
+		} else if (type === 'ohlc') {
+			newSeries = chart.addCandlestickSeries({
+				upColor: '#26a69a',
+				downColor: '#ef5350',
+				borderVisible: false,
+				wickUpColor: '#26a69a',
+				wickDownColor: '#ef5350',
+			});
+		}
+
 		newSeries.setData(data);
 
 		window.addEventListener('resize', handleResize);
@@ -42,7 +55,7 @@ export const PriceChart = ({ data }) => {
 
 			chart.remove();
 		};
-	}, [data, theme]);
+	}, [data, theme, type]);
 
 	return <div ref={chartContainerRef} />;
 };

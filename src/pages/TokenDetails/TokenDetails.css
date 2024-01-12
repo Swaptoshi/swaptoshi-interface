@@ -571,6 +571,32 @@ sup {
 .sw-wrapper {
 }
 
+.token-graph-switch {
+	width: 100px;
+}
+
+.token-timeframe-switch {
+	width: 250px;
+}
+
+.token-switch-container {
+	display: flex;
+}
+
+@media screen and (width <= 375px) {
+	.token-switch-container {
+		display: unset;
+	}
+
+	.token-timeframe-switch {
+		width: 100%;
+	}
+
+	.token-graph-switch {
+		width: 100%;
+	}
+}
+
 @media screen and (width < 1024px) {
 	.djRLxT {
 		margin-bottom: 80px;
