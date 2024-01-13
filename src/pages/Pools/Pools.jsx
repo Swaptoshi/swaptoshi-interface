@@ -14,6 +14,7 @@ import Loader from '../../components/Loader';
 import { MAX_TICK, MIN_TICK } from '../../utils/constants/tick';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../../utils/config/env';
+import TokenAvatar from '../../components/Avatar/token';
 
 const Pools = () => {
 	const navigate = useNavigate();
@@ -126,18 +127,12 @@ const Pools = () => {
 										<div style={{ display: 'flex' }}>
 											<div style={{ flex: 1 }}>
 												<div style={{ display: 'flex' }}>
-													<img
-														src={pos.token0Logo}
-														style={{ borderRadius: '24px', height: '24px', width: '24px' }}
-													/>
-													<img
+													<TokenAvatar src={pos.token0Logo} size={24} tokenId={pos.token0} />
+													<TokenAvatar
 														src={pos.token1Logo}
-														style={{
-															borderRadius: '24px',
-															height: '24px',
-															width: '24px',
-															marginLeft: '-10px',
-														}}
+														size={24}
+														tokenId={pos.token1}
+														style={{ marginLeft: '-10px' }}
 													/>
 													<div style={{ margin: '0px 4px' }} />
 													<div style={{ color: 'var(--color-white)', fontWeight: 600 }}>
