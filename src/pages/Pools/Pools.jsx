@@ -11,18 +11,30 @@ import { getDEXPosition } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/toast/tryToast';
 import Loader from '../../components/Loader';
-import { MAX_TICK, MIN_TICK } from '../../utils/constants/tick';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../../utils/config/env';
 import TokenAvatar from '../../components/Avatar/token';
+import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
+import { INFINITE, ZERO } from '../../utils/constants/tick';
 
 const Pools = () => {
 	const navigate = useNavigate();
 	const { senderPublicKey } = useWalletConnect();
-	const { selectedService } = useChain();
+	const { selectedService, dexConfig } = useChain();
 
 	const [position, setPosition] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
+
+	const getTickSpacing = React.useCallback(
+		fee => {
+			const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t[0] === fee.toString());
+			if (tickSpacing) {
+				return tickSpacing[1];
+			}
+			return '0';
+		},
+		[dexConfig],
+	);
 
 	const fetchPositions = useDebouncedCallback(async () => {
 		const run = async () => {
@@ -145,19 +157,44 @@ const Pools = () => {
 												</div>
 												<div style={{ margin: '12px 0px' }} />
 												<div style={{ fontSize: '14px', color: 'var(--text-clr)' }}>{`${
-													pos.tickLower === MIN_TICK ? '0' : pos.priceLower
+													pos.tickLower === getMinTick(getTickSpacing(pos.fee))
+														? ZERO
+														: pos.priceLower
 												} ${pos.token0Symbol} per ${pos.token1Symbol} ↔ ${
-													pos.tickUpper === MAX_TICK ? '∞' : pos.priceUpper
+													pos.tickUpper === getMaxTick(getTickSpacing(pos.fee))
+														? INFINITE
+														: pos.priceUpper
 												} ${pos.token0Symbol} per ${pos.token1Symbol}`}</div>
 											</div>
 											<div
-												style={{ fontSize: '14px', color: 'var(--color-white)', fontWeight: 200 }}
+												style={{
+													fontSize: '14px',
+													color:
+														pos.liquidity === 0
+															? 'var(--text-clr)'
+															: pos.poolTick < pos.tickLower || pos.poolTick > pos.tickUpper
+																? 'var(--yellow)'
+																: 'var(--green)',
+													fontWeight: 600,
+													display: 'flex',
+													justifyContent: 'center',
+												}}
 											>
 												{pos.liquidity === 0
 													? 'closed'
 													: pos.poolTick < pos.tickLower || pos.poolTick > pos.tickUpper
 														? 'out of range'
 														: 'in range'}
+												<i
+													className={
+														pos.liquidity === 0
+															? 'ri-close-circle-fill'
+															: pos.poolTick < pos.tickLower || pos.poolTick > pos.tickUpper
+																? 'ri-alert-fill'
+																: 'ri-circle-fill'
+													}
+													style={{ marginLeft: '4px' }}
+												/>
 											</div>
 										</div>
 									</div>
