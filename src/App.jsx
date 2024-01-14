@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -14,25 +16,32 @@ import CreateTokenModal from './pages/CreateToken/CreateToken';
 import { useTheme } from './context/ThemeProvider';
 import AppContextProvider from './context/AppContextProvider';
 import CreatePool from './pages/CreatePool/CreatePool';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallbackComponent from './pages/Error/ErrorFallbackComponent';
 
 function App() {
 	const [theme] = useTheme();
 
 	return (
 		<div className="App" data-theme={theme === 'system' ? getSystemTheme() : theme}>
-			<AppContextProvider>
-				<Navbar />
-				<Routes>
-					<Route exact path="/" element={<Home />} />
-					<Route path="/swap" element={<Swap />} />
-					<Route path="/tokens" element={<Token />} />
-					<Route path="/pools" element={<Pools />} />
-					<Route path="/pools/create" element={<CreatePool />} />
-					<Route path="/tokens/:id" element={<TokenDetails />} />
-					<Route path="/tokens/create" element={<CreateTokenModal />} />
-					<Route path="/pools/mint" element={<LiquidityModal />} />
-				</Routes>
-			</AppContextProvider>
+			<ErrorBoundary
+				FallbackComponent={ErrorFallbackComponent}
+				onReset={() => window.location.reload()}
+			>
+				<AppContextProvider>
+					<Navbar />
+					<Routes>
+						<Route exact path="/" element={<Home />} />
+						<Route path="/swap" element={<Swap />} />
+						<Route path="/tokens" element={<Token />} />
+						<Route path="/pools" element={<Pools />} />
+						<Route path="/pools/create" element={<CreatePool />} />
+						<Route path="/tokens/:id" element={<TokenDetails />} />
+						<Route path="/tokens/create" element={<CreateTokenModal />} />
+						<Route path="/pools/mint" element={<LiquidityModal />} />
+					</Routes>
+				</AppContextProvider>
+			</ErrorBoundary>
 		</div>
 	);
 }

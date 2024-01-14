@@ -267,7 +267,8 @@ ul {
 }
 
 *::-webkit-scrollbar {
-	width: 12px;
+	width: 8px;
+	height: 8px;
 }
 
 *::-webkit-scrollbar-track {
