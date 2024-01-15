@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactApexChart from 'react-apexcharts';
 import './BarChart.css';
 import { useTheme } from '../../context/ThemeProvider';
 import { decodeTickPrice, encodePriceSqrt } from '../../utils/math/priceFormatter';
@@ -11,7 +10,7 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 	const [theme] = useTheme();
 
 	const [filteredData, setFilteredData] = React.useState([]);
-	const [options, setOptions] = React.useState({});
+	const [, setOptions] = React.useState({});
 	const [inverted, setInverted] = React.useState();
 	const [key, setKey] = React.useState();
 
@@ -146,14 +145,7 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 
 	return filteredData.length > 0 ? (
 		<React.Fragment key={key}>
-			<div>
-				<ReactApexChart
-					options={options}
-					series={[{ name: 'Liquidity', data: filteredData }]}
-					type="area"
-					height={350}
-				/>
-			</div>
+			<div></div>
 		</React.Fragment>
 	) : null;
 };
