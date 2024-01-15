@@ -49,7 +49,7 @@ const TokenDetails = () => {
 
 				if (tokenTick && tokenTick.data && lskUsdTick && lskUsdTick.data) {
 					setChart(
-						tokenTick.data.map(t => {
+						tokenTick.data.flatMap(t => {
 							const matched = lskUsdTick.data.find(s => s.time === t.time);
 							if (matched) {
 								return {
@@ -57,7 +57,7 @@ const TokenDetails = () => {
 									value: t.value * matched.value,
 								};
 							} else {
-								return t;
+								return [];
 							}
 						}),
 					);
@@ -89,7 +89,7 @@ const TokenDetails = () => {
 
 				if (tokenTick && tokenTick.data && lskUsdTick && lskUsdTick.data) {
 					setChart(
-						tokenTick.data.map(t => {
+						tokenTick.data.flatMap(t => {
 							const matched = lskUsdTick.data.find(s => s.time === t.time);
 							if (matched) {
 								return {
@@ -100,7 +100,7 @@ const TokenDetails = () => {
 									close: t.close * matched.close,
 								};
 							} else {
-								return t;
+								return [];
 							}
 						}),
 					);

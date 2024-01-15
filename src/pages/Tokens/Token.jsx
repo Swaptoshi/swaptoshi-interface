@@ -13,6 +13,7 @@ import Dropdown from '../../components/Navbar/Dropdown';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import TokenAvatar from '../../components/Avatar/token';
 import * as env from '../../utils/config/env';
+import Sparkline from '../../components/Sparkline/Sparkline';
 
 const Token = () => {
 	const { selectedService } = useChain();
@@ -405,11 +406,18 @@ const Token = () => {
 													<div className="sc-1bit9h6-0 sc-1bit9h6-15 hJyIyF FLymZ">
 														<div style={{ width: '100%', height: '100%' }}>
 															{selectedService ? (
-																<img
-																	src={`${selectedService.serviceURLs}/static/img/sparklines/${
+																<Sparkline
+																	url={`${selectedService.serviceURLs}/static/img/sparklines/${
 																		selectedTimeframe.value
 																	}-${data.symbol.toLowerCase()}usd.svg`}
-																	onError={e => (e.target.style.display = 'none')}
+																	style={{
+																		color:
+																			data.priceChangeUSD > 0
+																				? 'rgb(118, 209, 145)'
+																				: data.priceChangeUSD === 0
+																					? 'rgb(118, 209, 145)'
+																					: 'rgb(252, 83, 83)',
+																	}}
 																/>
 															) : (
 																<div
