@@ -19,6 +19,8 @@ import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { encodePriceSqrt } from '../../utils/math/priceFormatter';
 import { getTickAtSqrtRatio } from '../../utils/tick/tick_math';
 import { useNavigate } from 'react-router-dom';
+import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
+import { useDebouncedCallback } from 'use-debounce';
 
 const LiquidityModal = () => {
 	const navigate = useNavigate();
@@ -34,8 +36,8 @@ const LiquidityModal = () => {
 	const [tickSpacing, setTickSpacing] = React.useState();
 	const [lowPrice, setLowPrice] = React.useState();
 	const [highPrice, setHighPrice] = React.useState();
-	const [amountA, setAmountA] = React.useState();
-	const [amountB, setAmountB] = React.useState();
+	const [amountA, setAmountA] = React.useState('');
+	const [amountB, setAmountB] = React.useState('');
 	const [ticks, setTicks] = React.useState();
 	const [feeAmountTickSpacing, setFeeAmountTickSpacing] = React.useState();
 	const [pool, setPool] = React.useState();
@@ -147,68 +149,75 @@ const LiquidityModal = () => {
 		setTokenA(lskTokenInfo);
 	}, [lskTokenInfo]);
 
-	React.useEffect(() => {
+	const fetchPoolTickData = useDebouncedCallback(async () => {
 		const checkPool = async () => {
-			if (
-				tokenA !== undefined &&
-				tokenB !== undefined &&
-				fee !== undefined &&
-				feeAmountTickSpacing !== undefined
-			) {
-				setIsLoading(true);
-				setNoPoolError();
-				setTicks();
-				setPool();
-				setPrice();
+			setIsLoading(true);
+			setNoPoolError();
+			setTicks();
+			setPool();
+			setPrice();
 
-				const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
-				const poolAddress = cryptography.address.getLisk32AddressFromAddress(
-					computePoolAddress(poolKey),
-				);
-				const pools = await getDEXPool(
-					{ search: poolAddress, limit: 1 },
-					selectedService ? selectedService.serviceURLs : undefined,
-				);
+			const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
+			const poolAddress = cryptography.address.getLisk32AddressFromAddress(
+				computePoolAddress(poolKey),
+			);
+			const pools = await getDEXPool(
+				{ search: poolAddress, limit: 1 },
+				selectedService ? selectedService.serviceURLs : undefined,
+			);
 
-				if (pools && pools.data) {
-					if (pools.data.length === 0) {
-						setNoPoolError("Pool Doesn't Exists");
-					} else {
-						setPool(pools.data[0]);
-						setPrice(
-							inverted
-								? new Decimal(pools.data[0].price).pow(-1).toPrecision(5)
-								: pools.data[0].price,
-						);
+			if (pools && pools.data) {
+				if (pools.data.length === 0) {
+					setNoPoolError("Pool Doesn't Exists");
+				} else {
+					setPool(pools.data[0]);
+					setPrice(
+						inverted
+							? new Decimal(pools.data[0].price).pow(-1).toPrecision(5)
+							: pools.data[0].price,
+					);
 
-						const poolTick = await getDEXPoolTick(
-							{ poolAddress },
-							selectedService ? selectedService.serviceURLs : undefined,
-						);
-						if (poolTick && poolTick.data && poolTick.data.length > 0) {
-							const data = [];
-							let liquidity = 0;
-							for (
-								let i = poolTick.data[0].tick;
-								i < poolTick.data[poolTick.data.length - 1].tick;
-								i += 1
-							) {
-								const matched = poolTick.data.find(t => t.tick === i);
-								if (matched) {
-									liquidity += matched.liquidityNet;
-								}
-								data.push([i, liquidity]);
-							}
-							setTicks(data);
-						}
+					const poolTick = await getDEXPoolTick(
+						{
+							poolAddress,
+							tickLower: getMinTick(tickSpacing),
+							tickUpper: getMaxTick(tickSpacing),
+							interval: Number(tickSpacing) * 10,
+							inverted: inverted.toString(),
+						},
+						selectedService ? selectedService.serviceURLs : undefined,
+					);
+					if (poolTick && poolTick.data && poolTick.data.length > 0) {
+						setTicks(poolTick.data);
 					}
-					setIsLoading(false);
 				}
+				setIsLoading(false);
 			}
 		};
 
 		tryToast('Check pool failed', checkPool, () => setIsLoading(false));
-	}, [fee, feeAmountTickSpacing, inverted, selectedService, tokenA, tokenB]);
+	}, 500);
+
+	React.useEffect(() => {
+		if (
+			tokenA !== undefined &&
+			tokenB !== undefined &&
+			fee !== undefined &&
+			feeAmountTickSpacing !== undefined &&
+			tickSpacing
+		) {
+			fetchPoolTickData();
+		}
+	}, [
+		fee,
+		feeAmountTickSpacing,
+		fetchPoolTickData,
+		inverted,
+		selectedService,
+		tickSpacing,
+		tokenA,
+		tokenB,
+	]);
 
 	const isSpecifyPriceReady = React.useMemo(() => {
 		return tokenA !== undefined && tokenB !== undefined && fee !== undefined && pool !== undefined;
@@ -398,11 +407,12 @@ const LiquidityModal = () => {
 							{ticks && ticks.length > 0 ? (
 								<LiquidityChart
 									data={ticks}
-									currentTick={pool.tick}
+									currentPrice={pool.price}
 									token0={tokenA}
 									token1={tokenB}
 									lowPrice={lowPrice}
 									highPrice={highPrice}
+									inverted={inverted}
 								/>
 							) : (
 								<div

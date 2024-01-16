@@ -1,79 +1,51 @@
 import React from 'react';
+import ReactApexChart from 'react-apexcharts';
 import './BarChart.css';
 import { useTheme } from '../../context/ThemeProvider';
-import { decodeTickPrice, encodePriceSqrt } from '../../utils/math/priceFormatter';
-import { getTickAtSqrtRatio } from '../../utils/tick/tick_math';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../../utils/config/env';
+import Decimal from 'decimal.js';
+import { encodePriceSqrt } from '../../utils/math/priceFormatter';
+import { getTickAtSqrtRatio } from '../../utils/tick/tick_math';
 
-const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice }) => {
+const LiquidityChart = ({ data, currentPrice, token0, token1, lowPrice, highPrice, inverted }) => {
 	const [theme] = useTheme();
 
 	const [filteredData, setFilteredData] = React.useState([]);
-	const [, setOptions] = React.useState({});
-	const [inverted, setInverted] = React.useState();
+	const [options, setOptions] = React.useState({});
 	const [key, setKey] = React.useState();
 
 	React.useEffect(() => {
-		if (token0 && token1) {
-			setInverted(token0.tokenId >= token1.tokenId);
+		if (data && currentPrice && data.length > 0) {
+			const currentIndex = data.findIndex(t => Number(t.price) > Number(currentPrice));
+			console.log(data[currentIndex]);
+			setFilteredData(
+				data.slice(currentIndex - 100, currentIndex + 100).map(t => [Number(t.tick), t.liquidity]),
+			);
 		}
-	}, [token0, token1]);
-
-	React.useEffect(() => {
-		if (data && currentTick && data.length > 0) {
-			const desiredLength = 100;
-			const spacing = 300;
-
-			const currentIndex = data.findIndex(t => t[0] === currentTick);
-			const slicedWithSpace = [];
-
-			// TODO: check here
-			if (inverted) {
-				for (
-					let i = currentIndex + desiredLength * spacing;
-					i >= currentIndex - desiredLength * spacing;
-					i -= spacing
-				) {
-					if (data[i] !== undefined) slicedWithSpace.push(data[i]);
-				}
-			} else {
-				for (
-					let i = currentIndex - desiredLength * spacing;
-					i < currentIndex + desiredLength * spacing;
-					i += spacing
-				) {
-					if (data[i] !== undefined) slicedWithSpace.push(data[i]);
-				}
-			}
-
-			setFilteredData(slicedWithSpace);
-		}
-	}, [currentTick, data, inverted]);
+	}, [currentPrice, data]);
 
 	const updateChart = useDebouncedCallback(() => {
 		try {
 			const annotations = [];
 
-			if (currentTick) {
-				const currentPrice = decodeTickPrice(currentTick, token0.decimal, token1.decimal, inverted);
-				const sqrtPirce = encodePriceSqrt(inverted ? 1 : currentPrice, inverted ? currentPrice : 1);
+			if (currentPrice) {
+				const price = inverted ? new Decimal(currentPrice).pow(-1).toFixed(5) : currentPrice;
 				annotations.push({
-					x: getTickAtSqrtRatio(sqrtPirce),
+					x: getTickAtSqrtRatio(encodePriceSqrt(price, 1)),
 					borderColor: theme === 'dark' ? '#fff' : '#000',
 					label: {
 						style: {
 							color: '#000',
 						},
-						text: `Current Price (${currentPrice})`,
+						text: `Current Price (${price})`,
 					},
 				});
 			}
 
 			if (lowPrice) {
-				const sqrtPirce = encodePriceSqrt(inverted ? 1 : lowPrice, inverted ? lowPrice : 1);
 				annotations.push({
-					x: getTickAtSqrtRatio(sqrtPirce),
+					x: getTickAtSqrtRatio(encodePriceSqrt(lowPrice, 1)),
 					borderColor: theme === 'dark' ? '#fff' : '#000',
 					label: {
 						style: {
@@ -85,9 +57,8 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 			}
 
 			if (highPrice) {
-				const sqrtPirce = encodePriceSqrt(inverted ? 1 : highPrice, inverted ? highPrice : 1);
 				annotations.push({
-					x: getTickAtSqrtRatio(sqrtPirce),
+					x: getTickAtSqrtRatio(encodePriceSqrt(highPrice, 1)),
 					borderColor: theme === 'dark' ? '#fff' : '#000',
 					label: {
 						style: {
@@ -141,11 +112,18 @@ const LiquidityChart = ({ data, currentTick, token0, token1, lowPrice, highPrice
 
 	React.useEffect(() => {
 		setKey(Math.random());
-	}, [data, currentTick, token0, token1, lowPrice, highPrice]);
+	}, [data, currentPrice, token0, token1, lowPrice, highPrice]);
 
 	return filteredData.length > 0 ? (
 		<React.Fragment key={key}>
-			<div></div>
+			<div>
+				<ReactApexChart
+					options={options}
+					series={[{ name: 'Liquidity', data: filteredData }]}
+					type="area"
+					height={350}
+				/>
+			</div>
 		</React.Fragment>
 	) : null;
 };
