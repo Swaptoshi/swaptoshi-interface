@@ -203,25 +203,27 @@ const LiquidityModal = () => {
 						{ poolAddress },
 						selectedService ? selectedService.serviceURLs : undefined,
 					);
+
 					if (poolTick && poolTick.data && poolTick.data.length > 0) {
 						const newData = [];
-						const activeLiquidity = 0;
+						let activeLiquidity = 0;
 
-						for (let i = 0; i < poolTick.data.length; i++) {
+						for (
+							let i = inverted ? poolTick.data.length - 1 : 0;
+							inverted ? i >= 0 : i < poolTick.data.length;
+							inverted ? i-- : i++
+						) {
 							const t = poolTick.data[i];
+							activeLiquidity = Number(
+								BigInt(activeLiquidity) + BigInt(t.liquidityNet) * BigInt(inverted ? -1 : 1),
+							);
 
 							const chartEntry = {
-								activeLiquidity: Number(
-									(BigInt(activeLiquidity) + BigInt(t.liquidityNet)) * BigInt(inverted ? -1 : 1),
-								),
-								price0: inverted ? parseFloat(t.price1) : parseFloat(t.price0),
+								activeLiquidity,
+								price0: inverted ? Number(t.price1) : Number(t.price0),
 							};
 
 							newData.push(chartEntry);
-						}
-
-						if (inverted) {
-							newData.reverse();
 						}
 
 						setTicks(newData);
