@@ -14,6 +14,7 @@
 		"browserify-fs": "^1.0.0",
 		"buffer": "^6.0.3",
 		"crypto-browserify": "^3.12.0",
+		"d3": "^7.8.5",
 		"decimal.js": "^10.4.3",
 		"lightweight-charts": "^4.1.1",
 		"os-browserify": "^0.3.0",

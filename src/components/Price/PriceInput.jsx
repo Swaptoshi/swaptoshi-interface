@@ -1,7 +1,12 @@
 import React from 'react';
-import { addByTick, normalizePriceByTick, subByTick } from '../../utils/tick/price_tick';
+import {
+	addByTick,
+	getMaxTick,
+	getMinTick,
+	normalizePriceByTick,
+	subByTick,
+} from '../../utils/tick/price_tick';
 import { decodeTickPrice } from '../../utils/math/priceFormatter';
-import { MAX_TICK, MIN_TICK } from '../../utils/tick/tick_math';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
 
 export default function PriceInput({ value, disabled, setValue, title, subTitle, tickSpacing }) {
@@ -29,29 +34,41 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle,
 	const onBlur = React.useCallback(() => {
 		try {
 			if (value && value !== ZERO && value !== INFINITE) {
-				const normalized = normalizePriceByTick(value, 10);
+				const normalized = normalizePriceByTick(value, tickSpacing);
 				setValue(normalized);
 			}
 		} catch {
 			setValue('');
 		}
-	}, [setValue, value]);
+	}, [setValue, tickSpacing, value]);
 
 	const onPlus = React.useCallback(() => {
-		if (value && value !== ZERO && value !== INFINITE) {
-			const added = addByTick(value, tickSpacing);
-			setValue(added);
-		} else {
-			setValue(decodeTickPrice(MIN_TICK));
+		if (value) {
+			if (value === INFINITE) {
+				setValue(decodeTickPrice(Number(getMinTick(tickSpacing)) + Number(tickSpacing)));
+			}
+			if (Number(value) === Number(ZERO)) {
+				setValue(decodeTickPrice(Number(getMinTick(tickSpacing))));
+			}
+			if (value !== INFINITE && Number(value) !== Number(ZERO)) {
+				const added = addByTick(value, tickSpacing);
+				setValue(added);
+			}
 		}
 	}, [setValue, tickSpacing, value]);
 
 	const onMinus = React.useCallback(() => {
-		if (value && value !== ZERO && value !== INFINITE) {
-			const subtracted = subByTick(value, tickSpacing);
-			setValue(subtracted);
-		} else {
-			setValue(decodeTickPrice(MAX_TICK));
+		if (value) {
+			if (value === INFINITE) {
+				setValue(decodeTickPrice(Number(getMaxTick(tickSpacing)) - Number(tickSpacing)));
+			}
+			if (Number(value) === Number(ZERO)) {
+				setValue(decodeTickPrice(Number(getMaxTick(tickSpacing))));
+			}
+			if (value !== INFINITE && Number(value) !== Number(ZERO)) {
+				const subtracted = subByTick(value, tickSpacing);
+				setValue(subtracted);
+			}
 		}
 	}, [setValue, tickSpacing, value]);
 

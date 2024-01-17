@@ -1,6 +1,5 @@
 import React from 'react';
 import * as cryptography from '@liskhq/lisk-cryptography';
-import LiquidityChart from './LiquidityChart';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import TradableTokenPicker from '../../components/Token/TradableTokenPicker';
 import { useChain } from '../../context/ChainProvider';
@@ -16,11 +15,13 @@ import { calculateAmount0, calculateAmount1 } from '../../utils/liquidity/liquid
 import Decimal from 'decimal.js';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
-import { encodePriceSqrt } from '../../utils/math/priceFormatter';
+import { encodePriceSqrt, encodeTickPrice } from '../../utils/math/priceFormatter';
 import { getTickAtSqrtRatio } from '../../utils/tick/tick_math';
 import { useNavigate } from 'react-router-dom';
 import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
 import { useDebouncedCallback } from 'use-debounce';
+import LiquidityChartRangeInput from '../../components/LiquidityChartRangeInput';
+import { INFINITE, ZERO } from '../../utils/constants/tick';
 
 const LiquidityModal = () => {
 	const navigate = useNavigate();
@@ -44,6 +45,27 @@ const LiquidityModal = () => {
 	const [inverted, setInverted] = React.useState();
 	const [price, setPrice] = React.useState();
 	const [error, setError] = React.useState();
+
+	const minTick = React.useMemo(() => (tickSpacing ? getMinTick(tickSpacing) : '0'), [tickSpacing]);
+	const maxTick = React.useMemo(() => (tickSpacing ? getMaxTick(tickSpacing) : '0'), [tickSpacing]);
+
+	const ticksAtLimit = React.useMemo(
+		() => ({
+			['LOWER']:
+				(lowPrice
+					? lowPrice === ZERO
+						? minTick
+						: encodeTickPrice(Number(lowPrice) > 0 ? lowPrice : '0', tickSpacing).toString()
+					: undefined) === minTick,
+			['UPPER']:
+				(highPrice
+					? highPrice === INFINITE
+						? maxTick
+						: encodeTickPrice(Number(highPrice) > 0 ? highPrice : '0', tickSpacing).toString()
+					: undefined) === maxTick,
+		}),
+		[lowPrice, tickSpacing, minTick, highPrice, maxTick],
+	);
 
 	const tokenABalance = React.useMemo(() => {
 		if (tokenA && balances && balances.length > 0) {
@@ -178,17 +200,31 @@ const LiquidityModal = () => {
 					);
 
 					const poolTick = await getDEXPoolTick(
-						{
-							poolAddress,
-							tickLower: getMinTick(tickSpacing),
-							tickUpper: getMaxTick(tickSpacing),
-							interval: Number(tickSpacing) * 10,
-							inverted: inverted.toString(),
-						},
+						{ poolAddress },
 						selectedService ? selectedService.serviceURLs : undefined,
 					);
 					if (poolTick && poolTick.data && poolTick.data.length > 0) {
-						setTicks(poolTick.data);
+						const newData = [];
+						const activeLiquidity = 0;
+
+						for (let i = 0; i < poolTick.data.length; i++) {
+							const t = poolTick.data[i];
+
+							const chartEntry = {
+								activeLiquidity: Number(
+									(BigInt(activeLiquidity) + BigInt(t.liquidityNet)) * BigInt(inverted ? -1 : 1),
+								),
+								price0: inverted ? parseFloat(t.price1) : parseFloat(t.price0),
+							};
+
+							newData.push(chartEntry);
+						}
+
+						if (inverted) {
+							newData.reverse();
+						}
+
+						setTicks(newData);
 					}
 				}
 				setIsLoading(false);
@@ -404,31 +440,22 @@ const LiquidityModal = () => {
 									{inverted ? pool.token1Symbol : pool.token0Symbol}
 								</div>
 							</div>
-							{ticks && ticks.length > 0 ? (
-								<LiquidityChart
-									data={ticks}
-									currentPrice={pool.price}
-									token0={tokenA}
-									token1={tokenB}
-									lowPrice={lowPrice}
-									highPrice={highPrice}
-									inverted={inverted}
-								/>
-							) : (
-								<div
-									style={{
-										display: 'flex',
-										flexDirection: 'column',
-										alignItems: 'center',
-										justifyContent: 'center',
-										color: 'var(--color-white)',
-										opacity: 0.5,
-									}}
-								>
-									<i className="ri-bar-chart-grouped-line" style={{ fontSize: '45px' }} />
-									<div>No liquidity data.</div>
-								</div>
-							)}
+							<LiquidityChartRangeInput
+								currencyA={tokenA ?? undefined}
+								currencyB={tokenB ?? undefined}
+								feeAmount={fee}
+								tickSpacing={tickSpacing}
+								ticks={ticks}
+								ticksAtLimit={ticksAtLimit}
+								price={price}
+								priceLower={lowPrice}
+								priceUpper={highPrice}
+								onLeftRangeInput={handleLowPriceInput}
+								onRightRangeInput={handleHighPriceInput}
+								interactive={true}
+								isLoading={isLoading}
+								error={error}
+							/>
 						</div>
 					) : (
 						<div

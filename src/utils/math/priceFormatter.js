@@ -1,5 +1,11 @@
 const { INFINITE, ZERO } = require('../constants/tick');
-const { getSqrtRatioAtTick, MAX_SQRT_RATIO, MIN_SQRT_RATIO } = require('../tick/tick_math');
+const { normalizeTick } = require('../tick/normalize_tick');
+const {
+	getSqrtRatioAtTick,
+	MAX_SQRT_RATIO,
+	MIN_SQRT_RATIO,
+	getTickAtSqrtRatio,
+} = require('../tick/tick_math');
 
 /* eslint-disable import/no-extraneous-dependencies */
 const Decimal = require('decimal.js').default;
@@ -65,12 +71,20 @@ function decodeTickPrice(tick, decimalsToken0 = 8, decimalsToken1 = 8, inverse =
 	return decodePriceSqrt(sqrtPriceX96, decimalsToken0, decimalsToken1, inverse);
 }
 
+function encodeTickPrice(price, tickSpacing) {
+	const sqrtPriceX96 = encodePriceSqrt(price, 1);
+	return tickSpacing
+		? normalizeTick(getTickAtSqrtRatio(sqrtPriceX96), tickSpacing)
+		: getTickAtSqrtRatio(sqrtPriceX96);
+}
+
 function inversePriceSqrt(sqrtRatioX96, decimalsToken0 = 8, decimalsToken1 = 8) {
 	const price = decodePriceSqrt(sqrtRatioX96, decimalsToken0, decimalsToken1, true, true);
 	return encodePriceSqrt(price, 1);
 }
 
 module.exports = {
+	encodeTickPrice,
 	inversePriceSqrt,
 	decodeTickPrice,
 	decodeFeeGrowth,

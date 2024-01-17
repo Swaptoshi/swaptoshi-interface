@@ -18,10 +18,7 @@ const LiquidityChart = ({ data, currentPrice, token0, token1, lowPrice, highPric
 	React.useEffect(() => {
 		if (data && currentPrice && data.length > 0) {
 			const currentIndex = data.findIndex(t => Number(t.price) > Number(currentPrice));
-			console.log(data[currentIndex]);
-			setFilteredData(
-				data.slice(currentIndex - 100, currentIndex + 100).map(t => [Number(t.tick), t.liquidity]),
-			);
+			setFilteredData(data.slice(currentIndex - 50, currentIndex + 50).map(t => t.liquidity));
 		}
 	}, [currentPrice, data]);
 
@@ -72,17 +69,17 @@ const LiquidityChart = ({ data, currentPrice, token0, token1, lowPrice, highPric
 			const op = {
 				chart: {
 					zoom: {
-						enabled: false,
+						enabled: true,
 					},
 				},
 				dataLabels: {
 					enabled: false,
 				},
 				toolbar: {
-					show: false,
+					show: true,
 				},
 				zoom: {
-					enabled: false,
+					enabled: true,
 				},
 				xaxis: {
 					labels: {

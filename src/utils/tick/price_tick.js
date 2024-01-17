@@ -1,18 +1,6 @@
 import { decodeTickPrice, encodePriceSqrt } from '../math/priceFormatter';
 import { MAX_TICK, MIN_TICK, getTickAtSqrtRatio } from '../tick/tick_math';
-
-const normalizeTick = (tick, tickSpacing) => {
-	if (tickSpacing) {
-		const halfTickSpacing = Number(tickSpacing) / Number(2);
-		let normalizator = Number(tick) % Number(tickSpacing);
-		if (normalizator > halfTickSpacing) {
-			normalizator = -(Number(tickSpacing) - normalizator);
-		}
-		return Number(tick) - normalizator;
-	} else {
-		return Number(tick);
-	}
-};
+import { normalizeTick } from './normalize_tick';
 
 export const normalizePriceByTick = (price, tickSpacing) => {
 	const sqrtPrice = encodePriceSqrt(price, 1);
@@ -22,18 +10,23 @@ export const normalizePriceByTick = (price, tickSpacing) => {
 
 export const addByTick = (price, addedTick) => {
 	const sqrtPrice = encodePriceSqrt(price, 1);
-	const tick = getTickAtSqrtRatio(sqrtPrice);
-	return decodeTickPrice((normalizeTick(tick, addedTick) + Number(addedTick)).toString());
+	const tick = normalizeTick(getTickAtSqrtRatio(sqrtPrice), addedTick);
+	const maxTick = getMaxTick(addedTick);
+	return decodeTickPrice((tick + (tick.toString() === maxTick ? 0 : Number(addedTick))).toString());
 };
 
 export const subByTick = (price, subtractedTick) => {
 	const sqrtPrice = encodePriceSqrt(price, 1);
-	const tick = getTickAtSqrtRatio(sqrtPrice);
-	return decodeTickPrice((normalizeTick(tick, subtractedTick) - Number(subtractedTick)).toString());
+	const tick = normalizeTick(getTickAtSqrtRatio(sqrtPrice), subtractedTick);
+	const minTick = getMinTick(subtractedTick);
+	return decodeTickPrice(
+		(tick - (tick.toString() === minTick ? 0 : Number(subtractedTick))).toString(),
+	);
 };
 
 export const getMinTick = tickSpacing => {
-	const tick = normalizeTick(MIN_TICK, tickSpacing);
+	let tick = normalizeTick(MIN_TICK, tickSpacing);
+	if (tick < Number(MIN_TICK)) tick += Number(tickSpacing);
 	return tick.toString();
 };
 
@@ -42,7 +35,8 @@ export const getMinPrice = tickSpacing => {
 };
 
 export const getMaxTick = tickSpacing => {
-	const tick = normalizeTick(MAX_TICK, tickSpacing);
+	let tick = normalizeTick(MAX_TICK, tickSpacing);
+	if (tick > Number(MAX_TICK)) tick -= Number(tickSpacing);
 	return tick.toString();
 };
 
