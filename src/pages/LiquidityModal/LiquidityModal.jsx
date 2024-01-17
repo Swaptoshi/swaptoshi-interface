@@ -125,13 +125,13 @@ const LiquidityModal = () => {
 					if (Number(lowPrice) > Number(price) && Number(highPrice) > Number(price)) {
 						setAmountB('0');
 					} else {
-						const amountB = calculateAmount1(inputValue, price, highPrice, lowPrice);
+						const amountB = calculateAmount1(inputValue, price, highPrice, lowPrice, tickSpacing);
 						setAmountB(amountB);
 					}
 				}
 			}
 		},
-		[highPrice, lowPrice, pool, price],
+		[highPrice, lowPrice, pool, price, tickSpacing],
 	);
 
 	const handleAmountAMax = React.useCallback(max => {
@@ -156,13 +156,13 @@ const LiquidityModal = () => {
 					if (Number(lowPrice) < Number(price) && Number(highPrice) < Number(price)) {
 						setAmountA('0');
 					} else {
-						const amountA = calculateAmount0(inputValue, price, highPrice, lowPrice);
+						const amountA = calculateAmount0(inputValue, price, highPrice, lowPrice, tickSpacing);
 						setAmountA(amountA);
 					}
 				}
 			}
 		},
-		[highPrice, lowPrice, pool, price],
+		[highPrice, lowPrice, pool, price, tickSpacing],
 	);
 
 	const handleAmountBMax = React.useCallback(max => {
