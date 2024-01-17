@@ -75,7 +75,7 @@ function encodeTickPrice(price, tickSpacing) {
 	const sqrtPriceX96 = encodePriceSqrt(price, 1);
 	return tickSpacing
 		? normalizeTick(getTickAtSqrtRatio(sqrtPriceX96), tickSpacing)
-		: getTickAtSqrtRatio(sqrtPriceX96);
+		: Number(getTickAtSqrtRatio(sqrtPriceX96));
 }
 
 function inversePriceSqrt(sqrtRatioX96, decimalsToken0 = 8, decimalsToken1 = 8) {

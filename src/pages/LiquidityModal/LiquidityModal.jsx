@@ -15,7 +15,7 @@ import { calculateAmount0, calculateAmount1 } from '../../utils/liquidity/liquid
 import Decimal from 'decimal.js';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
-import { encodePriceSqrt, encodeTickPrice } from '../../utils/math/priceFormatter';
+import { decodeTickPrice, encodePriceSqrt, encodeTickPrice } from '../../utils/math/priceFormatter';
 import { getTickAtSqrtRatio } from '../../utils/tick/tick_math';
 import { useNavigate } from 'react-router-dom';
 import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
@@ -46,25 +46,34 @@ const LiquidityModal = () => {
 	const [price, setPrice] = React.useState();
 	const [error, setError] = React.useState();
 
-	const minTick = React.useMemo(() => (tickSpacing ? getMinTick(tickSpacing) : '0'), [tickSpacing]);
-	const maxTick = React.useMemo(() => (tickSpacing ? getMaxTick(tickSpacing) : '0'), [tickSpacing]);
+	const minTick = React.useMemo(
+		() => (tickSpacing ? getMinTick(tickSpacing) : undefined),
+		[tickSpacing],
+	);
+	const minPrice = React.useMemo(() => (minTick ? decodeTickPrice(minTick) : 0), [minTick]);
+
+	const maxTick = React.useMemo(
+		() => (tickSpacing ? getMaxTick(tickSpacing) : undefined),
+		[tickSpacing],
+	);
+	const maxPrice = React.useMemo(() => (maxTick ? decodeTickPrice(maxTick) : 0), [maxTick]);
 
 	const ticksAtLimit = React.useMemo(
 		() => ({
 			['LOWER']:
 				(lowPrice
-					? lowPrice === ZERO
+					? lowPrice === ZERO || new Decimal(lowPrice).lte(minPrice)
 						? minTick
 						: encodeTickPrice(Number(lowPrice) > 0 ? lowPrice : '0', tickSpacing).toString()
 					: undefined) === minTick,
 			['UPPER']:
 				(highPrice
-					? highPrice === INFINITE
+					? highPrice === INFINITE || new Decimal(highPrice).gte(maxPrice)
 						? maxTick
 						: encodeTickPrice(Number(highPrice) > 0 ? highPrice : '0', tickSpacing).toString()
 					: undefined) === maxTick,
 		}),
-		[lowPrice, tickSpacing, minTick, highPrice, maxTick],
+		[lowPrice, minPrice, minTick, tickSpacing, highPrice, maxPrice, maxTick],
 	);
 
 	const tokenABalance = React.useMemo(() => {
