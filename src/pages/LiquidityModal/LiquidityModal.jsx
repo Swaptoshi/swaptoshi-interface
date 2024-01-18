@@ -230,7 +230,7 @@ const LiquidityModal = () => {
 
 							const chartEntry = {
 								activeLiquidity,
-								price0: inverted ? Number(t.price1) : Number(t.price0),
+								price0: inverted ? parseFloat(t.price1) : parseFloat(t.price0),
 							};
 
 							newData.push(chartEntry);
@@ -360,9 +360,11 @@ const LiquidityModal = () => {
 
 	const handleAddLiquidity = React.useCallback(() => {
 		const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
+		const priceLower = lowPrice === ZERO ? minPrice : lowPrice;
+		const priceUpper = highPrice === INFINITE ? maxPrice : highPrice;
 
-		const lowerSqrtPirce = encodePriceSqrt(inverted ? 1 : lowPrice, inverted ? lowPrice : 1);
-		const higherSqrtPirce = encodePriceSqrt(inverted ? 1 : highPrice, inverted ? highPrice : 1);
+		const lowerSqrtPirce = encodePriceSqrt(inverted ? 1 : priceLower, inverted ? priceLower : 1);
+		const higherSqrtPirce = encodePriceSqrt(inverted ? 1 : priceUpper, inverted ? priceUpper : 1);
 		const lowerTick = getTickAtSqrtRatio(lowerSqrtPirce);
 		const higherTick = getTickAtSqrtRatio(higherSqrtPirce);
 
@@ -412,6 +414,8 @@ const LiquidityModal = () => {
 		highPrice,
 		inverted,
 		lowPrice,
+		maxPrice,
+		minPrice,
 		navigate,
 		sendTransaction,
 		senderPublicKey,

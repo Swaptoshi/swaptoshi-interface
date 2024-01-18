@@ -159,11 +159,11 @@ const Pools = () => {
 												</div>
 												<div style={{ margin: '12px 0px' }} />
 												<div style={{ fontSize: '14px', color: 'var(--text-clr)' }}>{`${
-													pos.tickLower === getMinTick(getTickSpacing(pos.fee))
+													pos.tickLower.toString() === getMinTick(getTickSpacing(pos.fee))
 														? ZERO
 														: pos.priceLower
 												} ${pos.token0Symbol} per ${pos.token1Symbol} ↔ ${
-													pos.tickUpper === getMaxTick(getTickSpacing(pos.fee))
+													pos.tickUpper.toString() === getMaxTick(getTickSpacing(pos.fee))
 														? INFINITE
 														: pos.priceUpper
 												} ${pos.token0Symbol} per ${pos.token1Symbol}`}</div>
