@@ -25,6 +25,7 @@ import LiquidityChartRangeInput from '../../components/LiquidityChartRangeInput'
 import { INFINITE, ZERO } from '../../utils/constants/tick';
 import TokenSwitchBox from '../../components/SwitchBox/TokenSwitchBox';
 import SwitchBox from '../../components/SwitchBox/SwitchBox';
+import { normalizeTick } from '../../utils/tick/normalize_tick';
 
 const LiquidityModal = () => {
 	const navigate = useNavigate();
@@ -330,13 +331,12 @@ const LiquidityModal = () => {
 		const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
 
 		const lowerSqrtPirce = encodePriceSqrt(inverted ? 1 : lowPrice, inverted ? lowPrice : 1);
-		const tickLower =
-			Number(getTickAtSqrtRatio(lowerSqrtPirce)) -
-			(Number(getTickAtSqrtRatio(lowerSqrtPirce)) % tickSpacing);
 		const higherSqrtPirce = encodePriceSqrt(inverted ? 1 : highPrice, inverted ? highPrice : 1);
-		const tickUpper =
-			Number(getTickAtSqrtRatio(higherSqrtPirce)) -
-			(Number(getTickAtSqrtRatio(higherSqrtPirce)) % tickSpacing);
+		const lowerTick = getTickAtSqrtRatio(lowerSqrtPirce);
+		const higherTick = getTickAtSqrtRatio(higherSqrtPirce);
+
+		const tickLower = normalizeTick(inverted ? higherTick : lowerTick, tickSpacing);
+		const tickUpper = normalizeTick(inverted ? lowerTick : higherTick, tickSpacing);
 
 		const token0 = inverted ? tokenB : tokenA;
 		const token1 = inverted ? tokenA : tokenB;
