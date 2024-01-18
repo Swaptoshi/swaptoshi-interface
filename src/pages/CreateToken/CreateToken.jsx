@@ -13,6 +13,7 @@ import { getFactoryIsAvailable, postFactoryCreate } from '../../service/factory'
 import ModalContainer from '../../components/Modal/ModalContainer.jsx';
 import { useDebouncedCallback } from 'use-debounce';
 import { tryToast } from '../../utils/toast/tryToast.js';
+import TextButton from '../../components/Button/TextButton.jsx';
 
 const CreateTokenModal = () => {
 	const navigate = useNavigate();
@@ -148,14 +149,9 @@ const CreateTokenModal = () => {
 			title={'Create Token'}
 			backTo={'/tokens'}
 			topRightComponent={
-				<button
-					onClick={toogleShowAdvanced}
-					className="sc-bczRLJ lfsInV Button__BaseButton-sc-4f96dcd8-1 Button__ButtonText-sc-4f96dcd8-9 hWKjgZ jtnClT"
-				>
-					<div className="text__TextWrapper-sc-9327e48a-0 cWDToC css-15li2d9">
-						{showAdvanced ? 'Hide Advanced' : 'Show Advanced'}
-					</div>
-				</button>
+				<TextButton onClick={toogleShowAdvanced}>
+					{showAdvanced ? 'Hide Advanced' : 'Show Advanced'}
+				</TextButton>
 			}
 		>
 			<form onSubmit={handleSubmit}>

@@ -25,6 +25,10 @@ import TokenSwitchBox from '../../components/SwitchBox/TokenSwitchBox';
 import SwitchBox from '../../components/SwitchBox/SwitchBox';
 import { normalizeTick } from '../../utils/tick/normalize_tick';
 import LiquidityAmountsInput from '../../components/Liquidity/LiquidityAmountsInput';
+import TextButton from '../../components/Button/TextButton';
+import SlippageAndDeadlineConfig from '../../components/Config/SlippageAndDeadlineConfig';
+import * as env from '../../utils/config/env';
+import BigNumber from 'bignumber.js';
 
 const LiquidityModal = () => {
 	const navigate = useNavigate();
@@ -51,6 +55,11 @@ const LiquidityModal = () => {
 	const [inverted, setInverted] = React.useState();
 	const [price, setPrice] = React.useState();
 	const [error, setError] = React.useState();
+
+	const [showConfig, setShowConfig] = React.useState(false);
+	const [isSlippageAuto, setIsSlippageAuto] = React.useState(true);
+	const [slippage, setSlippage] = React.useState('');
+	const [deadline, setDeadline] = React.useState('');
 
 	const minTick = React.useMemo(
 		() => (tickSpacing ? getMinTick(tickSpacing) : undefined),
@@ -273,6 +282,66 @@ const LiquidityModal = () => {
 		);
 	}, [amountA, amountB, isDepositReady, isSpecifyPriceReady, noError]);
 
+	const onConfigClick = React.useCallback(() => {
+		setShowConfig(s => !s);
+	}, []);
+
+	const onSlippageInputChange = React.useCallback(event => {
+		const inputValue = event.target.value;
+
+		if (inputValue === '') {
+			setSlippage('');
+			setIsSlippageAuto(true);
+			return;
+		}
+
+		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+			setSlippage(inputValue);
+			setIsSlippageAuto(false);
+		}
+	}, []);
+
+	const onDeadlineInputChange = React.useCallback(event => {
+		const inputValue = event.target.value;
+
+		if (inputValue === '') {
+			setDeadline('');
+			return;
+		}
+
+		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+			if (Number(inputValue) > 999) {
+				setDeadline(999);
+			} else {
+				setDeadline(inputValue);
+			}
+		}
+	}, []);
+
+	const handleReset = React.useCallback(() => {
+		setIsLoading(false);
+		setNoPoolError();
+		setPriceRangeError();
+		setNotActiveWarning();
+		setTokenA();
+		setTokenB();
+		setFee();
+		setTickSpacing();
+		setLowPrice();
+		setHighPrice();
+		setAmountA('');
+		setAmountB('');
+		setTicks();
+		setPool();
+		setInverted();
+		setPrice();
+		setError();
+		setShowConfig(false);
+		setIsSlippageAuto(true);
+		setSlippage('');
+		setDeadline('');
+	}, []);
+
 	const handleSelectFee = React.useCallback(selected => {
 		setFee(Number(selected[0]));
 		setTickSpacing(Number(selected[1]));
@@ -338,6 +407,9 @@ const LiquidityModal = () => {
 		const amount0Desired = Math.floor(Number(inverted ? amountB : amountA) * 10 ** token0.decimal);
 		const amount1Desired = Math.floor(Number(inverted ? amountA : amountB) * 10 ** token1.decimal);
 
+		const deadlineFactor = deadline ? deadline : Number(env.DEFAULT_DEADLINE_MINUTE);
+		const slippageFactor = slippage ? slippage : Number(env.DEFAULT_SLIPPAGE);
+
 		const transaction = {
 			module: 'dex',
 			command: 'mint',
@@ -350,12 +422,18 @@ const LiquidityModal = () => {
 				tickUpper,
 				amount0Desired: amount0Desired.toString(),
 				amount1Desired: amount1Desired.toString(),
-				amount0Min: (BigInt(amount0Desired) - BigInt(amount0Desired) / BigInt(20)).toString(),
-				amount1Min: (BigInt(amount1Desired) - BigInt(amount1Desired) / BigInt(20)).toString(),
+				amount0Min: new BigNumber(amount0Desired)
+					.minus(new BigNumber(amount0Desired).multipliedBy(slippageFactor).dividedBy(100))
+					.toFixed(0)
+					.toString(),
+				amount1Min: new BigNumber(amount1Desired)
+					.minus(new BigNumber(amount1Desired).multipliedBy(slippageFactor).dividedBy(100))
+					.toFixed(0)
+					.toString(),
 				recipient: cryptography.address
 					.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
 					.toString('hex'),
-				deadline: (Math.floor(Date.now() / 1000) + 10 * 60).toString(),
+				deadline: (Math.floor(Date.now() / 1000) + deadlineFactor * 60).toString(),
 			},
 			nonce: auth.nonce,
 			senderPublicKey: senderPublicKey,
@@ -371,6 +449,7 @@ const LiquidityModal = () => {
 		amountA,
 		amountB,
 		auth,
+		deadline,
 		fee,
 		highPrice,
 		inverted,
@@ -380,6 +459,7 @@ const LiquidityModal = () => {
 		navigate,
 		sendTransaction,
 		senderPublicKey,
+		slippage,
 		tickSpacing,
 		tokenA,
 		tokenB,
@@ -387,7 +467,30 @@ const LiquidityModal = () => {
 
 	return (
 		<div>
-			<ModalContainer title={'Add Liquidity'} backTo={'/pools'}>
+			<ModalContainer
+				title={'Add Liquidity'}
+				backTo={'/pools'}
+				topRightComponent={
+					<div style={{ display: 'flex', alignItems: 'center' }}>
+						<div className="hide-below-425">
+							<TextButton onClick={handleReset}>Clear all</TextButton>
+						</div>
+
+						<div>
+							<SlippageAndDeadlineConfig
+								show={showConfig}
+								onClick={onConfigClick}
+								isSlippageAuto={isSlippageAuto}
+								setIsSlippageAuto={setIsSlippageAuto}
+								slippage={slippage}
+								onSlippageInputChange={onSlippageInputChange}
+								deadline={deadline}
+								onDeadlineInputChange={onDeadlineInputChange}
+							/>
+						</div>
+					</div>
+				}
+			>
 				<div style={{ display: 'flex' }}>
 					<TradableTokenPicker
 						value={tokenA}

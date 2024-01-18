@@ -742,6 +742,16 @@
 	}
 }
 
+@media only screen and (width <= 425px) {
+	.hide-below-425 {
+		display: none !important;
+	}
+
+	.show-below-425 {
+		display: unset;
+	}
+}
+
 @media only screen and (width <= 720px) {
 	.hide-below-720 {
 		display: none;
