@@ -18,12 +18,7 @@ export const Area = ({ series, xScale, yScale, xValue, yValue, fill }) =>
 						.curve(curveStepAfter)
 						.x(d => xScale(xValue(d)))
 						.y1(d => yScale(yValue(d)))
-						.y0(yScale(0))(
-						series.filter(d => {
-							const value = xScale(xValue(d));
-							return value > 0 && value <= window.innerWidth;
-						}),
-					) ?? undefined
+						.y0(yScale(0))(series) ?? undefined
 				}
 			/>
 		),
