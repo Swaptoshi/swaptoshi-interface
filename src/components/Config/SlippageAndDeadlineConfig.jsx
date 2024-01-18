@@ -1,10 +1,10 @@
 import React from 'react';
-import Dialog from '../../components/Tooltip/Dialog';
-import Tooltip from '../../components/Tooltip/Tooltip';
-import SwitchBox from '../../components/SwitchBox/SwitchBox';
+import Dialog from '../Tooltip/Dialog';
+import Tooltip from '../Tooltip/Tooltip';
+import SwitchBox from '../SwitchBox/SwitchBox';
 import * as env from '../../utils/config/env';
 
-export default function SwapConfig({
+export default function SlippageAndDeadlineConfig({
 	show,
 	onClick,
 	isSlippageAuto,

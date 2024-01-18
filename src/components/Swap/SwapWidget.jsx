@@ -6,7 +6,7 @@ import SwapTokenInput from './SwapTokenInput';
 import { useDebouncedCallback } from 'use-debounce';
 import { getPrice, getQuote } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
-import SwapConfig from './SwapConfig';
+import SlippageAndDeadlineConfig from '../Config/SlippageAndDeadlineConfig';
 import SwapWarning from './SwapWarning';
 import SwapDetailsInfo from './SwapDetailsInfo';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
@@ -585,7 +585,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 						<span className="swap-btn">Swap</span>
 					</div>
 
-					<SwapConfig
+					<SlippageAndDeadlineConfig
 						show={showSwapSetting}
 						onClick={onConfigClick}
 						isSlippageAuto={isSlippageAuto}
