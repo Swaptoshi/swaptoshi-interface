@@ -25,7 +25,6 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 										<div className="sc-sx9n2y-0 kandXm css-1aekuku">Theme</div>
 									</div>
 									<SwitchBox
-										width="60%"
 										value={currentTheme}
 										items={[
 											{ value: 'system', onClick: onThemeAuto, component: 'Auto' },

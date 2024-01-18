@@ -1,0 +1,27 @@
+.full-range-button {
+	width: 100px !important;
+}
+
+.add-liqudity-switch-token {
+	width: 100px !important;
+}
+
+@media only screen and (width > 375px) {
+	.flex-above-375 {
+		display: flex !important;
+	}
+}
+
+@media only screen and (width <= 375px) {
+	.halfscreen-below-375 {
+		width: 50% !important;
+	}
+
+	.full-range-button {
+		width: unset !important;
+	}
+
+	.add-liqudity-switch-token {
+		width: 100% !important;
+	}
+}

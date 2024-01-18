@@ -852,7 +852,7 @@ a {
 }
 
 .ojMTq {
-	color: rgb(152 161 192) !important;
+	color: var(--text-clr) !important;
 }
 
 .cVcAns {

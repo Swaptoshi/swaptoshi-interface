@@ -1,3 +1,4 @@
+import './LiquidityModal.css';
 import React from 'react';
 import * as cryptography from '@liskhq/lisk-cryptography';
 import ModalContainer from '../../components/Modal/ModalContainer';
@@ -22,6 +23,8 @@ import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
 import { useDebouncedCallback } from 'use-debounce';
 import LiquidityChartRangeInput from '../../components/LiquidityChartRangeInput';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
+import TokenSwitchBox from '../../components/SwitchBox/TokenSwitchBox';
+import SwitchBox from '../../components/SwitchBox/SwitchBox';
 
 const LiquidityModal = () => {
 	const navigate = useNavigate();
@@ -182,12 +185,6 @@ const LiquidityModal = () => {
 
 	const fetchPoolTickData = useDebouncedCallback(async () => {
 		const checkPool = async () => {
-			setIsLoading(true);
-			setNoPoolError();
-			setTicks();
-			setPool();
-			setPrice();
-
 			const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
 			const poolAddress = cryptography.address.getLisk32AddressFromAddress(
 				computePoolAddress(poolKey),
@@ -253,6 +250,12 @@ const LiquidityModal = () => {
 			feeAmountTickSpacing !== undefined &&
 			tickSpacing
 		) {
+			setIsLoading(true);
+			setNoPoolError();
+			setTicks();
+			setPool();
+			setPrice();
+
 			fetchPoolTickData();
 		}
 	}, [
@@ -309,6 +312,19 @@ const LiquidityModal = () => {
 		setAmountA('');
 		setAmountB('');
 	}, []);
+
+	const handleSwitch = React.useCallback(() => {
+		setTokenA(tokenB);
+		setTokenB(tokenA);
+
+		if (highPrice !== INFINITE) {
+			setLowPrice((1 / Number(highPrice)).toFixed(5));
+		}
+
+		if (lowPrice !== ZERO) {
+			setHighPrice((1 / Number(lowPrice)).toFixed(5));
+		}
+	}, [highPrice, lowPrice, tokenA, tokenB]);
 
 	const handleAddLiquidity = React.useCallback(() => {
 		const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
@@ -402,16 +418,50 @@ const LiquidityModal = () => {
 
 				{noPoolError ? <WarningBox type={'error'}>{noPoolError}</WarningBox> : null}
 
-				<div
-					style={{
-						color: 'var(--color-white)',
-						fontWeight: 600,
-						fontSize: '16px',
-						margin: '8px 0px',
-						opacity: !isSpecifyPriceReady || !!noPoolError ? 0.5 : 1,
-					}}
-				>
-					Set Price Range
+				<div className="flex-above-375" style={{ alignItems: 'center' }}>
+					<div
+						style={{
+							color: 'var(--color-white)',
+							fontWeight: 600,
+							fontSize: '16px',
+							margin: '8px 0px',
+							opacity: !isSpecifyPriceReady || !!noPoolError ? 0.5 : 1,
+						}}
+					>
+						Set Price Range
+					</div>
+					<div style={{ flex: 1 }} />
+					{tokenA && tokenB && (
+						<div style={{ display: 'flex' }}>
+							<SwitchBox
+								className={'halfscreen-below-375'}
+								containerClassName={'full-range-button'}
+								style={{ marginRight: '8px' }}
+								unselectedBackgroundColor={'var(--switch-button)'}
+								unselectedTextColor={'var(--text-clr)'}
+								selectedTextColor={'var(--color-white)'}
+								selectedBackgroundColor={'var(--card-bg)'}
+								value={lowPrice === ZERO && highPrice === INFINITE}
+								items={[
+									{
+										value: true,
+										onClick: () => {
+											setLowPrice(ZERO);
+											setHighPrice(INFINITE);
+										},
+										component: <div style={{ fontSize: '12px' }}>Full Range</div>,
+									},
+								]}
+							/>
+							<TokenSwitchBox
+								className="add-liqudity-switch-token"
+								containerClassName={'halfscreen-below-375'}
+								tokenA={tokenA}
+								tokenB={tokenB}
+								onSwitch={handleSwitch}
+							/>
+						</div>
+					)}
 				</div>
 
 				<PriceInput
@@ -463,7 +513,7 @@ const LiquidityModal = () => {
 								priceUpper={highPrice}
 								onLeftRangeInput={handleLowPriceInput}
 								onRightRangeInput={handleHighPriceInput}
-								interactive={true}
+								interactive={ticks && ticks.length > 0}
 								isLoading={isLoading}
 								error={error}
 							/>

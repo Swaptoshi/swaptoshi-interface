@@ -429,8 +429,6 @@ a {
 	border-radius: 12px;
 	padding: 6px;
 	gap: 4px;
-	background-color: var(--model-btn-color);
-	color: var(--model-btn-hover);
 	transition: all 250ms ease 0s;
 }
 
