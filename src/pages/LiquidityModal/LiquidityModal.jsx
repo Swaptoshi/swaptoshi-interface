@@ -35,6 +35,8 @@ const LiquidityModal = () => {
 
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [noPoolError, setNoPoolError] = React.useState();
+	const [liquidityError, setLiquidityError] = React.useState();
+
 	const [tokenA, setTokenA] = React.useState();
 	const [tokenB, setTokenB] = React.useState();
 	const [fee, setFee] = React.useState();
@@ -270,6 +272,26 @@ const LiquidityModal = () => {
 		tokenB,
 	]);
 
+	React.useEffect(() => {
+		if (lowPrice && highPrice && price) {
+			if (Number(highPrice) <= Number(lowPrice)) {
+				setLiquidityError(
+					'Invalid range selected. The min price must be lower than the max price.',
+				);
+				return;
+			}
+			if (
+				(Number(lowPrice) < price && Number(highPrice) < price) ||
+				(Number(lowPrice) > price && Number(highPrice) > price)
+			) {
+				setLiquidityError(
+					'Your position will not earn fees or be used in trades until the market price moves into your range.',
+				);
+				return;
+			}
+		}
+	}, [lowPrice, highPrice, price]);
+
 	const isSpecifyPriceReady = React.useMemo(() => {
 		return tokenA !== undefined && tokenB !== undefined && fee !== undefined && pool !== undefined;
 	}, [fee, pool, tokenA, tokenB]);
@@ -278,16 +300,21 @@ const LiquidityModal = () => {
 		return lowPrice !== undefined && lowPrice !== '' && highPrice !== undefined && highPrice !== '';
 	}, [highPrice, lowPrice]);
 
+	const noError = React.useMemo(() => {
+		return !error && !noPoolError && !liquidityError;
+	}, [error, liquidityError, noPoolError]);
+
 	const isEverythingReady = React.useMemo(() => {
 		return (
 			isSpecifyPriceReady &&
 			isDepositReady &&
+			noError &&
 			amountA !== undefined &&
 			amountA !== '' &&
 			amountB !== undefined &&
 			amountB !== ''
 		);
-	}, [amountA, amountB, isDepositReady, isSpecifyPriceReady]);
+	}, [amountA, amountB, isDepositReady, isSpecifyPriceReady, noError]);
 
 	const handleSelectFee = React.useCallback(selected => {
 		setFee(Number(selected[0]));
@@ -490,6 +517,12 @@ const LiquidityModal = () => {
 					setValue={handleHighPriceInput}
 				/>
 
+				{liquidityError ? (
+					<WarningBox fill icon={'ri-alert-line'} type={'warning'} textSize={10}>
+						{liquidityError}
+					</WarningBox>
+				) : null}
+
 				<div className="Column__AutoColumn-sc-72c388fb-2 erfjwt" style={{ minHeight: 200 }}>
 					{pool ? (
 						<div style={{ opacity: !isSpecifyPriceReady || !!noPoolError ? 0.5 : 1 }}>
@@ -572,7 +605,7 @@ const LiquidityModal = () => {
 				)}
 
 				<WalletActionButton
-					disabled={!isEverythingReady || !!noPoolError || !!error}
+					disabled={!isEverythingReady}
 					onClick={handleAddLiquidity}
 					style={{ height: '60px' }}
 				>
