@@ -549,6 +549,7 @@ const LiquidityModal = () => {
 
 				{Number(lowPrice) < Number(price) && Number(highPrice) < Number(price) ? null : (
 					<SwapTokenInput
+						showMax={true}
 						isLoading={!isSpecifyPriceReady || !isDepositReady}
 						disableSelect={true}
 						inputValue={amountA}
@@ -560,6 +561,7 @@ const LiquidityModal = () => {
 
 				{Number(lowPrice) > Number(price) && Number(highPrice) > Number(price) ? null : (
 					<SwapTokenInput
+						showMax={true}
 						isLoading={!isSpecifyPriceReady || !isDepositReady}
 						disableSelect={true}
 						inputValue={amountB}
