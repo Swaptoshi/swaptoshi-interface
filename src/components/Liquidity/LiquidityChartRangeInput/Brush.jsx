@@ -2,7 +2,7 @@ import { brushHandleAccentPath, brushHandlePath, OffScreenHandle } from './svg';
 import { brushX, select } from 'd3';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import usePrevious from '../../utils/hook/usePrevious';
+import usePrevious from '../../../utils/hook/usePrevious';
 
 const Handle = styled.path`
 	cursor: ew-resize;

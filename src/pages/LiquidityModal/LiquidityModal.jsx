@@ -21,7 +21,7 @@ import { getTickAtSqrtRatio } from '../../utils/tick/tick_math';
 import { useNavigate } from 'react-router-dom';
 import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
 import { useDebouncedCallback } from 'use-debounce';
-import LiquidityChartRangeInput from '../../components/LiquidityChartRangeInput';
+import LiquidityChartRangeInput from '../../components/Liquidity/LiquidityChartRangeInput';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
 import TokenSwitchBox from '../../components/SwitchBox/TokenSwitchBox';
 import SwitchBox from '../../components/SwitchBox/SwitchBox';

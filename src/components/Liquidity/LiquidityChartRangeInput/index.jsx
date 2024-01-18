@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { Chart } from './Chart';
-import { tokenToColorHex } from '../../utils/color/tokenToColor';
-import Loader from '../Loader';
-import InfoBox from '../Message/InfoBox';
-import { INFINITE } from '../../utils/constants/tick';
-import { decodeTickPrice } from '../../utils/math/priceFormatter';
-import { getMaxTick } from '../../utils/tick/price_tick';
+import { tokenToColorHex } from '../../../utils/color/tokenToColor';
+import Loader from '../../Loader';
+import InfoBox from '../../Message/InfoBox';
+import { INFINITE } from '../../../utils/constants/tick';
+import { decodeTickPrice } from '../../../utils/math/priceFormatter';
+import { getMaxTick } from '../../../utils/tick/price_tick';
 
 const ZOOM_LEVELS = {
 	['100']: {

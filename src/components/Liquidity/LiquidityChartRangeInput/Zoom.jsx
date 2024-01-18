@@ -1,7 +1,7 @@
 import { select, zoom, zoomIdentity } from 'd3';
 import React, { useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
-import TertiaryButton from '../Button/TertiaryButton';
+import TertiaryButton from '../../Button/TertiaryButton';
 
 const Wrapper = styled.div`
 	display: grid;
