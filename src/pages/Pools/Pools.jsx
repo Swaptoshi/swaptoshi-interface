@@ -27,9 +27,11 @@ const Pools = () => {
 
 	const getTickSpacing = React.useCallback(
 		fee => {
-			const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t[0] === fee.toString());
-			if (tickSpacing) {
-				return tickSpacing[1];
+			if (dexConfig) {
+				const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t[0] === fee.toString());
+				if (tickSpacing) {
+					return tickSpacing[1];
+				}
 			}
 			return '0';
 		},
