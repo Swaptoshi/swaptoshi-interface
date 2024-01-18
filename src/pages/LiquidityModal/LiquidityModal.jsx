@@ -11,8 +11,6 @@ import PoolFeeSelector from '../../components/Fee/PoolFeeSelector';
 import { tryToast } from '../../utils/toast/tryToast';
 import { computePoolAddress, getPoolKey } from '../../utils/address/poolAddress';
 import { getDEXPool, getDEXPoolTick } from '../../service/dex';
-import SwapTokenInput from '../../components/Swap/SwapTokenInput';
-import { calculateAmount0, calculateAmount1 } from '../../utils/liquidity/liquidityAmount';
 import Decimal from 'decimal.js';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
@@ -26,6 +24,7 @@ import { INFINITE, ZERO } from '../../utils/constants/tick';
 import TokenSwitchBox from '../../components/SwitchBox/TokenSwitchBox';
 import SwitchBox from '../../components/SwitchBox/SwitchBox';
 import { normalizeTick } from '../../utils/tick/normalize_tick';
+import LiquidityAmountsInput from '../../components/Liquidity/LiquidityAmountsInput';
 
 const LiquidityModal = () => {
 	const navigate = useNavigate();
@@ -116,6 +115,7 @@ const LiquidityModal = () => {
 	}, [balances, tokenB]);
 
 	React.useEffect(() => {
+		setError();
 		if (tokenABalance && tokenA && amountA && Number(tokenABalance) < Number(amountA)) {
 			setError(`Insufficient ${tokenA.symbol.toUpperCase()} balance`);
 			return;
@@ -123,73 +123,12 @@ const LiquidityModal = () => {
 	}, [amountA, error, tokenA, tokenABalance]);
 
 	React.useEffect(() => {
+		setError();
 		if (tokenBBalance && tokenB && amountB && Number(tokenBBalance) < Number(amountB)) {
 			setError(`Insufficient ${tokenB.symbol.toUpperCase()} balance`);
 			return;
 		}
 	}, [amountB, error, tokenB, tokenBBalance]);
-
-	const handleAmountAInputChange = React.useCallback(
-		event => {
-			const inputValue = event.target.value;
-			setError();
-
-			if (inputValue === '' || inputValue === '0') {
-				setAmountA('');
-				setAmountB('');
-				return;
-			}
-
-			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-				setAmountA(inputValue);
-				if (lowPrice && highPrice && pool) {
-					if (Number(lowPrice) > Number(price) && Number(highPrice) > Number(price)) {
-						setAmountB('0');
-					} else {
-						const amountB = calculateAmount1(inputValue, price, highPrice, lowPrice, tickSpacing);
-						setAmountB(amountB);
-					}
-				}
-			}
-		},
-		[highPrice, lowPrice, pool, price, tickSpacing],
-	);
-
-	const handleAmountAMax = React.useCallback(max => {
-		setError();
-		setAmountA(max);
-	}, []);
-
-	const handleAmountBInputChange = React.useCallback(
-		event => {
-			setError();
-			const inputValue = event.target.value;
-
-			if (inputValue === '' || inputValue === '0') {
-				setAmountB('');
-				setAmountA('');
-				return;
-			}
-
-			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-				setAmountB(inputValue);
-				if (lowPrice && highPrice && pool) {
-					if (Number(lowPrice) < Number(price) && Number(highPrice) < Number(price)) {
-						setAmountA('0');
-					} else {
-						const amountA = calculateAmount0(inputValue, price, highPrice, lowPrice, tickSpacing);
-						setAmountA(amountA);
-					}
-				}
-			}
-		},
-		[highPrice, lowPrice, pool, price, tickSpacing],
-	);
-
-	const handleAmountBMax = React.useCallback(max => {
-		setError();
-		setAmountB(max);
-	}, []);
 
 	React.useEffect(() => {
 		if (tokenA && tokenB) {
@@ -363,6 +302,14 @@ const LiquidityModal = () => {
 		setTokenA(tokenB);
 		setTokenB(tokenA);
 
+		if (amountA) {
+			setAmountB(amountA);
+		}
+
+		if (amountB) {
+			setAmountA(amountB);
+		}
+
 		if (highPrice !== INFINITE) {
 			setLowPrice((1 / Number(highPrice)).toFixed(5));
 		}
@@ -370,7 +317,7 @@ const LiquidityModal = () => {
 		if (lowPrice !== ZERO) {
 			setHighPrice((1 / Number(lowPrice)).toFixed(5));
 		}
-	}, [highPrice, lowPrice, tokenA, tokenB]);
+	}, [amountA, amountB, highPrice, lowPrice, tokenA, tokenB]);
 
 	const handleAddLiquidity = React.useCallback(() => {
 		const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
@@ -499,6 +446,8 @@ const LiquidityModal = () => {
 									{
 										value: true,
 										onClick: () => {
+											setAmountA('');
+											setAmountB('');
 											setLowPrice(ZERO);
 											setHighPrice(INFINITE);
 										},
@@ -606,29 +555,19 @@ const LiquidityModal = () => {
 					Deposit Amounts
 				</div>
 
-				{Number(lowPrice) < Number(price) && Number(highPrice) < Number(price) ? null : (
-					<SwapTokenInput
-						showMax={true}
-						isLoading={!isSpecifyPriceReady || !isDepositReady}
-						disableSelect={true}
-						inputValue={amountA}
-						onInputChange={handleAmountAInputChange}
-						selectedToken={tokenA}
-						onMaxClick={handleAmountAMax}
-					/>
-				)}
-
-				{Number(lowPrice) > Number(price) && Number(highPrice) > Number(price) ? null : (
-					<SwapTokenInput
-						showMax={true}
-						isLoading={!isSpecifyPriceReady || !isDepositReady}
-						disableSelect={true}
-						inputValue={amountB}
-						onInputChange={handleAmountBInputChange}
-						selectedToken={tokenB}
-						onMaxClick={handleAmountBMax}
-					/>
-				)}
+				<LiquidityAmountsInput
+					pool={pool}
+					price={price}
+					lowPrice={lowPrice}
+					highPrice={highPrice}
+					isLoading={!isSpecifyPriceReady || !isDepositReady}
+					amountA={amountA}
+					setAmountA={setAmountA}
+					tokenA={tokenA}
+					amountB={amountB}
+					setAmountB={setAmountB}
+					tokenB={tokenB}
+				/>
 
 				<WalletActionButton
 					disabled={!isEverythingReady}
