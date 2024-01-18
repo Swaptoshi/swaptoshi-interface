@@ -65,23 +65,37 @@ const LiquidityModal = () => {
 	);
 	const maxPrice = React.useMemo(() => (maxTick ? decodeTickPrice(maxTick) : 0), [maxTick]);
 
-	const ticksAtLimit = React.useMemo(
-		() => ({
-			['LOWER']:
+	const ticksAtLimit = React.useMemo(() => {
+		let lowerLimit = false;
+		let upperLimit = false;
+
+		try {
+			lowerLimit =
 				(lowPrice
 					? lowPrice === ZERO || new Decimal(lowPrice).lte(minPrice)
 						? minTick
 						: encodeTickPrice(Number(lowPrice) > 0 ? lowPrice : '0', tickSpacing).toString()
-					: undefined) === minTick,
-			['UPPER']:
+					: undefined) === minTick;
+		} catch {
+			/* empty */
+		}
+
+		try {
+			upperLimit =
 				(highPrice
 					? highPrice === INFINITE || new Decimal(highPrice).gte(maxPrice)
 						? maxTick
 						: encodeTickPrice(Number(highPrice) > 0 ? highPrice : '0', tickSpacing).toString()
-					: undefined) === maxTick,
-		}),
-		[lowPrice, minPrice, minTick, tickSpacing, highPrice, maxPrice, maxTick],
-	);
+					: undefined) === maxTick;
+		} catch {
+			/* empty */
+		}
+
+		return {
+			['LOWER']: lowerLimit,
+			['UPPER']: upperLimit,
+		};
+	}, [lowPrice, minPrice, minTick, tickSpacing, highPrice, maxPrice, maxTick]);
 
 	const tokenABalance = React.useMemo(() => {
 		if (tokenA && balances && balances.length > 0) {
