@@ -451,7 +451,11 @@ const LiquidityModal = () => {
 					onLoad={setFeeAmountTickSpacing}
 				/>
 
-				{noPoolError ? <WarningBox type={'error'}>{noPoolError}</WarningBox> : null}
+				{noPoolError ? (
+					<WarningBox fill icon={'ri-alert-line'} type={'error'} textSize={10}>
+						{noPoolError}
+					</WarningBox>
+				) : null}
 
 				<div className="flex-above-375" style={{ alignItems: 'center' }}>
 					<div

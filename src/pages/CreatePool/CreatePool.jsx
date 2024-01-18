@@ -127,7 +127,11 @@ export default function CreatePool() {
 
 			<PoolFeeSelector selected={fee} onSelect={handleSelectFee} />
 
-			{error ? <WarningBox type={'error'}>{error}</WarningBox> : null}
+			{error ? (
+				<WarningBox fill icon={'ri-alert-line'} type={'error'} textSize={10}>
+					{error}
+				</WarningBox>
+			) : null}
 
 			<div
 				style={{
