@@ -35,7 +35,8 @@ const LiquidityModal = () => {
 
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [noPoolError, setNoPoolError] = React.useState();
-	const [liquidityError, setLiquidityError] = React.useState();
+	const [priceRangeError, setPriceRangeError] = React.useState();
+	const [notActiveWarning, setNotActiveWarning] = React.useState();
 
 	const [tokenA, setTokenA] = React.useState();
 	const [tokenB, setTokenB] = React.useState();
@@ -274,8 +275,11 @@ const LiquidityModal = () => {
 
 	React.useEffect(() => {
 		if (lowPrice && highPrice && price) {
+			setPriceRangeError();
+			setNotActiveWarning();
+
 			if (Number(highPrice) <= Number(lowPrice)) {
-				setLiquidityError(
+				setPriceRangeError(
 					'Invalid range selected. The min price must be lower than the max price.',
 				);
 				return;
@@ -284,7 +288,7 @@ const LiquidityModal = () => {
 				(Number(lowPrice) < price && Number(highPrice) < price) ||
 				(Number(lowPrice) > price && Number(highPrice) > price)
 			) {
-				setLiquidityError(
+				setNotActiveWarning(
 					'Your position will not earn fees or be used in trades until the market price moves into your range.',
 				);
 				return;
@@ -301,8 +305,8 @@ const LiquidityModal = () => {
 	}, [highPrice, lowPrice]);
 
 	const noError = React.useMemo(() => {
-		return !error && !noPoolError && !liquidityError;
-	}, [error, liquidityError, noPoolError]);
+		return !error && !noPoolError && !priceRangeError;
+	}, [error, priceRangeError, noPoolError]);
 
 	const isEverythingReady = React.useMemo(() => {
 		return (
@@ -517,9 +521,9 @@ const LiquidityModal = () => {
 					setValue={handleHighPriceInput}
 				/>
 
-				{liquidityError ? (
+				{priceRangeError || notActiveWarning ? (
 					<WarningBox fill icon={'ri-alert-line'} type={'warning'} textSize={10}>
-						{liquidityError}
+						{priceRangeError ?? notActiveWarning}
 					</WarningBox>
 				) : null}
 
