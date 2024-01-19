@@ -53,6 +53,11 @@ export default function LiquidityAmountsInput({
 		[highPrice, maxPrice],
 	);
 
+	React.useEffect(() => {
+		setAmountA('');
+		setAmountB('');
+	}, [highPrice, lowPrice, setAmountA, setAmountB]);
+
 	const handleAmountAInputChange = React.useCallback(
 		event => {
 			const inputValue = event.target.value;
@@ -117,7 +122,7 @@ export default function LiquidityAmountsInput({
 		[setAmountB],
 	);
 
-	return (
+	return Number(lowerPrice) >= Number(upperPrice) ? null : (
 		<div>
 			{Number(lowerPrice) < Number(price) && Number(upperPrice) < Number(price) ? null : (
 				<SwapTokenInput

@@ -357,14 +357,10 @@ const LiquidityModal = () => {
 
 	const handleLowPriceInput = React.useCallback(e => {
 		setLowPrice(e);
-		setAmountA('');
-		setAmountB('');
 	}, []);
 
 	const handleHighPriceInput = React.useCallback(e => {
 		setHighPrice(e);
-		setAmountA('');
-		setAmountB('');
 	}, []);
 
 	const handleSwitch = React.useCallback(() => {
