@@ -5,27 +5,61 @@ import SwitchBox from '../SwitchBox/SwitchBox';
 import * as env from '../../utils/config/env';
 
 export default function SlippageAndDeadlineConfig({
-	show,
-	onClick,
-	isSlippageAuto,
-	setIsSlippageAuto,
 	slippage,
-	onSlippageInputChange,
+	setSlippage,
 	deadline,
-	onDeadlineInputChange,
+	setDeadline,
 }) {
+	const [isSlippageAuto, setIsSlippageAuto] = React.useState(true);
+	const [showConfig, setShowConfig] = React.useState(false);
 	const [slippageShow, setSlippageShow] = React.useState(false);
 	const [deadlineShow, setDeadlineShow] = React.useState(false);
+
+	const onConfigClick = React.useCallback(() => {
+		setShowConfig(s => !s);
+	}, []);
+
+	const onSlippageInputChange = React.useCallback(event => {
+		const inputValue = event.target.value;
+
+		if (inputValue === '') {
+			setSlippage('');
+			setIsSlippageAuto(true);
+			return;
+		}
+
+		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+			setSlippage(inputValue);
+			setIsSlippageAuto(false);
+		}
+	}, []);
+
+	const onDeadlineInputChange = React.useCallback(event => {
+		const inputValue = event.target.value;
+
+		if (inputValue === '') {
+			setDeadline('');
+			return;
+		}
+
+		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
+			if (Number(inputValue) > 999) {
+				setDeadline(999);
+			} else {
+				setDeadline(inputValue);
+			}
+		}
+	}, []);
 
 	return (
 		<div className="gear">
 			<Dialog
-				show={show}
+				show={showConfig}
 				style={{ right: 0, width: '300px', top: '45px' }}
 				anchor={
 					<button
 						className="gear-btn"
-						onClick={onClick}
+						onClick={onConfigClick}
 						style={{ borderRadius: '24px', overflow: 'hidden' }}
 					>
 						<div

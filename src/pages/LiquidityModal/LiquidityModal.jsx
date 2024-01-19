@@ -56,8 +56,6 @@ const LiquidityModal = () => {
 	const [price, setPrice] = React.useState();
 	const [error, setError] = React.useState();
 
-	const [showConfig, setShowConfig] = React.useState(false);
-	const [isSlippageAuto, setIsSlippageAuto] = React.useState(true);
 	const [slippage, setSlippage] = React.useState('');
 	const [deadline, setDeadline] = React.useState('');
 
@@ -282,42 +280,6 @@ const LiquidityModal = () => {
 		);
 	}, [amountA, amountB, isDepositReady, isSpecifyPriceReady, noError]);
 
-	const onConfigClick = React.useCallback(() => {
-		setShowConfig(s => !s);
-	}, []);
-
-	const onSlippageInputChange = React.useCallback(event => {
-		const inputValue = event.target.value;
-
-		if (inputValue === '') {
-			setSlippage('');
-			setIsSlippageAuto(true);
-			return;
-		}
-
-		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-			setSlippage(inputValue);
-			setIsSlippageAuto(false);
-		}
-	}, []);
-
-	const onDeadlineInputChange = React.useCallback(event => {
-		const inputValue = event.target.value;
-
-		if (inputValue === '') {
-			setDeadline('');
-			return;
-		}
-
-		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-			if (Number(inputValue) > 999) {
-				setDeadline(999);
-			} else {
-				setDeadline(inputValue);
-			}
-		}
-	}, []);
-
 	const handleReset = React.useCallback(() => {
 		setIsLoading(false);
 		setNoPoolError();
@@ -336,8 +298,6 @@ const LiquidityModal = () => {
 		setInverted();
 		setPrice();
 		setError();
-		setShowConfig(false);
-		setIsSlippageAuto(true);
 		setSlippage('');
 		setDeadline('');
 	}, []);
@@ -474,14 +434,10 @@ const LiquidityModal = () => {
 
 						<div>
 							<SlippageAndDeadlineConfig
-								show={showConfig}
-								onClick={onConfigClick}
-								isSlippageAuto={isSlippageAuto}
-								setIsSlippageAuto={setIsSlippageAuto}
 								slippage={slippage}
-								onSlippageInputChange={onSlippageInputChange}
+								setSlippage={setSlippage}
 								deadline={deadline}
-								onDeadlineInputChange={onDeadlineInputChange}
+								setDeadline={setDeadline}
 							/>
 						</div>
 					</div>

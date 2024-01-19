@@ -25,8 +25,6 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	const [feeConversion, setFeeConversion] = useState();
 	const [feeConversionLoading, setFeeConversionLoading] = useState(false);
 
-	const [showSwapSetting, setShowSwapSetting] = useState(false);
-	const [isSlippageAuto, setIsSlippageAuto] = useState(true);
 	const [slippage, setSlippage] = useState('');
 	const [deadline, setDeadline] = useState('');
 
@@ -517,42 +515,6 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 		}
 	}, [baseToken, baseValue, handleExactIn, handleExactOut, priceReady, quoteToken, quoteValue]);
 
-	const onConfigClick = React.useCallback(() => {
-		setShowSwapSetting(s => !s);
-	}, []);
-
-	const onSlippageInputChange = React.useCallback(event => {
-		const inputValue = event.target.value;
-
-		if (inputValue === '') {
-			setSlippage('');
-			setIsSlippageAuto(true);
-			return;
-		}
-
-		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-			setSlippage(inputValue);
-			setIsSlippageAuto(false);
-		}
-	}, []);
-
-	const onDeadlineInputChange = React.useCallback(event => {
-		const inputValue = event.target.value;
-
-		if (inputValue === '') {
-			setDeadline('');
-			return;
-		}
-
-		if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
-			if (Number(inputValue) > 999) {
-				setDeadline(999);
-			} else {
-				setDeadline(inputValue);
-			}
-		}
-	}, []);
-
 	const onSwapClick = React.useCallback(() => {
 		sendTransaction({
 			transaction,
@@ -586,14 +548,10 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 					</div>
 
 					<SlippageAndDeadlineConfig
-						show={showSwapSetting}
-						onClick={onConfigClick}
-						isSlippageAuto={isSlippageAuto}
-						setIsSlippageAuto={setIsSlippageAuto}
 						slippage={slippage}
-						onSlippageInputChange={onSlippageInputChange}
+						setSlippage={setSlippage}
 						deadline={deadline}
-						onDeadlineInputChange={onDeadlineInputChange}
+						setDeadline={setDeadline}
 					/>
 				</div>
 
@@ -638,7 +596,7 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 						command={command}
 						priceImpact={priceImpact}
 						priceReady={priceReady}
-						isSlippageAuto={isSlippageAuto}
+						isSlippageAuto={!slippage}
 						slippage={slippage}
 						baseToken={baseToken}
 						baseValue={baseValue}
