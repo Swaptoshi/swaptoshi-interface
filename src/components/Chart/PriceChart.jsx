@@ -21,6 +21,9 @@ export const PriceChart = ({ data, type }) => {
 			handleScroll: false,
 			handleScale: false,
 			grid: { horzLines: { visible: false }, vertLines: { visible: false } },
+			localization: {
+				priceFormatter: p => `${p.toFixed(4)}`,
+			},
 		});
 		chart.timeScale().fitContent();
 

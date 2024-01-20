@@ -47,7 +47,7 @@ export default function LiskPriceProvider({ children }) {
 				if (market && market.data && market.data.length > 0) {
 					const price = market.data.find(t => t.from === 'LSK' && t.to === currency.toUpperCase());
 					if (!price) setPrices(0);
-					else setPrices(Number(price.rate));
+					else setPrices(parseFloat(price.rate));
 				}
 			}
 		};

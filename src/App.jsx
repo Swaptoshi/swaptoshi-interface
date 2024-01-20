@@ -18,6 +18,7 @@ import AppContextProvider from './context/AppContextProvider';
 import CreatePool from './pages/CreatePool/CreatePool';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallbackComponent from './pages/Error/ErrorFallbackComponent';
+import PositionDetails from './pages/PositionDetails/PositionDetails';
 
 function App() {
 	const [theme] = useTheme();
@@ -39,6 +40,7 @@ function App() {
 						<Route path="/tokens/:id" element={<TokenDetails />} />
 						<Route path="/tokens/create" element={<CreateTokenModal />} />
 						<Route path="/pools/mint" element={<LiquidityModal />} />
+						<Route path="/pools/:id" element={<PositionDetails />} />
 					</Routes>
 				</AppContextProvider>
 			</ErrorBoundary>

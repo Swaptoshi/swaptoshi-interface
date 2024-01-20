@@ -2,7 +2,7 @@
 import React from 'react';
 import * as cryptography from '@liskhq/lisk-cryptography';
 import './Pools.css';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import PrimaryButton from '../../components/Button/PrimaryButton';
 import SecondaryButton from '../../components/Button/SecondaryButton';
 import WalletActionButton from '../../components/Button/WalletActionButton';
@@ -16,6 +16,7 @@ import * as env from '../../utils/config/env';
 import TokenAvatar from '../../components/Avatar/token';
 import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
+import PriceRangeLabel from '../../components/Price/PriceRangeLabel';
 
 const Pools = () => {
 	const navigate = useNavigate();
@@ -138,7 +139,7 @@ const Pools = () => {
 							{position.map(pos => {
 								return (
 									<div key={pos.tokenId} className={'position-item'} style={{ padding: '20px' }}>
-										<div style={{ display: 'flex' }}>
+										<NavLink to={`/pools/${pos.tokenId}`} style={{ display: 'flex' }}>
 											<div style={{ flex: 1 }}>
 												<div style={{ display: 'flex' }}>
 													<TokenAvatar src={pos.token0Logo} size={24} tokenId={pos.token0} />
@@ -168,37 +169,13 @@ const Pools = () => {
 														: pos.priceUpper
 												} ${pos.token0Symbol} per ${pos.token1Symbol}`}</div>
 											</div>
-											<div
-												style={{
-													fontSize: '14px',
-													color:
-														pos.liquidity === 0
-															? 'var(--text-clr)'
-															: pos.poolTick < pos.tickLower || pos.poolTick > pos.tickUpper
-																? 'var(--yellow)'
-																: 'var(--green)',
-													fontWeight: 600,
-													display: 'flex',
-													justifyContent: 'center',
-												}}
-											>
-												{pos.liquidity === 0
-													? 'closed'
-													: pos.poolTick < pos.tickLower || pos.poolTick > pos.tickUpper
-														? 'out of range'
-														: 'in range'}
-												<i
-													className={
-														pos.liquidity === 0
-															? 'ri-close-circle-fill'
-															: pos.poolTick < pos.tickLower || pos.poolTick > pos.tickUpper
-																? 'ri-alert-fill'
-																: 'ri-circle-fill'
-													}
-													style={{ marginLeft: '4px' }}
-												/>
-											</div>
-										</div>
+											<PriceRangeLabel
+												liquidity={pos.liquidity}
+												currentTick={pos.poolTick}
+												tickLower={pos.tickLower}
+												tickUpper={pos.tickUpper}
+											/>
+										</NavLink>
 									</div>
 								);
 							})}

@@ -31,6 +31,7 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
+				backgroundColor: `#${tokenToColorHex(tokenId)}`,
 				...style,
 			}}
 			{...props}
@@ -47,15 +48,6 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 				onLoad={onLoad}
 				onError={onError}
 			/>
-			{error && (
-				<div
-					style={{
-						backgroundColor: `#${tokenToColorHex(tokenId)}`,
-						height: '100%',
-						width: '100%',
-					}}
-				/>
-			)}
 		</div>
 	);
 }
