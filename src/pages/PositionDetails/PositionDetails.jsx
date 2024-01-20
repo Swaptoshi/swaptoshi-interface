@@ -122,8 +122,6 @@ export default function PositionDetails() {
 			let token0FeePrice = 0;
 			let token1FeePrice = 0;
 
-			console.log('positionValue', positionValue);
-
 			const token0Fee = new Decimal(positionValue[`fees${token0.slice(-1)}`]).div(
 				10 ** Number(position[`${token0}Decimal`]),
 			);
