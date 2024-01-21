@@ -98,7 +98,15 @@ export default function PositionFeeCard({
 							</div>
 						</div>
 						{senderPublicKey ? (
-							<PrimaryButton onClick={handleCollectFee}>Collect fees</PrimaryButton>
+							<PrimaryButton
+								disabled={
+									value[`fees${token0.slice(-1)}`] === '0' &&
+									value[`fees${token1.slice(-1)}`] === '0'
+								}
+								onClick={handleCollectFee}
+							>
+								Collect fees
+							</PrimaryButton>
 						) : null}
 					</div>
 				</div>

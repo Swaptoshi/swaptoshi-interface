@@ -7,7 +7,11 @@ export default function TertiaryButton(props) {
 	if (props.className) className += props.className;
 
 	return (
-		<button {...props} className={className}>
+		<button
+			{...props}
+			className={className}
+			style={{ ...props.style, opacity: props.disabled === true ? 0.5 : 1 }}
+		>
 			{props.loading === true || props.loading === 'true' ? (
 				<div>
 					<Loader size={20} />{' '}

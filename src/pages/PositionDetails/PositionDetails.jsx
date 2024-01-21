@@ -210,7 +210,14 @@ export default function PositionDetails() {
 									<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 PositionPage__ResponsiveRow-sc-f1e5edbd-7 PositionPage__ActionButtonResponsiveRow-sc-f1e5edbd-8 dKubqp cPCYrp bIFEzi iYnZBs gvfQYr">
 										<SecondaryButton>Increase liquidity</SecondaryButton>
 										<div style={{ width: '8px' }} />
-										<PrimaryButton>Remove liquidity</PrimaryButton>
+										<PrimaryButton
+											disabled={
+												positionValue[`principal${token0.slice(-1)}`] === '0' &&
+												positionValue[`principal${token1.slice(-1)}`]
+											}
+										>
+											Remove liquidity
+										</PrimaryButton>
 									</div>
 								) : null}
 							</div>
