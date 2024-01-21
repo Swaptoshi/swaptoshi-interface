@@ -1,4 +1,5 @@
 import React from 'react';
+import * as cryptography from '@liskhq/lisk-cryptography';
 import PrimaryCard from '../Card/PrimaryCard';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import PrimaryButton from '../Button/PrimaryButton';
@@ -7,6 +8,8 @@ import TokenAvatar from '../Avatar/token';
 import AmountLabelTooltiped from '../Price/AmountLabelTooltiped';
 import Decimal from 'decimal.js';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useTransactionModal } from '../../context/TransactionModalProvider';
+import { decodeNFTId } from '../../utils/address/poolAddress';
 
 export default function PositionFeeCard({
 	position,
@@ -17,15 +20,16 @@ export default function PositionFeeCard({
 	token1Price,
 }) {
 	const { prices, fiatFormatter } = useLiskPrice();
-	const { senderPublicKey } = useWalletConnect();
+	const { senderPublicKey, auth } = useWalletConnect();
+	const { sendTransaction } = useTransactionModal();
 
 	const [feeFiat, setFeeFiat] = React.useState();
 
 	const fetchFeeFiat = React.useCallback(async () => {
 		setFeeFiat();
 
-		let token0FeePrice = 0;
-		let token1FeePrice = 0;
+		let token0FeePrice = new Decimal(0);
+		let token1FeePrice = new Decimal(0);
 
 		const token0Fee = new Decimal(value[`fees${token0.slice(-1)}`]).div(
 			10 ** Number(position[`${token0}Decimal`]),
@@ -52,6 +56,31 @@ export default function PositionFeeCard({
 		}
 	}, [fetchFeeFiat, position, prices, token0, token1, value]);
 
+	const handleCollectFee = React.useCallback(() => {
+		const { index } = decodeNFTId(position.tokenId);
+		const transaction = {
+			module: 'dex',
+			command: 'collect',
+			fee: '1000000',
+			params: {
+				poolAddress: cryptography.address
+					.getAddressFromLisk32Address(position.poolAddress)
+					.toString('hex'),
+				tokenId: index.toString(),
+				recipient: cryptography.address
+					.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
+					.toString('hex'),
+				amount0Max: value[`fees${token0.slice(-1)}`],
+				amount1Max: value[`fees${token1.slice(-1)}`],
+			},
+			nonce: auth.nonce,
+			senderPublicKey: senderPublicKey,
+			signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),
+		};
+
+		sendTransaction({ transaction });
+	}, [auth, position, sendTransaction, senderPublicKey, token0, token1, value]);
+
 	return (
 		<PrimaryCard className="sc-aXZVg Card-sc-a1e3c85c-0 Card__DarkCard-sc-a1e3c85c-4 dKubqp frINir iqvqwM">
 			<div className="Column__AutoColumn-sc-ae7ea350-2 eoejgw" style={{ width: '100%' }}>
@@ -68,7 +97,9 @@ export default function PositionFeeCard({
 								{feeFiat ? feeFiat : '-'}
 							</div>
 						</div>
-						{senderPublicKey ? <PrimaryButton>Collect fees</PrimaryButton> : null}
+						{senderPublicKey ? (
+							<PrimaryButton onClick={handleCollectFee}>Collect fees</PrimaryButton>
+						) : null}
 					</div>
 				</div>
 				<SecondaryCard className="sc-aXZVg Card-sc-a1e3c85c-0 Card__LightCard-sc-a1e3c85c-1 cxkBqB fejats eNAPHe">

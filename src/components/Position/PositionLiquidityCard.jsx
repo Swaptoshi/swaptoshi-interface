@@ -41,8 +41,8 @@ export default function PositionLiquidityCard({
 	const fetchLiquidityFiat = React.useCallback(async () => {
 		setLiquidityFiat();
 
-		let token0ValuePrice = 0;
-		let token1ValuePrice = 0;
+		let token0ValuePrice = new Decimal(0);
+		let token1ValuePrice = new Decimal(0);
 
 		const token0Value = new Decimal(value[`principal${token0.slice(-1)}`]).div(
 			10 ** Number(position[`${token0}Decimal`]),

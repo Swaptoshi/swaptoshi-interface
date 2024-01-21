@@ -12,7 +12,7 @@ export function useLiskPrice() {
 }
 
 export default function LiskPriceProvider({ children }) {
-	const [prices, setPrices] = React.useState([]);
+	const [prices, setPrices] = React.useState();
 	const [fiatFormatter, setFiatFormatter] = React.useState();
 	const [compactFiatFormatter, setCompactFiatFormatter] = React.useState();
 	const [cryptoFormatter, setCryptoFormatter] = React.useState();
