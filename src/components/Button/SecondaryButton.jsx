@@ -3,7 +3,7 @@ import './Button.css';
 import Loader from '../Loader';
 
 export default function SecondaryButton(props) {
-	let className = 'secondary-button-container ';
+	let className = 'button-container secondary-button-container ';
 	if (props.className) className += props.className;
 
 	return (
@@ -13,7 +13,7 @@ export default function SecondaryButton(props) {
 					<Loader size={20} />{' '}
 				</div>
 			) : (
-				<div className="secondary-button-content">{props.children}</div>
+				<div className="button-content">{props.children}</div>
 			)}
 		</button>
 	);

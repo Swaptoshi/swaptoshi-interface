@@ -1,77 +1,36 @@
-.primary-button-container {
+.button-container {
 	justify-content: center;
 	display: flex;
 	flex-flow: row;
 	-webkit-box-align: center;
 	align-items: center;
-	background-color: var(--connect-btn);
 	border-radius: 9999px;
 	border: none;
 	padding: 0;
-	height: 45px;
-	color: var(--btn-color);
+	height: 40px;
 	transition: color 125ms ease-in 0s;
 }
 
-.primary-button-container .primary-button-content {
+.button-content {
 	background-color: transparent;
 	border: none;
-	border-top-left-radius: 9999px;
-	border-bottom-left-radius: 9999px;
 	font-weight: 600;
-	font-size: 16px;
-	padding: 10px 12px;
+	font-size: 14px;
+	padding: 6px 16px;
 	color: inherit;
+}
+
+.primary-button-container {
+	background-color: var(--connect-btn);
+	color: var(--btn-color);
 }
 
 .secondary-button-container {
-	justify-content: center;
-	display: flex;
-	flex-flow: row;
-	-webkit-box-align: center;
-	align-items: center;
 	background-color: var(--open-currency-btn-bg);
-	border-radius: 9999px;
-	border: none;
-	padding: 0;
-	height: 45px;
 	color: var(--color-white);
-	transition: color 125ms ease-in 0s;
-}
-
-.secondary-button-container .secondary-button-content {
-	background-color: transparent;
-	border: none;
-	border-top-left-radius: 9999px;
-	border-bottom-left-radius: 9999px;
-	font-weight: 600;
-	font-size: 16px;
-	padding: 10px 12px;
-	color: inherit;
 }
 
 .tertiary-button-container {
-	justify-content: center;
-	display: flex;
-	flex-flow: row;
-	-webkit-box-align: center;
-	align-items: center;
 	background-color: transparent;
-	border-radius: 9999px;
-	border: none;
-	padding: 0;
-	height: 45px;
 	color: var(--color-white);
-	transition: color 125ms ease-in 0s;
-}
-
-.tertiary-button-container .tertiary-button-content {
-	background-color: transparent;
-	border: none;
-	border-top-left-radius: 9999px;
-	border-bottom-left-radius: 9999px;
-	font-weight: 600;
-	font-size: 16px;
-	padding: 10px 12px;
-	color: inherit;
 }
