@@ -18,70 +18,26 @@ import PriceRangeLabel from '../../components/Price/PriceRangeLabel';
 import SecondaryButton from '../../components/Button/SecondaryButton';
 import PrimaryButton from '../../components/Button/PrimaryButton';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
-import { getIPFSUrl } from '../../utils/ipfs/url';
-import Decimal from 'decimal.js';
-import AmountLabelTooltiped from '../../components/Price/AmountLabelTooltiped';
-import {
-	getToken0PrincipalPercent,
-	getToken1PrincipalPercent,
-} from '../../utils/liquidity/principalPercentage';
-import TokenSwitchBox from '../../components/SwitchBox/TokenSwitchBox';
-import { decodeTickPrice } from '../../utils/math/priceFormatter';
-import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
-import { INFINITE, ZERO } from '../../utils/constants/tick';
+import NFTPositionCard from '../../components/Position/NFTPositionCard';
+import PositionLiquidityCard from '../../components/Position/PositionLiquidityCard';
+import PositionFeeCard from '../../components/Position/PositionFeeCard';
+import PositionPriceRangeCard from '../../components/Position/PositionPriceRangeCard';
 
 export default function PositionDetails() {
 	const { id } = useParams();
-	const { prices, fiatFormatter } = useLiskPrice();
-	const { selectedService, chain, dexConfig } = useChain();
+	const { prices } = useLiskPrice();
+	const { selectedService, chain } = useChain();
 	const { senderPublicKey } = useWalletConnect();
 
 	const [token0, setToken0] = React.useState('token0');
 	const [token1, setToken1] = React.useState('token1');
+	const [token0Price, setToken0Price] = React.useState(0);
+	const [token1Price, setToken1Price] = React.useState(0);
 
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [position, setPosition] = React.useState();
 	const [postiionMetadata, setPositionMetadata] = React.useState();
 	const [positionValue, setPostiionValue] = React.useState();
-
-	const [liquidityFiat, setLiquidityFiat] = React.useState();
-	const [feeFiat, setFeeFiat] = React.useState();
-	const inverted = React.useMemo(() => token0 !== 'token0', [token0]);
-
-	const tokenA = React.useMemo(() => {
-		return position
-			? {
-					tokenId: position[token0],
-					symbol: position[`${token0}Symbol`],
-				}
-			: undefined;
-	}, [position, token0]);
-
-	const tokenB = React.useMemo(() => {
-		return position
-			? {
-					tokenId: position[token1],
-					symbol: position[`${token1}Symbol`],
-				}
-			: undefined;
-	}, [position, token1]);
-
-	const principalPercent = React.useMemo(() => {
-		if (!position) return { token0: '0', token1: '0' };
-
-		const token0 = (
-			getToken0PrincipalPercent(position.poolTick, position.tickLower, position.tickUpper) * 100
-		).toFixed(2);
-
-		const token1 = (
-			getToken1PrincipalPercent(position.poolTick, position.tickLower, position.tickUpper) * 100
-		).toFixed(2);
-
-		return {
-			token0,
-			token1,
-		};
-	}, [position]);
 
 	const fetchTokenPrice = React.useCallback(async () => {
 		let token0Price = 0;
@@ -109,94 +65,21 @@ export default function PositionDetails() {
 			token1Price = token1ToLskPrice.data.price;
 		}
 
-		return {
-			token0Price,
-			token1Price,
-		};
+		setToken0Price(token0Price);
+		setToken1Price(token1Price);
 	}, [chain, position, selectedService, token0, token1]);
 
-	const fetchFeeFiat = React.useCallback(
-		async (token0Price, token1Price) => {
-			setFeeFiat();
-
-			let token0FeePrice = 0;
-			let token1FeePrice = 0;
-
-			const token0Fee = new Decimal(positionValue[`fees${token0.slice(-1)}`]).div(
-				10 ** Number(position[`${token0}Decimal`]),
-			);
-			const token1Fee = new Decimal(positionValue[`fees${token1.slice(-1)}`]).div(
-				10 ** Number(position[`${token1}Decimal`]),
-			);
-
-			if (token0Price) {
-				token0FeePrice = new Decimal(token0Fee.mul(token0Price));
-			}
-
-			if (token1Price) {
-				token1FeePrice = new Decimal(token1Fee.mul(token1Price));
-			}
-
-			const total = new Decimal(token0FeePrice).add(token1FeePrice).mul(prices).toFixed(2);
-			setFeeFiat(fiatFormatter.format(total));
-		},
-		[fiatFormatter, position, positionValue, prices, token0, token1],
-	);
-
-	const fetchLiquidityFiat = React.useCallback(
-		async (token0Price, token1Price) => {
-			setLiquidityFiat();
-
-			let token0ValuePrice = 0;
-			let token1ValuePrice = 0;
-
-			const token0Value = new Decimal(positionValue[`principal${token0.slice(-1)}`]).div(
-				10 ** Number(position[`${token0}Decimal`]),
-			);
-			const token1Value = new Decimal(positionValue[`principal${token1.slice(-1)}`]).div(
-				10 ** Number(position[`${token1}Decimal`]),
-			);
-
-			if (token0Price) {
-				token0ValuePrice = new Decimal(token0Value.mul(token0Price));
-			}
-
-			if (token1Price) {
-				token1ValuePrice = new Decimal(token1Value.mul(token1Price));
-			}
-
-			const total = new Decimal(token0ValuePrice).add(token1ValuePrice).mul(prices).toFixed(2);
-			setLiquidityFiat(fiatFormatter.format(total));
-		},
-		[fiatFormatter, position, positionValue, prices, token0, token1],
-	);
-
-	const fetchLiquidity = useDebouncedCallback(async () => {
+	const fetchPrices = useDebouncedCallback(async () => {
 		await tryToast('Fetch token price failed', async () => {
-			const { token0Price, token1Price } = await fetchTokenPrice();
-			await fetchLiquidityFiat(token0Price, token1Price);
-			await fetchFeeFiat(token0Price, token1Price);
+			fetchTokenPrice();
 		});
 	}, 500);
 
 	React.useEffect(() => {
 		if (position && positionValue && prices && chain && token0 && token1) {
-			fetchLiquidity();
+			fetchPrices();
 		}
-	}, [chain, fetchLiquidity, position, positionValue, prices, token0, token1]);
-
-	const getTickSpacing = React.useCallback(
-		fee => {
-			if (dexConfig) {
-				const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t[0] === fee.toString());
-				if (tickSpacing) {
-					return tickSpacing[1];
-				}
-			}
-			return '0';
-		},
-		[dexConfig],
-	);
+	}, [chain, fetchPrices, position, positionValue, prices, token0, token1]);
 
 	const handleSwitch = React.useCallback(() => {
 		setToken0(t => (t === 'token0' ? 'token1' : 'token0'));
@@ -337,297 +220,36 @@ export default function PositionDetails() {
 								className="components__HideSmall-sc-88ab9cb5-22 ebuyDK"
 								style={{ height: '100%', marginRight: '12px' }}
 							>
-								<div
-									width="100%"
-									height="100%"
-									className="sc-aXZVg Card-sc-a1e3c85c-0 Card__DarkCard-sc-a1e3c85c-4 gFAiiM frINir iqvqwM"
-									style={{
-										minWidth: '340px',
-										display: 'flex',
-										alignItems: 'center',
-										flexDirection: 'column',
-										justifyContent: 'space-around',
-									}}
-								>
-									<div className="PositionPage__NFTGrid-sc-f1e5edbd-10 gGqapu">
-										<canvas
-											className="PositionPage__NFTCanvas-sc-f1e5edbd-11 hOKIdu"
-											width="464"
-											height="800"
-											style={{ width: '232px', height: '400px' }}
-										></canvas>
-										<img
-											src={postiionMetadata.image}
-											hidden=""
-											className="PositionPage__NFTImage-sc-f1e5edbd-12 apbUF"
-										/>
-									</div>
-									<a
-										href={getIPFSUrl(position.tokenURI)}
-										target={'_blank'}
-										rel="noreferrer"
-										style={{ color: 'var(--model-btn-hover)' }}
-									>
-										View on IPFS
-									</a>
-								</div>
+								<NFTPositionCard image={postiionMetadata.image} ipfsURL={position.tokenURI} />
 							</span>
 							<div
 								className="Column__AutoColumn-sc-ae7ea350-2 cjBIlP"
 								style={{ width: '100%', height: '100%' }}
 							>
-								<div className="sc-aXZVg Card-sc-a1e3c85c-0 Card__DarkCard-sc-a1e3c85c-4 dKubqp frINir iqvqwM">
-									<div
-										className="Column__AutoColumn-sc-ae7ea350-2 eoejgw"
-										style={{ width: '100%' }}
-									>
-										<div className="Column__AutoColumn-sc-ae7ea350-2 eoejgw">
-											<div className="text__TextWrapper-sc-fbb4b34d-0 UseHi PositionPage__Label-sc-f1e5edbd-3 dJrcRo css-1aulwug text">
-												Liquidity
-											</div>
-											<div className="text__TextWrapper-sc-fbb4b34d-0 ennNJZ css-cbqu6f">
-												{liquidityFiat ? liquidityFiat : '-'}
-											</div>
-										</div>
-										<div className="sc-aXZVg Card-sc-a1e3c85c-0 Card__LightCard-sc-a1e3c85c-1 cxkBqB fejats eNAPHe">
-											<div className="Column__AutoColumn-sc-ae7ea350-2 eoejgw">
-												<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 dKubqp cPCYrp bIFEzi">
-													<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-														<TokenAvatar
-															src={position[`${token0}Logo`]}
-															size={20}
-															tokenId={position[token0]}
-															style={{ marginRight: '0.5rem' }}
-														/>
-														<div className="text__TextWrapper-sc-fbb4b34d-0 bRgygV css-1aulwug">
-															{position[`${token0}Symbol`]}
-														</div>
-													</div>
-													<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-														<div className="text__TextWrapper-sc-fbb4b34d-0 bRgygV css-1aulwug">
-															<AmountLabelTooltiped
-																amount={positionValue[`principal${token0.slice(-1)}`]}
-																decimal={position[`${token0}Decimal`]}
-																symbol={position[`${token0}Symbol`]}
-																limit={'0.001'}
-																precision={2}
-															/>
-														</div>
-														<div
-															className="Badge-sc-8f0f9d15-0 kjyCWx"
-															style={{ marginLeft: '10px', width: '70px' }}
-														>
-															<div className="PositionPage__BadgeText-sc-f1e5edbd-2 kzEqix">
-																{principalPercent[token0]}%
-															</div>
-														</div>
-													</div>
-												</div>
-												<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 dKubqp cPCYrp bIFEzi">
-													<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-														<TokenAvatar
-															src={position[`${token1}Logo`]}
-															size={20}
-															tokenId={position[token1]}
-															style={{ marginRight: '0.5rem' }}
-														/>
-														<div className="text__TextWrapper-sc-fbb4b34d-0 bRgygV css-1aulwug">
-															{position[`${token1}Symbol`]}
-														</div>
-													</div>
-													<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-														<div className="text__TextWrapper-sc-fbb4b34d-0 bRgygV css-1aulwug">
-															<AmountLabelTooltiped
-																amount={positionValue[`principal${token1.slice(-1)}`]}
-																decimal={position[`${token1}Decimal`]}
-																symbol={position[`${token1}Symbol`]}
-																limit={'0.001'}
-																precision={2}
-															/>
-														</div>
-														<div
-															className="Badge-sc-8f0f9d15-0 kjyCWx"
-															style={{ marginLeft: '10px', width: '70px' }}
-														>
-															<div className="PositionPage__BadgeText-sc-f1e5edbd-2 kzEqix">
-																{principalPercent[token1]}%
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div className="sc-aXZVg Card-sc-a1e3c85c-0 Card__DarkCard-sc-a1e3c85c-4 dKubqp frINir iqvqwM">
-									<div
-										className="Column__AutoColumn-sc-ae7ea350-2 eoejgw"
-										style={{ width: '100%' }}
-									>
-										<div className="Column__AutoColumn-sc-ae7ea350-2 eoejgw">
-											<div
-												className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 dKubqp cPCYrp bIFEzi"
-												style={{ alignItems: 'flex-start' }}
-											>
-												<div className="Column__AutoColumn-sc-ae7ea350-2 eoejgw">
-													<div className="text__TextWrapper-sc-fbb4b34d-0 UseHi PositionPage__Label-sc-f1e5edbd-3 dJrcRo css-1aulwug">
-														Unclaimed fees
-													</div>
-													<div className="text__TextWrapper-sc-fbb4b34d-0 ennNJZ css-cbqu6f">
-														{feeFiat ? feeFiat : '-'}
-													</div>
-												</div>
-												{senderPublicKey ? <PrimaryButton>Collect fees</PrimaryButton> : null}
-											</div>
-										</div>
-										<div className="sc-aXZVg Card-sc-a1e3c85c-0 Card__LightCard-sc-a1e3c85c-1 cxkBqB fejats eNAPHe">
-											<div className="Column__AutoColumn-sc-ae7ea350-2 eoejgw">
-												<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 dKubqp cPCYrp bIFEzi">
-													<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-														<TokenAvatar
-															src={position[`${token0}Logo`]}
-															size={20}
-															tokenId={position[token0]}
-															style={{ marginRight: '0.5rem' }}
-														/>
-														<div className="text__TextWrapper-sc-fbb4b34d-0 bRgygV css-1aulwug">
-															{position[`${token0}Symbol`]}
-														</div>
-													</div>
-													<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-														<div className="text__TextWrapper-sc-fbb4b34d-0 bRgygV css-1aulwug">
-															<AmountLabelTooltiped
-																amount={positionValue[`fees${token0.slice(-1)}`]}
-																decimal={position[`${token0}Decimal`]}
-																symbol={position[`${token0}Symbol`]}
-																limit={'0.001'}
-																precision={2}
-															/>
-														</div>
-													</div>
-												</div>
-												<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 dKubqp cPCYrp bIFEzi">
-													<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-														<TokenAvatar
-															src={position[`${token1}Logo`]}
-															size={20}
-															tokenId={position[token1]}
-															style={{ marginRight: '0.5rem' }}
-														/>
-														<div className="text__TextWrapper-sc-fbb4b34d-0 bRgygV css-1aulwug">
-															{position[`${token1}Symbol`]}
-														</div>
-													</div>
-													<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-														<div className="text__TextWrapper-sc-fbb4b34d-0 bRgygV css-1aulwug">
-															<AmountLabelTooltiped
-																amount={positionValue[`fees${token1.slice(-1)}`]}
-																decimal={position[`${token1}Decimal`]}
-																symbol={position[`${token1}Symbol`]}
-																limit={'0.001'}
-																precision={2}
-															/>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+								<PositionLiquidityCard
+									position={position}
+									value={positionValue}
+									token0={token0}
+									token1={token1}
+									token0Price={token0Price}
+									token1Price={token1Price}
+								/>
+								<PositionFeeCard
+									position={position}
+									value={positionValue}
+									token0={token0}
+									token1={token1}
+									token0Price={token0Price}
+									token1Price={token1Price}
+								/>
 							</div>
 						</div>
-						<div className="sc-aXZVg Card-sc-a1e3c85c-0 Card__DarkCard-sc-a1e3c85c-4 dKubqp frINir iqvqwM">
-							<div className="Column__AutoColumn-sc-ae7ea350-2 eoejgw">
-								<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 dKubqp cPCYrp bIFEzi">
-									<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-										<div
-											className="text__TextWrapper-sc-fbb4b34d-0 UseHi PositionPage__Label-sc-f1e5edbd-3 dJrcRo css-1sy3474"
-											style={{ marginRight: '12px' }}
-										>
-											Price range
-										</div>
-										<PriceRangeLabel
-											liquidity={position.liquidity}
-											currentTick={position.poolTick}
-											tickLower={position.tickLower}
-											tickUpper={position.tickUpper}
-										/>
-									</div>
-									<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
-										<div style={{ width: 'fit-content', display: 'flex', alignItems: 'center' }}>
-											<TokenSwitchBox tokenA={tokenA} tokenB={tokenB} onSwitch={handleSwitch} />
-										</div>
-									</div>
-								</div>
-								<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 dKubqp cPCYrp bIFEzi">
-									<div
-										width="100%"
-										className="sc-aXZVg Card-sc-a1e3c85c-0 Card__LightCard-sc-a1e3c85c-1 bUrEIp ebBnOr eNAPHe"
-									>
-										<div className="Column__AutoColumn-sc-ae7ea350-2 dtsltc">
-											<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-												Min price
-											</span>
-											<div className="text__TextWrapper-sc-fbb4b34d-0 ennNJZ css-5dyzfr">
-												{position.tickLower.toString() === getMinTick(getTickSpacing(position.fee))
-													? ZERO
-													: decodeTickPrice(
-															position.tickLower,
-															position[`${token0}Decimal`],
-															position[`${token1}Decimal`],
-															inverted,
-														)}
-											</div>
-											<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-												{position[`${token0}Symbol`]} per {position[`${token1}Symbol`]}
-											</span>
-										</div>
-									</div>
-									<span className="PositionPage__DoubleArrow-sc-f1e5edbd-6 cUfrhq">⟷</span>
-									<div
-										width="100%"
-										className="sc-aXZVg Card-sc-a1e3c85c-0 Card__LightCard-sc-a1e3c85c-1 bUrEIp ebBnOr eNAPHe"
-									>
-										<div className="Column__AutoColumn-sc-ae7ea350-2 dtsltc">
-											<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-												Max price
-											</span>
-											<div className="text__TextWrapper-sc-fbb4b34d-0 ennNJZ css-5dyzfr">
-												{position.tickUpper.toString() === getMaxTick(getTickSpacing(position.fee))
-													? INFINITE
-													: decodeTickPrice(
-															position.tickUpper,
-															position[`${token0}Decimal`],
-															position[`${token1}Decimal`],
-															inverted,
-														)}
-											</div>
-											<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-												{position[`${token0}Symbol`]} per {position[`${token1}Symbol`]}
-											</span>
-										</div>
-									</div>
-								</div>
-								<div className="sc-aXZVg Card-sc-a1e3c85c-0 Card__LightCard-sc-a1e3c85c-1 hLDwqe ebBnOr eNAPHe">
-									<div className="Column__AutoColumn-sc-ae7ea350-2 dtsltc">
-										<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-											Current price
-										</span>
-										<div className="text__TextWrapper-sc-fbb4b34d-0 ennNJZ css-5dyzfr">
-											{decodeTickPrice(
-												position.poolTick,
-												position[`${token0}Decimal`],
-												position[`${token1}Decimal`],
-												inverted,
-											)}
-										</div>
-										<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-											{position[`${token0}Symbol`]} per {position[`${token1}Symbol`]}
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
+						<PositionPriceRangeCard
+							position={position}
+							token0={token0}
+							token1={token1}
+							onSwitch={handleSwitch}
+						/>
 					</div>
 				)}
 			</div>

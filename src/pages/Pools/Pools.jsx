@@ -14,7 +14,7 @@ import Loader from '../../components/Loader';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../../utils/config/env';
 import TokenAvatar from '../../components/Avatar/token';
-import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
+import { getMaxTick, getMinTick, getTickSpacing } from '../../utils/tick/price_tick';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
 import PriceRangeLabel from '../../components/Price/PriceRangeLabel';
 
@@ -25,19 +25,6 @@ const Pools = () => {
 
 	const [position, setPosition] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
-
-	const getTickSpacing = React.useCallback(
-		fee => {
-			if (dexConfig) {
-				const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t[0] === fee.toString());
-				if (tickSpacing) {
-					return tickSpacing[1];
-				}
-			}
-			return '0';
-		},
-		[dexConfig],
-	);
 
 	const fetchPositions = useDebouncedCallback(async () => {
 		const run = async () => {
@@ -160,11 +147,13 @@ const Pools = () => {
 												</div>
 												<div style={{ margin: '12px 0px' }} />
 												<div style={{ fontSize: '14px', color: 'var(--text-clr)' }}>{`${
-													pos.tickLower.toString() === getMinTick(getTickSpacing(pos.fee))
+													pos.tickLower.toString() ===
+													getMinTick(getTickSpacing(pos.fee, dexConfig))
 														? ZERO
 														: pos.priceLower
 												} ${pos.token0Symbol} per ${pos.token1Symbol} ↔ ${
-													pos.tickUpper.toString() === getMaxTick(getTickSpacing(pos.fee))
+													pos.tickUpper.toString() ===
+													getMaxTick(getTickSpacing(pos.fee, dexConfig))
 														? INFINITE
 														: pos.priceUpper
 												} ${pos.token0Symbol} per ${pos.token1Symbol}`}</div>
