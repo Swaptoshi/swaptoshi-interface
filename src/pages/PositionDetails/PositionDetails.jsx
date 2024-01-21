@@ -76,15 +76,17 @@ export default function PositionDetails() {
 	}, 500);
 
 	React.useEffect(() => {
-		if (position && positionValue && prices && chain && token0 && token1) {
+		if (position && positionValue && prices && chain) {
 			fetchPrices();
 		}
-	}, [chain, fetchPrices, position, positionValue, prices, token0, token1]);
+	}, [chain, fetchPrices, position, positionValue, prices]);
 
 	const handleSwitch = React.useCallback(() => {
 		setToken0(t => (t === 'token0' ? 'token1' : 'token0'));
 		setToken1(t => (t === 'token1' ? 'token0' : 'token1'));
-	}, []);
+		setToken0Price(token1Price);
+		setToken1Price(token0Price);
+	}, [token0Price, token1Price]);
 
 	const fetchPosition = useDebouncedCallback(async () => {
 		const run = async () => {
