@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../../Card/Card';
+import SecondaryCard from '../../Card/SecondaryCard';
 import TokenAvatar from '../../Avatar/token';
 import { useLiskPrice } from '../../../context/LiskPriceProvider';
 
@@ -7,7 +7,7 @@ export default function BalanceCard({ balance }) {
 	const { prices, fiatFormatter, cryptoFormatter } = useLiskPrice();
 
 	return (
-		<Card
+		<SecondaryCard
 			style={{
 				padding: '16px',
 				display: 'flex',
@@ -35,6 +35,6 @@ export default function BalanceCard({ balance }) {
 					)}
 				</div>
 			</div>
-		</Card>
+		</SecondaryCard>
 	);
 }

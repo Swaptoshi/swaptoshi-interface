@@ -279,16 +279,10 @@ export default function PositionDetails() {
 				) : (
 					<div className="Column__AutoColumn-sc-ae7ea350-2 eoejgw">
 						<div className="Column__AutoColumn-sc-ae7ea350-2 cjBIlP">
-							<a
-								data-cy="visit-pool"
-								href="/pools"
-								style={{ textDecoration: 'none', width: 'fit-content', marginBottom: '0.5rem' }}
-							>
-								<NavLink className="sc-djdxof-0 MpERT" to="/pools">
-									<i className="ri-arrow-left-line"></i>
-									Back to Pools
-								</NavLink>
-							</a>
+							<NavLink className="sc-djdxof-0 MpERT" to="/pools">
+								<i className="ri-arrow-left-line"></i>
+								Back to Pools
+							</NavLink>
 							<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 PositionPage__ResponsiveRow-sc-f1e5edbd-7 dKubqp cPCYrp bIFEzi iYnZBs">
 								<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 PositionPage__PositionLabelRow-sc-f1e5edbd-14 dKubqp cPCYrp haLsDq kjbeBO">
 									<div style={{ display: 'flex', alignItems: 'center' }}>

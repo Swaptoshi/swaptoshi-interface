@@ -1,5 +1,13 @@
 .card-box {
-	background-color: var(--card-inside-color);
+	border: var(--card-border-color);
 	border-radius: 16px;
 	overflow: hidden;
+}
+
+.card-secondary {
+	background-color: var(--card-inside-color);
+}
+
+.card-primary {
+	background-color: var(--nav-drop);
 }

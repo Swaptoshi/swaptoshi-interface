@@ -7,7 +7,7 @@ import { getLSKTokenId } from '../../../utils/token/getLSKTokenId';
 import { useChain } from '../../../context/ChainProvider';
 import Loader from '../../Loader';
 import { useLiskPrice } from '../../../context/LiskPriceProvider';
-import Card from '../../Card/Card';
+import SecondaryCard from '../../Card/SecondaryCard';
 import { useLastBalance } from '../../../context/LastBalanceProvider';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../../../utils/config/env';
@@ -130,7 +130,7 @@ export default function WalletAccount({ show }) {
 				{walletState.length > 0 ? (
 					walletState.map(balance => <BalanceCard key={balance.tokenId} balance={balance} />)
 				) : (
-					<Card
+					<SecondaryCard
 						style={{
 							padding: '16px',
 							display: 'flex',
@@ -143,7 +143,7 @@ export default function WalletAccount({ show }) {
 						}}
 					>
 						No token to show
-					</Card>
+					</SecondaryCard>
 				)}
 			</div>
 		</div>
