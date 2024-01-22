@@ -219,7 +219,7 @@ export default function PositionDetails() {
 										<PrimaryButton
 											disabled={
 												positionValue[`principal${token0.slice(-1)}`] === '0' &&
-												positionValue[`principal${token1.slice(-1)}`]
+												positionValue[`principal${token1.slice(-1)}`] === '0'
 											}
 											onClick={() => navigate(`/pools/${id}/remove`)}
 										>
