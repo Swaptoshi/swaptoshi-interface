@@ -125,8 +125,11 @@ const Pools = () => {
 
 							{position.map(pos => {
 								return (
-									<div key={pos.tokenId} className={'position-item'} style={{ padding: '20px' }}>
-										<NavLink to={`/pools/${pos.tokenId}`} style={{ display: 'flex' }}>
+									<div key={pos.tokenId} className={'position-item'}>
+										<NavLink
+											to={`/pools/${pos.tokenId}`}
+											style={{ display: 'flex', padding: '20px' }}
+										>
 											<div style={{ flex: 1 }}>
 												<div style={{ display: 'flex' }}>
 													<TokenAvatar src={pos.token0Logo} size={24} tokenId={pos.token0} />
