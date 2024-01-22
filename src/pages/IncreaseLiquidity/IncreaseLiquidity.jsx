@@ -151,10 +151,6 @@ const IncreaseLiquidity = () => {
 	const handleReset = React.useCallback(() => {
 		setToken0('token0');
 		setToken1('token1');
-		setIsLoading(false);
-		setPosition();
-		setPositionMetadata();
-		setPostiionValue();
 		setAmountA('');
 		setAmountB('');
 		setError();
