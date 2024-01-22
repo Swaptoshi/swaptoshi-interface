@@ -1,4 +1,4 @@
-import './LiquidityModal.css';
+import './AddLiquidity.css';
 import React from 'react';
 import * as cryptography from '@liskhq/lisk-cryptography';
 import ModalContainer from '../../components/Modal/ModalContainer';
@@ -30,7 +30,7 @@ import SlippageAndDeadlineConfig from '../../components/Config/SlippageAndDeadli
 import * as env from '../../utils/config/env';
 import BigNumber from 'bignumber.js';
 
-const LiquidityModal = () => {
+const AddLiquidity = () => {
 	const navigate = useNavigate();
 	const { lskTokenInfo, selectedService } = useChain();
 	const { balances, senderPublicKey, auth } = useWalletConnect();
@@ -636,4 +636,4 @@ const LiquidityModal = () => {
 	);
 };
 
-export default LiquidityModal;
+export default AddLiquidity;

@@ -15,7 +15,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { tryToast } from '../../utils/toast/tryToast.js';
 import TextButton from '../../components/Button/TextButton.jsx';
 
-const CreateTokenModal = () => {
+const CreateToken = () => {
 	const navigate = useNavigate();
 	const { auth, senderPublicKey } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
@@ -347,4 +347,4 @@ const CreateTokenModal = () => {
 	);
 };
 
-export default CreateTokenModal;
+export default CreateToken;
