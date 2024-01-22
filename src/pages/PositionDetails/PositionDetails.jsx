@@ -8,7 +8,7 @@ import {
 	getDEXPositionValue,
 	getPrice,
 } from '../../service/dex';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/toast/tryToast';
@@ -24,6 +24,8 @@ import PositionFeeCard from '../../components/Position/PositionFeeCard';
 import PositionPriceRangeCard from '../../components/Position/PositionPriceRangeCard';
 
 export default function PositionDetails() {
+	const navigate = useNavigate();
+
 	const { id } = useParams();
 	const { prices } = useLiskPrice();
 	const { selectedService, chain } = useChain();
@@ -141,7 +143,7 @@ export default function PositionDetails() {
 					<div
 						style={{
 							width: '100%',
-							height: '80vh',
+							height: '78vh',
 							display: 'flex',
 							alignItems: 'center',
 							justifyContent: 'center',
@@ -153,7 +155,7 @@ export default function PositionDetails() {
 					<div
 						style={{
 							width: '100%',
-							height: '80vh',
+							height: '78vh',
 							display: 'flex',
 							alignItems: 'center',
 							justifyContent: 'center',
@@ -210,7 +212,9 @@ export default function PositionDetails() {
 								</div>
 								{senderPublicKey ? (
 									<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 PositionPage__ResponsiveRow-sc-f1e5edbd-7 PositionPage__ActionButtonResponsiveRow-sc-f1e5edbd-8 dKubqp cPCYrp bIFEzi iYnZBs gvfQYr">
-										<SecondaryButton>Increase liquidity</SecondaryButton>
+										<SecondaryButton onClick={() => navigate(`/pools/${id}/add`)}>
+											Increase liquidity
+										</SecondaryButton>
 										<div style={{ width: '8px' }} />
 										<PrimaryButton
 											disabled={

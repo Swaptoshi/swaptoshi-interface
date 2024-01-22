@@ -46,7 +46,6 @@ export default function ModalContainer({ children, title, backTo, topRightCompon
 									<div
 										className="styled__MediumOnly-sc-a3e32a7b-6 cYrhOe"
 										style={{
-											minWidth: '100px',
 											minHeight: '50px',
 											display: 'flex',
 											alignItems: 'center',

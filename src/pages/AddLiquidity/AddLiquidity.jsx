@@ -123,19 +123,17 @@ const AddLiquidity = () => {
 
 	React.useEffect(() => {
 		setError();
+
 		if (tokenABalance && tokenA && amountA && Number(tokenABalance) < Number(amountA)) {
 			setError(`Insufficient ${tokenA.symbol.toUpperCase()} balance`);
 			return;
 		}
-	}, [amountA, error, tokenA, tokenABalance]);
 
-	React.useEffect(() => {
-		setError();
 		if (tokenBBalance && tokenB && amountB && Number(tokenBBalance) < Number(amountB)) {
 			setError(`Insufficient ${tokenB.symbol.toUpperCase()} balance`);
 			return;
 		}
-	}, [amountB, error, tokenB, tokenBBalance]);
+	}, [amountA, amountB, error, tokenA, tokenABalance, tokenB, tokenBBalance]);
 
 	React.useEffect(() => {
 		if (tokenA && tokenB) {
@@ -326,14 +324,8 @@ const AddLiquidity = () => {
 	const handleSwitch = React.useCallback(() => {
 		setTokenA(tokenB);
 		setTokenB(tokenA);
-
-		if (amountA) {
-			setAmountB(amountA);
-		}
-
-		if (amountB) {
-			setAmountA(amountB);
-		}
+		setAmountA('');
+		setAmountB('');
 
 		if (highPrice !== INFINITE) {
 			setLowPrice((1 / Number(highPrice)).toFixed(5));
@@ -342,7 +334,7 @@ const AddLiquidity = () => {
 		if (lowPrice !== ZERO) {
 			setHighPrice((1 / Number(lowPrice)).toFixed(5));
 		}
-	}, [amountA, amountB, highPrice, lowPrice, tokenA, tokenB]);
+	}, [highPrice, lowPrice, tokenA, tokenB]);
 
 	const handleAddLiquidity = React.useCallback(() => {
 		const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
@@ -611,7 +603,7 @@ const AddLiquidity = () => {
 				</div>
 
 				<LiquidityAmountsInput
-					pool={pool}
+					poolAddress={pool ? pool.poolAddress : undefined}
 					price={price}
 					lowPrice={lowPrice}
 					highPrice={highPrice}

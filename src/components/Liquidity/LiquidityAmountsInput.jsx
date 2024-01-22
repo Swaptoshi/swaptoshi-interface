@@ -8,7 +8,7 @@ import { decodeTickPrice } from '../../utils/math/priceFormatter';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
 
 export default function LiquidityAmountsInput({
-	pool,
+	poolAddress,
 	lowPrice,
 	price,
 	highPrice,
@@ -23,15 +23,15 @@ export default function LiquidityAmountsInput({
 	const { dexConfig } = useChain();
 
 	const tickSpacing = React.useMemo(() => {
-		if (dexConfig && pool) {
-			const { fee } = decodePoolAddress(pool.poolAddress);
+		if (dexConfig && poolAddress) {
+			const { fee } = decodePoolAddress(poolAddress);
 			const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t[0] === fee.toString());
 			if (tickSpacing) {
 				return tickSpacing[1];
 			}
 		}
 		return undefined;
-	}, [dexConfig, pool]);
+	}, [dexConfig, poolAddress]);
 
 	const minTick = React.useMemo(
 		() => (tickSpacing ? getMinTick(tickSpacing) : undefined),
@@ -70,7 +70,7 @@ export default function LiquidityAmountsInput({
 
 			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 				setAmountA(inputValue);
-				if (lowPrice && highPrice && pool) {
+				if (lowPrice && highPrice && poolAddress) {
 					if (Number(lowerPrice) > Number(price) && Number(upperPrice) > Number(price)) {
 						setAmountB('0');
 					} else {
@@ -80,7 +80,7 @@ export default function LiquidityAmountsInput({
 				}
 			}
 		},
-		[setAmountA, setAmountB, lowPrice, highPrice, pool, lowerPrice, price, upperPrice],
+		[setAmountA, setAmountB, lowPrice, highPrice, poolAddress, lowerPrice, price, upperPrice],
 	);
 
 	const handleAmountAMax = React.useCallback(
@@ -102,7 +102,7 @@ export default function LiquidityAmountsInput({
 
 			if (/^[0-9]*[.,]?[0-9]*$/.test(inputValue)) {
 				setAmountB(inputValue);
-				if (lowPrice && highPrice && pool) {
+				if (lowPrice && highPrice && poolAddress) {
 					if (Number(lowerPrice) < Number(price) && Number(upperPrice) < Number(price)) {
 						setAmountA('0');
 					} else {
@@ -112,7 +112,7 @@ export default function LiquidityAmountsInput({
 				}
 			}
 		},
-		[setAmountB, setAmountA, lowPrice, highPrice, pool, lowerPrice, price, upperPrice],
+		[setAmountB, setAmountA, lowPrice, highPrice, poolAddress, lowerPrice, price, upperPrice],
 	);
 
 	const handleAmountBMax = React.useCallback(

@@ -1172,6 +1172,10 @@ a {
 	height: 170;
 }
 
+.cYrhOe {
+	min-width: 100px;
+}
+
 @media screen and (width <= 768px) {
 	.cMHLWt {
 		flex: 5;
@@ -1190,9 +1194,13 @@ a {
 	}
 }
 
-@media screen and (width <= 420px) {
+@media screen and (width <= 425px) {
 	.GfTH {
 		max-width: 380px;
+	}
+
+	.cYrhOe {
+		min-width: 0;
 	}
 }
 

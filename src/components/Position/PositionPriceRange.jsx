@@ -48,12 +48,14 @@ export default function PositionPriceRange({
 						{title}
 					</div>
 					{withRange ? (
-						<PriceRangeLabel
-							liquidity={position.liquidity}
-							currentTick={position.poolTick}
-							tickLower={position.tickLower}
-							tickUpper={position.tickUpper}
-						/>
+						<div className="hide-below-425">
+							<PriceRangeLabel
+								liquidity={position.liquidity}
+								currentTick={position.poolTick}
+								tickLower={position.tickLower}
+								tickUpper={position.tickUpper}
+							/>
+						</div>
 					) : null}
 				</div>
 				<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 dKubqp cPCYrp haLsDq">
@@ -73,9 +75,9 @@ export default function PositionPriceRange({
 							{position.tickLower.toString() === getMinTick(getTickSpacing(position.fee, dexConfig))
 								? ZERO
 								: decodeTickPrice(
-										position.tickLower,
-										position[`${token0}Decimal`],
-										position[`${token1}Decimal`],
+										inverted ? position.tickUpper : position.tickLower,
+										position[`${inverted ? token1 : token0}Decimal`],
+										position[`${inverted ? token0 : token1}Decimal`],
 										inverted,
 									)}
 						</div>
@@ -95,9 +97,9 @@ export default function PositionPriceRange({
 							{position.tickUpper.toString() === getMaxTick(getTickSpacing(position.fee, dexConfig))
 								? INFINITE
 								: decodeTickPrice(
-										position.tickUpper,
-										position[`${token0}Decimal`],
-										position[`${token1}Decimal`],
+										inverted ? position.tickLower : position.tickUpper,
+										position[`${inverted ? token1 : token0}Decimal`],
+										position[`${inverted ? token0 : token1}Decimal`],
 										inverted,
 									)}
 						</div>
@@ -113,8 +115,8 @@ export default function PositionPriceRange({
 					<div className="text__TextWrapper-sc-fbb4b34d-0 ennNJZ css-5dyzfr">
 						{decodeTickPrice(
 							position.poolTick,
-							position[`${token0}Decimal`],
-							position[`${token1}Decimal`],
+							position[`${inverted ? token1 : token0}Decimal`],
+							position[`${inverted ? token0 : token1}Decimal`],
 							inverted,
 						)}
 					</div>
