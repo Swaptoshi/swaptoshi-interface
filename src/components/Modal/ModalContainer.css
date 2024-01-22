@@ -276,10 +276,7 @@ button {
 
 .GfTH {
 	position: relative;
-
-	/* max-width: 420px; */
-	max-width: 600px;
-	width: 100%;
+	max-width: 80vw;
 	background: var(--card-bg);
 	border-radius: 16px;
 	border: 1px solid rgb(152 161 192 / 24%);
@@ -288,15 +285,6 @@ button {
 	margin-right: auto;
 	z-index: 1;
 	font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv03';
-}
-
-/* .FuZnx {
-    padding: 0px;
-    max-width: 640px;
-} */
-
-.FuZnx-expanded {
-	width: 640px !important;
 }
 
 .kmmojd {

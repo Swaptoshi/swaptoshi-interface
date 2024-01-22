@@ -38,7 +38,7 @@ export default function PositionDetails() {
 
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [position, setPosition] = React.useState();
-	const [postiionMetadata, setPositionMetadata] = React.useState();
+	const [positionMetadata, setPositionMetadata] = React.useState();
 	const [positionValue, setPostiionValue] = React.useState();
 
 	const fetchTokenPrice = React.useCallback(async () => {
@@ -151,7 +151,7 @@ export default function PositionDetails() {
 					>
 						<Loader size={20} />{' '}
 					</div>
-				) : !position || !postiionMetadata || !positionValue ? (
+				) : !position || !positionMetadata || !positionValue ? (
 					<div
 						style={{
 							width: '100%',
@@ -221,6 +221,7 @@ export default function PositionDetails() {
 												positionValue[`principal${token0.slice(-1)}`] === '0' &&
 												positionValue[`principal${token1.slice(-1)}`]
 											}
+											onClick={() => navigate(`/pools/${id}/remove`)}
 										>
 											Remove liquidity
 										</PrimaryButton>
@@ -233,7 +234,7 @@ export default function PositionDetails() {
 								className="components__HideSmall-sc-88ab9cb5-22 ebuyDK"
 								style={{ height: '100%', marginRight: '12px' }}
 							>
-								<NFTPositionCard image={postiionMetadata.image} ipfsURL={position.tokenURI} />
+								<NFTPositionCard image={positionMetadata.image} ipfsURL={position.tokenURI} />
 							</span>
 							<div
 								className="Column__AutoColumn-sc-ae7ea350-2 cjBIlP"

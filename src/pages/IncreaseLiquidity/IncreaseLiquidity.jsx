@@ -18,7 +18,7 @@ import Loader from '../../components/Loader';
 import PositionPriceRange from '../../components/Position/PositionPriceRange';
 import { decodeTickPrice } from '../../utils/math/priceFormatter';
 import { useDebouncedCallback } from 'use-debounce';
-import { getDEXPosition, getDEXPositionMetadata, getDEXPositionValue } from '../../service/dex';
+import { getDEXPosition, getDEXPositionValue } from '../../service/dex';
 import { tryToast } from '../../utils/toast/tryToast';
 import { useChain } from '../../context/ChainProvider';
 
@@ -35,8 +35,7 @@ const IncreaseLiquidity = () => {
 
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [position, setPosition] = React.useState();
-	const [postiionMetadata, setPositionMetadata] = React.useState();
-	const [positionValue, setPostiionValue] = React.useState();
+	const [positionValue, setPositionValue] = React.useState();
 
 	const [amountA, setAmountA] = React.useState('');
 	const [amountB, setAmountB] = React.useState('');
@@ -175,20 +174,12 @@ const IncreaseLiquidity = () => {
 				setPosition(pos.data[0]);
 			}
 
-			const metadata = await getDEXPositionMetadata(
-				{ tokenId: id },
-				selectedService ? selectedService.serviceURLs : undefined,
-			);
-			if (metadata && metadata.data) {
-				setPositionMetadata(metadata.data);
-			}
-
 			const value = await getDEXPositionValue(
 				{ tokenId: id },
 				selectedService ? selectedService.serviceURLs : undefined,
 			);
 			if (value && value.data) {
-				setPostiionValue(value.data.value);
+				setPositionValue(value.data.value);
 			}
 
 			setIsLoading(false);
@@ -273,7 +264,7 @@ const IncreaseLiquidity = () => {
 		>
 			<Loader size={20} />{' '}
 		</div>
-	) : !position || !postiionMetadata || !positionValue ? (
+	) : !position || !positionValue ? (
 		<div
 			style={{
 				width: '100%',

@@ -20,6 +20,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallbackComponent from './pages/Error/ErrorFallbackComponent';
 import PositionDetails from './pages/PositionDetails/PositionDetails';
 import IncreaseLiquidity from './pages/IncreaseLiquidity/IncreaseLiquidity';
+import RemoveLiquidity from './pages/RemoveLiquidity/RemoveLiquidity';
 
 function App() {
 	const [theme] = useTheme();
@@ -43,6 +44,7 @@ function App() {
 						<Route path="/pools/mint" element={<AddLiquidity />} />
 						<Route path="/pools/:id" element={<PositionDetails />} />
 						<Route path="/pools/:id/add" element={<IncreaseLiquidity />} />
+						<Route path="/pools/:id/remove" element={<RemoveLiquidity />} />
 					</Routes>
 				</AppContextProvider>
 			</ErrorBoundary>
