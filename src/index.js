@@ -7,11 +7,13 @@ import ThemeProvider from './context/ThemeProvider';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import 'react-json-view-lite/dist/index.css';
+import ScrollToTop from './utils/route/scrollToTop';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
 		<HashRouter>
+			<ScrollToTop />
 			<ThemeProvider>
 				<App />
 			</ThemeProvider>
