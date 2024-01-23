@@ -85,7 +85,7 @@ export default function DecryptKeyModal({
 					role="dialog"
 					tabIndex={-1}
 					aria-label="dialog"
-					className="sc-jajvtp-1 jBBXQD"
+					className="sc-jajvtp-1 jBBXQD decrypt-modal"
 					data-reach-dialog-content=""
 					style={{ maxHeight: undefined, minHeight: 0 }}
 				>

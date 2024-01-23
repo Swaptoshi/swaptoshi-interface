@@ -319,7 +319,7 @@ const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 					role="dialog"
 					tabIndex={-1}
 					aria-label="dialog"
-					className="sc-jajvtp-1 jBBXQD"
+					className="sc-jajvtp-1 jBBXQD token-picker-modal"
 					data-reach-dialog-content=""
 				>
 					<div className="sc-1kykgp9-0 sc-1it7zu4-0 iCxowP fUHrnW">

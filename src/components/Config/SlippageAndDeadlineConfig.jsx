@@ -60,7 +60,7 @@ export default function SlippageAndDeadlineConfig({
 			<Dialog
 				show={showConfig}
 				onClickOutside={onClickOutside}
-				style={{ right: 0, width: '300px', top: '45px' }}
+				style={{ right: 0, width: '300px', maxWidth: '90vw', top: '45px' }}
 				anchor={
 					<button
 						className="gear-btn"

@@ -413,7 +413,20 @@
 
 @media screen and (width <= 640px) {
 	.jBBXQD[data-reach-dialog-content] {
-		width: 100vw;
+		width: 90vw;
+		max-height: 90vh;
+	}
+
+	.token-picker-modal[data-reach-dialog-content] {
+		height: 600px;
+	}
+
+	.decrypt-modal[data-reach-dialog-content] {
+		height: unset;
+	}
+
+	.review-transaction[data-reach-dialog-content] {
+		height: unset;
 	}
 
 	.bmYGet[data-reach-dialog-overlay] {
