@@ -71,7 +71,7 @@ export default function CreateNewKeyModal({ setMode }) {
 				<div style={{ height: '32px' }} />
 
 				<div style={{ width: '100%', wordWrap: 'break-word' }}>
-					<div style={{ color: 'rgb(119 128 160)', fontSize: '12px' }}>Address</div>
+					<div style={{ color: 'var(--text-clr)', fontSize: '12px' }}>Address</div>
 					<div style={{ color: 'var(--color-white)', fontSize: '12px' }}>
 						{cryptography.address.getLisk32AddressFromAddress(
 							cryptography.address.getAddressFromPrivateKey(Buffer.from(privateKey, 'hex')),
@@ -80,14 +80,14 @@ export default function CreateNewKeyModal({ setMode }) {
 
 					<div style={{ height: '16px' }} />
 
-					<div style={{ color: 'rgb(119 128 160)', fontSize: '12px' }}>
+					<div style={{ color: 'var(--text-clr)', fontSize: '12px' }}>
 						Key Derivation Path (default)
 					</div>
 					<div style={{ color: 'var(--color-white)', fontSize: '12px' }}>{DEFAULT_KEY_PATH}</div>
 
 					<div style={{ height: '16px' }} />
 
-					<div style={{ color: 'rgb(119 128 160)', fontSize: '12px' }}>Passphrase (12-word)</div>
+					<div style={{ color: 'var(--text-clr)', fontSize: '12px' }}>Passphrase (12-word)</div>
 					<div style={{ color: 'var(--color-white)', fontSize: '12px' }}>{passphrase}</div>
 				</div>
 			</div>

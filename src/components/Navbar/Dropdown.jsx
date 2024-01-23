@@ -32,6 +32,7 @@ function Dropdown({
 			show={show}
 			onClickOutside={onClickOutside}
 			className={'options '.concat(className)}
+			style={{ padding: 0 }}
 			anchor={
 				<div
 					className={'selected-option hover-shadow '.concat(anchorClassName)}
@@ -52,7 +53,11 @@ function Dropdown({
 		>
 			<ul>
 				{optionsLabel.map((option, index) => (
-					<li key={index} onClick={() => onOptionClick(option)}>
+					<li
+						key={index}
+						onClick={() => onOptionClick(option)}
+						style={{ paddingLeft: '16px', paddingRight: '16px' }}
+					>
 						<div className="options-name">
 							{option.imgSrc ? <img src={option.imgSrc} alt={option.label} /> : null}
 							<span>{option.label}</span>

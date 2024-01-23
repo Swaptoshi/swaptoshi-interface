@@ -137,7 +137,7 @@
 	flex: 1 1 auto;
 	padding: 6px 8px;
 	width: 100%;
-	background-color: rgb(13 17 28);
+	background-color: var(--card-bg);
 }
 
 .btn-more {
@@ -220,7 +220,7 @@
 /* Connect WALLET CARD */
 .pools-connect-wallet-card {
 	background-color: var(--card-inside-color);
-	border: 1px solid rgb(152 161 192 / 24%);
+	border: var(--token-border-color);
 	border-radius: 16px;
 	display: flex;
 	flex-direction: column;

@@ -77,42 +77,42 @@
 .etpyAT {
 	font-size: 16px;
 	line-height: 20px;
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 }
 
 .inbLGK {
 	font-size: 16px;
 	line-height: 20px;
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 }
 
 .jnMVFj {
 	text-decoration: none;
 	cursor: pointer;
 	transition-duration: 125ms;
-	color: rgb(251 17 142);
-	stroke: rgb(251 17 142);
+	color: var(--btn-color);
+	stroke: var(--btn-color);
 	font-weight: 500;
 }
 
 .gzPmPD {
 	height: 32px;
 	width: 32px;
-	fill: rgb(152 161 192);
+	fill: var(--text-clr);
 	opacity: 1;
 }
 
 .dDVVbm {
 	height: 32px;
 	width: 32px;
-	fill: rgb(152 161 192);
+	fill: var(--text-clr);
 	opacity: 1;
 }
 
 .jRgqAR {
 	height: 32px;
 	width: 32px;
-	fill: rgb(152 161 192);
+	fill: var(--text-clr);
 	opacity: 1;
 }
 
@@ -120,7 +120,7 @@
 	font-size: 16px;
 	line-height: 20px;
 	margin: 1rem 0 0;
-	color: rgb(93 103 133);
+	color: var(--text-clr-2);
 }
 
 .cSdhBE {

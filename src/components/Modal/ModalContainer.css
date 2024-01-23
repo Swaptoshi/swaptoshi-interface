@@ -78,18 +78,6 @@ input[type='file'] {
 	min-width: 0;
 }
 
-.iHReYX {
-	-webkit-box-align: center;
-	align-items: center;
-	bottom: 0;
-	color: rgb(93 103 133);
-	display: none;
-	padding: 1rem;
-	position: fixed;
-	right: 0;
-	transition: color 250ms ease 0s;
-}
-
 .jeYuAz {
 	width: fit-content;
 }
@@ -102,74 +90,12 @@ input[type='file'] {
 	font-size: 11px;
 }
 
-.pYsaH {
-	color: rgb(118 209 145);
-	transition: opacity 0.25s ease 0s;
-	opacity: 0.5;
-}
-
 .pYsaH a {
 	color: unset;
 }
 
-.iHReYX a {
-	color: unset;
-}
-
-.rCUQQ {
-	text-decoration: none;
-	cursor: pointer;
-	transition-duration: 125ms;
-	color: rgb(76 130 251);
-	stroke: rgb(76 130 251);
-	font-weight: 500;
-}
-
 a:any-link {
 	cursor: pointer;
-}
-
-.hCatfB {
-	width: 8px;
-	height: 8px;
-	min-height: 8px;
-	min-width: 8px;
-	border-radius: 50%;
-	position: relative;
-	background-color: rgb(118 209 145);
-	transition: background-color 250ms ease 0s;
-}
-
-.gKJuLw {
-	flex-direction: column;
-	-webkit-box-pack: justify;
-	justify-content: space-between;
-	display: none;
-	transition: background-size 250ms ease-in-out 0s;
-	color: rgb(255 255 255);
-	position: fixed;
-	z-index: 1020;
-	padding: 24px 16px 16px;
-	border-radius: 20px;
-	bottom: 20px;
-	right: 20px;
-	width: 390px;
-	height: 164px;
-	border: 1px solid rgb(152 161 192 / 24%);
-	box-shadow:
-		rgb(0 0 0 / 24%) 12px 16px 24px,
-		rgb(0 0 0 / 24%) 12px 8px 12px,
-		rgb(0 0 0 / 32%) 4px 4px 8px;
-	user-select: none;
-}
-
-.doyKmv {
-	cursor: pointer;
-	position: absolute;
-	top: 21px;
-	right: 17px;
-	color: rgb(255 255 255);
-	transition: opacity 250ms ease 0s;
 }
 
 .smOka {
@@ -199,30 +125,6 @@ a:any-link {
 	border-radius: 16px;
 	padding: 10px;
 	transition: opacity 250ms ease 0s;
-}
-
-.kIHSLT {
-	padding: 16px;
-	width: 125px;
-	font-weight: 500;
-	text-align: center;
-	border-radius: 20px;
-	outline: none;
-	border: 1px solid transparent;
-	color: rgb(255 255 255);
-	text-decoration: none;
-	display: flex;
-	-webkit-box-pack: center;
-	justify-content: center;
-	flex-wrap: nowrap;
-	-webkit-box-align: center;
-	align-items: center;
-	cursor: pointer;
-	position: relative;
-	z-index: 1;
-	will-change: transform;
-	transition: transform 450ms ease 0s;
-	transform: perspective(1px) translateZ(0);
 }
 
 .jnEFg {
@@ -259,10 +161,6 @@ button {
 	user-select: none;
 }
 
-.jZqRhH {
-	color: rgb(0 0 0);
-}
-
 .kVNjZg {
 	padding: 20px 8px 0;
 	position: relative;
@@ -275,7 +173,7 @@ button {
 	max-width: 80vw;
 	background: var(--card-bg);
 	border-radius: 16px;
-	border: 1px solid rgb(152 161 192 / 24%);
+	border: var(--token-border-color);
 	margin-top: 1rem;
 	margin-left: auto;
 	margin-right: auto;
@@ -294,10 +192,6 @@ button {
 
 .dIAqzj {
 	flex: 1 1 0%;
-}
-
-.jpkEeW {
-	color: rgb(255 255 255);
 }
 
 .css-12uvan3 {
@@ -410,28 +304,6 @@ button {
 	width: 48.5%;
 }
 
-.hcUXCv {
-	-webkit-box-align: center;
-	align-items: center;
-	background-color: rgb(41 50 73);
-	opacity: 1;
-	color: var(--color-white);
-	cursor: pointer;
-	border-radius: 16px;
-	outline: none;
-	user-select: none;
-	border: none;
-	font-size: 24px;
-	font-weight: 500;
-	height: 2.8rem;
-	width: 100%;
-	padding: 0 8px;
-	-webkit-box-pack: justify;
-	justify-content: space-between;
-	margin-left: 0;
-	visibility: visible;
-}
-
 .kkiXeD {
 	display: flex;
 	-webkit-box-align: center;
@@ -494,28 +366,6 @@ button {
 	padding: 1rem;
 }
 
-.iGQvak {
-	-webkit-box-align: center;
-	align-items: center;
-	background-color: var(--model-btn-hover);
-	opacity: 1;
-	color: rgb(255 255 255);
-	cursor: pointer;
-	border-radius: 16px;
-	outline: none;
-	user-select: none;
-	border: none;
-	font-size: 24px;
-	font-weight: 500;
-	height: 2.8rem;
-	width: 100%;
-	padding: 0 8px;
-	-webkit-box-pack: justify;
-	justify-content: space-between;
-	margin-left: 0;
-	visibility: visible;
-}
-
 .ereioh {
 	display: grid;
 	grid-auto-rows: auto;
@@ -549,7 +399,6 @@ button {
 	border-radius: 6px;
 	outline: none;
 	border: 1px solid transparent;
-	color: rgb(255 255 255);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -570,9 +419,7 @@ button {
 }
 
 .aQTri {
-	border: 1px solid rgb(152 161 192 / 24%);
 	background-color: transparent;
-	color: rgb(255 255 255);
 }
 
 .eOoGds {
@@ -583,7 +430,6 @@ button {
 	border-radius: 12px;
 	outline: none;
 	border: 1px solid transparent;
-	color: rgb(255 255 255);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -779,7 +625,7 @@ button {
 
 .bdLEKg {
 	background-color: var(--switch-button);
-	color: rgb(152 161 192);
+	color: var(--text-clr);
 	font-size: 16px;
 	font-weight: 500;
 }
@@ -808,7 +654,6 @@ button {
 	border-radius: 20px;
 	outline: none;
 	border: 1px solid transparent;
-	color: rgb(255 255 255);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -855,7 +700,7 @@ button {
 }
 
 .eRovVv {
-	color: rgb(152 161 192);
+	color: var(--text-clr);
 	font-size: 12px;
 	font-weight: 500;
 }
@@ -952,7 +797,7 @@ button {
 
 .jAJJVP {
 	background-color: var(--card-inside-color);
-	color: rgb(152 161 192);
+	color: var(--text-clr);
 	font-size: 16px;
 	font-weight: 500;
 }
@@ -988,17 +833,6 @@ button {
 	height: 32px;
 }
 
-.gRWQqi {
-	display: flex;
-	flex-flow: row;
-	-webkit-box-align: center;
-	align-items: center;
-	color: rgb(255 255 255);
-	font-size: 0.75rem;
-	line-height: 1rem;
-	padding: 0 1rem 1rem;
-}
-
 .bmCdZH {
 	filter: none;
 	opacity: 1;
@@ -1025,7 +859,7 @@ button {
 }
 
 .fbSdRZ {
-	color: rgb(152 161 192);
+	color: var(--text-clr);
 }
 
 .bndAvc {
@@ -1061,30 +895,6 @@ button {
 	color: var(--privacy-cards-clr);
 	font-size: 20px;
 	font-weight: 600;
-}
-
-.dkaNOU {
-	padding: 12px;
-	width: 100%;
-	font-weight: 500;
-	text-align: center;
-	border-radius: 12px;
-	outline: none;
-	border: 1px solid transparent;
-	color: rgb(255 255 255);
-	text-decoration: none;
-	display: flex;
-	-webkit-box-pack: center;
-	justify-content: center;
-	flex-wrap: nowrap;
-	-webkit-box-align: center;
-	align-items: center;
-	cursor: pointer;
-	position: relative;
-	z-index: 1;
-	will-change: transform;
-	transition: transform 450ms ease 0s;
-	transform: perspective(1px) translateZ(0);
 }
 
 .gIjoKy {
@@ -1159,12 +969,6 @@ button {
 @media screen and (width <= 768px) {
 	.cMHLWt {
 		flex: 5;
-	}
-}
-
-@media screen and (width >= 768px) {
-	.iHReYX {
-		display: flex;
 	}
 }
 

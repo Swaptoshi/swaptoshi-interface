@@ -35,7 +35,7 @@
 }
 
 .cnmVKz::-webkit-scrollbar-thumb {
-	background: rgb(210 217 238);
+	background: var(--token-clrr);
 	border-radius: 8px;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .jEKWjE {
-	stroke: rgb(119 128 160);
+	stroke: var(--text-clr);
 }
 
 .eTxptr {
@@ -67,7 +67,7 @@
 	position: fixed;
 	width: 100%;
 	height: 100%;
-	background-color: rgb(13 17 28 / 60%);
+	background-color: color-mix(in srgb, var(--card-bg) 60%, white);
 	opacity: 0;
 	pointer-events: none;
 }
@@ -80,11 +80,11 @@
 	width: 320px;
 	font-size: 16px;
 	background-color: var(--model-bg);
-	border: 1px solid #d2d9ee19;
+	border: 1px solid color-mix(in srgb, var(--border) 10%, transparent);
 	box-shadow:
-		rgb(51 53 72 / 4%) 8px 12px 20px,
-		rgb(51 53 72 / 2%) 4px 6px 12px,
-		rgb(51 53 72 / 4%) 4px 4px 8px;
+		color-mix(in srgb, var(--box-shadow) 4%, transparent) 8px 12px 20px,
+		color-mix(in srgb, var(--box-shadow) 2%, transparent) 4px 6px 12px,
+		color-mix(in srgb, var(--box-shadow) 4%, transparent) 4px 4px 8px;
 	transition: margin-right 250ms ease 0s;
 }
 
@@ -147,7 +147,7 @@
 }
 
 .kIafUC {
-	background-color: rgb(232 236 251);
+	background-color: var(--open-currency-btn-bg);
 	transition: width 125ms ease-in-out 0s;
 	border-radius: 12px;
 	display: flex;
@@ -157,7 +157,7 @@
 	overflow: hidden;
 	height: 32px;
 	width: 32px;
-	color: rgb(13 17 28);
+	color: var(--model-bg-text);
 	border: none;
 	outline: none;
 }
@@ -239,7 +239,7 @@ button {
 }
 
 .cyjnfZ img {
-	border: 1px solid rgb(210 217 238);
+	border: 1px solid var(--token-clrr);
 	border-radius: 12px;
 }
 
@@ -269,12 +269,12 @@ button {
 }
 
 .bftkTM {
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 }
 
 .eBkKRJ {
 	font-weight: 600;
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 }
 
 .jnMVFjj {
@@ -287,7 +287,7 @@ button {
 }
 
 .hqtSjX {
-	color: rgb(152 161 192);
+	color: var(--text-clr);
 }
 
 .cnmVKz {
@@ -327,7 +327,7 @@ button {
 }
 
 .bepFek {
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 	padding-bottom: 24px;
 }
 
@@ -408,7 +408,7 @@ button {
 	cursor: pointer;
 	border-radius: 12px;
 	padding: 6px;
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 	gap: 4px;
 	transition: all 250ms ease 0s;
 }
@@ -491,14 +491,14 @@ button {
 }
 
 .bftkTM {
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 }
 
 .ffxhvk {
 	-webkit-box-align: center;
 	align-items: center;
 	background: transparent;
-	border: 1px solid rgb(210 217 238);
+	border: 1px solid var(--token-clrr);
 	border-radius: 20px;
 	cursor: pointer;
 	display: flex;
@@ -509,7 +509,7 @@ button {
 
 .bQBOQe {
 	animation: 0.1s ease-in 0s 1 normal none running none;
-	background: rgb(152 161 192);
+	background: var(--text-clr);
 	border-radius: 50%;
 	height: 24px;
 	margin-right: 2.2em;
@@ -528,7 +528,7 @@ button {
 	-webkit-box-pack: justify;
 	justify-content: space-between;
 	text-decoration: none;
-	color: rgb(13 17 28);
+	color: var(--card-bg);
 }
 
 .css-zhpkf8 {
@@ -558,7 +558,7 @@ button {
 }
 
 .bqwbXT {
-	color: rgb(152 161 192);
+	color: var(--text-clr);
 }
 
 .xyz1 {

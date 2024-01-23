@@ -1,5 +1,6 @@
 /* ---------------- Dark Theme ----------------------- */
 :root {
+	--box-shadow: rgb(51 53 72);
 	--shadow: #ffffff05;
 	--body-color: #2d2d2d;
 	--body-bg-color: linear-gradient(rgb(32 39 56) 0%, rgb(7 8 22) 100%);
@@ -8,7 +9,7 @@
 	--card-bg: rgb(13 17 28);
 	--card-inside-color: rgb(19 26 42);
 	--switch-button: rgb(19 26 42);
-	--switch-button-border: rgb(13 17 28);
+	--switch-button-border: var(--card-bg);
 	--connect-btn: rgb(76 130 251 / 24%);
 	--open-currency-btn-bg: rgb(41 50 73);
 	--open-currency-btn-top: #fff;
@@ -37,10 +38,12 @@
 
 	/* --back-drop-two: linear-gradient(rgb(0 0 0 / 60%) 0%, rgb(4 4 6) 60%); */
 	--cards-background: linear-gradient(179.82deg, rgb(0 0 0 / 0%) 0.16%, rgb(5 0 38) 99.85%);
+	--protocol-gradient-1: rgb(70 115 250);
+	--protocol-gradient-2: rgb(150 70 250);
 	--protocol-card: radial-gradient(
 		101.8% 4091.31% at 0% 0%,
-		rgb(70 115 250) 0%,
-		rgb(150 70 250) 100%
+		var(--protocol-gradient-1) 0%,
+		var(--protocol-gradient-2) 100%
 	);
 
 	/* Sticky-Nav */
@@ -52,7 +55,7 @@
 	--token-border-color: 1px solid rgb(152 161 192 / 24%);
 
 	/* Model page */
-	--model-bg: rgb(13 17 28);
+	--model-bg: var(--card-bg);
 	--model-btn-hover: rgb(51 113 250);
 	--model-btn-color: rgb(76 130 251);
 	--model-cards: rgb(19 26 42);
@@ -61,7 +64,7 @@
 	--model-btn-switch: rgb(255 255 255);
 
 	/* Vote page */
-	--vote-card-color: rgb(13 17 28);
+	--vote-card-color: var(--card-bg);
 	--vote-card-bgcolor: rgb(19 26 42);
 
 	/* Privacy Modal */
@@ -72,10 +75,11 @@
 
 	/* Footer  */
 	--text-clr: rgb(152 161 192);
+	--text-clr-2: rgb(93 103 133);
 
 	/* Liquidity page */
 	--dropdown-bg: rgb(19 26 42);
-	--dropdown-border: rgb(13 17 28);
+	--dropdown-border: var(--card-bg);
 	--token-clrr: rgb(152 161 192 / 24%);
 	--hover-background: rgb(41 50 73);
 	--border: rgb(152 161 192 / 24%);
@@ -127,7 +131,6 @@
 
 	/* Home page */
 	--home-cards: #ffff;
-	--protocol-card: linear-gradient(93.06deg, rgb(255 0 199) 2.66%, rgb(255 159 251) 98.99%);
 
 	/* Sticky-Nav */
 	--sticky-nav: #fff;

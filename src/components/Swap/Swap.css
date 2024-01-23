@@ -435,41 +435,6 @@
 	font-weight: 600;
 }
 
-.connect-wallet {
-	padding: 16px;
-	width: 100%;
-	height: 60px;
-	font-weight: 600;
-	text-align: center;
-	border-radius: 16px;
-	outline: none;
-	border: 1px solid transparent;
-	color: rgb(255 255 255);
-	text-decoration: none;
-	display: flex;
-	-webkit-box-pack: center;
-	justify-content: center;
-	flex-wrap: nowrap;
-	-webkit-box-align: center;
-	align-items: center;
-	cursor: pointer;
-	position: relative;
-	z-index: 1;
-	will-change: transform;
-	transition: transform 450ms ease 0s;
-	transform: perspective(1px) translateZ(0);
-}
-
-.connect-wallet div {
-	background-color: transparent;
-	inset: 0;
-	border-radius: inherit;
-	height: 100%;
-	position: absolute;
-	transition: background-color 150ms ease 0s;
-	width: 100%;
-}
-
 .grid {
 	display: grid;
 	grid-auto-rows: auto;

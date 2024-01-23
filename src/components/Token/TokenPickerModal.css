@@ -2,9 +2,9 @@
 	margin: auto;
 	background-color: rgb(255 255 255);
 	box-shadow:
-		rgb(51 53 72 / 4%) 8px 12px 20px,
-		rgb(51 53 72 / 2%) 4px 6px 12px,
-		rgb(51 53 72 / 4%) 4px 4px 8px;
+		color-mix(in srgb, var(--box-shadow) 4%, transparent) 8px 12px 20px,
+		color-mix(in srgb, var(--box-shadow) 2%, transparent) 4px 6px 12px,
+		color-mix(in srgb, var(--box-shadow) 4%, transparent) 4px 4px 8px;
 	padding: 0;
 	width: 50vw;
 	overflow: hidden auto;
@@ -20,7 +20,6 @@
 }
 
 [data-reach-dialog-content] {
-	background: #fff;
 	margin: 10vh auto;
 	outline: none;
 	padding: 2rem;
@@ -49,7 +48,7 @@
 }
 
 .fqkEGC {
-	color: rgb(13 17 28);
+	color: var(--card-bg);
 	cursor: pointer;
 }
 
@@ -295,7 +294,7 @@
 }
 
 .bqwbXT {
-	color: rgb(152 161 192);
+	color: var(--text-clr);
 }
 
 .css-yfjwjl {
@@ -321,7 +320,7 @@
 	height: 20px;
 	width: 20px;
 	margin-left: 4px;
-	color: rgb(251 17 142);
+	color: var(--btn-color);
 }
 
 .bPeMEk {
@@ -363,7 +362,6 @@
 }
 
 .resize-triggers > div {
-	background: #eee;
 	overflow: auto;
 }
 

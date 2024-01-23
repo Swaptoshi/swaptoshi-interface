@@ -172,7 +172,7 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, mode, s
 				</button>
 				{senderPublicKey ? (
 					<button
-						data-testid="wallet-settings"
+						data-testid="disconnect"
 						className="sc-u2uow0-2 kIafUC"
 						onClick={handleDisconnect}
 						style={{ marginLeft: '8px' }}
@@ -192,7 +192,7 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, mode, s
 										<g
 											id="Dribbble-Light-Preview"
 											transform="translate(-419.000000, -560.000000)"
-											fill="#000000"
+											fill="currentColor"
 										>
 											<g id="icons" transform="translate(56.000000, 160.000000)">
 												<path

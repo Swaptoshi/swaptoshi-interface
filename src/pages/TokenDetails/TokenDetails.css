@@ -48,7 +48,7 @@
 	-webkit-box-align: center;
 	align-items: center;
 	bottom: 0;
-	color: rgb(152 161 192);
+	color: var(--text-clr);
 	display: none;
 	padding: 1rem;
 	position: fixed;
@@ -82,8 +82,8 @@
 	text-decoration: none;
 	cursor: pointer;
 	transition-duration: 125ms;
-	color: rgb(251 17 142);
-	stroke: rgb(251 17 142);
+	color: var(--btn-color);
+	stroke: var(--btn-color);
 	font-weight: 500;
 }
 
@@ -111,7 +111,7 @@
 
 	/* background: url("./static/media/wallet_banner_phone_image.7458b169d90ac9039783.png") right 15px top 18px / 166px no-repeat rgb(253, 130, 255); */
 	transition: background-size 250ms ease-in-out 0s;
-	color: rgb(13 17 28);
+	color: var(--card-bg);
 	position: fixed;
 	z-index: 1020;
 	padding: 24px 16px 16px;
@@ -120,11 +120,11 @@
 	right: 20px;
 	width: 390px;
 	height: 164px;
-	border: 1px solid rgb(210 217 238);
+	border: 1px solid var(--token-clrr);
 	box-shadow:
-		rgb(51 53 72 / 4%) 8px 12px 20px,
-		rgb(51 53 72 / 2%) 4px 6px 12px,
-		rgb(51 53 72 / 4%) 4px 4px 8px;
+		color-mix(in srgb, var(--box-shadow) 4%, transparent) 8px 12px 20px,
+		color-mix(in srgb, var(--box-shadow) 2%, transparent) 4px 6px 12px,
+		color-mix(in srgb, var(--box-shadow) 4%, transparent) 4px 4px 8px;
 	user-select: none;
 }
 
@@ -176,7 +176,7 @@
 	border-radius: 20px;
 	outline: none;
 	border: 1px solid transparent;
-	color: rgb(13 17 28);
+	color: var(--card-bg);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -242,7 +242,7 @@
 
 .MpERT {
 	display: flex;
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 	font-size: 14px;
 	line-height: 20px;
 	-webkit-box-align: center;
@@ -314,14 +314,14 @@
 
 .gRPQtw {
 	text-transform: uppercase;
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 	margin-left: 8px;
 }
 
 .kxJsVh {
 	display: flex;
 	gap: 16px;
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 }
 
 .gOFqpR {
@@ -330,7 +330,7 @@
 }
 
 .hTKuaT {
-	stroke: rgb(119 128 160);
+	stroke: var(--text-clr);
 	height: 24px;
 	width: 24px;
 	text-decoration: none;
@@ -400,7 +400,7 @@
 	align-items: center;
 	-webkit-box-pack: center;
 	justify-content: center;
-	background-color: rgb(232 236 251);
+	background-color: var(--open-currency-btn-bg);
 	font-weight: 600;
 	font-size: 16px;
 	padding: 6px 12px;
@@ -408,7 +408,7 @@
 	line-height: 20px;
 	border: none;
 	cursor: pointer;
-	color: rgb(13 17 28);
+	color: var(--card-bg);
 	transition-duration: 125ms;
 }
 
@@ -427,7 +427,7 @@
 	line-height: 20px;
 	border: none;
 	cursor: pointer;
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 	transition-duration: 125ms;
 }
 
@@ -468,7 +468,7 @@
 }
 
 .iJvfTG {
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 	font-size: 14px;
 	min-width: 168px;
 	flex: 1 1 0%;
@@ -482,7 +482,7 @@
 }
 
 .hsvmWZ {
-	background-color: rgb(210 217 238);
+	background-color: var(--token-clrr);
 	border: none;
 	height: 0.5px;
 }
@@ -504,7 +504,7 @@
 }
 
 .iHKewj {
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 	font-weight: 400;
 	font-size: 0.85em;
 	padding-top: 0.5em;
@@ -519,7 +519,7 @@
 }
 
 .bftkTM {
-	color: rgb(119 128 160);
+	color: var(--text-clr);
 }
 
 .gTErEb {
