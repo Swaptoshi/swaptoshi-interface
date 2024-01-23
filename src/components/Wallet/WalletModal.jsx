@@ -4,7 +4,7 @@ import ConnectWalletModal from './Connect/ConnectWalletModal';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import WalletAccount from './Account/WalletAccount';
 
-export default function WalletModal({ show, onConfigClick, closeHandler, theme }) {
+export default function WalletModal({ show, onConfigClick, closeHandler }) {
 	const { senderPublicKey } = useWalletConnect();
 	const [mode, setMode] = React.useState('normal');
 
@@ -19,7 +19,6 @@ export default function WalletModal({ show, onConfigClick, closeHandler, theme }
 			<WalletModalHeader
 				onConfigClick={onConfigClick}
 				closeHandler={closeHandler}
-				theme={theme}
 				mode={mode}
 				setMode={setMode}
 			/>

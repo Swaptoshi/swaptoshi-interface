@@ -85,7 +85,6 @@ const Modal = () => {
 								show={isModalOpen}
 								onConfigClick={openConfigHandler}
 								closeHandler={handleCloseAccountDrawer}
-								theme={theme}
 							/>
 
 							{isSecondModalOpen && (

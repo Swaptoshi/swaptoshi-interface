@@ -59,7 +59,8 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 									height={20}
 									viewBox="0 0 24 24"
 									fill="none"
-									stroke="#4C82FB"
+									stroke="currentColor"
+									style={{ color: 'var(--btn-color)' }}
 									strokeWidth={2}
 									strokeLinecap="round"
 									strokeLinejoin="round"

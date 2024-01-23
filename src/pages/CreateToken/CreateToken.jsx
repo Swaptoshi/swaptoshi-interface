@@ -207,23 +207,28 @@ const CreateToken = () => {
 							>
 								<div>
 									<div style={{ width: '80px', margin: 'auto' }}>
-										<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<svg
+											viewBox="0 0 24 24"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+											style={{ color: 'var(--text-clr)' }}
+										>
 											<path
 												d="M12 17L12 10M12 10L15 13M12 10L9 13"
-												stroke="#808080"
+												stroke="currentColor"
 												strokeWidth="1.5"
 												strokeLinecap="round"
 												strokeLinejoin="round"
 											/>
 											<path
 												d="M16 7H12H8"
-												stroke="#808080"
+												stroke="currentColor"
 												strokeWidth="1.5"
 												strokeLinecap="round"
 											/>
 											<path
 												d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
-												stroke="#808080"
+												stroke="currentColor"
 												strokeWidth="1.5"
 												strokeLinecap="round"
 											/>
@@ -233,13 +238,13 @@ const CreateToken = () => {
 										style={{
 											textAlign: 'center',
 											marginTop: '8px',
-											color: '#808080',
+											color: 'var(--text-clr)',
 										}}
 									>
 										select or drop token icon here
 										<br />
 										(.png only, Max 512kb)
-										{logoError && <div style={{ color: 'red' }}>{logoError}</div>}
+										{logoError && <div style={{ color: 'var(--red)' }}>{logoError}</div>}
 									</div>
 								</div>
 							</FileUploader>

@@ -9,13 +9,13 @@ import Loader from '../Loader';
 import { useTheme } from '../../context/ThemeProvider';
 import { useWalletModal } from '../../context/WalletModalProvider';
 
-export default function WalletModalHeader({ onConfigClick, closeHandler, theme, mode, setMode }) {
+export default function WalletModalHeader({ onConfigClick, closeHandler, mode, setMode }) {
 	const { senderPublicKey, disconnect } = useWalletConnect();
 	const [, setIsModalOpen] = useWalletModal();
 	const [currentTheme] = useTheme();
 
 	const [addressCopied, setAddressRequestCopied] = React.useState(false);
-	const [hoverAddress, setHoverAddress] = React.useState(true);
+	const [hoverAddress, setHoverAddress] = React.useState(false);
 	const [isDisconnecting, setIsDisconnecting] = React.useState(false);
 
 	const handleAddressCopied = React.useCallback(() => {
@@ -78,9 +78,10 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, theme, 
 										viewBox="0 0 20 20"
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
+										style={{ color: 'var(--color-white)' }}
 									>
 										<path
-											fill={theme === 'light' ? '#000000' : '#7f9bd4'}
+											fill="currentColor"
 											fillRule="evenodd"
 											d="M3 10a7 7 0 019.307-6.611 1 1 0 00.658-1.889 9 9 0 105.98 7.501 1 1 0 00-1.988.22A7 7 0 113 10zm14.75-5.338a1 1 0 00-1.5-1.324l-6.435 7.28-3.183-2.593a1 1 0 00-1.264 1.55l3.929 3.2a1 1 0 001.38-.113l7.072-8z"
 										/>
@@ -96,14 +97,16 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, theme, 
 										<g clipPath="url(#clip0_5_1870)">
 											<path
 												d="M13.3333 6H7.33333C6.59695 6 6 6.59695 6 7.33333V13.3333C6 14.0697 6.59695 14.6667 7.33333 14.6667H13.3333C14.0697 14.6667 14.6667 14.0697 14.6667 13.3333V7.33333C14.6667 6.59695 14.0697 6 13.3333 6Z"
-												stroke={theme === 'light' ? '#000000' : '#7f9bd4'}
+												stroke="currentColor"
+												style={{ color: 'var(--color-white)' }}
 												strokeWidth="1.3"
 												strokeLinecap="round"
 												strokeLinejoin="round"
 											></path>
 											<path
 												d="M3.33398 10.0007H2.66732C2.3137 10.0007 1.97456 9.86017 1.72451 9.61013C1.47446 9.36008 1.33398 9.02094 1.33398 8.66732V2.66732C1.33398 2.3137 1.47446 1.97456 1.72451 1.72451C1.97456 1.47446 2.3137 1.33398 2.66732 1.33398H8.66732C9.02094 1.33398 9.36008 1.47446 9.61013 1.72451C9.86017 1.97456 10.0007 2.3137 10.0007 2.66732V3.33398"
-												stroke={theme === 'light' ? '#000000' : '#7f9bd4'}
+												stroke="currentColor"
+												style={{ color: 'var(--color-white)' }}
 												strokeWidth="1.3"
 												strokeLinecap="round"
 												strokeLinejoin="round"
