@@ -254,10 +254,6 @@
 	width: fit-content;
 }
 
-a {
-	color: rgb(251 17 142);
-}
-
 .kbDyok {
 	display: flex;
 	-webkit-box-pack: justify;

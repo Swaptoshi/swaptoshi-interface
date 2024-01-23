@@ -187,11 +187,12 @@ body {
 
 a {
 	text-decoration: none;
-	color: unset;
+	color: var(--btn-color);
+	transition: color 0.3s ease;
 }
 
 a:hover {
-	color: var(--color-white);
+	color: color-mix(in srgb, var(--btn-color) 60%, white);
 }
 
 ul {

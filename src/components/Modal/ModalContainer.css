@@ -125,10 +125,6 @@ input[type='file'] {
 	font-weight: 500;
 }
 
-a {
-	color: rgb(76 130 251);
-}
-
 a:any-link {
 	cursor: pointer;
 }
@@ -298,10 +294,6 @@ button {
 
 .dIAqzj {
 	flex: 1 1 0%;
-}
-
-a {
-	color: rgb(76 130 251);
 }
 
 .jpkEeW {

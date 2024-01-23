@@ -21,6 +21,7 @@ import ErrorFallbackComponent from './pages/Error/ErrorFallbackComponent';
 import PositionDetails from './pages/PositionDetails/PositionDetails';
 import IncreaseLiquidity from './pages/IncreaseLiquidity/IncreaseLiquidity';
 import RemoveLiquidity from './pages/RemoveLiquidity/RemoveLiquidity';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
 	const [theme] = useTheme();
@@ -45,6 +46,7 @@ function App() {
 						<Route path="/pools/:id" element={<PositionDetails />} />
 						<Route path="/pools/:id/add" element={<IncreaseLiquidity />} />
 						<Route path="/pools/:id/remove" element={<RemoveLiquidity />} />
+						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</AppContextProvider>
 			</ErrorBoundary>
