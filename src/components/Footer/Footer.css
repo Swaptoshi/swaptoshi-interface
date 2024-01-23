@@ -128,12 +128,8 @@
 	flex-direction: column;
 	-webkit-box-align: center;
 	align-items: center;
-
-	/* padding: 0px 24px 5rem; */
 	width: 100%;
 	background: var(--cards-background);
-
-	/* background: linear-gradient(179.82deg, rgba(0, 0, 0, 0) 0.16%, rgb(5, 0, 38) 99.85%); */
 }
 
 /* Media QUery */
