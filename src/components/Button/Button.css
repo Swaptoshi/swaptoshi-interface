@@ -9,6 +9,8 @@
 	padding: 0;
 	height: 40px;
 	transition: color 125ms ease-in 0s;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .button-content {
@@ -18,6 +20,9 @@
 	font-size: 14px;
 	padding: 6px 16px;
 	color: inherit;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .primary-button-container {

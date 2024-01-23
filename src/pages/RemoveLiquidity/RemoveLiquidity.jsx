@@ -232,7 +232,15 @@ export default function RemoveLiquidity() {
 						Amount
 					</div>
 					<div className="flex-above-375" style={{ alignItems: 'center' }}>
-						<div style={{ fontWeight: 600, fontSize: '36px', flex: 1, marginBottom: '8px' }}>
+						<div
+							style={{
+								fontWeight: 600,
+								fontSize: '36px',
+								flex: 1,
+								marginBottom: '8px',
+								color: 'var(--color-white)',
+							}}
+						>
 							{removed}%
 						</div>
 						<div style={{ marginBottom: '8px' }}>

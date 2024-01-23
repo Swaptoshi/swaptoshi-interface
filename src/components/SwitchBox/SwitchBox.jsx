@@ -28,7 +28,7 @@ export default function SwitchBox({
 								cursor: value === item.value ? 'unset' : 'pointer',
 								backgroundColor:
 									value === item.value
-										? selectedBackgroundColor ?? 'var(--model-btn-color)'
+										? selectedBackgroundColor ?? 'var(--connect-btn)'
 										: undefined,
 							}}
 							className={`sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-3 sc-1euncec-0 hJYFVB xyz1 kHFzEX ${
@@ -40,7 +40,7 @@ export default function SwitchBox({
 								style={{
 									color:
 										value === item.value
-											? selectedTextColor ?? 'var(--model-btn-hover)'
+											? selectedTextColor ?? 'var(--btn-color)'
 											: unselectedTextColor,
 								}}
 							>
