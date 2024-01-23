@@ -51,10 +51,15 @@ export default function SlippageAndDeadlineConfig({
 		}
 	}, []);
 
+	const onClickOutside = React.useCallback(() => {
+		setShowConfig(false);
+	}, []);
+
 	return (
 		<div className="gear">
 			<Dialog
 				show={showConfig}
+				onClickOutside={onClickOutside}
 				style={{ right: 0, width: '300px', top: '45px' }}
 				anchor={
 					<button
