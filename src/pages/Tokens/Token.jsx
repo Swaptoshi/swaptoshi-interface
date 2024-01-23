@@ -152,15 +152,8 @@ const Token = () => {
 									display: 'flex',
 								}}
 							>
-								<NavLink
-									className="hide-below-375 show-below-720 hide-above-720"
-									to="/tokens/create"
-								>
+								<NavLink className="hide-above-768" to="/tokens/create">
 									<PrimaryButton style={{ width: '130px' }}>Create Token</PrimaryButton>
-								</NavLink>
-
-								<NavLink className="show-below-375 hide-above-375" to="/tokens/create">
-									<PrimaryButton style={{ width: '60px' }}>+</PrimaryButton>
 								</NavLink>
 							</div>
 						</div>
@@ -317,8 +310,11 @@ const Token = () => {
 														<div className="sc-1bit9h6-0 sc-1bit9h6-17 hJyIyF gKCxsP">
 															<div data-cy="token-name" className="sc-1bit9h6-18 kSNzln">
 																{data.tokenName}
+																<div className="hJyIyF jRVRlR hide-above-425 token-symbol-mobile">
+																	{data.symbol}
+																</div>
 															</div>
-															<div className="sc-1bit9h6-0 sc-1bit9h6-19 hJyIyF jRVRlR">
+															<div className="sc-1bit9h6-0 sc-1bit9h6-19 hJyIyF jRVRlR hide-below-425">
 																{data.symbol}
 															</div>
 														</div>

@@ -659,6 +659,10 @@
 	padding-right: 8px;
 }
 
+.token-symbol-mobile {
+	display: block;
+}
+
 /* Media query */
 @media only screen and (width <= 1200px) {
 	/* header row  */
@@ -698,7 +702,27 @@
 	}
 }
 
-@media only screen and (width >= 720px) {
+@media only screen and (width <= 768px) {
+	.hJyIyF {
+		justify-content: left;
+	}
+
+	.token-symbol-mobile {
+		font-size: 12px;
+	}
+}
+
+@media only screen and (width > 425px) {
+	.hide-above-425 {
+		display: none;
+	}
+
+	.show-above-425 {
+		display: unset;
+	}
+}
+
+@media only screen and (width > 720px) {
 	.hide-above-720 {
 		display: none;
 	}
@@ -708,7 +732,7 @@
 	}
 }
 
-@media only screen and (width >= 375px) {
+@media only screen and (width > 375px) {
 	.hide-above-375 {
 		display: none;
 	}

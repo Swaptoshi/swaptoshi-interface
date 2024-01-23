@@ -1,7 +1,14 @@
 import React from 'react';
 import Dialog from '../Tooltip/Dialog';
 
-function Dropdown({ selectedOption, optionsLabel, handleOptionClick, className, anchorClassName }) {
+function Dropdown({
+	hideLabelMobile,
+	selectedOption,
+	optionsLabel,
+	handleOptionClick,
+	className,
+	anchorClassName,
+}) {
 	const [show, setShow] = React.useState(false);
 
 	const onClickOutside = React.useCallback(() => {
@@ -36,7 +43,7 @@ function Dropdown({ selectedOption, optionsLabel, handleOptionClick, className, 
 							<div style={{ width: '8px' }} />
 						</div>
 					) : null}
-					<span className="hide-below-320">{selectedOption.label}</span>
+					<span className={hideLabelMobile ? 'hide-below-320' : ''}>{selectedOption.label}</span>
 					<span className="dropdown">
 						<i className="nav-dropdown ri-arrow-down-s-line"></i>
 					</span>

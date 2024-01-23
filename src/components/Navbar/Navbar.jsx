@@ -223,6 +223,7 @@ const Navbar = () => {
 									<Loader size={12} />
 								) : optionsLabel.length > 0 && selectedOption ? (
 									<Dropdown
+										hideLabelMobile={true}
 										className={'chain-selector'}
 										selectedOption={selectedOption}
 										optionsLabel={optionsLabel}

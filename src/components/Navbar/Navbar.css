@@ -847,11 +847,13 @@
 	}
 }
 
-@media screen and (width >= 769px) {
+@media screen and (width > 768px) {
 	.hide-above-768 {
 		display: none;
 	}
+}
 
+@media screen and (width >= 769px) {
 	.left-nav .nav-list {
 		display: flex;
 	}
