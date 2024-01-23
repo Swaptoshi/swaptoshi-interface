@@ -273,7 +273,6 @@
 }
 
 .cryptocurrency-wrapper {
-	width: 80%;
 	display: flex;
 	padding: 0;
 	-webkit-box-align: center;
@@ -426,7 +425,6 @@
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	width: 75%;
 	text-align: left;
 }
 

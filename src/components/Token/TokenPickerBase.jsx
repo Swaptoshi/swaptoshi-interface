@@ -59,7 +59,10 @@ export default function TokenPickerBase({
 			}}
 		>
 			<span className="span-two">
-				<div className="cryptocurrency-wrapper">
+				<div
+					className="cryptocurrency-wrapper"
+					style={{ maxWidth: disableSelect ? '100%' : '85%' }}
+				>
 					<div className="text-wrapper">
 						<span className="select-token">Select token</span>
 					</div>
