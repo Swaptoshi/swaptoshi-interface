@@ -20,6 +20,7 @@ import { getDEXToken } from '../../service/dex';
 import { useLiskPrice } from '../../context/LiskPriceProvider';
 import TokenAvatar from '../Avatar/token';
 import * as env from '../../utils/config/env';
+import useEventListener from '../../utils/hook/useEventListener';
 
 const Navbar = () => {
 	const location = useLocation();
@@ -31,6 +32,7 @@ const Navbar = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSearchOpen, setSearchOpen] = useState(false);
 	const [isDropdownVisible, setDropdownVisibility] = useState(false);
+	const [searchText, setSearchText] = useState('');
 
 	const { connect, wcUri, signClient, senderPublicKey } = useWalletConnect();
 	const { availableService, selectedService, setChain } = useChain();
@@ -40,6 +42,7 @@ const Navbar = () => {
 	const centerSearchRef = useRef(null);
 	const rightSearchRef = useRef(null);
 	const rightSearchInsideRef = useRef(null);
+	const searchBarRef = useRef(null);
 
 	const onConnectFailed = React.useCallback(() => {
 		setIsModalOpen(false);
@@ -128,6 +131,7 @@ const Navbar = () => {
 		e => {
 			setSearchOpen(true);
 			setIsLoading(true);
+			setSearchText(e.target.value);
 			if (!e || e.target.value || !searchResult || (searchResult && searchResult.length === 0)) {
 				searchToken(e ? e.target.value : undefined);
 			} else {
@@ -145,6 +149,26 @@ const Navbar = () => {
 			searchToken();
 		}
 	}, [searchResult, searchToken]);
+
+	const onSearchResultClick = React.useCallback(() => {
+		setSearchText('');
+		setSearchOpen(false);
+		setSearchResult(initialResult);
+		setIsLoading(false);
+	}, [initialResult]);
+
+	const openSearchOnSlashPress = React.useCallback(
+		e => {
+			if (e.keyCode === 191 && searchBarRef.current && !isSearchOpen) {
+				e.preventDefault();
+				searchBarRef.current.focus();
+				handleSearchClick();
+			}
+		},
+		[handleSearchClick, isSearchOpen],
+	);
+
+	useEventListener('keydown', openSearchOnSlashPress);
 
 	useEffect(() => {
 		if (!isSearchOpen && !isDropdownVisible) return; // If both dropdowns are closed, no need for the listener
@@ -285,8 +309,10 @@ const Navbar = () => {
 
 									<input
 										className=""
+										ref={searchBarRef}
 										type="search"
 										placeholder="Search tokens"
+										value={searchText}
 										onChange={handleSearchChange}
 										onClick={handleSearchClick}
 									/>
@@ -320,9 +346,7 @@ const Navbar = () => {
 																		<NavLink
 																			to={`/tokens/${option.tokenId}`}
 																			className="tokens-options"
-																			onClick={() => {
-																				setSearchOpen(false);
-																			}}
+																			onClick={onSearchResultClick}
 																		>
 																			<div className="left-item">
 																				<div>
@@ -417,6 +441,7 @@ const Navbar = () => {
 												<input
 													className=""
 													type="search"
+													value={searchText}
 													placeholder="Search tokens"
 													onChange={handleSearchChange}
 													onClick={handleSearchClick}
@@ -450,9 +475,7 @@ const Navbar = () => {
 																						<NavLink
 																							to={`/tokens/${option.tokenId}`}
 																							className="tokens-options"
-																							onClick={() => {
-																								setSearchOpen(false);
-																							}}
+																							onClick={onSearchResultClick}
 																						>
 																							<div className="left-item">
 																								<div>
