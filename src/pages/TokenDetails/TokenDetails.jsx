@@ -151,24 +151,18 @@ const TokenDetails = () => {
 	function determineTrendIcon(priceChangeUSD) {
 		if (priceChangeUSD > 0) {
 			return (
-				<i
-					style={{ color: 'rgb(118, 209, 145)' }}
-					className="trends-up-icon ri-arrow-right-up-line"
-				></i>
+				<i style={{ color: 'var(--green)' }} className="trends-up-icon ri-arrow-right-up-line"></i>
 			);
 		} else if (priceChangeUSD < 0) {
 			return (
 				<i
-					style={{ color: 'rgb(252, 83, 83)' }}
+					style={{ color: 'var(--red)' }}
 					className="trends-down-icon ri-arrow-right-down-line"
 				></i>
 			);
 		} else if (priceChangeUSD === 0) {
 			return (
-				<i
-					style={{ color: 'rgb(118, 209, 145)' }}
-					className="trends-up-icon ri-arrow-right-up-line"
-				></i>
+				<i style={{ color: 'var(--green)' }} className="trends-up-icon ri-arrow-right-up-line"></i>
 			);
 		}
 		return null;
@@ -234,8 +228,7 @@ const TokenDetails = () => {
 												<span
 													className="percentage-text"
 													style={{
-														color:
-															token.priceChangeUSD >= 0 ? 'rgb(118, 209, 145)' : 'rgb(252, 83, 83)',
+														color: token.priceChangeUSD >= 0 ? 'var(--green)' : 'var(--red)',
 													}}
 												>
 													<span>{token.priceChangeUSD.toFixed(2)}%</span>

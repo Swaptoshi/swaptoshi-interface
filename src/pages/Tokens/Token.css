@@ -121,53 +121,12 @@
 
 .icon-drop {
 	padding-top: 1px;
-	color: rgb(76 130 251);
+	color: var(--btn-color);
 }
 
 .icon-drop.rotated {
 	transform: rotate(180deg);
 	transition: transform 0.3s ease;
-}
-
-.icon-drop i {
-}
-
-.dropdown-items-wrapper {
-	min-width: 240px;
-	max-height: 350px;
-	overflow: auto;
-	background-color: var(--card-bg);
-	box-shadow:
-		rgb(0 0 0 / 24%) 12px 16px 24px,
-		rgb(0 0 0 / 24%) 12px 8px 12px,
-		rgb(0 0 0 / 32%) 4px 4px 8px;
-	border: 0.5px solid rgb(152 161 192 / 24%);
-	border-radius: 12px;
-	padding: 8px;
-	display: flex;
-	flex-direction: column;
-	font-size: 16px;
-	position: absolute;
-	top: 48px;
-	z-index: 100;
-	left: 0;
-}
-
-.dropdown-items-wrapper .dropdown-item {
-	display: flex;
-	-webkit-box-align: center;
-	align-items: center;
-	-webkit-box-pack: justify;
-	justify-content: space-between;
-	text-decoration: none;
-	cursor: pointer;
-	border-radius: 8px;
-}
-
-#dropdownItem {
-	flex: 1 1 0%;
-	padding: 12px 8px;
-	color: rgb(255 255 255);
 }
 
 .dropdown-item .item-crypto {
@@ -185,12 +144,8 @@
 	width: 20px;
 }
 
-#dropdownItem.tick-mark {
-	display: flex;
-}
-
 .tick-icon {
-	color: rgb(76 130 251);
+	color: var(--btn-color);
 }
 
 /* update 1D */
@@ -203,21 +158,6 @@
 	position: relative;
 	border: none;
 	text-align: left;
-}
-
-.update-btn {
-	height: 100%;
-	color: rgb(255 255 255);
-	background-color: rgb(41 50 73);
-	margin: 0;
-	padding: 6px 12px 6px 14px;
-	border-radius: 12px;
-	font-size: 16px;
-	line-height: 24px;
-	font-weight: 600;
-	transition-duration: 125ms;
-	border: none;
-	outline: none;
 }
 
 .token-update-text {
@@ -262,7 +202,7 @@
 	background: url('/public/assets/images/search-icon.svg') 12px center / 20px 20px no-repeat scroll
 		var(--card-inside-color);
 	border-radius: 12px;
-	border: 1.5px solid rgb(152 161 192 / 24%);
+	border: 1.5px solid var(--border);
 	height: 100%;
 	width: min(200px, 100%);
 	font-size: 14px;
@@ -274,7 +214,7 @@
 
 .token-input:focus {
 	outline: none;
-	border-color: rgb(76 130 251 / 24%);
+	border-color: var(--btn-color);
 }
 
 /* header row */
@@ -294,9 +234,9 @@
 
 #giptel {
 	border-bottom: var(--token-border-color);
-	border-top-color: rgb(152 161 192 / 24%);
-	border-right-color: rgb(152 161 192 / 24%);
-	border-left-color: rgb(152 161 192 / 24%);
+	border-top-color: var(--border);
+	border-right-color: var(--border);
+	border-left-color: var(--border);
 	border-radius: 8px 8px 0 0;
 	color: var(--text-clr);
 	font-size: 14px;
@@ -306,28 +246,6 @@
 	width: 100%;
 	-webkit-box-pack: center;
 	justify-content: center;
-}
-
-/* update dropdown */
-.igfebL {
-	min-width: 240px;
-	max-height: 300px;
-	overflow: auto;
-	background-color: var(--nav-drop);
-	box-shadow:
-		rgb(0 0 0 / 24%) 12px 16px 24px,
-		rgb(0 0 0 / 24%) 12px 8px 12px,
-		rgb(0 0 0 / 32%) 4px 4px 8px;
-	border: 0.5px solid rgb(152 161 192 / 24%);
-	border-radius: 12px;
-	padding: 8px;
-	display: flex;
-	flex-direction: column;
-	font-size: 16px;
-	position: absolute;
-	top: 48px;
-	z-index: 100;
-	left: 0;
 }
 
 .iCcgEc {
@@ -467,29 +385,12 @@
 	flex: 1 1 0%;
 }
 
-.bYBVFE {
-	background: url('/public/assets/images/search-icon.svg') 12px center / 20px 20px no-repeat scroll
-		rgb(245 246 252);
-	border-radius: 12px;
-	border: 1.5px solid var(--token-clrr);
-	height: 100%;
-	width: min(200px, 100%);
-	font-size: 14px;
-	padding-left: 40px;
-	color: var(--text-clr);
-	transition-duration: 125ms;
-}
-
 .frDKYg {
 	display: flex;
 	flex-direction: column;
 	max-width: 1200px;
 	background-color: var(--card-inside-color);
-	box-shadow:
-		rgb(0 0 0 / 1%) 0 0 1px,
-		rgb(0 0 0 / 4%) 0 4px 8px,
-		rgb(0 0 0 / 4%) 0 16px 24px,
-		rgb(0 0 0 / 1%) 0 24px 32px;
+	box-shadow: var(--box-shadow);
 	margin-left: auto;
 	margin-right: auto;
 	border-radius: 12px;
@@ -845,7 +746,6 @@
 	.fTDqns {
 		grid-template-columns: 2fr 3fr;
 		min-width: unset;
-		border-bottom: 0.5px solid rgb(19 26 42);
 	}
 
 	/* cell */
@@ -856,7 +756,6 @@
 	.cQmpaP {
 		grid-template-columns: 2fr 3fr;
 		min-width: unset;
-		border-bottom: 0.5px solid rgb(19 26 42);
 	}
 
 	.cQmpaP:last-of-type {

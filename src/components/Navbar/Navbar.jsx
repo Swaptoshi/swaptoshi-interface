@@ -197,24 +197,18 @@ const Navbar = () => {
 	function determineTrendIcon(priceChangeUSD) {
 		if (priceChangeUSD > 0) {
 			return (
-				<i
-					style={{ color: 'rgb(118, 209, 145)' }}
-					className="trends-up-icon ri-arrow-right-up-line"
-				></i>
+				<i style={{ color: 'var(--green)' }} className="trends-up-icon ri-arrow-right-up-line"></i>
 			);
 		} else if (priceChangeUSD < 0) {
 			return (
 				<i
-					style={{ color: 'rgb(252, 83, 83)' }}
+					style={{ color: 'var(--red)' }}
 					className="trends-down-icon ri-arrow-right-down-line"
 				></i>
 			);
 		} else if (priceChangeUSD === 0) {
 			return (
-				<i
-					style={{ color: 'rgb(118, 209, 145)' }}
-					className="trends-up-icon ri-arrow-right-up-line"
-				></i>
+				<i style={{ color: 'var(--green)' }} className="trends-up-icon ri-arrow-right-up-line"></i>
 			);
 		}
 		return null;
@@ -389,8 +383,8 @@ const Navbar = () => {
 																								style={{
 																									color:
 																										option.priceChangeUSD > 0
-																											? 'rgb(118, 209, 145)'
-																											: 'rgb(252, 83, 83)',
+																											? 'var(--green)'
+																											: 'var(--red)',
 																								}}
 																							>
 																								<span>{option.priceChangeUSD.toFixed(2)}%</span>
@@ -519,8 +513,8 @@ const Navbar = () => {
 																												style={{
 																													color:
 																														option.priceChangeUSD > 0
-																															? 'rgb(118, 209, 145)'
-																															: 'rgb(252, 83, 83)',
+																															? 'var(--green)'
+																															: 'var(--red)',
 																												}}
 																											>
 																												<span>

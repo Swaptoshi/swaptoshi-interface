@@ -64,16 +64,6 @@
 	font-size: 11px;
 }
 
-.dihEkF {
-	color: rgb(64 182 107);
-	transition: opacity 0.25s ease 0s;
-	opacity: 0.5;
-}
-
-.dihEkF a {
-	color: unset;
-}
-
 .jyEmZw a {
 	color: unset;
 }
@@ -90,51 +80,6 @@
 .cSretk {
 	display: inline-block;
 	height: inherit;
-}
-
-.ePKXce {
-	width: 8px;
-	height: 8px;
-	min-height: 8px;
-	min-width: 8px;
-	border-radius: 50%;
-	position: relative;
-	background-color: rgb(64 182 107);
-	transition: background-color 250ms ease 0s;
-}
-
-.kopCVp {
-	flex-direction: column;
-	-webkit-box-pack: justify;
-	justify-content: space-between;
-	display: none;
-
-	/* background: url("./static/media/wallet_banner_phone_image.7458b169d90ac9039783.png") right 15px top 18px / 166px no-repeat rgb(253, 130, 255); */
-	transition: background-size 250ms ease-in-out 0s;
-	color: var(--card-bg);
-	position: fixed;
-	z-index: 1020;
-	padding: 24px 16px 16px;
-	border-radius: 20px;
-	bottom: 20px;
-	right: 20px;
-	width: 390px;
-	height: 164px;
-	border: 1px solid var(--token-clrr);
-	box-shadow:
-		color-mix(in srgb, var(--box-shadow) 4%, transparent) 8px 12px 20px,
-		color-mix(in srgb, var(--box-shadow) 2%, transparent) 4px 6px 12px,
-		color-mix(in srgb, var(--box-shadow) 4%, transparent) 4px 4px 8px;
-	user-select: none;
-}
-
-.bqwZaK {
-	cursor: pointer;
-	position: absolute;
-	top: 21px;
-	right: 17px;
-	color: rgb(255 255 255);
-	transition: opacity 250ms ease 0s;
 }
 
 .hinRyL {
@@ -220,10 +165,6 @@
 
 .hgZoRv > * {
 	user-select: none;
-}
-
-.bhqxth {
-	color: rgb(0 0 0);
 }
 
 .fBEeS {
@@ -363,10 +304,6 @@
 	-webkit-box-align: center;
 	align-items: center;
 	margin-top: 4px;
-}
-
-.lbxvhe {
-	color: rgb(250 43 57);
 }
 
 .ibmoxq {
@@ -528,24 +465,8 @@
 	gap: 14px;
 }
 
-.oSKSq {
-	display: flex;
-	color: var(--btn-color);
-	font-weight: 500;
-	font-size: 14px;
-	line-height: 20px;
-	gap: 4px;
-	text-decoration: none;
-}
-
 .textclr {
 	color: var(--color-white);
-}
-
-.oSKSq:hover,
-.oSKSq:focus {
-	color: rgb(213 4 116);
-	text-decoration: none;
 }
 
 .jnMVFj:active {

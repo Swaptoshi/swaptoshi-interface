@@ -1,10 +1,6 @@
 .jBBXQD[data-reach-dialog-content] {
 	margin: auto;
-	background-color: rgb(255 255 255);
-	box-shadow:
-		color-mix(in srgb, var(--box-shadow) 4%, transparent) 8px 12px 20px,
-		color-mix(in srgb, var(--box-shadow) 2%, transparent) 4px 6px 12px,
-		color-mix(in srgb, var(--box-shadow) 4%, transparent) 4px 4px 8px;
+	box-shadow: var(--box-shadow);
 	padding: 0;
 	width: 50vw;
 	overflow: hidden auto;
@@ -94,17 +90,6 @@
 	gap: 4px;
 }
 
-.ipXHOd {
-	border: 1px solid rgb(76 130 251);
-	border-radius: 16px;
-	display: flex;
-	padding: 6px 12px 6px 6px;
-	-webkit-box-align: center;
-	align-items: center;
-	color: rgb(76 130 251);
-	background-color: rgb(76 130 251 / 24%);
-}
-
 .bORAza > * {
 	margin: 4px !important;
 }
@@ -136,26 +121,6 @@
 
 .css-xy7yfl span .ri-close-line {
 	cursor: pointer;
-}
-
-.fosiKD {
-	border: var(--token-border-color);
-	border-radius: 16px;
-	display: flex;
-	padding: 6px 12px 6px 6px;
-	-webkit-box-align: center;
-	align-items: center;
-	cursor: pointer;
-}
-
-.fosiKD:hover {
-	background-color: var(--token-clrr);
-}
-
-.fosiKD.active {
-	border: 1px solid rgb(76 130 251);
-	color: rgb(76 130 251);
-	background-color: rgb(76 130 251 / 24%);
 }
 
 .eLvYRk {
@@ -385,11 +350,10 @@
 	align-items: center;
 	-webkit-box-pack: center;
 	justify-content: center;
-	background-color: rgb(13 17 28 / 60%);
+	background-color: var(--overlay);
 }
 
 [data-reach-dialog-overlay] {
-	background: rgb(0 0 0 / 33%);
 	inset: 0;
 	overflow: auto;
 	position: fixed;

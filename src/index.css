@@ -1,7 +1,12 @@
 /* ---------------- Dark Theme ----------------------- */
 :root {
-	--box-shadow: rgb(51 53 72);
-	--shadow: #ffffff05;
+	--white: white;
+	--overlay: rgb(13 17 28 / 60%);
+	--box-shadow-color: rgb(51 53 72);
+	--box-shadow: color-mix(in srgb, var(--box-shadow-color) 4%, transparent) 8px 12px 20px,
+		color-mix(in srgb, var(--box-shadow-color) 2%, transparent) 4px 6px 12px,
+		color-mix(in srgb, var(--box-shadow-color) 4%, transparent) 4px 4px 8px;
+	--shadow: rgba(255 255 255 0.02);
 	--body-color: #2d2d2d;
 	--body-bg-color: linear-gradient(rgb(32 39 56) 0%, rgb(7 8 22) 100%);
 
@@ -83,17 +88,18 @@
 	--token-clrr: rgb(152 161 192 / 24%);
 	--hover-background: rgb(41 50 73);
 	--border: rgb(152 161 192 / 24%);
-	--green: rgb(118 209 145);
-	--red: rgb(252 83 83);
-	--yellow: rgb(255 153 51);
-	--yellow-transparent: rgba(255, 153, 51, 0.2);
+
+	/* Following color also used by lightweight-charts, needs to be in hex format */
+	--green: #76d191;
+	--red: #fc5353;
+	--yellow: #ff9933;
 }
 
 /* ------------------------------------------------------------
  ---------------- Light Theme -----------------------
 ------------------------------------------------------------- */
 [data-theme='light'] {
-	--shadow: #00000005;
+	--shadow: rgba(0 0 0 0.02);
 
 	/* Body Background */
 	--body-color: radial-gradient(

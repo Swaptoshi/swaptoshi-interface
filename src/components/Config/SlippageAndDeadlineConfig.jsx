@@ -72,7 +72,7 @@ export default function SlippageAndDeadlineConfig({
 								display: 'flex',
 								backgroundColor:
 									slippage && (slippage < 0.05 || slippage > 1)
-										? 'var(--yellow-transparent)'
+										? 'color-mix(in srgb, var(--yellow) 20%, transparent)'
 										: !isSlippageAuto && slippage
 											? 'var(--card-inside-color)'
 											: undefined,

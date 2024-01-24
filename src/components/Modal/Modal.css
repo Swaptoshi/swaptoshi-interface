@@ -81,10 +81,7 @@
 	font-size: 16px;
 	background-color: var(--model-bg);
 	border: 1px solid color-mix(in srgb, var(--border) 10%, transparent);
-	box-shadow:
-		color-mix(in srgb, var(--box-shadow) 4%, transparent) 8px 12px 20px,
-		color-mix(in srgb, var(--box-shadow) 2%, transparent) 4px 6px 12px,
-		color-mix(in srgb, var(--box-shadow) 4%, transparent) 4px 4px 8px;
+	box-shadow: var(--box-shadow);
 	transition: margin-right 250ms ease 0s;
 }
 
