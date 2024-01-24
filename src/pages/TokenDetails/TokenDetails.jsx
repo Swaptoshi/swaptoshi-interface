@@ -330,7 +330,7 @@ const TokenDetails = () => {
 						</div>
 
 						<div className="kFzxb">
-							<SwapWidget initialQuoteToken={token} />
+							<SwapWidget withGlow initialQuoteToken={token} />
 						</div>
 					</div>
 				)}

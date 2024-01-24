@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { Chart } from './Chart';
-import { tokenToColorHex } from '../../../utils/color/tokenToColor';
 import Loader from '../../Loader';
 import InfoBox from '../../Message/InfoBox';
 import { INFINITE } from '../../../utils/constants/tick';
 import { decodeTickPrice } from '../../../utils/math/priceFormatter';
 import { getMaxTick } from '../../../utils/tick/price_tick';
+import useTokenColor from '../../../utils/hook/useTokenColor';
 
 const ZOOM_LEVELS = {
 	['100']: {
@@ -50,19 +50,8 @@ export default function LiquidityChartRangeInput({
 	isLoading,
 	error,
 }) {
-	const [tokenAColor, setTokenAColor] = React.useState();
-	const [tokenBColor, setTokenBColor] = React.useState();
-
-	React.useEffect(() => {
-		const run = async () => {
-			const colorA = await tokenToColorHex(currencyA.tokenId, currencyA.logo);
-			const colorB = await tokenToColorHex(currencyB.tokenId, currencyB.logo);
-			setTokenAColor(colorA);
-			setTokenBColor(colorB);
-		};
-
-		run();
-	}, [currencyA, currencyB]);
+	const tokenAColor = useTokenColor(currencyA);
+	const tokenBColor = useTokenColor(currencyB);
 
 	const onBrushDomainChangeEnded = useCallback(
 		(domain, mode) => {

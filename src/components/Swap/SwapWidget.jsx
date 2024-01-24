@@ -15,8 +15,9 @@ import { useTransactionModal } from '../../context/TransactionModalProvider';
 import * as env from '../../utils/config/env';
 import { getTransactionBytes } from '../../utils/transaction/bytes';
 import { isFeeConversion } from '../../utils/transaction/fee';
+import useTokenColor from '../../utils/hook/useTokenColor';
 
-const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
+const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken }) => {
 	const { selectedService, feeConfig, dexConfig, chain } = useChain();
 	const { balances, auth, senderPublicKey } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
@@ -31,10 +32,12 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 	const [baseToken, setBaseToken] = useState();
 	const [baseValue, setBaseValue] = useState('');
 	const [baseLoading, setBaseLoading] = useState(false);
+	const baseTokenColor = useTokenColor(baseToken);
 
 	const [quoteToken, setQuoteToken] = useState();
 	const [quoteValue, setQuoteValue] = useState('');
 	const [quoteLoading, setQuoteLoading] = useState(false);
+	const quoteTokenColor = useTokenColor(quoteToken);
 
 	const [error, setError] = useState();
 	const [path, setPath] = useState();
@@ -541,7 +544,18 @@ const SwapWidget = ({ disabled, initialBaseToken, initialQuoteToken }) => {
 					}}
 				/>
 			)}
-			<div className={'card-bg'}>
+			<div
+				className={'card-bg'}
+				style={{
+					boxShadow: withGlow
+						? `color-mix(in srgb, ${
+								baseTokenColor ?? 'var(--protocol-gradient-1)'
+							} 20%, transparent) -30px -30px 100px, color-mix(in srgb, ${
+								quoteTokenColor ?? 'var(--protocol-gradient-2)'
+							} 20%, transparent) 30px 30px 100px`
+						: undefined,
+				}}
+			>
 				<div id="card-top" className="card-top-parent">
 					<div id="btns-top" className="top-btns">
 						<span className="swap-btn">Swap</span>

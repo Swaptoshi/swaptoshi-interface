@@ -9,7 +9,7 @@ const Swap = () => {
 		<React.Fragment>
 			<div className="swap-wrapper">
 				<div className="card-section">
-					<SwapWidget initialBaseToken={lskTokenInfo} />
+					<SwapWidget withGlow initialBaseToken={lskTokenInfo} />
 				</div>
 			</div>
 		</React.Fragment>

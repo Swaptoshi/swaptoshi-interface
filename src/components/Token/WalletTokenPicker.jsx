@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTokenPicker } from '../../context/TokenPickerProvider';
 import TokenPickerBase from './TokenPickerBase';
-import { tokenToColorHex } from '../../utils/color/tokenToColor';
+import useTokenColor from '../../utils/hook/useTokenColor';
 
 export default function WalletTokenPicker({
 	value,
@@ -15,20 +15,8 @@ export default function WalletTokenPicker({
 }) {
 	const { pickWalletToken } = useTokenPicker();
 
-	React.useEffect(() => {
-		const getPallete = async () => {
-			try {
-				if (onColor && value) {
-					const color = await tokenToColorHex(value.tokenId, value.logo);
-					onColor(color);
-				}
-			} catch {
-				/* empty */
-			}
-		};
-
-		getPallete();
-	}, [onColor, value]);
+	const onColorSelected = React.useCallback(color => onColor && onColor(color), [onColor]);
+	useTokenColor(value, onColorSelected);
 
 	return (
 		<TokenPickerBase
