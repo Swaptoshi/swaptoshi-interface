@@ -1,6 +1,7 @@
 .jBBXQD[data-reach-dialog-content] {
 	margin: auto;
 	box-shadow: var(--box-shadow);
+	border: 1px solid color-mix(in srgb, var(--border) 30%, transparent);
 	padding: 0;
 	width: 50vw;
 	overflow: hidden auto;

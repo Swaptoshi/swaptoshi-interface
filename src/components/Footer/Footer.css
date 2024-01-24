@@ -129,7 +129,6 @@
 	-webkit-box-align: center;
 	align-items: center;
 	width: 100%;
-	background: var(--cards-background);
 }
 
 /* Media QUery */

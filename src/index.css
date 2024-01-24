@@ -64,7 +64,7 @@ ul {
 	bottom: 0;
 	width: 100%;
 	min-height: 550px;
-	background: var(--back-drop);
+	background: linear-gradient(transparent 0%, var(--surface-1) 45%);
 
 	/* background: linear-gradient(rgba(8, 10, 24, 0) 0%, rgb(8, 10, 24) 45%); */
 	z-index: 110;

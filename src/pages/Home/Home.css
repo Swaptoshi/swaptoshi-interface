@@ -16,7 +16,7 @@
 	position: absolute;
 	top: 68px;
 	bottom: 0;
-	background: var(--body-bg-shade);
+	background: var(--protocol-card);
 	filter: blur(72px);
 	border-radius: 24px;
 	max-width: 480px;
@@ -58,7 +58,7 @@
 }
 
 .card-home-bg:hover {
-	border: var(--card-hover-color);
+	border: 1px solid var(--primary);
 	transform: translateY(-4px);
 	transition: transform 250ms ease 0s;
 }

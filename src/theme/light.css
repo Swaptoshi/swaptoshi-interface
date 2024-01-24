@@ -1,10 +1,7 @@
 /* stylelint-disable custom-property-empty-line-before */
 [data-theme='light'] {
-	--shadow: rgba(0 0 0 0.02);
-
 	--body-bg: radial-gradient(100% 100% at 50% 0, rgb(217 226 255 / 51%) 0, transparent 100%);
-	--back-drop: linear-gradient(transparent 0%, rgb(255 255 255) 45%);
-	--cards-background: linear-gradient(179.82deg, transparent 0.16%, rgb(234 234 234) 99.85%);
+	--cards-background: linear-gradient(179.82deg, transparent 0.16%, var(--surface-3) 99.85%);
 
 	--surface-1: rgb(255 255 255);
 	--surface-2: rgb(245 246 252);
@@ -15,4 +12,6 @@
 	--text-1: rgb(0 0 0);
 	--text-2: rgb(13 17 28);
 	--text-3: rgb(119 128 160);
+
+	--shadow: color-mix(in srgb, var(--text-1) 2%, transparent);
 }
