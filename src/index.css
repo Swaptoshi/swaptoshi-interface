@@ -106,9 +106,8 @@ ul {
 }
 
 *::-webkit-scrollbar-thumb {
-	background-color: var(--text-3);
+	background: var(--primary-gradient);
 	border-radius: 20px;
-	border: 3px solid var(--text-3);
 }
 
 ::-webkit-scrollbar-corner {
