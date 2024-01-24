@@ -139,7 +139,7 @@ export default function WalletAccount({ show }) {
 							overflow: 'hidden',
 							marginBottom: '16px',
 							justifyContent: 'center',
-							color: 'var(--color-white)',
+							color: 'var(--text-1)',
 						}}
 					>
 						No token to show

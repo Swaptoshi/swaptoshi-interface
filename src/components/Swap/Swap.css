@@ -213,7 +213,7 @@
 }
 
 .paying-wrapper .token-amount-input {
-	color: var(--color-white);
+	color: var(--text-1);
 	width: 0;
 	position: relative;
 	font-weight: 400;
@@ -236,7 +236,7 @@
 	background-color: var(--surface-3);
 	opacity: 1;
 	box-shadow: none;
-	color: var(--open-currency-btn-top);
+	color: var(--text-1);
 	cursor: pointer;
 	height: unset;
 	border-radius: 16px;
@@ -341,7 +341,7 @@
 }
 
 .switch-bg .arrow-down {
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 /* You Recive */

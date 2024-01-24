@@ -117,7 +117,7 @@ const Pools = () => {
 					{position && position.length > 0 ? (
 						<div>
 							<div>
-								<div style={{ margin: '12px 0px 8px 24px', color: 'var(--color-white)' }}>
+								<div style={{ margin: '12px 0px 8px 24px', color: 'var(--text-1)' }}>
 									Your positions
 								</div>
 								<div style={{ height: 1, backgroundColor: 'var(--border)' }} />
@@ -140,11 +140,11 @@ const Pools = () => {
 														style={{ marginLeft: '-10px' }}
 													/>
 													<div style={{ margin: '0px 4px' }} />
-													<div style={{ color: 'var(--color-white)', fontWeight: 600 }}>
+													<div style={{ color: 'var(--text-1)', fontWeight: 600 }}>
 														{pos.token0Symbol} / {pos.token1Symbol}
 													</div>
 													<div style={{ margin: '0px 4px' }} />
-													<div style={{ color: 'var(--color-white)', fontWeight: 200 }}>
+													<div style={{ color: 'var(--text-1)', fontWeight: 200 }}>
 														{pos.fee / 10000}%
 													</div>
 												</div>

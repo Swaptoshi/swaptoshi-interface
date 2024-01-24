@@ -94,7 +94,7 @@ export default function SetKeyPasswordModal({ setMode }) {
 
 				<div
 					style={{
-						color: 'var(--color-white)',
+						color: 'var(--text-1)',
 						fontSize: '14px',
 						width: '100%',
 						textAlign: 'center',

@@ -117,7 +117,7 @@ export default function SlippageAndDeadlineConfig({
 						</div>
 						<div
 							style={{
-								color: 'var(--color-white)',
+								color: 'var(--text-1)',
 								display: 'flex',
 								alignItems: 'center',
 							}}
@@ -184,7 +184,7 @@ export default function SlippageAndDeadlineConfig({
 									}}
 								/>
 								<div style={{ margin: '0px 4px' }} />
-								<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>%</div>
+								<div style={{ color: 'var(--text-1)', flex: 1, textAlign: 'center' }}>%</div>
 							</div>
 						</div>
 					) : null}
@@ -240,7 +240,7 @@ export default function SlippageAndDeadlineConfig({
 						</div>
 						<div
 							style={{
-								color: 'var(--color-white)',
+								color: 'var(--text-1)',
 								display: 'flex',
 								alignItems: 'center',
 							}}
@@ -286,9 +286,7 @@ export default function SlippageAndDeadlineConfig({
 								}}
 							/>
 							<div style={{ margin: '0px 4px' }} />
-							<div style={{ color: 'var(--color-white)', flex: 1, textAlign: 'center' }}>
-								minutes
-							</div>
+							<div style={{ color: 'var(--text-1)', flex: 1, textAlign: 'center' }}>minutes</div>
 						</div>
 					) : null}
 

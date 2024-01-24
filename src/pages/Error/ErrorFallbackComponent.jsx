@@ -17,11 +17,11 @@ export default function ErrorFallbackComponent({ error, resetErrorBoundary }) {
 			}}
 		>
 			<div style={{ maxWidth: '100vw', width: '800px', padding: '16px' }}>
-				<p style={{ fontSize: '80px', color: 'var(--color-white)' }}>{':('}</p>
-				<p style={{ color: 'var(--color-white)', fontSize: '20px', fontWeight: 600 }}>
+				<p style={{ fontSize: '80px', color: 'var(--text-1)' }}>{':('}</p>
+				<p style={{ color: 'var(--text-1)', fontSize: '20px', fontWeight: 600 }}>
 					Oops! Looks like something went wrong.
 				</p>
-				<p style={{ color: 'var(--color-white)', fontSize: '14px' }}>
+				<p style={{ color: 'var(--text-1)', fontSize: '14px' }}>
 					If you&apos;re still having trouble, we&apos;d appreciate your help in fixing this hiccup!
 					Please report the issue on our GitHub Repository so we can get it sorted out. Thanks for
 					your patience!

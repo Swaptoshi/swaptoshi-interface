@@ -32,10 +32,10 @@
 
 .secondary-button-container {
 	background-color: var(--surface-3);
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .tertiary-button-container {
 	background-color: transparent;
-	color: var(--color-white);
+	color: var(--text-1);
 }

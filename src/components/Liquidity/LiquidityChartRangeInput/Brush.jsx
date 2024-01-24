@@ -18,7 +18,7 @@ const HandleAccent = styled.path`
 	pointer-events: none;
 
 	stroke-width: 1.5;
-	stroke: var(--color-white);
+	stroke: var(--text-1);
 	opacity: 0.5;
 `;
 
@@ -34,7 +34,7 @@ const TooltipBackground = styled.rect`
 const Tooltip = styled.text`
 	text-anchor: middle;
 	font-size: 13px;
-	fill: var(--color-white);
+	fill: var(--text-1);
 `;
 
 // flips the handles draggers when close to the container edges

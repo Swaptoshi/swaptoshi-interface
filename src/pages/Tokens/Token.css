@@ -36,7 +36,7 @@
 .token-title-wrapper .token-title {
 	display: inline-block;
 	height: inherit;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .token-title p {
@@ -66,7 +66,7 @@
 
 .crypto-currency-drop button {
 	height: 100%;
-	color: var(--color-white);
+	color: var(--text-1);
 	background-color: var(--surface-3);
 	margin: 0;
 	padding: 6px 12px 6px 14px;
@@ -266,7 +266,7 @@
 .chstga {
 	flex: 1 1 0%;
 	padding: 8px;
-	color: var(--color-white);
+	color: var(--text-1);
 	border-radius: 8px;
 }
 
@@ -407,7 +407,7 @@
 	align-items: center;
 	-webkit-box-pack: center;
 	justify-content: center;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .fLXlBW {
@@ -474,7 +474,7 @@
 	gap: 4px;
 	height: 100%;
 	width: 100%;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .kiPA-dv {
@@ -515,7 +515,7 @@
 .bvHTKj {
 	display: flex;
 	text-decoration: none;
-	color: var(--color-white);
+	color: var(--text-1);
 	align-items: center;
 	cursor: pointer;
 }

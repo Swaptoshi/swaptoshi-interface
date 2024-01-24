@@ -134,7 +134,7 @@ export default function DecryptKeyModal({
 								style={{
 									fontWeight: 600,
 									fontSize: '24px',
-									color: 'var(--color-white)',
+									color: 'var(--text-1)',
 									margin: '16px 0',
 								}}
 							>

@@ -1,5 +1,5 @@
 .text {
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .hirdVF {
@@ -85,7 +85,7 @@
 }
 
 .dropdown-menu {
-	box-shadow: 0 4px 12px 0 color-mix(in srgb, var(--color-white) 15%, white);
+	box-shadow: 0 4px 12px 0 color-mix(in srgb, var(--text-1) 15%, white);
 	z-index: 1060;
 	background: var(--surface-1);
 	padding: 8px 8px 10px;
@@ -106,7 +106,7 @@
 
 .dropdown-menu .dropdown-item {
 	padding: 8px;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .dropdown-menu .icons-wrapper {
@@ -225,7 +225,7 @@
 	width: 100%;
 	height: 100%;
 	line-height: 24px;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .slash {
@@ -333,7 +333,7 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	color: var(--color-white);
+	color: var(--text-1);
 	padding: 8px 16px;
 	cursor: pointer;
 }
@@ -413,7 +413,7 @@
 .token-name-value span {
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	color: var(--color-white);
+	color: var(--text-1);
 	font-size: 16px;
 	line-height: 24px;
 	font-weight: 500;
@@ -471,7 +471,7 @@
 	min-width: 0;
 	font-weight: 400;
 	font-size: 14px;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .percentage span,
@@ -487,7 +487,7 @@
 	align-items: center;
 	flex-direction: row;
 	gap: 4px;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .green-text {
@@ -623,7 +623,7 @@
 .options li {
 	padding: 10px;
 	cursor: pointer;
-	color: var(--color-white);
+	color: var(--text-1);
 	display: flex;
 	justify-content: space-between;
 }

@@ -238,7 +238,7 @@ export default function TransactionModal({
 								style={{
 									fontWeight: 600,
 									fontSize: '24px',
-									color: 'var(--color-white)',
+									color: 'var(--text-1)',
 									margin: '16px 0',
 								}}
 							>
@@ -382,7 +382,7 @@ export default function TransactionModal({
 								)}
 								<div
 									style={{
-										color: 'var(--color-white)',
+										color: 'var(--text-1)',
 										fontWeight: 200,
 										fontSize: '12px',
 										marginLeft: '8px',

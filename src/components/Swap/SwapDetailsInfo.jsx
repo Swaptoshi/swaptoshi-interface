@@ -206,7 +206,7 @@ export default function SwapDetailsInfo({
 									style={{
 										color:
 											priceImpact < 0.03
-												? 'var(--color-white)'
+												? 'var(--text-1)'
 												: priceImpact < 0.05
 													? 'var(--yellow)'
 													: 'var(--red)',

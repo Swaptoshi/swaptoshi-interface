@@ -185,13 +185,13 @@ export default function PositionDetails() {
 											style={{ marginLeft: '-10px' }}
 										/>
 										<div style={{ margin: '0px 4px' }} />
-										<div style={{ color: 'var(--color-white)', fontSize: '20px', fontWeight: 600 }}>
+										<div style={{ color: 'var(--text-1)', fontSize: '20px', fontWeight: 600 }}>
 											{position[`${token0}Symbol`]} / {position[`${token1}Symbol`]}
 										</div>
 										<div style={{ margin: '0px 4px' }} />
 										<div
 											style={{
-												color: 'var(--color-white)',
+												color: 'var(--text-1)',
 												fontSize: '16px',
 												fontWeight: 200,
 												backgroundColor: 'var(--surface-1)',

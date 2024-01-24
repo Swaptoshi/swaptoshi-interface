@@ -13,10 +13,7 @@
 	--border: rgb(152 161 192 / 24%);
 	--primary: rgb(76 130 251);
 	--primary-accent: color-mix(in srgb, var(--primary) 24%, transparent);
-
-	/* --text: rgb(255 255 255); */
-	--open-currency-btn-top: rgb(255 255 255);
-	--color-white: rgb(255 255 255);
+	--text-1: rgb(255 255 255);
 
 	/* --text-2: rgb(255 255 255); */
 	--model-bg-text: rgb(245 246 252);

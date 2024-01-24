@@ -8,7 +8,7 @@ const StyledGroup = styled.g`
 	}
 
 	text {
-		color: var(--color-white);
+		color: var(--text-1);
 		transform: translateY(5px);
 	}
 `;

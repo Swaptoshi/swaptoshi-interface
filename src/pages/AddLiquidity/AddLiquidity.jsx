@@ -468,7 +468,7 @@ const AddLiquidity = () => {
 				<div className="flex-above-375" style={{ alignItems: 'center' }}>
 					<div
 						style={{
-							color: 'var(--color-white)',
+							color: 'var(--text-1)',
 							fontWeight: 600,
 							fontSize: '16px',
 							margin: '8px 0px',
@@ -486,7 +486,7 @@ const AddLiquidity = () => {
 								style={{ marginRight: '8px' }}
 								unselectedBackgroundColor={'var(--surface-2)'}
 								unselectedTextColor={'var(--text-clr)'}
-								selectedTextColor={'var(--color-white)'}
+								selectedTextColor={'var(--text-1)'}
 								selectedBackgroundColor={'var(--surface-1)'}
 								value={lowPrice === ZERO && highPrice === INFINITE}
 								items={[
@@ -548,7 +548,7 @@ const AddLiquidity = () => {
 				<div className="Column__AutoColumn-sc-72c388fb-2 erfjwt" style={{ minHeight: 200 }}>
 					{pool ? (
 						<div style={{ opacity: !isSpecifyPriceReady || !!noPoolError ? 0.5 : 1 }}>
-							<div style={{ marginLeft: '16px', color: 'var(--color-white)' }}>
+							<div style={{ marginLeft: '16px', color: 'var(--text-1)' }}>
 								<div style={{ fontSize: '12px' }}>Current price:</div>
 								<div style={{ fontWeight: 600 }}>{price}</div>
 								<div style={{ fontSize: '12px' }}>
@@ -580,7 +580,7 @@ const AddLiquidity = () => {
 								flexDirection: 'column',
 								alignItems: 'center',
 								justifyContent: 'center',
-								color: 'var(--color-white)',
+								color: 'var(--text-1)',
 								opacity: 0.5,
 							}}
 						>
@@ -592,7 +592,7 @@ const AddLiquidity = () => {
 
 				<div
 					style={{
-						color: 'var(--color-white)',
+						color: 'var(--text-1)',
 						fontWeight: 600,
 						fontSize: '16px',
 						margin: '8px 0px',

@@ -27,10 +27,7 @@
 	--border: rgb(210 217 238);
 	--primary: rgb(251 17 142);
 	--primary-accent: color-mix(in srgb, var(--primary) 12%, transparent);
-
-	/* --text-1: rgb(0 0 0); */
-	--open-currency-btn-top: rgb(0 0 0);
-	--color-white: rgb(0 0 0);
+	--text-1: rgb(0 0 0);
 
 	/* --text-2: rgb(13 17 28); */
 	--model-bg-text: rgb(13 17 28);

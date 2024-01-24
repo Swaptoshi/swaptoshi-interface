@@ -24,7 +24,7 @@
 
 .fUHrnW {
 	background-color: var(--surface-1);
-	color: var(--color-white);
+	color: var(--text-1);
 	width: 100%;
 	overflow: hidden;
 	flex: 1 1 0%;
@@ -61,7 +61,7 @@
 	white-space: nowrap;
 	outline: none;
 	border-radius: 12px;
-	color: var(--color-white);
+	color: var(--text-1);
 	border: 1px solid var(--border);
 	appearance: none;
 	font-size: 16px;

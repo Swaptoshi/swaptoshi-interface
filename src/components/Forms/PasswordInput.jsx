@@ -28,7 +28,7 @@ export default function PasswordInput(props) {
 					/>
 					<i
 						className={showPassword ? 'ri-eye-line' : 'ri-eye-off-line'}
-						style={{ color: 'var(--color-white)', cursor: 'pointer' }}
+						style={{ color: 'var(--text-1)', cursor: 'pointer' }}
 						onClick={() => setShowPassword(t => !t)}
 					/>
 				</div>

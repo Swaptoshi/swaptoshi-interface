@@ -135,7 +135,7 @@ export default function CreatePool() {
 
 			<div
 				style={{
-					color: 'var(--color-white)',
+					color: 'var(--text-1)',
 					fontWeight: 600,
 					fontSize: '16px',
 					margin: '8px 0px',

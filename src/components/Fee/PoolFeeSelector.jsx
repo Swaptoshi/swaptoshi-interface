@@ -122,7 +122,7 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 						alignItems: 'center',
 						borderRadius: '24px',
 						overflow: 'hidden',
-						color: 'var(--color-white)',
+						color: 'var(--text-1)',
 					}}
 				>
 					{error}

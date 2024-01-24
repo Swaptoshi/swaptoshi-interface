@@ -16,7 +16,7 @@ export default function Tooltip({ content, children }) {
 				style={{
 					backgroundColor: 'var(--surface-2)',
 					zIndex: 99999,
-					color: 'var(--color-white)',
+					color: 'var(--text-1)',
 					borderRadius: '8px',
 					maxWidth: '250px',
 					boxShadow: 'var(--box-shadow)',

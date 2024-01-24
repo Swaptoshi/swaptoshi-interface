@@ -8,7 +8,7 @@ export default function InfoBox({ message, icon }) {
 				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
-				color: 'var(--color-white)',
+				color: 'var(--text-1)',
 				opacity: 0.5,
 			}}
 		>

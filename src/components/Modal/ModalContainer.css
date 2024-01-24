@@ -353,7 +353,7 @@ button {
 }
 
 .colorrr {
-	color: var(--color-white) !important;
+	color: var(--text-1) !important;
 }
 
 .jGjrwu {
@@ -493,7 +493,7 @@ button {
 }
 
 .blhgKn {
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .fYKQxG {
@@ -578,7 +578,7 @@ button {
 }
 
 .gZlbTK {
-	color: var(--color-white);
+	color: var(--text-1);
 
 	/* width: 0px; */
 	position: relative;
@@ -807,7 +807,7 @@ button {
 	align-items: center;
 	background-color: var(--surface-3);
 	opacity: 1;
-	color: var(--color-white);
+	color: var(--text-1);
 	cursor: pointer;
 	border-radius: 16px;
 	outline: none;
@@ -872,7 +872,7 @@ button {
 	align-items: center;
 	background-color: var(--surface-2);
 	opacity: 1;
-	color: var(--color-white);
+	color: var(--text-1);
 	cursor: pointer;
 	border-radius: 16px;
 	outline: none;

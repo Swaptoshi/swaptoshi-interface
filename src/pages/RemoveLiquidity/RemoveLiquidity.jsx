@@ -213,7 +213,7 @@ export default function RemoveLiquidity() {
 								style={{ marginLeft: '-10px' }}
 							/>
 							<div style={{ margin: '0px 4px' }} />
-							<div style={{ color: 'var(--color-white)', fontSize: '20px', fontWeight: 600 }}>
+							<div style={{ color: 'var(--text-1)', fontSize: '20px', fontWeight: 600 }}>
 								{position.token0Symbol} / {position.token1Symbol}
 							</div>
 						</div>
@@ -238,7 +238,7 @@ export default function RemoveLiquidity() {
 								fontSize: '36px',
 								flex: 1,
 								marginBottom: '8px',
-								color: 'var(--color-white)',
+								color: 'var(--text-1)',
 							}}
 						>
 							{removed}%

@@ -25,7 +25,7 @@
 .moon,
 .sun {
 	font-size: 20px;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .cnmVKz::-webkit-scrollbar {
@@ -140,7 +140,7 @@
 }
 
 .kivXvxb {
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .kIafUC {

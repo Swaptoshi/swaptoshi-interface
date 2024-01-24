@@ -265,7 +265,7 @@
 	flex-direction: column;
 	-webkit-box-pack: justify;
 	justify-content: space-between;
-	color: var(--open-currency-btn-top);
+	color: var(--text-1);
 	height: 212px;
 	box-shadow: var(--box-shadow);
 	background-position: right center;
@@ -309,7 +309,7 @@
 	flex-direction: column;
 	font-size: 16px;
 	line-height: 20px;
-	color: var(--open-currency-btn-top);
+	color: var(--text-1);
 	padding: 0 40px 0 0;
 	max-width: 480px;
 }
@@ -339,7 +339,7 @@
 	flex-direction: column;
 	-webkit-box-pack: justify;
 	justify-content: space-between;
-	color: var(--open-currency-btn-top);
+	color: var(--text-1);
 	height: 212px;
 	box-shadow: var(--box-shadow);
 	background: right center / auto 100% no-repeat border-box var(--surface-1);
@@ -415,7 +415,7 @@
 }
 
 .protocol-card .protocol-left {
-	color: var(--color-white);
+	color: var(--text-1);
 	display: flex;
 	flex: 1 1 0%;
 	flex-direction: column;

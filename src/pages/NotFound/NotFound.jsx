@@ -18,7 +18,7 @@ export default function NotFound() {
 					maxWidth: '100vw',
 					width: '600px',
 					padding: '16px',
-					color: 'var(--color-white)',
+					color: 'var(--text-1)',
 				}}
 			>
 				<i className="ri-compass-3-line" style={{ fontSize: '80px' }}></i>

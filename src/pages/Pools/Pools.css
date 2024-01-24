@@ -60,7 +60,7 @@
 	min-width: 0;
 	font-weight: 400;
 	font-size: 36px;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .pool-right {
@@ -158,7 +158,7 @@
 
 .pools-connect-wallet-card-wrapper .inbox {
 	font-size: 45px;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .css-hzsvkq {
@@ -177,7 +177,7 @@
 }
 
 .css-hzsvkq div {
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .pools-connect-wallet-btn {
@@ -188,7 +188,7 @@
 	border-radius: 20px;
 	outline: none;
 	border: 1px solid transparent;
-	color: var(--color-white);
+	color: var(--text-1);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -274,7 +274,7 @@
 }
 
 .linking {
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .css-1jljtub {
@@ -283,7 +283,7 @@
 	min-width: 0;
 	font-weight: 400;
 	font-size: 16px;
-	color: var(--color-white);
+	color: var(--text-1);
 }
 
 .pool-button {

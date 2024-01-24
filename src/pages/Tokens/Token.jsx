@@ -436,7 +436,7 @@ const Token = () => {
 										alignItems: 'center',
 										width: '100%',
 										margin: '64px 0px',
-										color: 'var(--color-white)',
+										color: 'var(--text-1)',
 									}}
 								>
 									Nothing to show
