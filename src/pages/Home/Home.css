@@ -267,7 +267,7 @@
 	border-radius: 24px;
 	border-width: 1px;
 	border-style: solid;
-	border-color: transparent;
+	border-color: var(--border);
 	border-image: initial;
 	transition: border 250ms ease 0s;
 }
