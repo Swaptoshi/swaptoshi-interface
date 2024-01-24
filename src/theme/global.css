@@ -1,0 +1,25 @@
+:root {
+	--white: white;
+	--overlay: rgb(13 17 28 / 60%);
+	--box-shadow-color: rgb(51 53 72);
+	--box-shadow: color-mix(in srgb, var(--box-shadow-color) 4%, transparent) 8px 12px 20px,
+		color-mix(in srgb, var(--box-shadow-color) 2%, transparent) 4px 6px 12px,
+		color-mix(in srgb, var(--box-shadow-color) 4%, transparent) 4px 4px 8px;
+	--body-bg-color: linear-gradient(rgb(32 39 56) 0%, rgb(7 8 22) 100%);
+	--text-color: #7f9bd4;
+	--body-bg-shade: var(--protocol-card);
+	--card-border-color: 1px solid rgb(152 161 192 / 24%);
+	--card-hover-color: 1px solid rgb(76 130 251);
+	--protocol-gradient-1: rgb(70 115 250);
+	--protocol-gradient-2: rgb(150 70 250);
+	--protocol-card: radial-gradient(
+		101.8% 4091.31% at 0% 0%,
+		var(--protocol-gradient-1) 0%,
+		var(--protocol-gradient-2) 100%
+	);
+
+	/* Following color also used by lightweight-charts, needs to be in hex format */
+	--green: #76d191;
+	--red: #fc5353;
+	--yellow: #f93;
+}

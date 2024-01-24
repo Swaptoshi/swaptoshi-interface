@@ -1,0 +1,56 @@
+[data-theme='light'] {
+	--shadow: rgba(0 0 0 0.02);
+	--body-color: radial-gradient(
+			100% 100% at 50% 0,
+			rgb(255 184 226 / 51%) 0,
+			rgb(255 255 255 / 0%) 100%
+		),
+		#fff;
+	--body-bg: radial-gradient(
+			100% 100% at 50% 0,
+			rgb(217 226 255 / 51%) 0,
+			rgb(255 255 255 / 0%) 100%
+		),
+		#fff;
+	--back-drop: linear-gradient(rgb(255 255 255 / 0%) 0%, rgb(255 255 255) 45%);
+	--cards-background: linear-gradient(
+		179.82deg,
+		rgb(255 255 255 / 0%) 0.16%,
+		rgb(234 234 234) 99.85%
+	);
+	--card-bg: rgb(255 255 255);
+	--card-inside-color: rgb(245 246 252);
+	--switch-button: rgb(245 246 252);
+	--switch-button-border: rgb(255 255 255);
+	--connect-btn: rgb(251 17 142 / 12%);
+	--open-currency-btn-bg: rgb(232 236 251);
+	--open-currency-btn-top: #000;
+	--open-currency-btn-color: #fff;
+	--home-cards: #ffff;
+	--color-white: #000;
+	--btn-color: rgb(251 17 142);
+	--sticky-nav: #fff;
+	--nav-drop: #fff;
+	--eth-dropdown: rgb(232 236 251);
+	--token-border-color: 1px solid rgb(210 217 238);
+	--token-clrr: rgb(210 217 238);
+	--model-bg: #fff;
+	--model-btn-hover: rgb(251 17 142);
+	--model-btn-color: rgb(251 17 142 / 12%);
+	--model-cards: rgb(245 246 252);
+	--model-text: rgb(251 17 142);
+	--model-bg-text: rgb(13 17 28);
+	--model-btn-switch: rgb(251 17 142);
+	--vote-card-color: rgb(255 255 255);
+	--vote-card-bgcolor: rgb(245 246 252);
+	--privacy-cards-clr: rgb(251 17 142);
+	--privacy-cards-bg: rgb(253 234 241);
+	--privacy-cards-bg-hover: rgb(246 221 232);
+	--privacy-cc: rgb(232 236 251);
+	--text-clr: rgb(119 128 160);
+	--text-clr-2: rgb(60 70 101);
+	--dropdown-bg: rgb(245 246 252);
+	--dropdown-border: #fff;
+	--hover-background: rgb(232 236 251);
+	--border: rgb(210 217 238);
+}

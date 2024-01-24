@@ -1,1 +1,3 @@
-import './theme.css';
+import './light.css';
+import './dark.css';
+import './global.css';
