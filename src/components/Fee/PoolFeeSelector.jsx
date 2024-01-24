@@ -88,9 +88,7 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 													borderRadius: '16px',
 													overflow: 'hidden',
 													backgroundColor:
-														Number(selected) === Number(fees[0])
-															? 'var(--card-inside-color)'
-															: undefined,
+														Number(selected) === Number(fees[0]) ? 'var(--surface-2)' : undefined,
 												}}
 												className="sc-bczRLJ lbXqUa Button__BaseButton-sc-4f96dcd8-1 Button__ButtonOutlined-sc-4f96dcd8-7 eOoGds aQTri"
 											>

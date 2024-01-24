@@ -484,7 +484,7 @@ const AddLiquidity = () => {
 								className={'halfscreen-below-375'}
 								containerClassName={'full-range-button'}
 								style={{ marginRight: '8px' }}
-								unselectedBackgroundColor={'var(--switch-button)'}
+								unselectedBackgroundColor={'var(--surface-2)'}
 								unselectedTextColor={'var(--text-clr)'}
 								selectedTextColor={'var(--color-white)'}
 								selectedBackgroundColor={'var(--surface-1)'}

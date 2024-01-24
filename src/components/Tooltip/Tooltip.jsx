@@ -14,7 +14,7 @@ export default function Tooltip({ content, children }) {
 				border={'var(--card-border-color)'}
 				opacity={1}
 				style={{
-					backgroundColor: 'var(--card-inside-color)',
+					backgroundColor: 'var(--surface-2)',
 					zIndex: 99999,
 					color: 'var(--color-white)',
 					borderRadius: '8px',

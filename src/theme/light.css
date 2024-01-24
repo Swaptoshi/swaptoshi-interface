@@ -22,13 +22,7 @@
 	);
 
 	--surface-1: rgb(255 255 255);
-
-	/* --surface-2: rgb(245 246 252); */
-	--card-inside-color: rgb(245 246 252);
-	--switch-button: rgb(245 246 252);
-	--model-cards: rgb(245 246 252);
-	--vote-card-bgcolor: rgb(245 246 252);
-	--dropdown-bg: rgb(245 246 252);
+	--surface-2: rgb(245 246 252);
 
 	/* --surface-3: rgb(232 236 251); */
 	--open-currency-btn-bg: rgb(232 236 251);

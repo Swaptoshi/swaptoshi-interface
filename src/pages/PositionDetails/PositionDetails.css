@@ -202,7 +202,7 @@
 .kjyCWx {
 	-webkit-box-align: center;
 	align-items: center;
-	background: var(--card-inside-color);
+	background: var(--surface-2);
 	border: unset;
 	border-radius: 0.5rem;
 	color: var(--color-white);
@@ -300,7 +300,7 @@
 
 .eNAPHe {
 	border: var(--card-border-color);
-	background-color: var(--card-inside-color);
+	background-color: var(--surface-2);
 }
 
 .iqvqwM {
@@ -344,7 +344,7 @@
 	align-items: center;
 	width: fit-content;
 	padding: 1px;
-	background: var(--card-inside-color);
+	background: var(--surface-2);
 	border-radius: 8px;
 	border: var(--card-border-color);
 	cursor: pointer;

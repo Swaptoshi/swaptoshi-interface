@@ -348,7 +348,7 @@ button {
 .epZvyg {
 	border-radius: 16px;
 	border: 1px solid var(--surface-1);
-	background-color: var(--dropdown-bg);
+	background-color: var(--surface-2);
 	width: 100%;
 }
 
@@ -624,7 +624,7 @@ button {
 }
 
 .bdLEKg {
-	background-color: var(--switch-button);
+	background-color: var(--surface-2);
 	color: var(--text-clr);
 	font-size: 16px;
 	font-weight: 500;
@@ -796,7 +796,7 @@ button {
 }
 
 .jAJJVP {
-	background-color: var(--card-inside-color);
+	background-color: var(--surface-2);
 	color: var(--text-clr);
 	font-size: 16px;
 	font-weight: 500;
@@ -870,7 +870,7 @@ button {
 .gHpyEg {
 	-webkit-box-align: center;
 	align-items: center;
-	background-color: var(--card-inside-color);
+	background-color: var(--surface-2);
 	opacity: 1;
 	color: var(--color-white);
 	cursor: pointer;

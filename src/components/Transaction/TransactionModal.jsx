@@ -217,7 +217,7 @@ export default function TransactionModal({
 									borderRadius: '96px',
 									width: '120px',
 									height: '120px',
-									backgroundColor: 'var(--card-inside-color)',
+									backgroundColor: 'var(--surface-2)',
 									padding: '24px',
 									overflow: 'hidden',
 									display: 'flex',

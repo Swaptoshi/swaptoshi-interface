@@ -8,13 +8,7 @@
 	--cards-background: linear-gradient(179.82deg, rgb(0 0 0 / 0%) 0.16%, rgb(5 0 38) 99.85%);
 
 	--surface-1: rgb(13 17 28);
-
-	/* --surface-2: rgb(19 26 42); */
-	--card-inside-color: rgb(19 26 42);
-	--switch-button: rgb(19 26 42);
-	--model-cards: rgb(19 26 42);
-	--vote-card-bgcolor: rgb(19 26 42);
-	--dropdown-bg: rgb(19 26 42);
+	--surface-2: rgb(19 26 42);
 
 	/* --surface-3: rgb(41 50 73); */
 	--open-currency-btn-bg: rgb(41 50 73);

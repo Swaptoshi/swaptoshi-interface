@@ -24,7 +24,7 @@ export default function TokenSwitchBox({
 			<SwitchBox
 				style={{ width: '100px' }}
 				className={className}
-				unselectedBackgroundColor={'var(--switch-button)'}
+				unselectedBackgroundColor={'var(--surface-2)'}
 				unselectedTextColor={'var(--text-clr)'}
 				selectedTextColor={'var(--color-white)'}
 				selectedBackgroundColor={'var(--surface-1)'}

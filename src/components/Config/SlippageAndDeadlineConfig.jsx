@@ -74,7 +74,7 @@ export default function SlippageAndDeadlineConfig({
 									slippage && (slippage < 0.05 || slippage > 1)
 										? 'color-mix(in srgb, var(--yellow) 20%, transparent)'
 										: !isSlippageAuto && slippage
-											? 'var(--card-inside-color)'
+											? 'var(--surface-2)'
 											: undefined,
 								padding: '2px 8px',
 								alignItems: 'center',

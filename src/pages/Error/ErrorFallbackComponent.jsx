@@ -30,7 +30,7 @@ export default function ErrorFallbackComponent({ error, resetErrorBoundary }) {
 					<div
 						style={{
 							maxWidth: '100vw',
-							backgroundColor: 'var(--dropdown-bg)',
+							backgroundColor: 'var(--surface-2)',
 							border: '1px solid var(--border)',
 							borderRadius: '16px',
 							marginBottom: '8px',

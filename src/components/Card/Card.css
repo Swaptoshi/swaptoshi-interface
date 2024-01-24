@@ -5,7 +5,7 @@
 }
 
 .card-secondary {
-	background-color: var(--card-inside-color);
+	background-color: var(--surface-2);
 }
 
 .card-primary {
