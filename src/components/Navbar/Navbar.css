@@ -77,11 +77,11 @@
 }
 
 .nav-item .nav-link {
-	color: var(--text-color);
+	color: var(--text-3);
 }
 
 .dropdown .nav-link {
-	color: var(--text-color);
+	color: var(--text-3);
 }
 
 .dropdown-menu {
@@ -680,7 +680,7 @@
 
 .hover-shadow {
 	background-color: transparent;
-	color: var(--text-color);
+	color: var(--text-3);
 }
 
 .hover-shadow:hover {

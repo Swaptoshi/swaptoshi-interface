@@ -191,7 +191,7 @@ export default function SwapDetailsInfo({
 									style={{
 										width: 'fit-content',
 										flex: 1,
-										color: 'var(--text-color)',
+										color: 'var(--text-3)',
 										display: 'flex',
 										alignItems: 'center',
 									}}
@@ -222,7 +222,7 @@ export default function SwapDetailsInfo({
 									style={{
 										width: 'fit-content',
 										flex: 1,
-										color: 'var(--text-color)',
+										color: 'var(--text-3)',
 										display: 'flex',
 										alignItems: 'center',
 									}}
@@ -272,7 +272,7 @@ export default function SwapDetailsInfo({
 										width: 'fit-content',
 										flex: 1,
 										display: 'flex',
-										color: 'var(--text-color)',
+										color: 'var(--text-3)',
 										alignItems: 'center',
 									}}
 								>

@@ -10,7 +10,6 @@
 		color-mix(in srgb, var(--box-shadow-color) 2%, transparent) 4px 6px 12px,
 		color-mix(in srgb, var(--box-shadow-color) 4%, transparent) 4px 4px 8px;
 	--body-bg-color: linear-gradient(rgb(32 39 56) 0%, rgb(7 8 22) 100%);
-	--text-color: rgb(127 155 212);
 
 	--body-bg-shade: var(--protocol-card);
 	--card-hover-color: 1px solid var(--protocol-gradient-1);

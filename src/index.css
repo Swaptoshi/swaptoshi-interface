@@ -93,7 +93,7 @@ ul {
 
 * {
 	scrollbar-width: thin;
-	scrollbar-color: var(--text-color) transparent;
+	scrollbar-color: var(--text-3) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -106,9 +106,9 @@ ul {
 }
 
 *::-webkit-scrollbar-thumb {
-	background-color: var(--text-color);
+	background-color: var(--text-3);
 	border-radius: 20px;
-	border: 3px solid var(--text-color);
+	border: 3px solid var(--text-3);
 }
 
 ::-webkit-scrollbar-corner {

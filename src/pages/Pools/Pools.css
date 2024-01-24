@@ -51,7 +51,7 @@
 #poolsHead {
 	-webkit-box-pack: justify;
 	justify-content: space-between;
-	color: var(--text-color);
+	color: var(--text-3);
 }
 
 .pools-left {
@@ -75,7 +75,7 @@
 
 .pool-right.right {
 	width: fit-content;
-	color: var(--text-color);
+	color: var(--text-3);
 	margin: 0;
 	min-width: 0;
 	box-sizing: border-box;

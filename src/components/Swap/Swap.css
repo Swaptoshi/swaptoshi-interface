@@ -34,7 +34,7 @@
 
 #card-top {
 	margin-bottom: 1px;
-	color: var(--text-color);
+	color: var(--text-3);
 	-webkit-box-pack: justify;
 	justify-content: space-between;
 
@@ -114,7 +114,7 @@
 	width: fit-content;
 	background: none;
 	text-decoration: none;
-	color: var(--text-color);
+	color: var(--text-3);
 	gap: 2px;
 	font-weight: 500;
 	font-size: 16px;
@@ -139,7 +139,7 @@
 }
 
 .gear-btn .gear-icon {
-	color: var(--text-color);
+	color: var(--text-3);
 	font-size: 24px;
 }
 
@@ -147,7 +147,7 @@
 .you-pay {
 	background-color: var(--surface-2);
 	border-radius: 16px;
-	color: var(--text-color);
+	color: var(--text-3);
 	font-size: 14px;
 	font-weight: 500;
 	line-height: 20px;
@@ -348,7 +348,7 @@
 .you-receive {
 	background-color: var(--surface-2);
 	border-radius: 16px;
-	color: var(--text-color);
+	color: var(--text-3);
 	font-size: 14px;
 	font-weight: 500;
 	line-height: 20px;

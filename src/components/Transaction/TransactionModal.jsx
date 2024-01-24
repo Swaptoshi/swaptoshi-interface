@@ -292,7 +292,7 @@ export default function TransactionModal({
 												style={{
 													width: 'fit-content',
 													flex: 1,
-													color: 'var(--text-color)',
+													color: 'var(--text-3)',
 													display: 'flex',
 													alignItems: 'center',
 												}}
@@ -315,7 +315,7 @@ export default function TransactionModal({
 												style={{
 													width: 'fit-content',
 													flex: 1,
-													color: 'var(--text-color)',
+													color: 'var(--text-3)',
 													display: 'flex',
 													alignItems: 'center',
 												}}
@@ -338,7 +338,7 @@ export default function TransactionModal({
 												style={{
 													width: 'fit-content',
 													flex: 1,
-													color: 'var(--text-color)',
+													color: 'var(--text-3)',
 													display: 'flex',
 													alignItems: 'center',
 												}}
