@@ -154,7 +154,7 @@
 	overflow: hidden;
 	height: 32px;
 	width: 32px;
-	color: var(--model-bg-text);
+	color: var(--text-2);
 	border: none;
 	outline: none;
 }
@@ -247,7 +247,7 @@ button {
 	align-items: center;
 	-webkit-box-pack: center;
 	justify-content: center;
-	color: var(--model-bg-text);
+	color: var(--text-2);
 	font-size: 16px;
 	font-weight: 600;
 	padding: 0 8px;
@@ -296,7 +296,7 @@ button {
 }
 
 .fjOrSN {
-	color: var(--model-bg-text);
+	color: var(--text-2);
 	display: flex;
 	-webkit-box-pack: justify;
 	justify-content: space-between;
@@ -359,7 +359,7 @@ button {
 }
 
 .css-1aekuku {
-	color: var(--model-bg-text);
+	color: var(--text-2);
 	box-sizing: border-box;
 	margin: 0;
 	min-width: 0;
