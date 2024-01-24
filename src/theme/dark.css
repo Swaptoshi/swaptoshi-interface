@@ -1,8 +1,5 @@
 /* stylelint-disable custom-property-empty-line-before */
 [data-theme='dark'] {
-	--body-bg: linear-gradient(180deg, rgb(8 10 24) 0, rgb(11 11 12) 100%);
-	--cards-background: linear-gradient(179.82deg, transparent 0.16%, var(--surface-1) 99.85%);
-
 	--surface-1: rgb(8 10 24);
 	--surface-2: rgb(19 26 42);
 	--surface-3: rgb(41 50 73);
@@ -13,4 +10,6 @@
 	--text-3: rgb(152 161 192);
 
 	--shadow: color-mix(in srgb, var(--text-1) 2%, transparent);
+	--body-bg: linear-gradient(180deg, rgb(8 10 24) 0, rgb(11 11 12) 100%);
+	--cards-background: linear-gradient(179.82deg, transparent 0.16%, var(--surface-1) 99.85%);
 }

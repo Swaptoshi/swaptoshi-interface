@@ -3,19 +3,20 @@
 	--white: white;
 	--black: black;
 
-	--overlay: rgb(13 17 28 / 60%);
-
-	--box-shadow: color-mix(in srgb, var(--overlay) 6%, transparent) 8px 12px 20px,
-		color-mix(in srgb, var(--overlay) 4%, transparent) 4px 6px 12px,
-		color-mix(in srgb, var(--overlay) 6%, transparent) 4px 4px 8px;
-
 	--primary: rgb(70 115 250);
 	--secondary: rgb(150 70 250);
+
 	--primary-gradient: radial-gradient(
 		101.8% 4091.31% at 0% 0%,
 		var(--primary) 0%,
 		var(--secondary) 100%
 	);
+
+	--overlay: rgb(13 17 28 / 60%);
+
+	--box-shadow: color-mix(in srgb, var(--overlay) 6%, transparent) 8px 12px 20px,
+		color-mix(in srgb, var(--overlay) 4%, transparent) 4px 6px 12px,
+		color-mix(in srgb, var(--overlay) 6%, transparent) 4px 4px 8px;
 
 	/* Following color also used by lightweight-charts, needs to be in hex format */
 	--green: #76d191;
