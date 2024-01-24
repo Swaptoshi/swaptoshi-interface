@@ -204,7 +204,12 @@ const Navbar = () => {
 						{/* left____Nav */}
 						<div className="left-nav">
 							<NavLink className="logo-wrap" to="/">
-								<img className="logo-image" src={logoImage} alt="swaptoshi" />
+								<img
+									className="logo-image"
+									src={logoImage}
+									alt="swaptoshi"
+									style={{ padding: '18px' }}
+								/>
 								<div
 									style={{
 										position: 'absolute',
