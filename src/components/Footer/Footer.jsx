@@ -3,6 +3,8 @@ import './Footer.css';
 import { NavLink } from 'react-router-dom';
 
 const Footer = () => {
+	const year = React.useMemo(() => new Date().getFullYear(), []);
+
 	return (
 		<div className="cSdhBE">
 			<div className="sc-161z70s-0 lcjkzD">
@@ -49,7 +51,7 @@ const Footer = () => {
 							</svg>
 						</a>
 					</div>
-					<span className="sc-161z70s-12 budeec">© 2023 Swaptoshi Labs</span>
+					<span className="sc-161z70s-12 budeec">© {year} Swaptoshi Labs</span>
 				</div>
 				<div className="sc-161z70s-7 kzmIWZ">
 					<div className="sc-161z70s-8 dbjOeL">
@@ -153,7 +155,7 @@ const Footer = () => {
 							</svg>
 						</a>
 					</div>
-					<span className="sc-161z70s-12 budeec">© 2023 Swaptoshi Labs</span>
+					<span className="sc-161z70s-12 budeec">© {year} Swaptoshi Labs</span>
 				</div>
 			</div>
 		</div>
