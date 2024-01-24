@@ -419,7 +419,7 @@
 }
 
 .hsvmWZ {
-	background-color: var(--token-clrr);
+	background-color: var(--border);
 	border: none;
 	height: 0.5px;
 }

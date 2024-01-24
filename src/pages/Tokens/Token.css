@@ -232,7 +232,7 @@
 }
 
 #giptel {
-	border-bottom: var(--token-border-color);
+	border-bottom: var(--border);
 	border-top-color: var(--border);
 	border-right-color: var(--border);
 	border-left-color: var(--border);

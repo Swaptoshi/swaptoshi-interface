@@ -17,7 +17,7 @@
 	display: flex;
 	flex-flow: row;
 	background-color: var(--surface-1);
-	border-bottom: var(--token-border-color);
+	border-bottom: var(--border);
 	width: 100%;
 	-webkit-box-pack: justify;
 	justify-content: space-between;
@@ -760,7 +760,7 @@
 	padding: 4px 8px;
 	height: 52px;
 	background: var(--surface-1);
-	border-top: var(--token-border-color);
+	border-top: var(--border);
 }
 
 /* Media QUery */

@@ -35,7 +35,7 @@
 }
 
 .cnmVKz::-webkit-scrollbar-thumb {
-	background: var(--token-clrr);
+	background: var(--border);
 	border-radius: 8px;
 }
 
@@ -236,7 +236,7 @@ button {
 }
 
 .cyjnfZ img {
-	border: 1px solid var(--token-clrr);
+	border: 1px solid var(--border);
 	border-radius: 12px;
 }
 
@@ -495,7 +495,7 @@ button {
 	-webkit-box-align: center;
 	align-items: center;
 	background: transparent;
-	border: 1px solid var(--token-clrr);
+	border: 1px solid var(--border);
 	border-radius: 20px;
 	cursor: pointer;
 	display: flex;

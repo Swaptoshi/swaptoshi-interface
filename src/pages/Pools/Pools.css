@@ -135,7 +135,7 @@
 /* Connect WALLET CARD */
 .pools-connect-wallet-card {
 	background-color: var(--surface-2);
-	border: var(--token-border-color);
+	border: var(--border);
 	border-radius: 16px;
 	display: flex;
 	flex-direction: column;

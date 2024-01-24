@@ -30,7 +30,7 @@
 	flex: 1 1 0%;
 	position: relative;
 	border-radius: 20px;
-	border: var(--token-border-color);
+	border: var(--border);
 }
 
 .eOCLUf {
@@ -131,7 +131,7 @@
 .cbqHzZ {
 	width: 100%;
 	height: 1px;
-	background-color: var(--token-clrr);
+	background-color: var(--border);
 }
 
 .labelsWrapper {
@@ -208,7 +208,7 @@
 }
 
 .edPdrxe:hover {
-	background-color: var(--token-clrr);
+	background-color: var(--border);
 }
 
 .edPdrxe.active {

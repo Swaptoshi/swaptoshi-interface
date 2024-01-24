@@ -24,11 +24,7 @@
 	--surface-1: rgb(255 255 255);
 	--surface-2: rgb(245 246 252);
 	--surface-3: rgb(232 236 251);
-
-	/* --border: rgb(210 217 238); */
 	--border: rgb(210 217 238);
-	--token-border-color: 1px solid rgb(210 217 238);
-	--token-clrr: rgb(210 217 238);
 
 	/* --primary-accent: color-mix(in srgb, var(--primary) 12%, transparent); */
 	--connect-btn: rgb(251 17 142 / 12%);

@@ -173,7 +173,7 @@ button {
 	max-width: 80vw;
 	background: var(--surface-1);
 	border-radius: 16px;
-	border: var(--token-border-color);
+	border: var(--border);
 	margin-top: 1rem;
 	margin-left: auto;
 	margin-right: auto;
@@ -755,7 +755,7 @@ button {
 
 .cOqmuC {
 	border-radius: 20px;
-	border: var(--token-border-color);
+	border: var(--border);
 	background-color: var(--surface-1);
 	width: initial;
 }
