@@ -12,10 +12,6 @@ export default function NotFound() {
 				height: '100vh',
 			}}
 		>
-			{/* <div style={{ textAlign: 'center' }}>
-				<div style={{ fontSize: '32px', fontWeight: 600, color: 'var(--color-white)' }}>404</div>
-				<div style={{ fontSize: '16px', color: 'var(--color-white)' }}>Not Found</div>
-			</div> */}
 			<div
 				style={{
 					textAlign: 'center',

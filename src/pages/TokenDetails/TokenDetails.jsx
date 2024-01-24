@@ -231,8 +231,6 @@ const TokenDetails = () => {
 												{fiatFormatter.format(token.priceUSD.toFixed(4))}
 											</span>
 											<div className="sc-1nu6e54-6 khjLim textclr">
-												{/* 0.38% */}
-
 												<span
 													className="percentage-text"
 													style={{
@@ -329,7 +327,6 @@ const TokenDetails = () => {
 											<div className="sc-d5tbhs-1 cSretk">
 												<div>{timeframe} Volume</div>
 											</div>
-											{/* <div className="sc-y05v5v-4 iydZZJ">$276.8M</div> */}
 											<div className="sc-y05v5v-4 iydZZJ">{`${fiatFormatter.format(
 												token.volumeUSD.toFixed(2),
 											)}`}</div>

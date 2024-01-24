@@ -30,7 +30,6 @@ const Home = () => {
 	return (
 		<React.Fragment>
 			<div className="home-page">
-				{/* <div className='swap-card'> */}
 				<div className="card-wrapper">
 					<NavLink className="card-anchor" to="/swap">
 						<div className="card-section card-home">
@@ -155,14 +154,14 @@ const Home = () => {
 						</div>
 						<div className="protocol-right">
 							<div style={{ width: 100 }} />
-							{/* <a
+							<a
 								disabled
 								id="learnMoreBtn"
 								className="learn-more-btn lmb"
 								href="https://swaptoshi.io/"
 							>
 								Learn more
-							</a> */}
+							</a>
 						</div>
 					</div>
 

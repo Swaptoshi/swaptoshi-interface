@@ -69,17 +69,6 @@ export default function ConfigModal({ onClose, onThemeAuto, onThemeLight, onThem
 									<polyline points="20 6 9 17 4 12" />
 								</svg>
 							</a>
-							{/* <a
-                            className="sc-k6pz4u-0 iFDhEy"
-                            href="#/nfts?lng=af-ZA"
-                          >
-                            <div
-                              data-testid="wallet-language-item"
-                              className="sc-sx9n2y-0 kivXvb css-zhpkf8"
-                            >
-                              Afrikaans
-                            </div>
-                          </a> */}
 							<div className="sc-1lgoclx-0 zoyEF">
 								<div className="sc-d5tbhs-1 cSretk">
 									<a
