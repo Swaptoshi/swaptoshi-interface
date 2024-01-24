@@ -180,16 +180,6 @@
 	color: var(--color-white);
 }
 
-#poolsConnectBtn {
-	background-color: var(--btn-color);
-	font-size: 20px;
-	font-weight: 600;
-	color: var(--open-currency-btn-color);
-	margin-top: 2em;
-	margin-bottom: 2em;
-	padding: 8px 16px;
-}
-
 .pools-connect-wallet-btn {
 	padding: 16px;
 	width: 100%;

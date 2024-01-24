@@ -10,12 +10,11 @@
 	--card-bg: rgb(13 17 28);
 	--switch-button-border: var(--card-bg);
 	--vote-card-color: var(--card-bg);
-	--open-currency-btn-color: rgb(255 255 255);
-	--home-cards: rgb(19 26 42);
-	--sticky-nav: rgb(0 0 0);
-	--nav-drop: rgb(13 17 28);
+	--sticky-nav: var(--card-bg);
+	--nav-drop: var(--card-bg);
 	--model-bg: var(--card-bg);
 	--dropdown-border: var(--card-bg);
+	--home-cards: var(--card-bg);
 
 	--card-inside-color: rgb(19 26 42);
 	--switch-button: rgb(19 26 42);
@@ -24,7 +23,6 @@
 	--dropdown-bg: rgb(19 26 42);
 
 	--open-currency-btn-bg: rgb(41 50 73);
-	--eth-dropdown: rgb(232 236 251);
 	--privacy-cc: rgb(41 50 73);
 	--hover-background: rgb(41 50 73);
 
@@ -33,12 +31,12 @@
 	--border: rgb(152 161 192 / 24%);
 
 	--connect-btn: rgb(76 130 251 / 24%);
-	--model-btn-color: rgb(76 130 251);
+	--model-btn-color: rgb(76 130 251 / 24%);
 
 	--btn-color: rgb(76 130 251);
-	--model-btn-hover: rgb(51 113 250);
-	--model-text: rgb(152 161 192);
-	--model-btn-switch: rgb(255 255 255);
+	--model-btn-hover: rgb(76 130 251);
+	--model-text: rgb(76 130 251);
+	--model-btn-switch: rgb(76 130 251);
 	--privacy-cards-clr: rgb(76 130 251);
 
 	--open-currency-btn-top: rgb(255 255 255);

@@ -55,7 +55,7 @@ export default function TokenPickerBase({
 			style={{
 				...style,
 				backgroundColor: theme === 'secondary' ? 'var(--open-currency-btn-bg)' : 'var(--btn-color)',
-				color: theme === 'secondary' ? 'var(--color-white)' : 'var(--open-currency-btn-color)',
+				color: theme === 'secondary' ? 'var(--color-white)' : 'var(--white)',
 			}}
 		>
 			<span className="span-two">

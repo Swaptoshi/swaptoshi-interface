@@ -24,12 +24,11 @@
 	--card-bg: rgb(255 255 255);
 	--switch-button-border: rgb(255 255 255);
 	--vote-card-color: rgb(255 255 255);
-	--open-currency-btn-color: rgb(255 255 255);
-	--home-cards: rgb(255 255 255);
 	--sticky-nav: rgb(255 255 255);
 	--nav-drop: rgb(255 255 255);
 	--model-bg: rgb(255 255 255);
 	--dropdown-border: rgb(255 255 255);
+	--home-cards: rgb(255 255 255);
 
 	--card-inside-color: rgb(245 246 252);
 	--switch-button: rgb(245 246 252);
@@ -38,7 +37,6 @@
 	--dropdown-bg: rgb(245 246 252);
 
 	--open-currency-btn-bg: rgb(232 236 251);
-	--eth-dropdown: rgb(232 236 251);
 	--privacy-cc: rgb(232 236 251);
 	--hover-background: rgb(232 236 251);
 
