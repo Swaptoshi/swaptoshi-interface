@@ -2,24 +2,9 @@
 [data-theme='light'] {
 	--shadow: rgba(0 0 0 0.02);
 
-	--body-color: radial-gradient(
-			100% 100% at 50% 0,
-			rgb(255 184 226 / 51%) 0,
-			rgb(255 255 255 / 0%) 100%
-		),
-		#fff;
-	--body-bg: radial-gradient(
-			100% 100% at 50% 0,
-			rgb(217 226 255 / 51%) 0,
-			rgb(255 255 255 / 0%) 100%
-		),
-		#fff;
-	--back-drop: linear-gradient(rgb(255 255 255 / 0%) 0%, rgb(255 255 255) 45%);
-	--cards-background: linear-gradient(
-		179.82deg,
-		rgb(255 255 255 / 0%) 0.16%,
-		rgb(234 234 234) 99.85%
-	);
+	--body-bg: radial-gradient(100% 100% at 50% 0, rgb(217 226 255 / 51%) 0, transparent 100%);
+	--back-drop: linear-gradient(transparent 0%, rgb(255 255 255) 45%);
+	--cards-background: linear-gradient(179.82deg, transparent 0.16%, rgb(234 234 234) 99.85%);
 
 	--surface-1: rgb(255 255 255);
 	--surface-2: rgb(245 246 252);

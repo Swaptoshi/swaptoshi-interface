@@ -197,7 +197,7 @@ export default function PositionDetails() {
 												backgroundColor: 'var(--surface-1)',
 												padding: '2px 12px',
 												borderRadius: '8px',
-												border: 'var(--card-border-color)',
+												border: '1px solid var(--border)',
 											}}
 										>
 											{position.fee / 10000}%

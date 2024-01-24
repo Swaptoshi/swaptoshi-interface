@@ -140,7 +140,7 @@
 	display: flex;
 	flex-direction: column;
 	box-shadow: var(--box-shadow);
-	border: var(--card-border-color);
+	border: 1px solid var(--border);
 	overflow: hidden;
 	margin-bottom: 1.4rem;
 }

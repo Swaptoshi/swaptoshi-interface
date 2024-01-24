@@ -36,7 +36,7 @@ function Dialog({ show, onClickOutside, className, anchor, children, style }) {
 						position: 'absolute',
 						backgroundColor: 'var(--surface-1)',
 						boxShadow: 'var(--box-shadow)',
-						border: 'var(--card-border-color)',
+						border: '1px solid var(--border)',
 						borderRadius: '12px',
 						padding: '8px',
 						zIndex: 100,

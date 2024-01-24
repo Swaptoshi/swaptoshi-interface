@@ -11,7 +11,7 @@ export default function Tooltip({ content, children }) {
 			</a>
 			<ReactTooltip
 				id={id}
-				border={'var(--card-border-color)'}
+				border={'1px solid var(--border)'}
 				opacity={1}
 				style={{
 					backgroundColor: 'var(--surface-2)',

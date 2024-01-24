@@ -2,10 +2,9 @@
 [data-theme='dark'] {
 	--shadow: rgba(255 255 255 0.02);
 
-	--body-color: rgb(45 45 45);
 	--body-bg: linear-gradient(180deg, rgb(13 13 14) 0, rgb(11 11 12) 100%);
-	--back-drop: linear-gradient(rgb(8 10 24 / 0%) 0%, rgb(8 10 24) 45%);
-	--cards-background: linear-gradient(179.82deg, rgb(0 0 0 / 0%) 0.16%, rgb(5 0 38) 99.85%);
+	--back-drop: linear-gradient(transparent 0%, rgb(8 10 24) 45%);
+	--cards-background: linear-gradient(179.82deg, transparent 0.16%, rgb(5 0 38) 99.85%);
 
 	--surface-1: rgb(13 17 28);
 	--surface-2: rgb(19 26 42);

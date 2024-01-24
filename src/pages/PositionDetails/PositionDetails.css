@@ -222,7 +222,7 @@
 	-webkit-box-align: center;
 	align-items: center;
 	background: transparent;
-	border: var(--card-border-color);
+	border: 1px solid var(--border);
 	border-radius: 20px;
 	cursor: pointer;
 	display: flex;
@@ -299,13 +299,13 @@
 }
 
 .eNAPHe {
-	border: var(--card-border-color);
+	border: 1px solid var(--border);
 	background-color: var(--surface-2);
 }
 
 .iqvqwM {
 	background-color: var(--surface-1);
-	border: var(--card-border-color);
+	border: 1px solid var(--border);
 }
 
 .iTSkDr {
@@ -346,7 +346,7 @@
 	padding: 1px;
 	background: var(--surface-2);
 	border-radius: 8px;
-	border: var(--card-border-color);
+	border: 1px solid var(--border);
 	cursor: pointer;
 	outline: none;
 }

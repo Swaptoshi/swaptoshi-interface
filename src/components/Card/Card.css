@@ -1,5 +1,5 @@
 .card-box {
-	border: var(--card-border-color);
+	border: 1px solid var(--border);
 	border-radius: 16px;
 	overflow: hidden;
 }

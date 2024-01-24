@@ -37,8 +37,6 @@ ul {
 	position: relative;
 	width: 100vw;
 	height: 100vh;
-
-	/* background: var(--body-bg); */
 }
 
 .dark-theme::before {
