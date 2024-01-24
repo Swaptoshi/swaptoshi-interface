@@ -153,6 +153,12 @@
 	transition: all 250ms ease 0s;
 }
 
+.get-started-btn:hover {
+	box-shadow:
+		color-mix(in srgb, var(--protocol-gradient-1) 40%, transparent) -4px -6px 20px,
+		color-mix(in srgb, var(--protocol-gradient-2) 40%, transparent) 4px 6px 20px;
+}
+
 .get-started-btn.get-btn {
 	padding: 16px;
 	width: 100%;
@@ -173,7 +179,9 @@
 	position: relative;
 	z-index: 1;
 	will-change: transform;
-	transition: transform 450ms ease 0s;
+	transition:
+		transform 450ms ease 0s,
+		box-shadow 450ms ease 0s;
 	transform: perspective(1px) translateZ(0);
 }
 
@@ -456,8 +464,14 @@
 	position: relative;
 	z-index: 1;
 	will-change: transform;
-	transition: transform 450ms ease 0s;
+	transition:
+		transform 450ms ease 0s,
+		opacity 450ms ease 0s;
 	transform: perspective(1px) translateZ(0);
+}
+
+.protocol-right .learn-more-btn:hover {
+	opacity: 0.5;
 }
 
 .learn-more-btn.lmb {

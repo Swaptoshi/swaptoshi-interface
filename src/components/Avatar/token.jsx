@@ -5,6 +5,7 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 	const [loaded, setIsLoaded] = React.useState(false);
 	const [error, setError] = React.useState(false);
 	const [key, setKey] = React.useState(0);
+	const [color, setColor] = React.useState();
 
 	const onLoad = React.useCallback(() => {
 		setIsLoaded(true);
@@ -19,6 +20,13 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 		setKey(Math.random());
 	}, [src, tokenId]);
 
+	React.useEffect(() => {
+		const run = async () => {
+			setColor(await tokenToColorHex(tokenId));
+		};
+		run();
+	}, [tokenId]);
+
 	return (
 		<div
 			style={{
@@ -31,7 +39,7 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
-				backgroundColor: `#${tokenToColorHex(tokenId)}`,
+				backgroundColor: `${color}`,
 				...style,
 			}}
 			{...props}

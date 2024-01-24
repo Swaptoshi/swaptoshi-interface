@@ -50,8 +50,19 @@ export default function LiquidityChartRangeInput({
 	isLoading,
 	error,
 }) {
-	const tokenAColor = tokenToColorHex(currencyA.tokenId);
-	const tokenBColor = tokenToColorHex(currencyB.tokenId);
+	const [tokenAColor, setTokenAColor] = React.useState();
+	const [tokenBColor, setTokenBColor] = React.useState();
+
+	React.useEffect(() => {
+		const run = async () => {
+			const colorA = await tokenToColorHex(currencyA.tokenId, currencyA.logo);
+			const colorB = await tokenToColorHex(currencyB.tokenId, currencyB.logo);
+			setTokenAColor(colorA);
+			setTokenBColor(colorB);
+		};
+
+		run();
+	}, [currencyA, currencyB]);
 
 	const onBrushDomainChangeEnded = useCallback(
 		(domain, mode) => {
@@ -141,8 +152,8 @@ export default function LiquidityChartRangeInput({
 							},
 							brush: {
 								handle: {
-									west: `#${tokenAColor}`,
-									east: `#${tokenBColor}`,
+									west: `${tokenAColor}`,
+									east: `${tokenBColor}`,
 								},
 							},
 						}}
