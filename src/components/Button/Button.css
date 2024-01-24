@@ -33,6 +33,7 @@
 .secondary-button-container {
 	background-color: var(--primary-accent);
 	color: var(--primary);
+	border: 1px solid var(--primary);
 }
 
 .tertiary-button-container {
