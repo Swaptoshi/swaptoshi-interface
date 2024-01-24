@@ -234,9 +234,9 @@ const Navbar = () => {
 										height: '40px',
 										width: '40px',
 										left: '22px',
-										backgroundColor: 'white',
+										background: 'var(--protocol-card)',
 										filter: 'blur(16px)',
-										opacity: 0.4,
+										opacity: 0.35,
 										zIndex: -2,
 									}}
 								/>
