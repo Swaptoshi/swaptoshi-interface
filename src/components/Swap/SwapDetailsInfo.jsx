@@ -251,7 +251,7 @@ export default function SwapDetailsInfo({
 								{isSlippageAuto ? (
 									<div
 										style={{
-											backgroundColor: 'var(--open-currency-btn-bg)',
+											backgroundColor: 'var(--surface-3)',
 											borderRadius: '16px',
 											padding: '2px 8px',
 											fontSize: '12px',
@@ -290,7 +290,7 @@ export default function SwapDetailsInfo({
 								{isFeeConvert && isPoolExistForConversion && (
 									<div
 										style={{
-											backgroundColor: 'var(--open-currency-btn-bg)',
+											backgroundColor: 'var(--surface-3)',
 											borderRadius: '16px',
 											padding: '2px 8px',
 											fontSize: '12px',

@@ -54,7 +54,7 @@ export default function TokenPickerBase({
 			onClick={handlePick}
 			style={{
 				...style,
-				backgroundColor: theme === 'secondary' ? 'var(--open-currency-btn-bg)' : 'var(--btn-color)',
+				backgroundColor: theme === 'secondary' ? 'var(--surface-3)' : 'var(--btn-color)',
 				color: theme === 'secondary' ? 'var(--color-white)' : 'var(--white)',
 			}}
 		>

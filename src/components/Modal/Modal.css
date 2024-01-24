@@ -144,7 +144,7 @@
 }
 
 .kIafUC {
-	background-color: var(--open-currency-btn-bg);
+	background-color: var(--surface-3);
 	transition: width 125ms ease-in-out 0s;
 	border-radius: 12px;
 	display: flex;

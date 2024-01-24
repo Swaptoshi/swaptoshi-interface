@@ -262,7 +262,7 @@ const Navbar = () => {
 										className="nav-item hover-shadow"
 										style={{
 											backgroundColor:
-												location.pathname === '/swap' ? 'var(--hover-background)' : undefined,
+												location.pathname === '/swap' ? 'var(--surface-3)' : undefined,
 										}}
 									>
 										<NavLink className="nav-link" to="/swap">
@@ -273,7 +273,7 @@ const Navbar = () => {
 										className="nav-item hover-shadow"
 										style={{
 											backgroundColor:
-												location.pathname === '/tokens' ? 'var(--hover-background)' : undefined,
+												location.pathname === '/tokens' ? 'var(--surface-3)' : undefined,
 										}}
 									>
 										<NavLink className="nav-link" to="/tokens">
@@ -284,7 +284,7 @@ const Navbar = () => {
 										className="nav-item hover-shadow"
 										style={{
 											backgroundColor:
-												location.pathname === '/pools' ? 'var(--hover-background)' : undefined,
+												location.pathname === '/pools' ? 'var(--surface-3)' : undefined,
 										}}
 									>
 										<NavLink className="nav-link" to="/pools">

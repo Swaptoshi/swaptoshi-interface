@@ -233,7 +233,7 @@
 .open-currency-btn-top {
 	-webkit-box-align: center;
 	align-items: center;
-	background-color: var(--open-currency-btn-bg);
+	background-color: var(--surface-3);
 	opacity: 1;
 	box-shadow: none;
 	color: var(--open-currency-btn-top);

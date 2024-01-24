@@ -97,7 +97,7 @@
 
 .dropdown-menu .borderr {
 	border-top: solid;
-	border-color: var(--open-currency-btn-bg);
+	border-color: var(--surface-3);
 	height: 0;
 	border-width: 1px;
 	margin-left: 16px;
@@ -342,7 +342,7 @@
 .tokens-options:active,
 .tokens-options::before {
 	cursor: pointer;
-	background-color: var(--hover-background);
+	background-color: var(--surface-3);
 }
 
 .tokens-options .left-item {
@@ -629,7 +629,7 @@
 }
 
 .options li:hover {
-	background-color: var(--hover-background);
+	background-color: var(--surface-3);
 }
 
 .options img {
@@ -684,7 +684,7 @@
 }
 
 .hover-shadow:hover {
-	background-color: var(--hover-background);
+	background-color: var(--surface-3);
 }
 
 ._1973yvc1 {

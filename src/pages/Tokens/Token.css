@@ -5,7 +5,7 @@
 }
 
 .timeframe-selector-anchor {
-	background-color: var(--open-currency-btn-bg);
+	background-color: var(--surface-3);
 }
 
 .token-wrapper {
@@ -67,7 +67,7 @@
 .crypto-currency-drop button {
 	height: 100%;
 	color: var(--color-white);
-	background-color: var(--open-currency-btn-bg);
+	background-color: var(--surface-3);
 	margin: 0;
 	padding: 6px 12px 6px 14px;
 	border-radius: 12px;
@@ -260,7 +260,7 @@
 }
 
 .iCcgEc:hover {
-	background-color: var(--hover-background);
+	background-color: var(--surface-3);
 }
 
 .chstga {
@@ -303,7 +303,7 @@
 .VWsYV {
 	height: 100%;
 	color: var(--surface-1);
-	background-color: var(--open-currency-btn-bg);
+	background-color: var(--surface-3);
 	margin: 0;
 	padding: 6px 12px 6px 14px;
 	border-radius: 12px;
@@ -482,7 +482,7 @@
 }
 
 .cQmpaP:hover {
-	background-color: var(--open-currency-btn-bg);
+	background-color: var(--surface-3);
 }
 
 .cQmpaP {

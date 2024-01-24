@@ -266,7 +266,7 @@ button {
 	flex-direction: column;
 	gap: 20px;
 	padding-top: 20px;
-	border-top: 1px solid var(--open-currency-btn-bg);
+	border-top: 1px solid var(--surface-3);
 }
 
 .ereGUg {
@@ -805,7 +805,7 @@ button {
 .cCMOgz {
 	-webkit-box-align: center;
 	align-items: center;
-	background-color: var(--open-currency-btn-bg);
+	background-color: var(--surface-3);
 	opacity: 1;
 	color: var(--color-white);
 	cursor: pointer;

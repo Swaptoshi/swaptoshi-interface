@@ -337,7 +337,7 @@
 	align-items: center;
 	-webkit-box-pack: center;
 	justify-content: center;
-	background-color: var(--open-currency-btn-bg);
+	background-color: var(--surface-3);
 	font-weight: 600;
 	font-size: 16px;
 	padding: 6px 12px;
