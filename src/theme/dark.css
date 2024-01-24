@@ -12,10 +12,7 @@
 	--surface-3: rgb(41 50 73);
 	--border: rgb(152 161 192 / 24%);
 	--primary: rgb(76 130 251);
-
-	/* --primary-accent: color-mix(in srgb, var(--primary) 24%, transparent); */
-	--connect-btn: rgb(76 130 251 / 24%);
-	--model-btn-color: rgb(76 130 251 / 24%);
+	--primary-accent: color-mix(in srgb, var(--primary) 24%, transparent);
 
 	/* --text: rgb(255 255 255); */
 	--open-currency-btn-top: rgb(255 255 255);

@@ -28,7 +28,7 @@ export default function SwitchBox({
 								cursor: value === item.value ? 'unset' : 'pointer',
 								backgroundColor:
 									value === item.value
-										? selectedBackgroundColor ?? 'var(--connect-btn)'
+										? selectedBackgroundColor ?? 'var(--primary-accent)'
 										: undefined,
 							}}
 							className={`sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-3 sc-1euncec-0 hJYFVB xyz1 kHFzEX ${

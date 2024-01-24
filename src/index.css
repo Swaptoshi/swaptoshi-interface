@@ -145,7 +145,7 @@ input[type='range']::-webkit-slider-runnable-track {
 	height: 4px;
 	cursor: pointer;
 	animate: 0.2s;
-	background: var(--connect-btn);
+	background: var(--primary-accent);
 	border-radius: 4px;
 }
 
@@ -162,7 +162,7 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 input[type='range']:focus::-webkit-slider-runnable-track {
-	background: var(--connect-btn);
+	background: var(--primary-accent);
 }
 
 input[type='range']::-moz-range-track {
@@ -170,7 +170,7 @@ input[type='range']::-moz-range-track {
 	height: 4px;
 	cursor: pointer;
 	animate: 0.2s;
-	background: var(--connect-btn);
+	background: var(--primary-accent);
 	border-radius: 4px;
 }
 
@@ -195,30 +195,30 @@ input[type='range']::-ms-track {
 }
 
 input[type='range']::-ms-fill-lower {
-	background: var(--connect-btn);
+	background: var(--primary-accent);
 	border-radius: 8px;
 }
 
 input[type='range']::-ms-fill-upper {
-	background: var(--connect-btn);
+	background: var(--primary-accent);
 	border-radius: 8px;
 }
 
 input[type='range']::-ms-thumb {
 	box-shadow: 1px 1px 5px var(--shadow);
 	margin-top: 1px;
-	border: 0px solid var(--connect-btn);
+	border: 0px solid var(--primary-accent);
 	height: 30px;
 	width: 30px;
 	border-radius: 30px;
-	background: var(--connect-btn);
+	background: var(--primary-accent);
 	cursor: pointer;
 }
 
 input[type='range']:focus::-ms-fill-lower {
-	background: var(--connect-btn);
+	background: var(--primary-accent);
 }
 
 input[type='range']:focus::-ms-fill-upper {
-	background: var(--connect-btn);
+	background: var(--primary-accent);
 }

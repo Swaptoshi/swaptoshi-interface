@@ -437,7 +437,7 @@ button {
 .jANAGB {
 	-webkit-box-align: center;
 	align-items: center;
-	background: var(--model-btn-color);
+	background: var(--primary-accent);
 	border: 1px solid transparent;
 	border-radius: 20px;
 	cursor: pointer;

@@ -26,7 +26,7 @@
 }
 
 .primary-button-container {
-	background-color: var(--connect-btn);
+	background-color: var(--primary-accent);
 	color: var(--primary);
 }
 

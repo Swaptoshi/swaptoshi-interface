@@ -433,7 +433,7 @@
 }
 
 #connectId {
-	background-color: var(--connect-btn);
+	background-color: var(--primary-accent);
 	color: var(--primary);
 	font-size: 20px;
 	font-weight: 600;

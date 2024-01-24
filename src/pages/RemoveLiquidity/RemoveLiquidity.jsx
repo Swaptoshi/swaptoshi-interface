@@ -141,7 +141,7 @@ export default function RemoveLiquidity() {
 		return (
 			<button
 				style={{
-					backgroundColor: 'color-mix(in srgb, var(--connect-btn) 50%, transparent)',
+					backgroundColor: 'color-mix(in srgb, var(--primary-accent) 50%, transparent)',
 					color: 'var(--primary)',
 					border: '0px',
 					padding: '4px 12px',
@@ -257,7 +257,7 @@ export default function RemoveLiquidity() {
 						max={100}
 						step={1}
 						onChange={handleRemovedChange}
-						style={{ width: '100%', color: 'var(--model-btn-color)' }}
+						style={{ width: '100%', color: 'var(--primary-accent)' }}
 					/>
 				</SecondaryCard>
 
