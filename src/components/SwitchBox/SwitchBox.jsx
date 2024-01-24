@@ -40,7 +40,7 @@ export default function SwitchBox({
 								style={{
 									color:
 										value === item.value
-											? selectedTextColor ?? 'var(--btn-color)'
+											? selectedTextColor ?? 'var(--primary)'
 											: unselectedTextColor,
 								}}
 							>

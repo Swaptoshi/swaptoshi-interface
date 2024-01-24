@@ -11,17 +11,11 @@
 	--surface-2: rgb(19 26 42);
 	--surface-3: rgb(41 50 73);
 	--border: rgb(152 161 192 / 24%);
+	--primary: rgb(76 130 251);
 
 	/* --primary-accent: color-mix(in srgb, var(--primary) 24%, transparent); */
 	--connect-btn: rgb(76 130 251 / 24%);
 	--model-btn-color: rgb(76 130 251 / 24%);
-
-	/* --primary: rgb(76 130 251); */
-	--btn-color: rgb(76 130 251);
-	--model-btn-hover: rgb(76 130 251);
-	--model-text: rgb(76 130 251);
-	--model-btn-switch: rgb(76 130 251);
-	--privacy-cards-clr: rgb(76 130 251);
 
 	/* --text: rgb(255 255 255); */
 	--open-currency-btn-top: rgb(255 255 255);

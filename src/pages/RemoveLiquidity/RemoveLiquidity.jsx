@@ -142,7 +142,7 @@ export default function RemoveLiquidity() {
 			<button
 				style={{
 					backgroundColor: 'color-mix(in srgb, var(--connect-btn) 50%, transparent)',
-					color: 'var(--btn-color)',
+					color: 'var(--primary)',
 					border: '0px',
 					padding: '4px 12px',
 					height: '32px',

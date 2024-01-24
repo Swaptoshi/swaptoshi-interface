@@ -230,7 +230,7 @@ button {
 }
 
 .cWDToC {
-	color: var(--model-btn-hover);
+	color: var(--primary);
 }
 
 .imhdhD {
@@ -892,7 +892,7 @@ button {
 
 .fCkFnu {
 	background-color: var(--connect-btn);
-	color: var(--privacy-cards-clr);
+	color: var(--primary);
 	font-size: 20px;
 	font-weight: 600;
 }
@@ -911,7 +911,7 @@ button {
 	border: 0;
 	border-radius: 4px;
 	padding: 12px;
-	background-color: var(--btn-color);
+	background-color: var(--primary);
 }
 
 .fNUVbK {

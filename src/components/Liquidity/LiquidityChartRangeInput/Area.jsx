@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 const Path = styled.path`
 	opacity: 0.5;
-	stroke: ${({ fill }) => fill ?? 'var(--btn-color)'};
-	fill: ${({ fill }) => fill ?? 'var(--btn-color)'};
+	stroke: ${({ fill }) => fill ?? 'var(--primary)'};
+	fill: ${({ fill }) => fill ?? 'var(--primary)'};
 `;
 
 export const Area = ({ series, xScale, yScale, xValue, yValue, fill }) =>

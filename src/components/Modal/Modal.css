@@ -278,8 +278,8 @@ button {
 	text-decoration: none;
 	cursor: pointer;
 	transition-duration: 125ms;
-	color: var(--model-text);
-	stroke: var(--model-text);
+	color: var(--primary);
+	stroke: var(--primary);
 	font-weight: 500;
 }
 
@@ -453,7 +453,7 @@ button {
 
 .jsjUXs {
 	animation: 0.1s ease-in 0s 1 normal none running none;
-	background: var(--model-btn-switch);
+	background: var(--primary);
 	border-radius: 50%;
 	height: 24px;
 	margin-left: 2.2em;

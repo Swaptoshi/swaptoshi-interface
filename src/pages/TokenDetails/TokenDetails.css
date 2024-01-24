@@ -72,8 +72,8 @@
 	text-decoration: none;
 	cursor: pointer;
 	transition-duration: 125ms;
-	color: var(--btn-color);
-	stroke: var(--btn-color);
+	color: var(--primary);
+	stroke: var(--primary);
 	font-weight: 500;
 }
 

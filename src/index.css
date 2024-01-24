@@ -18,12 +18,12 @@ body {
 
 a {
 	text-decoration: none;
-	color: var(--btn-color);
+	color: var(--primary);
 	transition: color 0.3s ease;
 }
 
 a:hover {
-	color: color-mix(in srgb, var(--btn-color) 60%, white);
+	color: color-mix(in srgb, var(--primary) 60%, white);
 }
 
 ul {
@@ -151,11 +151,11 @@ input[type='range']::-webkit-slider-runnable-track {
 
 input[type='range']::-webkit-slider-thumb {
 	box-shadow: 1px 1px 5px var(--shadow);
-	border: 0px solid var(--btn-color);
+	border: 0px solid var(--primary);
 	height: 25px;
 	width: 25px;
 	border-radius: 25px;
-	background: var(--btn-color);
+	background: var(--primary);
 	cursor: pointer;
 	-webkit-appearance: none;
 	margin-top: -13px;
@@ -176,11 +176,11 @@ input[type='range']::-moz-range-track {
 
 input[type='range']::-moz-range-thumb {
 	box-shadow: 1px 1px 5px var(--shadow);
-	border: 0px solid var(--btn-color);
+	border: 0px solid var(--primary);
 	height: 30px;
 	width: 30px;
 	border-radius: 30px;
-	background: var(--btn-color);
+	background: var(--primary);
 	cursor: pointer;
 }
 

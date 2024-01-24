@@ -29,7 +29,7 @@ export default function NFTPositionCard({ image, ipfsURL }) {
 				href={getIPFSUrl(ipfsURL)}
 				target={'_blank'}
 				rel="noreferrer"
-				style={{ color: 'var(--model-btn-hover)' }}
+				style={{ color: 'var(--primary)' }}
 			>
 				View on IPFS
 			</a>

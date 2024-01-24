@@ -120,7 +120,7 @@
 
 .icon-drop {
 	padding-top: 1px;
-	color: var(--btn-color);
+	color: var(--primary);
 }
 
 .icon-drop.rotated {
@@ -144,7 +144,7 @@
 }
 
 .tick-icon {
-	color: var(--btn-color);
+	color: var(--primary);
 }
 
 /* update 1D */
@@ -173,7 +173,7 @@
 
 .token-update-text .icon-drop {
 	padding-top: 1px;
-	color: var(--btn-color);
+	color: var(--primary);
 }
 
 .token-update-text .icon-drop.rotated {
@@ -213,7 +213,7 @@
 
 .token-input:focus {
 	outline: none;
-	border-color: var(--btn-color);
+	border-color: var(--primary);
 }
 
 /* header row */

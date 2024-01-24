@@ -315,7 +315,7 @@
 }
 
 #cContainerLink {
-	color: var(--btn-color);
+	color: var(--primary);
 	font-weight: 500;
 	margin: 24px 0 0;
 	cursor: pointer;
@@ -387,7 +387,7 @@
 }
 
 #btnLink {
-	color: var(--btn-color);
+	color: var(--primary);
 	font-weight: 500;
 	margin: 24px 0 0;
 	cursor: pointer;

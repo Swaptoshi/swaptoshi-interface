@@ -181,7 +181,7 @@ export default function SwapTokenInput({
 											fontWeight: 600,
 											border: 0,
 											backgroundColor: 'transparent',
-											color: 'var(--btn-color)',
+											color: 'var(--primary)',
 										}}
 										onClick={handleMaxClick}
 									>

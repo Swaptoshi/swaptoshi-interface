@@ -48,7 +48,7 @@ export default function ErrorFallbackComponent({ error, resetErrorBoundary }) {
 						display: 'flex',
 						border: 0,
 						fontSize: '14px',
-						color: 'var(--btn-color)',
+						color: 'var(--primary)',
 						justifyContent: 'center',
 						alignItems: 'center',
 						marginBottom: '16px',

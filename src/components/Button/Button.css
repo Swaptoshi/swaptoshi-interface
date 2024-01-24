@@ -27,7 +27,7 @@
 
 .primary-button-container {
 	background-color: var(--connect-btn);
-	color: var(--btn-color);
+	color: var(--primary);
 }
 
 .secondary-button-container {

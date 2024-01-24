@@ -222,7 +222,7 @@
 }
 
 .swap-tick {
-	color: var(--btn-color);
+	color: var(--primary);
 	font-size: 20px;
 }
 
@@ -285,7 +285,7 @@
 	height: 20px;
 	width: 20px;
 	margin-left: 4px;
-	color: var(--btn-color);
+	color: var(--primary);
 }
 
 .bPeMEk {
