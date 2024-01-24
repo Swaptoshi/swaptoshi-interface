@@ -25,7 +25,7 @@ export default function AppContextProvider({ children }) {
 					</WalletConnectProvider>
 				</WalletModalProvider>
 			</LiskPriceProvider>
-			<ToastContainer position="bottom-right" theme={theme} />
+			<ToastContainer stacked closeOnClick position="bottom-right" theme={theme} />
 		</ChainProvider>
 	);
 }

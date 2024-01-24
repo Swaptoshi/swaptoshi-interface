@@ -12,4 +12,5 @@
 	--shadow: color-mix(in srgb, var(--text-1) 2%, transparent);
 	--body-bg: radial-gradient(100% 100% at 50% 0, rgb(217 226 255 / 51%) 0, transparent 100%);
 	--cards-background: linear-gradient(179.82deg, transparent 0.16%, var(--surface-3) 99.85%);
+	--toastify-color-light: var(--surface-2);
 }
