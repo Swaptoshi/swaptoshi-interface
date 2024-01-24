@@ -121,7 +121,7 @@
 	border-radius: 20px;
 	outline: none;
 	border: 1px solid transparent;
-	color: var(--card-bg);
+	color: var(--surface-1);
 	text-decoration: none;
 	display: flex;
 	-webkit-box-pack: center;
@@ -345,7 +345,7 @@
 	line-height: 20px;
 	border: none;
 	cursor: pointer;
-	color: var(--card-bg);
+	color: var(--surface-1);
 	transition-duration: 125ms;
 }
 

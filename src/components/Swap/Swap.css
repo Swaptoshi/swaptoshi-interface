@@ -22,7 +22,7 @@
 
 .card-bg {
 	position: relative;
-	background: var(--card-bg);
+	background: var(--surface-1);
 	border-radius: 24px;
 	border: var(--card-border-color);
 	padding: 12px 8px 8px;
@@ -325,7 +325,7 @@
 	position: relative;
 	margin: -18px auto;
 	background-color: var(--switch-button);
-	border: 4px solid var(--switch-button-border);
+	border: 4px solid var(--surface-1);
 	z-index: 2;
 }
 

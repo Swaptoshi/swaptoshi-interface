@@ -154,7 +154,7 @@ export default function SwapDetailsInfo({
 								padding: '0 8px',
 							}}
 						>
-							<i className="ri-token-swap-line" style={{ color: 'var(--card-bg)' }}></i>
+							<i className="ri-token-swap-line" style={{ color: 'var(--surface-1)' }}></i>
 						</div>
 					</Tooltip>
 				)}

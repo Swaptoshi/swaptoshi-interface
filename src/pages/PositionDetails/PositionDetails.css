@@ -304,7 +304,7 @@
 }
 
 .iqvqwM {
-	background-color: var(--nav-drop);
+	background-color: var(--surface-1);
 	border: var(--card-border-color);
 }
 
@@ -361,7 +361,7 @@
 	-webkit-box-pack: center;
 	justify-content: center;
 	height: 100%;
-	background: var(--nav-drop);
+	background: var(--surface-1);
 	color: var(--color-white);
 	font-size: 12px;
 	font-weight: 535;

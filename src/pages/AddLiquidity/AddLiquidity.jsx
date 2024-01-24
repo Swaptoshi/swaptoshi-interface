@@ -487,7 +487,7 @@ const AddLiquidity = () => {
 								unselectedBackgroundColor={'var(--switch-button)'}
 								unselectedTextColor={'var(--text-clr)'}
 								selectedTextColor={'var(--color-white)'}
-								selectedBackgroundColor={'var(--card-bg)'}
+								selectedBackgroundColor={'var(--surface-1)'}
 								value={lowPrice === ZERO && highPrice === INFINITE}
 								items={[
 									{

@@ -27,7 +27,7 @@ export default function TokenSwitchBox({
 				unselectedBackgroundColor={'var(--switch-button)'}
 				unselectedTextColor={'var(--text-clr)'}
 				selectedTextColor={'var(--color-white)'}
-				selectedBackgroundColor={'var(--card-bg)'}
+				selectedBackgroundColor={'var(--surface-1)'}
 				value={tokenA}
 				items={[
 					{

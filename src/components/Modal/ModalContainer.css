@@ -171,7 +171,7 @@ button {
 .GfTH {
 	position: relative;
 	max-width: 80vw;
-	background: var(--card-bg);
+	background: var(--surface-1);
 	border-radius: 16px;
 	border: var(--token-border-color);
 	margin-top: 1rem;
@@ -347,7 +347,7 @@ button {
 
 .epZvyg {
 	border-radius: 16px;
-	border: 1px solid var(--dropdown-border);
+	border: 1px solid var(--surface-1);
 	background-color: var(--dropdown-bg);
 	width: 100%;
 }
@@ -746,7 +746,7 @@ button {
 	flex-flow: column;
 	position: relative;
 	border-radius: 20px;
-	background-color: var(--card-bg);
+	background-color: var(--surface-1);
 	z-index: 1;
 	width: initial;
 	transition: height 1s ease 0s;
@@ -756,7 +756,7 @@ button {
 .cOqmuC {
 	border-radius: 20px;
 	border: var(--token-border-color);
-	background-color: var(--card-bg);
+	background-color: var(--surface-1);
 	width: initial;
 }
 

@@ -67,7 +67,7 @@
 	position: fixed;
 	width: 100%;
 	height: 100%;
-	background-color: color-mix(in srgb, var(--card-bg) 60%, white);
+	background-color: color-mix(in srgb, var(--surface-1) 60%, white);
 	opacity: 0;
 	pointer-events: none;
 }
@@ -79,7 +79,7 @@
 	border-radius: 12px;
 	width: 320px;
 	font-size: 16px;
-	background-color: var(--model-bg);
+	background-color: var(--surface-1);
 	border: 1px solid color-mix(in srgb, var(--border) 10%, transparent);
 	box-shadow: var(--box-shadow);
 	transition: margin-right 250ms ease 0s;
@@ -100,7 +100,7 @@
 .jcIclM {
 	display: flex;
 	flex-flow: column;
-	background-color: var(--model-bg);
+	background-color: var(--surface-1);
 	width: 100%;
 	height: 100%;
 	padding: 14px 16px 16px;
@@ -525,7 +525,7 @@ button {
 	-webkit-box-pack: justify;
 	justify-content: space-between;
 	text-decoration: none;
-	color: var(--card-bg);
+	color: var(--surface-1);
 }
 
 .css-zhpkf8 {

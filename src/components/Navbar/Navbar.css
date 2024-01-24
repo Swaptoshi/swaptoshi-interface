@@ -16,7 +16,7 @@
 .hirdVF.sticky {
 	display: flex;
 	flex-flow: row;
-	background-color: var(--sticky-nav);
+	background-color: var(--surface-1);
 	border-bottom: var(--token-border-color);
 	width: 100%;
 	-webkit-box-pack: justify;
@@ -87,7 +87,7 @@
 .dropdown-menu {
 	box-shadow: 0 4px 12px 0 color-mix(in srgb, var(--color-white) 15%, white);
 	z-index: 1060;
-	background: var(--nav-drop);
+	background: var(--surface-1);
 	padding: 8px 8px 10px;
 }
 
@@ -176,7 +176,7 @@
 	color: var(--text-clr);
 	border-bottom-width: 1px;
 	border-radius: 12px;
-	background-color: var(--nav-drop);
+	background-color: var(--surface-1);
 	border-style: solid;
 }
 
@@ -280,7 +280,7 @@
 .options-box::before {
 	border: 1px solid var(--border);
 	border-top: 0;
-	background-color: var(--nav-drop);
+	background-color: var(--surface-1);
 	border-bottom-right-radius: 12px;
 	border-bottom-left-radius: 12px;
 }
@@ -759,7 +759,7 @@
 	justify-content: space-between;
 	padding: 4px 8px;
 	height: 52px;
-	background: var(--card-bg);
+	background: var(--surface-1);
 	border-top: var(--token-border-color);
 }
 

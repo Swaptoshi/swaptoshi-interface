@@ -34,7 +34,7 @@ function Dialog({ show, onClickOutside, className, anchor, children, style }) {
 					className={className}
 					style={{
 						position: 'absolute',
-						backgroundColor: 'var(--nav-drop)',
+						backgroundColor: 'var(--surface-1)',
 						boxShadow: 'var(--box-shadow)',
 						border: 'var(--card-border-color)',
 						borderRadius: '12px',

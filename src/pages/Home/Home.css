@@ -282,12 +282,12 @@
 
 .container-wrapper .card-one {
 	background: url('/public/assets/images/cards/c-one.png') right center / auto 100% no-repeat
-		border-box var(--home-cards);
+		border-box var(--surface-1);
 }
 
 .container-wrapper .card-two {
 	background: url('/public/assets/images/cards/c-two.png') right center / auto 100% no-repeat
-		border-box var(--home-cards);
+		border-box var(--surface-1);
 }
 
 .swap-tokens-card .trade-title {
@@ -342,7 +342,7 @@
 	color: var(--open-currency-btn-top);
 	height: 212px;
 	box-shadow: var(--box-shadow);
-	background: right center / auto 100% no-repeat border-box var(--home-cards);
+	background: right center / auto 100% no-repeat border-box var(--surface-1);
 	background-position: right center;
 	background-repeat: no-repeat;
 	text-decoration: none;

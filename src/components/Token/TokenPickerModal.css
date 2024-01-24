@@ -23,7 +23,7 @@
 }
 
 .fUHrnW {
-	background-color: var(--card-bg);
+	background-color: var(--surface-1);
 	color: var(--color-white);
 	width: 100%;
 	overflow: hidden;
@@ -44,13 +44,13 @@
 }
 
 .fqkEGC {
-	color: var(--card-bg);
+	color: var(--surface-1);
 	cursor: pointer;
 }
 
 .hxoNas {
 	background: url('/public/assets/images/search-icon.svg') 12px center / 20px 20px no-repeat scroll
-		var(--nav-drop);
+		var(--surface-1);
 	position: relative;
 	display: flex;
 	padding: 16px 16px 16px 40px;

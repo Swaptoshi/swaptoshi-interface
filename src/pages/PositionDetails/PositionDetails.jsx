@@ -194,7 +194,7 @@ export default function PositionDetails() {
 												color: 'var(--color-white)',
 												fontSize: '16px',
 												fontWeight: 200,
-												backgroundColor: 'var(--nav-drop)',
+												backgroundColor: 'var(--surface-1)',
 												padding: '2px 12px',
 												borderRadius: '8px',
 												border: 'var(--card-border-color)',

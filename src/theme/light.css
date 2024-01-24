@@ -21,15 +21,7 @@
 		rgb(234 234 234) 99.85%
 	);
 
-	/* --surface-1: rgb(255 255 255); */
-	--card-bg: rgb(255 255 255);
-	--switch-button-border: rgb(255 255 255);
-	--vote-card-color: rgb(255 255 255);
-	--sticky-nav: rgb(255 255 255);
-	--nav-drop: rgb(255 255 255);
-	--model-bg: rgb(255 255 255);
-	--dropdown-border: rgb(255 255 255);
-	--home-cards: rgb(255 255 255);
+	--surface-1: rgb(255 255 255);
 
 	/* --surface-2: rgb(245 246 252); */
 	--card-inside-color: rgb(245 246 252);

@@ -7,15 +7,7 @@
 	--back-drop: linear-gradient(rgb(8 10 24 / 0%) 0%, rgb(8 10 24) 45%);
 	--cards-background: linear-gradient(179.82deg, rgb(0 0 0 / 0%) 0.16%, rgb(5 0 38) 99.85%);
 
-	/* --surface-1: rgb(13 17 28); */
-	--card-bg: rgb(13 17 28);
-	--switch-button-border: var(--card-bg);
-	--vote-card-color: var(--card-bg);
-	--sticky-nav: var(--card-bg);
-	--nav-drop: var(--card-bg);
-	--model-bg: var(--card-bg);
-	--dropdown-border: var(--card-bg);
-	--home-cards: var(--card-bg);
+	--surface-1: rgb(13 17 28);
 
 	/* --surface-2: rgb(19 26 42); */
 	--card-inside-color: rgb(19 26 42);
