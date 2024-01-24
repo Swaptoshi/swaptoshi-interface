@@ -84,7 +84,7 @@
 }
 
 .bRgygV {
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .lfOlIy {
@@ -370,7 +370,7 @@
 
 .lclAmt:hover {
 	user-select: initial;
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .gAJfJa {
@@ -396,7 +396,7 @@
 .kzEqix {
 	font-weight: 535;
 	font-size: 14px;
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .dJrcRo {
@@ -409,7 +409,7 @@
 }
 
 .kyqFWH {
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-size: 14px;
 	text-align: center;
 	margin-right: 4px;
@@ -418,7 +418,7 @@
 
 .KPclN {
 	text-decoration: none;
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .KPclN:hover {

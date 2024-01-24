@@ -237,7 +237,7 @@
 	border-right-color: var(--border);
 	border-left-color: var(--border);
 	border-radius: 8px 8px 0 0;
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-size: 14px;
 	height: 48px;
 	line-height: 16px;
@@ -275,7 +275,7 @@
 	display: flex;
 	max-width: 1200px;
 	margin: 0 auto 20px;
-	color: var(--text-clr);
+	color: var(--text-3);
 	flex-direction: row;
 }
 
@@ -354,7 +354,7 @@
 
 .fjCwhV {
 	padding-top: 1px;
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .cATJqe {
@@ -445,7 +445,7 @@
 }
 
 .bwVaNf {
-	color: var(--text-clr);
+	color: var(--text-3);
 	min-width: 32px;
 	font-size: 14px;
 }
@@ -547,7 +547,7 @@
 }
 
 .jRVRlR {
-	color: var(--text-clr);
+	color: var(--text-3);
 	text-transform: uppercase;
 }
 

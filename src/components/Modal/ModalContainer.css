@@ -625,7 +625,7 @@ button {
 
 .bdLEKg {
 	background-color: var(--surface-2);
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-size: 16px;
 	font-weight: 500;
 }
@@ -677,7 +677,7 @@ button {
 }
 
 .ojMTq {
-	color: var(--text-clr) !important;
+	color: var(--text-3) !important;
 }
 
 .cVcAns {
@@ -700,7 +700,7 @@ button {
 }
 
 .eRovVv {
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-size: 12px;
 	font-weight: 500;
 }
@@ -797,7 +797,7 @@ button {
 
 .jAJJVP {
 	background-color: var(--surface-2);
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-size: 16px;
 	font-weight: 500;
 }
@@ -859,7 +859,7 @@ button {
 }
 
 .fbSdRZ {
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .bndAvc {

@@ -146,7 +146,7 @@ export default function ImportKeyModal({ setMode }) {
 							}
 						>
 							<i
-								style={{ margin: '0 4px', color: 'var(--text-clr)' }}
+								style={{ margin: '0 4px', color: 'var(--text-3)' }}
 								className="ri-information-line"
 							></i>
 						</Tooltip>

@@ -485,7 +485,7 @@ const AddLiquidity = () => {
 								containerClassName={'full-range-button'}
 								style={{ marginRight: '8px' }}
 								unselectedBackgroundColor={'var(--surface-2)'}
-								unselectedTextColor={'var(--text-clr)'}
+								unselectedTextColor={'var(--text-3)'}
 								selectedTextColor={'var(--text-1)'}
 								selectedBackgroundColor={'var(--surface-1)'}
 								value={lowPrice === ZERO && highPrice === INFINITE}

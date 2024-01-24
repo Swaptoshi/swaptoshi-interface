@@ -39,7 +39,7 @@ export default function ModalContainer({
 									strokeLinecap="round"
 									strokeLinejoin="round"
 									className="NavigationTabs__StyledArrowLeft-sc-b4540a6e-3 jpkEeW"
-									style={{ color: 'var(--text-clr)' }}
+									style={{ color: 'var(--text-3)' }}
 								>
 									<line x1={19} y1={12} x2={5} y2={12} />
 									<polyline points="12 19 5 12 12 5" />

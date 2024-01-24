@@ -7,7 +7,7 @@ export default function PriceRangeLabel({ liquidity, currentTick, tickLower, tic
 				fontSize: '14px',
 				color:
 					Number(liquidity) === 0
-						? 'var(--text-clr)'
+						? 'var(--text-3)'
 						: Number(currentTick) < Number(tickLower) || Number(currentTick) > Number(tickUpper)
 							? 'var(--yellow)'
 							: 'var(--green)',

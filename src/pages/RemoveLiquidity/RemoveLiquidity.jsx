@@ -228,7 +228,7 @@ export default function RemoveLiquidity() {
 				</div>
 
 				<SecondaryCard style={{ padding: '12px' }}>
-					<div style={{ color: 'var(--text-clr)', fontSize: '16px', marginBottom: '8px' }}>
+					<div style={{ color: 'var(--text-3)', fontSize: '16px', marginBottom: '8px' }}>
 						Amount
 					</div>
 					<div className="flex-above-375" style={{ alignItems: 'center' }}>

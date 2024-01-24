@@ -229,7 +229,7 @@ export default function TransactionModal({
 									className={isSending ? 'ri-mail-send-line' : 'ri-mail-line'}
 									style={{
 										fontSize: '60px',
-										color: 'var(--text-clr)',
+										color: 'var(--text-3)',
 									}}
 								></i>
 							</div>

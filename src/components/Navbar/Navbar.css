@@ -173,7 +173,7 @@
 .custom-search-inside:focus,
 .custom-search-inside::before {
 	border-color: var(--border);
-	color: var(--text-clr);
+	color: var(--text-3);
 	border-bottom-width: 1px;
 	border-radius: 12px;
 	background-color: var(--surface-1);
@@ -207,7 +207,7 @@
 	box-sizing: border-box;
 	vertical-align: baseline;
 	-webkit-tap-highlight-color: transparent;
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-size: 20px;
 }
 
@@ -230,7 +230,7 @@
 
 .slash {
 	background-color: var(--border);
-	color: var(--text-clr);
+	color: var(--text-3);
 	padding: 0 8px;
 	width: 20px;
 	height: 20px;
@@ -312,7 +312,7 @@
 	gap: 8px;
 	padding: 4px 16px;
 	align-items: center;
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .popular-title .rotate-arrow {
@@ -428,7 +428,7 @@
 
 .token-name .symbol {
 	line-height: 20px;
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .symbol,
@@ -436,7 +436,7 @@
 .symbol:active,
 .symbol:focus,
 .symbol::before {
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .right-item {
@@ -501,7 +501,7 @@
 .floor-text {
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 /* Right Nav */
@@ -596,7 +596,7 @@
 
 .selected-option .dropdown .nav-dropdown {
 	font-size: 25px;
-	color: var(--text-clr);
+	color: var(--text-3);
 	margin-left: 5px;
 	margin-right: 5px;
 }

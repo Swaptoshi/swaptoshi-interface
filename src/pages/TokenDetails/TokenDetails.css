@@ -48,7 +48,7 @@
 	-webkit-box-align: center;
 	align-items: center;
 	bottom: 0;
-	color: var(--text-clr);
+	color: var(--text-3);
 	display: none;
 	padding: 1rem;
 	position: fixed;
@@ -183,7 +183,7 @@
 
 .MpERT {
 	display: flex;
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-size: 14px;
 	line-height: 20px;
 	-webkit-box-align: center;
@@ -255,14 +255,14 @@
 
 .gRPQtw {
 	text-transform: uppercase;
-	color: var(--text-clr);
+	color: var(--text-3);
 	margin-left: 8px;
 }
 
 .kxJsVh {
 	display: flex;
 	gap: 16px;
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .gOFqpR {
@@ -271,7 +271,7 @@
 }
 
 .hTKuaT {
-	stroke: var(--text-clr);
+	stroke: var(--text-3);
 	height: 24px;
 	width: 24px;
 	text-decoration: none;
@@ -364,7 +364,7 @@
 	line-height: 20px;
 	border: none;
 	cursor: pointer;
-	color: var(--text-clr);
+	color: var(--text-3);
 	transition-duration: 125ms;
 }
 
@@ -405,7 +405,7 @@
 }
 
 .iJvfTG {
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-size: 14px;
 	min-width: 168px;
 	flex: 1 1 0%;
@@ -441,7 +441,7 @@
 }
 
 .iHKewj {
-	color: var(--text-clr);
+	color: var(--text-3);
 	font-weight: 400;
 	font-size: 0.85em;
 	padding-top: 0.5em;
@@ -456,7 +456,7 @@
 }
 
 .bftkTM {
-	color: var(--text-clr);
+	color: var(--text-3);
 }
 
 .gTErEb {

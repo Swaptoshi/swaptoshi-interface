@@ -256,7 +256,7 @@ export default function SwapDetailsInfo({
 											padding: '2px 8px',
 											fontSize: '12px',
 											marginRight: '8px',
-											color: 'var(--text-clr)',
+											color: 'var(--text-3)',
 										}}
 									>
 										Auto
@@ -295,7 +295,7 @@ export default function SwapDetailsInfo({
 											padding: '2px 8px',
 											fontSize: '12px',
 											marginRight: '8px',
-											color: 'var(--text-clr)',
+											color: 'var(--text-3)',
 										}}
 									>
 										Conv

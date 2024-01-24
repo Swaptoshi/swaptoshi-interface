@@ -149,7 +149,7 @@ const Pools = () => {
 													</div>
 												</div>
 												<div style={{ margin: '12px 0px' }} />
-												<div style={{ fontSize: '14px', color: 'var(--text-clr)' }}>{`${
+												<div style={{ fontSize: '14px', color: 'var(--text-3)' }}>{`${
 													pos.tickLower.toString() ===
 													getMinTick(getTickSpacing(pos.fee, dexConfig))
 														? ZERO

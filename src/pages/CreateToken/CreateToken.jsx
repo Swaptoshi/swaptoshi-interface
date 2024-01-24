@@ -211,7 +211,7 @@ const CreateToken = () => {
 											viewBox="0 0 24 24"
 											fill="none"
 											xmlns="http://www.w3.org/2000/svg"
-											style={{ color: 'var(--text-clr)' }}
+											style={{ color: 'var(--text-3)' }}
 										>
 											<path
 												d="M12 17L12 10M12 10L15 13M12 10L9 13"
@@ -238,7 +238,7 @@ const CreateToken = () => {
 										style={{
 											textAlign: 'center',
 											marginTop: '8px',
-											color: 'var(--text-clr)',
+											color: 'var(--text-3)',
 										}}
 									>
 										select or drop token icon here

@@ -81,9 +81,7 @@ export default function SlippageAndDeadlineConfig({
 							}}
 						>
 							{!isSlippageAuto && slippage ? (
-								<div style={{ color: 'var(--text-clr)', fontSize: '14px' }}>
-									{slippage}% slippage
-								</div>
+								<div style={{ color: 'var(--text-3)', fontSize: '14px' }}>{slippage}% slippage</div>
 							) : null}
 							<i className="ri-settings-3-fill gear-icon"></i>
 						</div>
@@ -98,7 +96,7 @@ export default function SlippageAndDeadlineConfig({
 						<div
 							style={{
 								flex: 1,
-								color: 'var(--text-clr)',
+								color: 'var(--text-3)',
 								display: 'flex',
 								fontSize: '14px',
 							}}
@@ -110,7 +108,7 @@ export default function SlippageAndDeadlineConfig({
 								}
 							>
 								<i
-									style={{ margin: '0 2px', color: 'var(--text-clr)' }}
+									style={{ margin: '0 2px', color: 'var(--text-3)' }}
 									className="ri-information-line"
 								></i>
 							</Tooltip>
@@ -221,7 +219,7 @@ export default function SlippageAndDeadlineConfig({
 						<div
 							style={{
 								flex: 1,
-								color: 'var(--text-clr)',
+								color: 'var(--text-3)',
 								display: 'flex',
 								fontSize: '14px',
 							}}
@@ -233,7 +231,7 @@ export default function SlippageAndDeadlineConfig({
 								}
 							>
 								<i
-									style={{ margin: '0 2px', color: 'var(--text-clr)' }}
+									style={{ margin: '0 2px', color: 'var(--text-3)' }}
 									className="ri-information-line"
 								></i>
 							</Tooltip>

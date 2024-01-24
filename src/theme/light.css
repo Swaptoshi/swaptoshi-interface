@@ -29,7 +29,5 @@
 	--primary-accent: color-mix(in srgb, var(--primary) 12%, transparent);
 	--text-1: rgb(0 0 0);
 	--text-2: rgb(13 17 28);
-
-	/* --text-3: rgb(119 128 160); */
-	--text-clr: rgb(119 128 160);
+	--text-3: rgb(119 128 160);
 }
