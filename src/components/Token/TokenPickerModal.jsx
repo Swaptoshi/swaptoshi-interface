@@ -341,6 +341,7 @@ const TokenPicker = ({ mode, show, onClose, selected, blocked, onSelect }) => {
 							</div>
 							<div className="sc-bczRLJ sc-nrd8cx-0 hJYFVB fhPvJeh">
 								<input
+									autoFocus
 									type="text"
 									id="token-search-input"
 									data-testid="token-search-input"
