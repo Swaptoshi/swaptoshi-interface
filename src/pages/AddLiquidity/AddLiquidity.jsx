@@ -172,7 +172,7 @@ const AddLiquidity = () => {
 						selectedService ? selectedService.serviceURLs : undefined,
 					);
 
-					if (poolTick && poolTick.data && poolTick.data.length > 0) {
+					if (poolTick && poolTick.data && poolTick.data.length >= 0) {
 						const newData = [];
 						let activeLiquidity = 0;
 
