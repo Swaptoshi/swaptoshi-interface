@@ -51,7 +51,6 @@
 	display: flex;
 	max-width: 1200px;
 	margin: 0 auto 20px;
-	color: var(--text-clr-2);
 	flex-direction: row;
 }
 

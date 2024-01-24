@@ -21,6 +21,7 @@
 		rgb(234 234 234) 99.85%
 	);
 
+	/* --surface-1: rgb(255 255 255); */
 	--card-bg: rgb(255 255 255);
 	--switch-button-border: rgb(255 255 255);
 	--vote-card-color: rgb(255 255 255);
@@ -30,35 +31,41 @@
 	--dropdown-border: rgb(255 255 255);
 	--home-cards: rgb(255 255 255);
 
+	/* --surface-2: rgb(245 246 252); */
 	--card-inside-color: rgb(245 246 252);
 	--switch-button: rgb(245 246 252);
 	--model-cards: rgb(245 246 252);
 	--vote-card-bgcolor: rgb(245 246 252);
 	--dropdown-bg: rgb(245 246 252);
 
+	/* --surface-3: rgb(232 236 251); */
 	--open-currency-btn-bg: rgb(232 236 251);
 	--privacy-cc: rgb(232 236 251);
 	--hover-background: rgb(232 236 251);
 
+	/* --border: rgb(210 217 238); */
+	--border: rgb(210 217 238);
 	--token-border-color: 1px solid rgb(210 217 238);
 	--token-clrr: rgb(210 217 238);
-	--border: rgb(210 217 238);
 
+	/* --primary-accent: color-mix(in srgb, var(--primary) 12%, transparent); */
 	--connect-btn: rgb(251 17 142 / 12%);
 	--model-btn-color: rgb(251 17 142 / 12%);
 
+	/* --primary: rgb(251 17 142); */
 	--btn-color: rgb(251 17 142);
 	--model-btn-hover: rgb(251 17 142);
 	--model-text: rgb(251 17 142);
 	--model-btn-switch: rgb(251 17 142);
 	--privacy-cards-clr: rgb(251 17 142);
 
+	/* --text-1: rgb(0 0 0); */
 	--open-currency-btn-top: rgb(0 0 0);
 	--color-white: rgb(0 0 0);
 
+	/* --text-2: rgb(13 17 28); */
 	--model-bg-text: rgb(13 17 28);
 
-	--text-clr-2: rgb(60 70 101);
-
+	/* --text-3: rgb(119 128 160); */
 	--text-clr: rgb(119 128 160);
 }
