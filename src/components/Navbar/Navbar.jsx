@@ -234,7 +234,7 @@ const Navbar = () => {
 										height: '40px',
 										width: '40px',
 										left: '22px',
-										background: 'var(--protocol-card)',
+										background: 'var(--primary-gradient)',
 										filter: 'blur(16px)',
 										opacity: 0.35,
 										zIndex: -2,

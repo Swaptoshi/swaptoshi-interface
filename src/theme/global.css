@@ -9,12 +9,12 @@
 		color-mix(in srgb, var(--overlay) 4%, transparent) 4px 6px 12px,
 		color-mix(in srgb, var(--overlay) 6%, transparent) 4px 4px 8px;
 
-	--protocol-gradient-1: rgb(70 115 250);
-	--protocol-gradient-2: rgb(150 70 250);
-	--protocol-card: radial-gradient(
+	--primary: rgb(70 115 250);
+	--secondary: rgb(150 70 250);
+	--primary-gradient: radial-gradient(
 		101.8% 4091.31% at 0% 0%,
-		var(--protocol-gradient-1) 0%,
-		var(--protocol-gradient-2) 100%
+		var(--primary) 0%,
+		var(--secondary) 100%
 	);
 
 	/* Following color also used by lightweight-charts, needs to be in hex format */

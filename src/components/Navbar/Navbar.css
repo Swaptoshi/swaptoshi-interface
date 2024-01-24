@@ -181,12 +181,7 @@
 }
 
 .custom-search-inside::before {
-	background: linear-gradient(
-			91.46deg,
-			var(--protocol-gradient-1),
-			var(--protocol-gradient-2) 100.13%
-		)
-		border-box;
+	background: linear-gradient(91.46deg, var(--primary), var(--secondary) 100.13%) border-box;
 	border: 1px solid transparent;
 	border-radius: inherit;
 	content: '';

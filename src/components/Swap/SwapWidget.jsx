@@ -549,9 +549,9 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 				style={{
 					boxShadow: withGlow
 						? `color-mix(in srgb, ${
-								baseTokenColor ?? 'var(--protocol-gradient-1)'
+								baseTokenColor ?? 'var(--primary)'
 							} 20%, transparent) -30px -30px 100px, color-mix(in srgb, ${
-								quoteTokenColor ?? 'var(--protocol-gradient-2)'
+								quoteTokenColor ?? 'var(--secondary)'
 							} 20%, transparent) 30px 30px 100px`
 						: undefined,
 				}}

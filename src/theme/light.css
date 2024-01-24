@@ -7,7 +7,6 @@
 	--surface-2: rgb(245 246 252);
 	--surface-3: rgb(232 236 251);
 	--border: rgb(210 217 238);
-	--primary: rgb(251 17 142);
 	--primary-accent: color-mix(in srgb, var(--primary) 12%, transparent);
 	--text-1: rgb(0 0 0);
 	--text-2: rgb(13 17 28);

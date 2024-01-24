@@ -103,7 +103,9 @@ const Pools = () => {
 							>
 								<div>
 									<i className="inbox ri-inbox-2-line"></i>
-									<div>Your active liquidity positions will appear here.</div>
+									<div style={{ color: 'var(--text-1)' }}>
+										Your active liquidity positions will appear here.
+									</div>
 									{senderPublicKey ? null : (
 										<WalletActionButton style={{ width: '100%', margin: '16px 0' }}>
 											Loading...
