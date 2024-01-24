@@ -17,6 +17,8 @@ import TokenAvatar from '../../components/Avatar/token';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../../utils/config/env';
 import { intervalToTimeframe } from '../../utils/time/intervalToTimeframe';
+import SecondaryButton from '../../components/Button/SecondaryButton';
+import { getFactoryToken } from '../../service/factory';
 
 const TokenDetails = () => {
 	const { id } = useParams();
@@ -28,6 +30,7 @@ const TokenDetails = () => {
 	const [timeframe, setTimeframe] = useState('24h');
 	const [graph, setGraph] = useState('tick');
 	const [isLoading, setIsLoading] = useState(true);
+	const [isCreatedFromFactory, setIsCreatedFromFactory] = React.useState(false);
 
 	const fetchTickChart = React.useCallback(
 		async (tokens, now) => {
@@ -136,6 +139,14 @@ const TokenDetails = () => {
 					await fetchTickChart(tokens, now);
 				} else if (graph === 'ohlc') {
 					await fetchOhlcChart(tokens, now);
+				}
+
+				const factoryTokens = await getFactoryToken(
+					{ tokenIds: id, limit: 1 },
+					selectedService ? selectedService.serviceURLs : undefined,
+				);
+				if (factoryTokens && factoryTokens.data && factoryTokens.data.length > 0) {
+					setIsCreatedFromFactory(true);
 				}
 			}
 			setIsLoading(false);
@@ -299,7 +310,24 @@ const TokenDetails = () => {
 								</div>
 							</div>
 							<div data-testid="token-details-stats" className="sc-y05v5v-6 dlmcTg">
-								<div className="sc-sx9n2y-0 kivXvb sc-y05v5v-3 cwCXFN css-1b492mu">Stats</div>
+								<div className="sc-sx9n2y-0 kivXvb sc-y05v5v-3 cwCXFN css-1b492mu">
+									<div style={{ display: 'flex', alignItems: 'center' }}>
+										<div>Stats</div>
+										<div style={{ flex: 1 }} />
+										{isCreatedFromFactory && selectedService ? (
+											<SecondaryButton
+												onClick={() =>
+													window.open(
+														`${selectedService.serviceURLs}/api/v3/factory/token/meta?tokenIds=${id}`,
+														'_blank',
+													)
+												}
+											>
+												Open Metadata
+											</SecondaryButton>
+										) : null}
+									</div>
+								</div>
 								<div className="sc-y05v5v-1 djRLxT">
 									<div className="sc-y05v5v-2 fJhHgf">
 										<div data-cy="rank" className="sc-y05v5v-0 iJvfTG">
