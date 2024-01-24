@@ -134,6 +134,7 @@ export default function SwapTokenInput({
 									value={selectedToken}
 									blocked={blockedToken}
 									onSelect={onSelect}
+									theme={'secondary'}
 								/>
 							}
 						</div>

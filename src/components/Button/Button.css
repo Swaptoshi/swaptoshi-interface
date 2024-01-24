@@ -26,13 +26,13 @@
 }
 
 .primary-button-container {
-	background-color: var(--primary-accent);
-	color: var(--primary);
+	background: var(--primary-gradient);
+	color: var(--white);
 }
 
 .secondary-button-container {
-	background-color: var(--surface-3);
-	color: var(--text-1);
+	background-color: var(--primary-accent);
+	color: var(--primary);
 }
 
 .tertiary-button-container {

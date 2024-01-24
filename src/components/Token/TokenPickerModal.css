@@ -31,7 +31,7 @@
 	flex: 1 1 0%;
 	position: relative;
 	border-radius: 20px;
-	border: var(--border);
+	border: 1px solid var(--border);
 }
 
 .eOCLUf {

@@ -23,7 +23,7 @@ a {
 }
 
 a:hover {
-	color: color-mix(in srgb, var(--primary) 60%, white);
+	color: var(--primary);
 }
 
 ul {
