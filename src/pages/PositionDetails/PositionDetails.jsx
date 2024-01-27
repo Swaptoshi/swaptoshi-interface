@@ -234,7 +234,7 @@ export default function PositionDetails() {
 								className="components__HideSmall-sc-88ab9cb5-22 ebuyDK"
 								style={{ height: '100%', marginRight: '12px' }}
 							>
-								<NFTPositionCard image={positionMetadata.image} ipfsURL={position.tokenURI} />
+								<NFTPositionCard image={positionMetadata.image} position={position} />
 							</span>
 							<div
 								className="Column__AutoColumn-sc-ae7ea350-2 cjBIlP"

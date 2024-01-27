@@ -1,8 +1,12 @@
 import React from 'react';
 import PrimaryCard from '../Card/PrimaryCard';
 import { getIPFSUrl } from '../../utils/ipfs/url';
+import useTokenColor from '../../utils/hook/useTokenColor';
 
-export default function NFTPositionCard({ image, ipfsURL }) {
+export default function NFTPositionCard({ image, position }) {
+	const token0Color = useTokenColor({ tokenId: position.token0 });
+	const token1Color = useTokenColor({ tokenId: position.token1 });
+
 	return (
 		<PrimaryCard
 			width="100%"
@@ -23,10 +27,18 @@ export default function NFTPositionCard({ image, ipfsURL }) {
 					height="800"
 					style={{ width: '232px', height: '400px' }}
 				></canvas>
-				<img src={image} hidden="" className="PositionPage__NFTImage-sc-f1e5edbd-12 apbUF" />
+				<img
+					src={image}
+					hidden=""
+					className="PositionPage__NFTImage-sc-f1e5edbd-12 apbUF"
+					style={{
+						borderRadius: '32px',
+						boxShadow: `color-mix(in srgb, ${token0Color} 20%, transparent) -30px -30px 100px, color-mix(in srgb, ${token1Color} 20%, transparent) 30px 30px 100px`,
+					}}
+				/>
 			</div>
 			<a
-				href={getIPFSUrl(ipfsURL)}
+				href={getIPFSUrl(position.tokenURI)}
 				target={'_blank'}
 				rel="noreferrer"
 				style={{ color: 'var(--primary)' }}
