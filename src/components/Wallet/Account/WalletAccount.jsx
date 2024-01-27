@@ -22,7 +22,7 @@ export default function WalletAccount({ show }) {
 
 	const currentWalletBalance = React.useMemo(
 		() =>
-			walletState
+			walletState && walletState.length > 0
 				? walletState
 						.map(t => (t.priceLSK * Number(t.balance)) / 10 ** t.decimal)
 						.reduce((a, b) => a + b, 0) * prices
@@ -111,20 +111,22 @@ export default function WalletAccount({ show }) {
 				>
 					{fiatFormatter.format(currentWalletBalance.toFixed(2))}
 				</div>
-				<div
-					style={{
-						fontSize: 12,
-						fontWeight: 600,
-						marginTop: '4px',
-						display: priceChange === undefined ? 'none' : undefined,
-						color: priceChange >= 0 ? 'var(--green)' : 'var(--red)',
-					}}
-				>
-					{priceChange > 0 ? '+' : ''}
-					{fiatFormatter.format((currentWalletBalance - getLastBalance(chain)).toFixed(2))} (
-					{priceChange > 0 ? '+' : ''}
-					{priceChange}%)
-				</div>
+				{walletState && walletState.length > 0 && (
+					<div
+						style={{
+							fontSize: 12,
+							fontWeight: 600,
+							marginTop: '4px',
+							display: priceChange === undefined ? 'none' : undefined,
+							color: priceChange >= 0 ? 'var(--green)' : 'var(--red)',
+						}}
+					>
+						{priceChange > 0 ? '+' : ''}
+						{fiatFormatter.format((currentWalletBalance - getLastBalance(chain)).toFixed(2))} (
+						{priceChange > 0 ? '+' : ''}
+						{priceChange}%)
+					</div>
+				)}
 			</div>
 			<div style={{ overflow: 'scroll', flex: 0.95 }}>
 				{walletState.length > 0 ? (
