@@ -4,8 +4,11 @@ import { getIPFSUrl } from '../../utils/ipfs/url';
 import useTokenColor from '../../utils/hook/useTokenColor';
 
 export default function NFTPositionCard({ image, position }) {
-	const token0Color = useTokenColor({ tokenId: position.token0 });
-	const token1Color = useTokenColor({ tokenId: position.token1 });
+	const token0 = React.useMemo(() => ({ tokenId: position.token0 }), [position]);
+	const token1 = React.useMemo(() => ({ tokenId: position.token1 }), [position]);
+
+	const token0Color = useTokenColor(token0);
+	const token1Color = useTokenColor(token1);
 
 	return (
 		<PrimaryCard
