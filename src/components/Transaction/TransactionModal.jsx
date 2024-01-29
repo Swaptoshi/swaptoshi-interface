@@ -102,6 +102,7 @@ export default function TransactionModal({
 
 	const dryRun = React.useCallback(
 		async transaction => {
+			const errorMessage = 'Dry run transaction failed, please re-check your parameter';
 			try {
 				setStatus('Dry running transaction...');
 				const run = await dryRunTransaction(
@@ -110,18 +111,19 @@ export default function TransactionModal({
 				);
 				if (run && run.data) {
 					if (run.data.result === -1) {
+						if (env.NODE_ENV === 'development') console.error('Dry Run Result:', run.data);
 						throw new Error(run.data.errorMessage);
 					}
 					if (run.data.result === 0) {
 						if (env.NODE_ENV === 'development') console.error('Dry Run Result:', run.data);
-						throw new Error('Dry run transaction failed, please re-check your parameter');
+						throw new Error(errorMessage);
 					}
 					setReady(true);
 					setIsFecting(false);
 					setStatus('Valid transaction!');
 				}
 			} catch (err) {
-				setError(err.message);
+				setError(err.message ? err.message : errorMessage);
 				setIsFecting(false);
 			}
 		},

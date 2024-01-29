@@ -19,6 +19,9 @@ export default function SwapTokenInput({
 	onTokenSelect,
 	onMaxClick,
 	showMax,
+	onMinusFeeClick,
+	showMinusFee,
+	fee,
 }) {
 	const { balances, senderPublicKey } = useWalletConnect();
 	const { chain, selectedService } = useChain();
@@ -63,6 +66,12 @@ export default function SwapTokenInput({
 		},
 		[onInputChange],
 	);
+
+	const handleMinusFee = React.useCallback(() => {
+		const value = (Number(selectedBalance) - Number(fee) / 10 ** selectedToken.decimal).toString();
+		onMinusFeeClick(value);
+		handleInputChange({ target: { value } });
+	}, [fee, handleInputChange, onMinusFeeClick, selectedBalance, selectedToken]);
 
 	const handleMaxClick = React.useCallback(() => {
 		onMaxClick(selectedBalance);
@@ -187,6 +196,20 @@ export default function SwapTokenInput({
 										onClick={handleMaxClick}
 									>
 										MAX
+									</button>
+								)}
+								{selectedBalance === inputValue && selectedBalance > 0 && showMinusFee && (
+									<button
+										style={{
+											marginLeft: '8px',
+											fontWeight: 600,
+											border: 0,
+											backgroundColor: 'transparent',
+											color: 'var(--primary)',
+										}}
+										onClick={handleMinusFee}
+									>
+										[-] FEE
 									</button>
 								)}
 							</div>

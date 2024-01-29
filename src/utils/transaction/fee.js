@@ -50,7 +50,7 @@ export const isFeeConversion = async (
 				const pool = await getDEXPool({ search: poolAddress }, service);
 				if (pool && pool.data && pool.data.length > 0) {
 					const amountOut = (feeDifference * BigInt(-1)).toString();
-					const quote = await getQuote({ base: tokenIn, quote: tokenOut, amountOut }, service);
+					const quote = await getQuote({ base: tokenOut, quote: tokenIn, amountOut }, service);
 
 					if (quote && quote.data) {
 						let isEligible = true;

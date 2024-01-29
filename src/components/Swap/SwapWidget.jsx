@@ -25,6 +25,7 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 	const [currentPrice, setCurrentPrice] = useState();
 	const [feeConversion, setFeeConversion] = useState();
 	const [feeConversionLoading, setFeeConversionLoading] = useState(false);
+	const [showMinusFee, setShowMinusFee] = useState(false);
 
 	const [slippage, setSlippage] = useState('');
 	const [deadline, setDeadline] = useState('');
@@ -45,6 +46,14 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 
 	const [networkFee, setNetworkFee] = useState();
 	const [transaction, setTransaction] = useState();
+
+	const fee = React.useMemo(() => {
+		if (feeConversion && feeConversion.status) {
+			return feeConversion.payload.amountIn;
+		} else {
+			return networkFee;
+		}
+	}, [feeConversion, networkFee]);
 
 	const baseBalance = React.useMemo(() => {
 		if (baseToken && balances && balances.length > 0) {
@@ -130,7 +139,7 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 					path,
 					recipient: cryptography.address.getAddressFromPublicKey(senderBuffer).toString('hex'),
 					deadline: (Math.floor(Date.now() / 1000) + deadlineFactor * 60).toString(),
-					amountIn: (Number(baseValue) * 10 ** baseToken.decimal).toString(),
+					amountIn: Math.floor(Number(baseValue) * 10 ** baseToken.decimal).toString(),
 					amountOutMinimum: new BigNumber(amount)
 						.minus(new BigNumber(amount).multipliedBy(slippageFactor).dividedBy(100))
 						.toFixed(0)
@@ -154,7 +163,7 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 					path,
 					recipient: cryptography.address.getAddressFromPublicKey(senderBuffer).toString('hex'),
 					deadline: (Math.floor(Date.now() / 1000) + deadlineFactor * 60).toString(),
-					amountOut: (Number(quoteValue) * 10 ** quoteToken.decimal).toString(),
+					amountOut: Math.floor(Number(quoteValue) * 10 ** quoteToken.decimal).toString(),
 					amountInMaximum: new BigNumber(amount)
 						.plus(new BigNumber(amount).multipliedBy(slippageFactor).dividedBy(100))
 						.toFixed(0)
@@ -184,6 +193,7 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 
 	React.useEffect(() => {
 		if (disabled) return;
+		setShowMinusFee(false);
 
 		if (
 			error &&
@@ -215,6 +225,7 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 				baseBalance < Number(baseValue) + Number(networkFee) / 10 ** env.WC_TOKEN_DECIMAL
 			) {
 				setError(`Insufficient ${baseToken.symbol.toUpperCase()} for fee`);
+				setShowMinusFee(true);
 				return;
 			}
 		} else {
@@ -226,6 +237,7 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 
 		if (feeConversion && feeConversion.status) {
 			if (!feeConversion.payload.isEligible) {
+				setShowMinusFee(true);
 				setError(`Insufficient ${feeConversion.payload.tokenIn} for fee`);
 				return;
 			}
@@ -235,6 +247,7 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 				networkFee &&
 				feeBalance < Number(networkFee) / 10 ** env.WC_TOKEN_DECIMAL
 			) {
+				setShowMinusFee(true);
 				setError(`Insufficient ${env.WC_TOKEN_SYMBOL} for fee`);
 				return;
 			}
@@ -444,6 +457,10 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 		setBaseValue(max);
 	}, []);
 
+	const handleMinusFee = React.useCallback(amount => {
+		setBaseValue(amount);
+	}, []);
+
 	const handleQuoteMax = React.useCallback(max => {
 		setQuoteValue(max);
 	}, []);
@@ -583,6 +600,9 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 						onTokenSelect={onSelectBaseToken}
 						onMaxClick={handleBaseMax}
 						showMax={true}
+						showMinusFee={showMinusFee}
+						onMinusFeeClick={handleMinusFee}
+						fee={fee}
 					/>
 
 					<div className="switch-button" onClick={switchHandler}>
