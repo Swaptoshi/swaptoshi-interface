@@ -64,6 +64,8 @@ export default function WalletAccount({ show }) {
 
 			const accountBalances = [];
 			for (let i = 0; i < balances.length; i++) {
+				if (balances[i].balance === '0') continue;
+
 				const price = await getPrice({
 					baseTokenId: balances[i].tokenId,
 					quoteTokenId: lskTokenId,
