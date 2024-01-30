@@ -47,6 +47,7 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 					height: '100%',
 					width: '100%',
 					display: error ? 'none' : loaded ? undefined : 'none',
+					objectFit: 'cover',
 				}}
 				onLoad={onLoad}
 				onError={onError}
