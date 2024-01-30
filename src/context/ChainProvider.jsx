@@ -56,7 +56,7 @@ export default function ChainProvider({ children }) {
 			fetchBlock.current = true;
 
 			const fetchedService = [];
-			const swaptoshiMetadata = await getBlockchainApps();
+			const swaptoshiMetadata = await getBlockchainApps({ search: 'Swaptoshi' });
 
 			if (swaptoshiMetadata && swaptoshiMetadata.data) {
 				for (const metadata of swaptoshiMetadata.data) {
@@ -75,20 +75,30 @@ export default function ChainProvider({ children }) {
 				}
 			}
 
+			fetchedService.sort((a, b) => a.chainID.substring(0, 2) - b.chainID.substring(0, 2));
+
 			setAvailableService(fetchedService);
 
-			let selectedIndex = -1;
-			for (let i = 0; i < fetchedService.length; i++) {
-				if (fetchedService[i].chainID.substring(0, 2) === env.DEFAULT_CHAIN) {
-					setSelectedService(fetchedService[i]);
-					selectedIndex = i;
-					break;
-				}
+			if (fetchedService.length > 0) {
+				setSelectedService(fetchedService[0]);
+				await fetchDexConfig(fetchedService[0].serviceURLs);
+				await fetchFeeConfig(fetchedService[0].serviceURLs);
 			}
 
-			if (selectedIndex >= 0) {
-				await fetchDexConfig(fetchedService[selectedIndex].serviceURLs);
-				await fetchFeeConfig(fetchedService[selectedIndex].serviceURLs);
+			if (env.DEFAULT_CHAIN) {
+				let selectedIndex = -1;
+				for (let i = 0; i < fetchedService.length; i++) {
+					if (fetchedService[i].chainID.substring(0, 2) === env.DEFAULT_CHAIN) {
+						setSelectedService(fetchedService[i]);
+						selectedIndex = i;
+						break;
+					}
+				}
+
+				if (selectedIndex >= 0) {
+					await fetchDexConfig(fetchedService[selectedIndex].serviceURLs);
+					await fetchFeeConfig(fetchedService[selectedIndex].serviceURLs);
+				}
 			}
 
 			fetchBlock.current = false;

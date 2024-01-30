@@ -1,6 +1,10 @@
 import { serviceGET } from './node';
 
-export const getBlockchainApps = async () => {
-  const apps = await serviceGET('/api/v3/blockchain/apps/meta?search=Swaptoshi');
-  return apps;
+export const getBlockchainApps = async (params, serviceUrl) => {
+	const searchParams = new URLSearchParams(params);
+	const apps = await serviceGET(
+		`/api/v3/blockchain/apps/meta?${searchParams.toString()}`,
+		serviceUrl,
+	);
+	return apps;
 };
