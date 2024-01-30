@@ -32,7 +32,7 @@ export const LISK_SERVICE_URL = process.env.REACT_APP_LISK_SERVICE_URL
 
 export const DEFAULT_CHAIN = process.env.REACT_APP_DEFAULT_CHAIN
 	? process.env.REACT_APP_DEFAULT_CHAIN
-	: '00';
+	: '04';
 
 export const DEFAULT_TOKEN_DECIMAL = process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL
 	? process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL
