@@ -79,26 +79,26 @@ export default function ChainProvider({ children }) {
 
 			setAvailableService(fetchedService);
 
+			let selectedIndex = -1;
+
 			if (fetchedService.length > 0) {
 				setSelectedService(fetchedService[0]);
-				await fetchDexConfig(fetchedService[0].serviceURLs);
-				await fetchFeeConfig(fetchedService[0].serviceURLs);
+				selectedIndex = 0;
 			}
 
-			if (env.DEFAULT_CHAIN) {
-				let selectedIndex = -1;
-				for (let i = 0; i < fetchedService.length; i++) {
+			if (env.DEFAULT_CHAIN && fetchedService[0].chainID.substring(0, 2) !== env.DEFAULT_CHAIN) {
+				for (let i = 1; i < fetchedService.length; i++) {
 					if (fetchedService[i].chainID.substring(0, 2) === env.DEFAULT_CHAIN) {
 						setSelectedService(fetchedService[i]);
 						selectedIndex = i;
 						break;
 					}
 				}
+			}
 
-				if (selectedIndex >= 0) {
-					await fetchDexConfig(fetchedService[selectedIndex].serviceURLs);
-					await fetchFeeConfig(fetchedService[selectedIndex].serviceURLs);
-				}
+			if (selectedIndex >= 0) {
+				await fetchDexConfig(fetchedService[selectedIndex].serviceURLs);
+				await fetchFeeConfig(fetchedService[selectedIndex].serviceURLs);
 			}
 
 			fetchBlock.current = false;
