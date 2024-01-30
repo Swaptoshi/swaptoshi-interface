@@ -50,8 +50,7 @@
 		"lint:fix": "eslint --fix --ext .js,.ts .",
 		"lint:css": "stylelint .",
 		"lint:css:fix": "stylelint --fix .",
-		"format": "prettier --write '**/*'",
-		"postbuild": "purgecss --css build/static/css/*.css --content build/index.html build/static/js/*.js --output build/static/css"
+		"format": "prettier --write '**/*'"
 	},
 	"eslintConfig": {
 		"extends": [
