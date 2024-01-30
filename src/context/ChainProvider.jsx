@@ -82,6 +82,7 @@ export default function ChainProvider({ children }) {
 			let selectedIndex = -1;
 
 			if (fetchedService.length > 0) {
+				setChain(fetchedService[0].chainID.substring(0, 2));
 				setSelectedService(fetchedService[0]);
 				selectedIndex = 0;
 			}
@@ -89,6 +90,7 @@ export default function ChainProvider({ children }) {
 			if (env.DEFAULT_CHAIN && fetchedService[0].chainID.substring(0, 2) !== env.DEFAULT_CHAIN) {
 				for (let i = 1; i < fetchedService.length; i++) {
 					if (fetchedService[i].chainID.substring(0, 2) === env.DEFAULT_CHAIN) {
+						setChain(fetchedService[i].chainID.substring(0, 2));
 						setSelectedService(fetchedService[i]);
 						selectedIndex = i;
 						break;
