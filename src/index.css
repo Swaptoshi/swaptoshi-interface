@@ -219,3 +219,12 @@ input[type='range']:focus::-ms-fill-lower {
 input[type='range']:focus::-ms-fill-upper {
 	background: var(--primary-accent);
 }
+
+.Toastify__toast {
+	background-color: var(--surface-2);
+	color: var(--text-1);
+}
+
+.Toastify__close-button {
+	color: var(--text-1) !important;
+}
