@@ -107,16 +107,23 @@ export const transformParam = (module, command, params) => {
 			}
 		case 'tokenFactory':
 			switch (command) {
-				case 'create':
+				case 'tokenCreate':
 					return {
-						amount: BigInt(params.amount),
+						distribution: params.distribution.map(distribution => ({
+							recipientAddress: Buffer.from(distribution.recipientAddress, 'hex'),
+							amount: BigInt(distribution.amount),
+							vesting: distribution.vesting.map(vesting => ({
+								height: vesting.height,
+								amount: BigInt(vesting.amount),
+							})),
+						})),
 					};
-				case 'burn':
+				case 'tokenBurn':
 					return {
 						tokenId: Buffer.from(params.tokenId, 'hex'),
 						amount: BigInt(params.amount),
 					};
-				case 'mint':
+				case 'tokenMint':
 					return {
 						tokenId: Buffer.from(params.tokenId, 'hex'),
 						amount: BigInt(params.amount),

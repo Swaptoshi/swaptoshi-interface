@@ -1,12 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as cryptography from '@liskhq/lisk-cryptography';
 import TextInput from '../../components/Forms/TextInput';
 import SecondaryButton from '../../components/Button/SecondaryButton';
 import { FileUploader } from 'react-drag-drop-files';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import { codec } from '@liskhq/lisk-codec';
-import { factoryMetadataSchema } from '../../utils/schema/token_factory_create_metadata.js.js';
+import { factoryMetadataSchema } from '../../utils/schema/token_factory_create_metadata';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { useChain } from '../../context/ChainProvider';
 import { getFactoryIsAvailable, postFactoryCreate } from '../../service/factory';
@@ -99,9 +100,19 @@ const CreateToken = () => {
 			e.preventDefault();
 			const transaction = {
 				module: 'tokenFactory',
-				command: 'create',
+				command: 'tokenCreate',
 				fee: '1000000',
-				params: { amount: (Number(amount) * 10 ** Number(decimal)).toString() },
+				params: {
+					distribution: [
+						{
+							recipientAddress: cryptography.address
+								.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
+								.toString('hex'),
+							amount: (Number(amount) * 10 ** Number(decimal)).toString(),
+							vesting: [],
+						},
+					],
+				},
 				nonce: auth.nonce,
 				senderPublicKey: senderPublicKey,
 				signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),

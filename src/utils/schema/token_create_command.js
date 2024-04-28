@@ -1,14 +1,10 @@
-export const tokenMintCommandSchema = {
-	$id: '/tokenFactory/command/tokenMint',
+export const tokenCreateCommandSchema = {
+	$id: '/tokenFactory/command/tokenCreate',
 	type: 'object',
 	properties: {
-		tokenId: {
-			dataType: 'bytes',
-			fieldNumber: 1,
-		},
 		distribution: {
 			type: 'array',
-			fieldNumber: 2,
+			fieldNumber: 1,
 			items: {
 				type: 'object',
 				properties: {

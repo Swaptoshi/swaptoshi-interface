@@ -1,5 +1,5 @@
-export const burnTokenCommandSchema = {
-	$id: '/tokenFactory/command/burn',
+export const tokenBurnCommandSchema = {
+	$id: '/tokenFactory/command/tokenBurn',
 	type: 'object',
 	properties: {
 		tokenId: {
