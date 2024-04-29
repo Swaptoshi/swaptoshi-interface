@@ -126,7 +126,14 @@ export const transformParam = (module, command, params) => {
 				case 'tokenMint':
 					return {
 						tokenId: Buffer.from(params.tokenId, 'hex'),
-						amount: BigInt(params.amount),
+						distribution: params.distribution.map(distribution => ({
+							recipientAddress: Buffer.from(distribution.recipientAddress, 'hex'),
+							amount: BigInt(distribution.amount),
+							vesting: distribution.vesting.map(vesting => ({
+								height: vesting.height,
+								amount: BigInt(vesting.amount),
+							})),
+						})),
 					};
 				default:
 					throw new Error(`unknown command: ${command}`);
