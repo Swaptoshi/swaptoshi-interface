@@ -1,6 +1,6 @@
 {
 	"name": "uniswap-interface",
-	"homepage": "https://app.swaptoshi.io",
+	"homepage": "https://app.swaptoshi.com",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {

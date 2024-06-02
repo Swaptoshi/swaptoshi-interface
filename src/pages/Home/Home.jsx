@@ -158,7 +158,7 @@ const Home = () => {
 								disabled
 								id="learnMoreBtn"
 								className="learn-more-btn lmb"
-								href="https://swaptoshi.io/"
+								href="https://swaptoshi.com/"
 							>
 								Learn more
 							</a>

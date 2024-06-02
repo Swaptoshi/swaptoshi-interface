@@ -16,7 +16,7 @@ export const WC_TOKEN_DECIMAL = process.env.REACT_APP_WC_TOKEN_DECIMAL
 
 export const WC_PROJECT_URL = process.env.REACT_APP_WC_PROJECT_URL
 	? process.env.REACT_APP_WC_PROJECT_URL
-	: 'https://app.swaptoshi.io';
+	: 'https://app.swaptoshi.com';
 
 export const WC_PROJECT_ICON = process.env.REACT_APP_WC_PROJECT_ICON
 	? process.env.REACT_APP_WC_PROJECT_ICON
