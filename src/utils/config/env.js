@@ -8,7 +8,7 @@ export const WC_PROJECT_NAME = process.env.REACT_APP_WC_PROJECT_NAME
 
 export const WC_TOKEN_SYMBOL = process.env.REACT_APP_WC_TOKEN_SYMBOL
 	? process.env.REACT_APP_WC_TOKEN_SYMBOL
-	: 'SWT';
+	: 'SWX';
 
 export const WC_TOKEN_DECIMAL = process.env.REACT_APP_WC_TOKEN_DECIMAL
 	? process.env.REACT_APP_WC_TOKEN_DECIMAL

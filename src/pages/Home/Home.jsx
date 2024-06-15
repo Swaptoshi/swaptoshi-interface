@@ -148,7 +148,7 @@ const Home = () => {
 							<span className="protocol-title">Powered by the Swaptoshi Protocol</span>
 							<p className="protocol-text">
 								{
-									"SWT token, with a 21 million supply, powers Swaptoshi Protocol's fees and governance."
+									"SWX token, with a 21 million supply, powers Swaptoshi Protocol's fees and governance."
 								}
 							</p>
 						</div>
