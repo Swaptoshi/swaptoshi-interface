@@ -1,7 +1,7 @@
 import React from 'react';
 import Tooltip from '../../components/Tooltip/Tooltip';
 import Loader from '../../components/Loader/Loader';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../context/KlayrPriceProvider';
 import { useDebouncedCallback } from 'use-debounce';
 import { tryToast } from '../../utils/toast/tryToast';
 import { getPrice } from '../../service/dex';
@@ -23,7 +23,7 @@ export default function SwapDetailsInfo({
 	networkFee,
 	feeConversion,
 }) {
-	const { prices, fiatFormatter, cryptoFormatter } = useLiskPrice();
+	const { prices, fiatFormatter, cryptoFormatter } = useKlayrPrice();
 	const { selectedService, chain, feeConfig, dexConfig } = useChain();
 	const { senderPublicKey, balances } = useWalletConnect();
 	const [collapsed, setCollapsed] = React.useState(false);

@@ -1,7 +1,7 @@
 import React from 'react';
 import TradableTokenPicker from '../../components/Token/TradableTokenPicker';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../context/KlayrPriceProvider';
 import { useDebouncedCallback } from 'use-debounce';
 import { getPrice } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
@@ -25,7 +25,7 @@ export default function SwapTokenInput({
 }) {
 	const { balances, senderPublicKey } = useWalletConnect();
 	const { chain, selectedService } = useChain();
-	const { prices, fiatFormatter } = useLiskPrice();
+	const { prices, fiatFormatter } = useKlayrPrice();
 	const [selectedBalance, setSelectedBalance] = React.useState();
 	const [selectedFiatValue, setSelectedFiatValue] = React.useState();
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);

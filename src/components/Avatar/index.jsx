@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import { Gradients, gradientSchemes } from './gradients';
 import styles from './walletVisual.css';
 

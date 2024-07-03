@@ -1,13 +1,12 @@
 {
-	"name": "uniswap-interface",
+	"name": "swaptoshi-interface",
 	"homepage": "https://app.swaptoshi.com",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
 		"@chainsafe/blst": "^0.2.9",
-		"@liskhq/lisk-codec": "^0.5.0",
-		"@liskhq/lisk-cryptography": "^4.1.0",
-		"@liskhq/lisk-passphrase": "^4.1.0",
+		"@klayr/codec": "^0.4.2",
+		"@klayr/passphrase": "^4.0.2",
 		"@walletconnect/sign-client": "^2.10.6",
 		"axios": "^1.5.0",
 		"bignumber.js": "^9.1.2",

@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { Buffer } from 'buffer';
 import { SignClient } from '@walletconnect/sign-client';
 import { useChain } from './ChainProvider';
-import { codec } from '@liskhq/lisk-codec';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import { codec } from '@klayr/codec';
+import * as cryptography from '@klayr/cryptography';
 import { transactionSchema } from '../utils/schema/transactionSchema';
 import { getTokenBalances } from '../service/token';
 import { tryToast } from '../utils/toast/tryToast';
@@ -129,12 +129,12 @@ export function WalletConnectProvider({ children }) {
 					.getAll()
 					.find(
 						t =>
-							Object.keys(t.namespaces).includes('lisk') &&
-							t.namespaces.lisk.chains.includes(`lisk:${chain}${env.CHAIN_SUFFIX}`),
+							Object.keys(t.namespaces).includes('klayr') &&
+							t.namespaces.klayr.chains.includes(`klayr:${chain}${env.CHAIN_SUFFIX}`),
 					);
 				if (session) {
 					setSessions(session);
-					setSenderPublicKey(session.namespaces.lisk.accounts[0].slice(14));
+					setSenderPublicKey(session.namespaces.klayr.accounts[0].slice(14));
 				}
 
 				setSignClient(client);
@@ -154,8 +154,8 @@ export function WalletConnectProvider({ children }) {
 
 			try {
 				const requiredNamespaces = {
-					lisk: {
-						chains: [`lisk:${chain}${env.CHAIN_SUFFIX}`],
+					klayr: {
+						chains: [`klayr:${chain}${env.CHAIN_SUFFIX}`],
 						methods: ['sign_transaction', 'sign_message'],
 						events: [
 							'session_proposal',
@@ -177,7 +177,7 @@ export function WalletConnectProvider({ children }) {
 				if (uri) {
 					const sessionNamespace = await approval();
 					setSessions(sessionNamespace);
-					setSenderPublicKey(sessionNamespace.namespaces.lisk.accounts[0].slice(14));
+					setSenderPublicKey(sessionNamespace.namespaces.klayr.accounts[0].slice(14));
 					callback && callback.onSuccess && callback.onSuccess();
 				}
 			} catch (e) {
@@ -211,7 +211,7 @@ export function WalletConnectProvider({ children }) {
 		if (senderPublicKey) {
 			const authResponse = await getAccountAuth(
 				{
-					address: cryptography.address.getLisk32AddressFromPublicKey(
+					address: cryptography.address.getKlayr32AddressFromPublicKey(
 						Buffer.from(senderPublicKey, 'hex'),
 					),
 				},
@@ -287,7 +287,7 @@ export function WalletConnectProvider({ children }) {
 								recipientChainID: `${chain}${env.CHAIN_SUFFIX}`,
 							},
 						},
-						chainId: `lisk:${chain}${env.CHAIN_SUFFIX}`,
+						chainId: `klayr:${chain}${env.CHAIN_SUFFIX}`,
 					});
 					if (!result) throw new Error('sign failed');
 					result = JSON.parse(result);
@@ -323,7 +323,7 @@ export function WalletConnectProvider({ children }) {
 
 		// eslint-disable-next-line no-constant-condition
 		while (true) {
-			const address = cryptography.address.getLisk32AddressFromPublicKey(
+			const address = cryptography.address.getKlayr32AddressFromPublicKey(
 				Buffer.from(senderPublicKey, 'hex'),
 			);
 			const tokens = await getTokenBalances(
@@ -444,12 +444,12 @@ export function WalletConnectProvider({ children }) {
 				.getAll()
 				.find(
 					t =>
-						Object.keys(t.namespaces).includes('lisk') &&
-						t.namespaces.lisk.chains.includes(`lisk:${chain}${env.CHAIN_SUFFIX}`),
+						Object.keys(t.namespaces).includes('klayr') &&
+						t.namespaces.klayr.chains.includes(`klayr:${chain}${env.CHAIN_SUFFIX}`),
 				);
 			if (session) {
 				setSessions(session);
-				setSenderPublicKey(session.namespaces.lisk.accounts[0].slice(14));
+				setSenderPublicKey(session.namespaces.klayr.accounts[0].slice(14));
 			} else {
 				setSessions(undefined);
 				setSenderPublicKey(undefined);

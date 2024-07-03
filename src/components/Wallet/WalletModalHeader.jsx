@@ -1,6 +1,6 @@
 import React from 'react';
 import { Buffer } from 'buffer';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import Avatar from '../Avatar';
@@ -34,7 +34,7 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, mode, s
 		<div width="100%" className="sc-bczRLJ sc-nrd8cx-0 sc-nrd8cx-3 laNPNA fsgYBU">
 			{senderPublicKey ? (
 				<CopyToClipboard
-					text={cryptography.address.getLisk32AddressFromPublicKey(
+					text={cryptography.address.getKlayr32AddressFromPublicKey(
 						Buffer.from(senderPublicKey, 'hex'),
 					)}
 					onCopy={handleAddressCopied}
@@ -44,7 +44,7 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, mode, s
 					<div style={{ display: 'flex', cursor: 'pointer' }}>
 						<Avatar
 							size={30}
-							address={cryptography.address.getLisk32AddressFromPublicKey(
+							address={cryptography.address.getKlayr32AddressFromPublicKey(
 								Buffer.from(senderPublicKey, 'hex'),
 							)}
 						/>
@@ -58,7 +58,7 @@ export default function WalletModalHeader({ onConfigClick, closeHandler, mode, s
 							}}
 						>
 							{addressCompact(
-								cryptography.address.getLisk32AddressFromPublicKey(
+								cryptography.address.getKlayr32AddressFromPublicKey(
 									Buffer.from(senderPublicKey, 'hex'),
 								),
 							)}

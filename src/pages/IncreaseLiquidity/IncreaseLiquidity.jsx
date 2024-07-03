@@ -1,5 +1,5 @@
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import { decodeNFTId } from '../../utils/address/poolAddress';
@@ -211,7 +211,7 @@ const IncreaseLiquidity = () => {
 			fee: '1000000',
 			params: {
 				poolAddress: cryptography.address
-					.getAddressFromLisk32Address(position.poolAddress)
+					.getAddressFromKlayr32Address(position.poolAddress)
 					.toString('hex'),
 				tokenId: index.toString(),
 				amount0Desired: amount0Desired.toString(),

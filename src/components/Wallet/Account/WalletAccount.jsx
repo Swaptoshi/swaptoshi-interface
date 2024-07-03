@@ -3,10 +3,10 @@ import BalanceCard from './BalanceCard';
 import { tryToast } from '../../../utils/toast/tryToast';
 import { useWalletConnect } from '../../../context/WalletConnectProvider';
 import { getPrice } from '../../../service/dex';
-import { getLSKTokenId } from '../../../utils/token/getLSKTokenId';
+import { getKLYTokenId } from '../../../utils/token/getKLYTokenId';
 import { useChain } from '../../../context/ChainProvider';
 import Loader from '../../Loader';
-import { useLiskPrice } from '../../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../../context/KlayrPriceProvider';
 import SecondaryCard from '../../Card/SecondaryCard';
 import { useLastBalance } from '../../../context/LastBalanceProvider';
 import { useDebouncedCallback } from 'use-debounce';
@@ -15,7 +15,7 @@ import * as env from '../../../utils/config/env';
 export default function WalletAccount({ show }) {
 	const { senderPublicKey, balances, updateAccount } = useWalletConnect();
 	const { chain, selectedService } = useChain();
-	const { prices, fiatFormatter } = useLiskPrice();
+	const { prices, fiatFormatter } = useKlayrPrice();
 	const { getLastBalance, updateLastBalance } = useLastBalance();
 
 	const [walletState, setWalletState] = React.useState();
@@ -24,7 +24,7 @@ export default function WalletAccount({ show }) {
 		() =>
 			walletState && walletState.length > 0
 				? walletState
-						.map(t => (t.priceLSK * Number(t.balance)) / 10 ** t.decimal)
+						.map(t => (t.priceKLY * Number(t.balance)) / 10 ** t.decimal)
 						.reduce((a, b) => a + b, 0) * prices
 				: 0,
 		[prices, walletState],
@@ -60,7 +60,7 @@ export default function WalletAccount({ show }) {
 			}
 
 			requestRef.current = true;
-			const lskTokenId = await getLSKTokenId(chain);
+			const lskTokenId = await getKLYTokenId(chain);
 
 			const accountBalances = [];
 			for (let i = 0; i < balances.length; i++) {
@@ -73,7 +73,7 @@ export default function WalletAccount({ show }) {
 
 				const accountBalance = {
 					...balances[i],
-					priceLSK: price.data.price,
+					priceKLY: price.data.price,
 				};
 
 				accountBalances.push(accountBalance);

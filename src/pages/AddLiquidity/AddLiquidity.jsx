@@ -1,6 +1,6 @@
 import './AddLiquidity.css';
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import TradableTokenPicker from '../../components/Token/TradableTokenPicker';
 import { useChain } from '../../context/ChainProvider';
@@ -148,7 +148,7 @@ const AddLiquidity = () => {
 	const fetchPoolTickData = useDebouncedCallback(async () => {
 		const checkPool = async () => {
 			const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
-			const poolAddress = cryptography.address.getLisk32AddressFromAddress(
+			const poolAddress = cryptography.address.getKlayr32AddressFromAddress(
 				computePoolAddress(poolKey),
 			);
 			const pools = await getDEXPool(

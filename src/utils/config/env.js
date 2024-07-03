@@ -28,7 +28,7 @@ export const CHAIN_SUFFIX = process.env.REACT_APP_CHAIN_SUFFIX
 
 export const LISK_SERVICE_URL = process.env.REACT_APP_LISK_SERVICE_URL
 	? process.env.REACT_APP_LISK_SERVICE_URL
-	: 'https://service.lisk.com';
+	: 'https://service.klayr.xyz';
 
 export const DEFAULT_CHAIN = process.env.REACT_APP_DEFAULT_CHAIN
 	? process.env.REACT_APP_DEFAULT_CHAIN
@@ -66,8 +66,8 @@ export const EFFECT_DEBOUNCE_WAIT = process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT
 	? process.env.REACT_APP_EFFECT_DEBOUNCE_WAIT
 	: '500';
 
-export const LSKUSD_UPDATE_INTERVAL_MS = process.env.REACT_APP_LSKUSD_UPDATE_INTERVAL_MS
-	? process.env.REACT_APP_LSKUSD_UPDATE_INTERVAL_MS
+export const KLYUSD_UPDATE_INTERVAL_MS = process.env.REACT_APP_KLYUSD_UPDATE_INTERVAL_MS
+	? process.env.REACT_APP_KLYUSD_UPDATE_INTERVAL_MS
 	: '60000';
 
 export const NODE_ENV = process.env.NODE_ENV;

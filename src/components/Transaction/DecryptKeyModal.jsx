@@ -1,5 +1,5 @@
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import PrimaryButton from '../Button/PrimaryButton';
 import Avatar from '../Avatar';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
@@ -124,7 +124,7 @@ export default function DecryptKeyModal({
 							</div>
 
 							<Avatar
-								address={cryptography.address.getLisk32AddressFromPublicKey(
+								address={cryptography.address.getKlayr32AddressFromPublicKey(
 									Buffer.from(senderPublicKey, 'hex'),
 								)}
 								size={60}

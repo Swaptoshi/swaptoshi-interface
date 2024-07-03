@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import './Pools.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import PrimaryButton from '../../components/Button/PrimaryButton';
@@ -31,7 +31,7 @@ const Pools = () => {
 			if (senderPublicKey) {
 				const ownedPosition = await getDEXPosition(
 					{
-						search: cryptography.address.getLisk32AddressFromPublicKey(
+						search: cryptography.address.getKlayr32AddressFromPublicKey(
 							Buffer.from(senderPublicKey, 'hex'),
 						),
 						limit: 100,

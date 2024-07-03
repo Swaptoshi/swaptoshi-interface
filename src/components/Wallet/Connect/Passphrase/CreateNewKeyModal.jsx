@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
-import * as liskPassphrase from '@liskhq/lisk-passphrase';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as klayrPassphrase from '@klayr/passphrase';
+import * as cryptography from '@klayr/cryptography';
 import Avatar from '../../../Avatar';
 import PrimaryButton from '../../../Button/PrimaryButton';
 import RadioButton from '../../../Radio/RadioButton';
@@ -30,7 +30,7 @@ export default function CreateNewKeyModal({ setMode }) {
 
 	React.useEffect(() => {
 		const run = async () => {
-			const generatedPassphrase = liskPassphrase.Mnemonic.generateMnemonic();
+			const generatedPassphrase = klayrPassphrase.Mnemonic.generateMnemonic();
 			setPassphrase(generatedPassphrase);
 			setPrivateKey(
 				(
@@ -61,7 +61,7 @@ export default function CreateNewKeyModal({ setMode }) {
 					style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}
 				>
 					<Avatar
-						address={cryptography.address.getLisk32AddressFromAddress(
+						address={cryptography.address.getKlayr32AddressFromAddress(
 							cryptography.address.getAddressFromPrivateKey(Buffer.from(privateKey, 'hex')),
 						)}
 						size={60}
@@ -73,7 +73,7 @@ export default function CreateNewKeyModal({ setMode }) {
 				<div style={{ width: '100%', wordWrap: 'break-word' }}>
 					<div style={{ color: 'var(--text-3)', fontSize: '12px' }}>Address</div>
 					<div style={{ color: 'var(--text-1)', fontSize: '12px' }}>
-						{cryptography.address.getLisk32AddressFromAddress(
+						{cryptography.address.getKlayr32AddressFromAddress(
 							cryptography.address.getAddressFromPrivateKey(Buffer.from(privateKey, 'hex')),
 						)}
 					</div>

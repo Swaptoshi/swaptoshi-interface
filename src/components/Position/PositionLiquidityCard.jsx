@@ -1,7 +1,7 @@
 import React from 'react';
 import PrimaryCard from '../Card/PrimaryCard';
 import Decimal from 'decimal.js';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../context/KlayrPriceProvider';
 import LiquidityAmountsCard from './LiquidityAmountsCard';
 
 export default function PositionLiquidityCard({
@@ -12,7 +12,7 @@ export default function PositionLiquidityCard({
 	token0Price,
 	token1Price,
 }) {
-	const { prices, fiatFormatter } = useLiskPrice();
+	const { prices, fiatFormatter } = useKlayrPrice();
 	const [liquidityFiat, setLiquidityFiat] = React.useState();
 
 	const fetchLiquidityFiat = React.useCallback(async () => {

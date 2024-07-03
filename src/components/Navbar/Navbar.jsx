@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import './Navbar.css';
 import { NavLink } from 'react-router-dom';
 import Modal from '../Modal/Modal';
@@ -17,7 +17,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { tryToast } from '../../utils/toast/tryToast';
 import { intervalToSecond } from '../../utils/time/intervalToSecond';
 import { getDEXToken } from '../../service/dex';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../context/KlayrPriceProvider';
 import TokenAvatar from '../Avatar/token';
 import * as env from '../../utils/config/env';
 import useEventListener from '../../utils/hook/useEventListener';
@@ -37,7 +37,7 @@ const Navbar = () => {
 	const { connect, wcUri, signClient, senderPublicKey } = useWalletConnect();
 	const { availableService, selectedService, setChain } = useChain();
 	const [isModalOpen, setIsModalOpen] = useWalletModal();
-	const { fiatFormatter } = useLiskPrice();
+	const { fiatFormatter } = useKlayrPrice();
 
 	const centerSearchRef = useRef(null);
 	const rightSearchRef = useRef(null);
@@ -591,7 +591,7 @@ const Navbar = () => {
 										}}
 									>
 										<Avatar
-											address={cryptography.address.getLisk32AddressFromPublicKey(
+											address={cryptography.address.getKlayr32AddressFromPublicKey(
 												Buffer.from(senderPublicKey, 'hex'),
 											)}
 											size={30}
@@ -605,7 +605,7 @@ const Navbar = () => {
 											}}
 										>
 											{addressCompact(
-												cryptography.address.getLisk32AddressFromPublicKey(
+												cryptography.address.getKlayr32AddressFromPublicKey(
 													Buffer.from(senderPublicKey, 'hex'),
 												),
 											)}

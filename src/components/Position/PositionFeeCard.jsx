@@ -1,5 +1,5 @@
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import PrimaryCard from '../Card/PrimaryCard';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
 import PrimaryButton from '../Button/PrimaryButton';
@@ -7,7 +7,7 @@ import SecondaryCard from '../Card/SecondaryCard';
 import TokenAvatar from '../Avatar/token';
 import AmountLabelTooltiped from '../Price/AmountLabelTooltiped';
 import Decimal from 'decimal.js';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../context/KlayrPriceProvider';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { decodeNFTId } from '../../utils/address/poolAddress';
 
@@ -19,7 +19,7 @@ export default function PositionFeeCard({
 	token0Price,
 	token1Price,
 }) {
-	const { prices, fiatFormatter } = useLiskPrice();
+	const { prices, fiatFormatter } = useKlayrPrice();
 	const { senderPublicKey, auth } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
 
@@ -64,7 +64,7 @@ export default function PositionFeeCard({
 			fee: '1000000',
 			params: {
 				poolAddress: cryptography.address
-					.getAddressFromLisk32Address(position.poolAddress)
+					.getAddressFromKlayr32Address(position.poolAddress)
 					.toString('hex'),
 				tokenId: index.toString(),
 				recipient: cryptography.address

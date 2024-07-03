@@ -1,17 +1,17 @@
 import React from 'react';
 import { useChain } from './ChainProvider';
-import { getLiskMarket } from '../service/market';
+import { getKlayrMarket } from '../service/market';
 import { tryToast } from '../utils/toast/tryToast';
 import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../utils/config/env';
 
-const LiskPriceContext = React.createContext();
+const KlayrPriceContext = React.createContext();
 
-export function useLiskPrice() {
-	return React.useContext(LiskPriceContext);
+export function useKlayrPrice() {
+	return React.useContext(KlayrPriceContext);
 }
 
-export default function LiskPriceProvider({ children }) {
+export default function KlayrPriceProvider({ children }) {
 	const [prices, setPrices] = React.useState();
 	const [fiatFormatter, setFiatFormatter] = React.useState();
 	const [compactFiatFormatter, setCompactFiatFormatter] = React.useState();
@@ -41,26 +41,26 @@ export default function LiskPriceProvider({ children }) {
 	const fetchPrice = useDebouncedCallback(async () => {
 		const run = async () => {
 			if (selectedService) {
-				const market = await getLiskMarket(
+				const market = await getKlayrMarket(
 					selectedService ? selectedService.serviceURLs : undefined,
 				);
 				if (market && market.data && market.data.length > 0) {
-					const price = market.data.find(t => t.from === 'LSK' && t.to === currency.toUpperCase());
+					const price = market.data.find(t => t.from === 'KLY' && t.to === currency.toUpperCase());
 					if (!price) setPrices(0);
 					else setPrices(parseFloat(price.rate));
 				}
 			}
 		};
 
-		tryToast('Fetch LSK/USD price failed', run);
+		tryToast('Fetch KLY/USD price failed', run);
 	}, Number(env.EFFECT_DEBOUNCE_WAIT));
 
 	React.useEffect(() => {
 		fetchPrice();
-		const updateLiskPriceInterval = setInterval(fetchPrice, Number(env.LSKUSD_UPDATE_INTERVAL_MS));
+		const updateKlayrPriceInterval = setInterval(fetchPrice, Number(env.KLYUSD_UPDATE_INTERVAL_MS));
 
 		return () => {
-			clearInterval(updateLiskPriceInterval);
+			clearInterval(updateKlayrPriceInterval);
 		};
 	}, [currency, fetchPrice, selectedService]);
 
@@ -77,5 +77,5 @@ export default function LiskPriceProvider({ children }) {
 		[compactFiatFormatter, cryptoFormatter, currency, fiatFormatter, prices],
 	);
 
-	return <LiskPriceContext.Provider value={context}>{children}</LiskPriceContext.Provider>;
+	return <KlayrPriceContext.Provider value={context}>{children}</KlayrPriceContext.Provider>;
 }

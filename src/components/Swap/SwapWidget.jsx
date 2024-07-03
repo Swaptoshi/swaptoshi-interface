@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Swap.css';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import SwapTokenInput from './SwapTokenInput';
 import { useDebouncedCallback } from 'use-debounce';

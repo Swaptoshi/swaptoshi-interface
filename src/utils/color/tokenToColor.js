@@ -1,4 +1,4 @@
-const cryptography = require('@liskhq/lisk-cryptography');
+const cryptography = require('@klayr/cryptography');
 const Vibrant = require('node-vibrant');
 
 export async function tokenToColorHex(token, src) {

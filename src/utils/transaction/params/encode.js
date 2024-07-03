@@ -1,4 +1,4 @@
-import { codec } from '@liskhq/lisk-codec';
+import { codec } from '@klayr/codec';
 import { transformParam } from '.';
 import { getSchema } from '../../../service/schemas';
 

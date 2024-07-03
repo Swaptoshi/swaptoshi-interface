@@ -1,6 +1,6 @@
 import React from 'react';
 import ChainProvider from './ChainProvider';
-import LiskPriceProvider from './LiskPriceProvider';
+import KlayrPriceProvider from './KlayrPriceProvider';
 import TokenPickerProvider from './TokenPickerProvider';
 import WalletModalProvider from './WalletModalProvider';
 import { WalletConnectProvider } from './WalletConnectProvider';
@@ -14,7 +14,7 @@ export default function AppContextProvider({ children }) {
 
 	return (
 		<ChainProvider>
-			<LiskPriceProvider>
+			<KlayrPriceProvider>
 				<WalletModalProvider>
 					<WalletConnectProvider>
 						<LastBalanceProvider>
@@ -24,7 +24,7 @@ export default function AppContextProvider({ children }) {
 						</LastBalanceProvider>
 					</WalletConnectProvider>
 				</WalletModalProvider>
-			</LiskPriceProvider>
+			</KlayrPriceProvider>
 			<ToastContainer stacked closeOnClick position="bottom-right" theme={theme} />
 		</ChainProvider>
 	);

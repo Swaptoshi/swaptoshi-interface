@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import TextInput from '../../components/Forms/TextInput';
 import SecondaryButton from '../../components/Button/SecondaryButton';
 import { FileUploader } from 'react-drag-drop-files';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import { useWalletConnect } from '../../context/WalletConnectProvider';
-import { codec } from '@liskhq/lisk-codec';
+import { codec } from '@klayr/codec';
 import { factoryMetadataSchema } from '../../utils/schema/token_factory_create_metadata';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { useChain } from '../../context/ChainProvider';

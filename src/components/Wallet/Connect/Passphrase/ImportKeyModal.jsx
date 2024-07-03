@@ -1,6 +1,6 @@
 import React from 'react';
-import * as liskPassphrase from '@liskhq/lisk-passphrase';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as klayrPassphrase from '@klayr/passphrase';
+import * as cryptography from '@klayr/cryptography';
 import RadioButton from '../../../Radio/RadioButton';
 import Tooltip from '../../../Tooltip/Tooltip';
 import PrimaryButton from '../../../Button/PrimaryButton';
@@ -22,7 +22,7 @@ export default function ImportKeyModal({ setMode }) {
 
 	const checkValidPassphrase = useDebouncedCallback(passphrase => {
 		setError(
-			liskPassphrase.validation.getPassphraseValidationErrors(
+			klayrPassphrase.validation.getPassphraseValidationErrors(
 				passphrase,
 				undefined,
 				passphrase.split(' ').length === 24 ? 24 : 12,

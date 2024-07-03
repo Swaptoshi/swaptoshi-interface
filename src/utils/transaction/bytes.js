@@ -1,6 +1,6 @@
-import { codec } from '@liskhq/lisk-codec';
+import { codec } from '@klayr/codec';
 import { transformTransaction } from './transformer';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import { transactionSchema } from '../schema/transactionSchema';
 
 export const getTransactionBytes = async (transaction, fillSignature, fillId) => {

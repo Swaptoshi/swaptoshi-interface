@@ -9,7 +9,7 @@ import {
 	getPrice,
 } from '../../service/dex';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../context/KlayrPriceProvider';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/toast/tryToast';
 import Loader from '../../components/Loader';
@@ -27,7 +27,7 @@ export default function PositionDetails() {
 	const navigate = useNavigate();
 
 	const { id } = useParams();
-	const { prices } = useLiskPrice();
+	const { prices } = useKlayrPrice();
 	const { selectedService, chain } = useChain();
 	const { senderPublicKey } = useWalletConnect();
 

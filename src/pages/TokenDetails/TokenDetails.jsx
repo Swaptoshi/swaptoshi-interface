@@ -7,7 +7,7 @@ import { intervalToSecond } from '../../utils/time/intervalToSecond';
 import { getDEXToken, getPriceOhlc, getPriceTick } from '../../service/dex';
 import { useChain } from '../../context/ChainProvider';
 import { tryToast } from '../../utils/toast/tryToast';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../context/KlayrPriceProvider';
 import SwitchBox from '../../components/SwitchBox/SwitchBox';
 import Loader from '../../components/Loader';
 import { PriceChart } from '../../components/Chart/PriceChart';
@@ -22,7 +22,7 @@ import { getFactoryToken } from '../../service/factory';
 
 const TokenDetails = () => {
 	const { id } = useParams();
-	const { fiatFormatter } = useLiskPrice();
+	const { fiatFormatter } = useKlayrPrice();
 	const { selectedService } = useChain();
 
 	const [token, setToken] = useState();
@@ -35,16 +35,16 @@ const TokenDetails = () => {
 	const fetchTickChart = React.useCallback(
 		async (tokens, now) => {
 			const lskUsdTick = await getPriceTick({
-				base: 'LSK',
+				base: 'KLY',
 				quote: 'USD',
 				interval: timeframeToInterval[timeframe],
 				limit: intervalToLimit[timeframe],
 				start: now - intervalToSecond[timeframe],
 			});
-			if (tokens.data[0].symbol !== 'LSK') {
+			if (tokens.data[0].symbol !== 'KLY') {
 				const tokenTick = await getPriceTick({
 					base: tokens.data[0].symbol,
-					quote: 'LSK',
+					quote: 'KLY',
 					interval: timeframeToInterval[timeframe],
 					limit: intervalToLimit[timeframe],
 					start: now - intervalToSecond[timeframe],
@@ -77,15 +77,15 @@ const TokenDetails = () => {
 	const fetchOhlcChart = React.useCallback(
 		async (tokens, now) => {
 			const lskUsdTick = await getPriceOhlc({
-				base: 'LSK',
+				base: 'KLY',
 				quote: 'USD',
 				timeframe: intervalToTimeframe[timeframe],
 				start: now - intervalToSecond[timeframe],
 			});
-			if (tokens.data[0].symbol !== 'LSK') {
+			if (tokens.data[0].symbol !== 'KLY') {
 				const tokenTick = await getPriceOhlc({
 					base: tokens.data[0].symbol,
-					quote: 'LSK',
+					quote: 'KLY',
 					timeframe: intervalToTimeframe[timeframe],
 					start: now - intervalToSecond[timeframe],
 				});

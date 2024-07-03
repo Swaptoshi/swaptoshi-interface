@@ -58,7 +58,7 @@ export default function TransactionModal({
 			await tryToast(
 				'Submit transaction failed',
 				async () => {
-					setStatus('Sending transaction, please proceed in your Lisk Wallet...');
+					setStatus('Sending transaction, please proceed in your Klayr Wallet...');
 					setIsSending(true);
 
 					const signed = await sign(tx);

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import Loader from '../../components/Loader';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -100,7 +100,7 @@ export default function RemoveLiquidity() {
 			fee: '1000000',
 			params: {
 				poolAddress: cryptography.address
-					.getAddressFromLisk32Address(position.poolAddress)
+					.getAddressFromKlayr32Address(position.poolAddress)
 					.toString('hex'),
 				tokenId: index.toString(),
 				liquidity,

@@ -48,7 +48,7 @@ const Home = () => {
 				<div className="hero-content-wrapper">
 					<h1 className="hero-title">Trade Tremendous New Opportunities</h1>
 					<div className="hero-text">
-						<p>Swaptoshi is a Fair-Launched Community-Driven Lisk DEX</p>
+						<p>Swaptoshi is a Fair-Launched Community-Driven Klayr DEX</p>
 					</div>
 					<span className="get-started-wrapper">
 						<NavLink to={'/swap'} id="getStartedBtnId" className="get-started-btn get-btn">
@@ -60,9 +60,9 @@ const Home = () => {
 						<i className="learn-more-icon ri-arrow-down-line"></i>
 					</div>
 
-					<a href="https://lisk.chat" className="download-app" target="_blank" rel="noreferrer">
+					<a href="https://klayr.chat" className="download-app" target="_blank" rel="noreferrer">
 						<i className="discord-icon ri-discord-fill"></i>
-						Join Lisk Discord Server!
+						Join Klayr Discord Server!
 					</a>
 				</div>
 

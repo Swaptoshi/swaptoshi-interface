@@ -1,4 +1,4 @@
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import { getDEXPool, getQuote } from '../../service/dex';
 import { computePoolAddress, getPoolKey } from '../address/poolAddress';
 
@@ -44,7 +44,7 @@ export const isFeeConversion = async (
 
 			for (const feeTickSpaingMap of dexConfig.feeAmountTickSpacing) {
 				const [fee] = feeTickSpaingMap;
-				const poolAddress = cryptography.address.getLisk32AddressFromAddress(
+				const poolAddress = cryptography.address.getKlayr32AddressFromAddress(
 					computePoolAddress(getPoolKey(tokenIn, tokenOut, fee)),
 				);
 				const pool = await getDEXPool({ search: poolAddress }, service);

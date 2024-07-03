@@ -1,5 +1,5 @@
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import { useWalletConnect } from '../../../../context/WalletConnectProvider';
 import { useChain } from '../../../../context/ChainProvider';
 import Avatar from '../../../Avatar';
@@ -83,7 +83,7 @@ export default function SetKeyPasswordModal({ setMode }) {
 					style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}
 				>
 					<Avatar
-						address={cryptography.address.getLisk32AddressFromAddress(
+						address={cryptography.address.getKlayr32AddressFromAddress(
 							cryptography.address.getAddressFromPrivateKey(
 								Buffer.from(plainPrivateKey[chain], 'hex'),
 							),
@@ -103,7 +103,7 @@ export default function SetKeyPasswordModal({ setMode }) {
 					}}
 				>
 					{addressCompact(
-						cryptography.address.getLisk32AddressFromAddress(
+						cryptography.address.getKlayr32AddressFromAddress(
 							cryptography.address.getAddressFromPrivateKey(
 								Buffer.from(plainPrivateKey[chain], 'hex'),
 							),

@@ -2,7 +2,7 @@ import React from 'react';
 import { checkServiceNode } from '../service/node';
 import { getBlockchainApps } from '../service/apps';
 import { tryToast } from '../utils/toast/tryToast';
-import { liskTokenCompact } from '../utils/constants/tokens';
+import { klayrTokenCompact } from '../utils/constants/tokens';
 import { getDEXConfig } from '../service/dex';
 import * as env from '../utils/config/env';
 import { getFeeEstimates } from '../service/fee';
@@ -19,7 +19,7 @@ export default function ChainProvider({ children }) {
 	const [feeConfig, setFeeConfig] = React.useState();
 	const [availableService, setAvailableService] = React.useState();
 	const [selectedService, setSelectedService] = React.useState();
-	const [lskTokenInfo, setLskTokenInfo] = React.useState(liskTokenCompact);
+	const [lskTokenInfo, setLskTokenInfo] = React.useState(klayrTokenCompact);
 
 	const fetchBlock = React.useRef(false);
 

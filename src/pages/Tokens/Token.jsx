@@ -10,14 +10,14 @@ import Loader from '../../components/Loader';
 import { intervalToSecond } from '../../utils/time/intervalToSecond';
 import { useDebouncedCallback } from 'use-debounce';
 import Dropdown from '../../components/Navbar/Dropdown';
-import { useLiskPrice } from '../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../context/KlayrPriceProvider';
 import TokenAvatar from '../../components/Avatar/token';
 import * as env from '../../utils/config/env';
 import Sparkline from '../../components/Sparkline/Sparkline';
 
 const Token = () => {
 	const { selectedService } = useChain();
-	const { compactFiatFormatter } = useLiskPrice();
+	const { compactFiatFormatter } = useKlayrPrice();
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [sortBy, setSortBy] = useState('totalTvlUSD');

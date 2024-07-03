@@ -1,7 +1,7 @@
-export const liskTokenCompact = {
+export const klayrTokenCompact = {
 	decimal: 8,
-	logo: 'https://raw.githubusercontent.com/LiskHQ/app-registry/main/devnet/Lisk/images/tokens/lisk.png',
-	symbol: 'LSK',
+	logo: 'https://raw.githubusercontent.com/KlayrHQ/app-registry/main/mainnet/Klayr/images/tokens/klayr.png',
+	symbol: 'KLY',
 	tokenId: '0000000000000000',
-	tokenName: 'Lisk',
+	tokenName: 'Klayr',
 };

@@ -26,19 +26,19 @@ export default function WalletConnectModal({ setMode }) {
 						<a
 							target="_blank"
 							rel="noopener noreferrer"
-							href="https://lisk.com/wallet"
+							href="https://klayr.xyz/wallet"
 							className="sc-7yzmni-9 jnMVFjj sc-m8pibl-0 eBkKRJ"
 						>
-							Lisk Mobile{' '}
+							Klayr Mobile{' '}
 						</a>{' '}
 						or copy the request string and paste it into your{' '}
 						<a
 							target="_blank"
 							rel="noopener noreferrer"
-							href="lisk://"
+							href="klayr://"
 							className="sc-7yzmni-9 jnMVFjj sc-m8pibl-0 eBkKRJ"
 						>
-							Lisk Desktop{' '}
+							Klayr Desktop{' '}
 						</a>{' '}
 						wallet (under Applications {'>'} Wallet connections {'>'}
 						Connect Wallet)

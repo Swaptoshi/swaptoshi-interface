@@ -1,5 +1,5 @@
 import React from 'react';
-import * as cryptography from '@liskhq/lisk-cryptography';
+import * as cryptography from '@klayr/cryptography';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import WalletTokenPicker from '../../components/Token/WalletTokenPicker';
 import PoolFeeSelector from '../../components/Fee/PoolFeeSelector';
@@ -39,7 +39,7 @@ export default function CreatePool() {
 				setIsLoading(true);
 				setError();
 				const poolKey = getPoolKey(tokenA.tokenId, tokenB.tokenId, fee);
-				const poolAddress = cryptography.address.getLisk32AddressFromAddress(
+				const poolAddress = cryptography.address.getKlayr32AddressFromAddress(
 					computePoolAddress(poolKey),
 				);
 				const pools = await getDEXPool(

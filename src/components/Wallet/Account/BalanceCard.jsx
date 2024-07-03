@@ -1,10 +1,10 @@
 import React from 'react';
 import SecondaryCard from '../../Card/SecondaryCard';
 import TokenAvatar from '../../Avatar/token';
-import { useLiskPrice } from '../../../context/LiskPriceProvider';
+import { useKlayrPrice } from '../../../context/KlayrPriceProvider';
 
 export default function BalanceCard({ balance }) {
-	const { prices, fiatFormatter, cryptoFormatter } = useLiskPrice();
+	const { prices, fiatFormatter, cryptoFormatter } = useKlayrPrice();
 
 	return (
 		<SecondaryCard
@@ -31,7 +31,7 @@ export default function BalanceCard({ balance }) {
 				<div className="text-accent" style={{ whiteSpace: 'nowrap', fontSize: '12px' }}>
 					~
 					{fiatFormatter.format(
-						((balance.balance / 10 ** balance.decimal) * balance.priceLSK * prices).toFixed(2),
+						((balance.balance / 10 ** balance.decimal) * balance.priceKLY * prices).toFixed(2),
 					)}
 				</div>
 			</div>
