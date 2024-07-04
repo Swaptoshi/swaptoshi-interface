@@ -132,9 +132,10 @@ export function WalletConnectProvider({ children }) {
 							Object.keys(t.namespaces).includes('klayr') &&
 							t.namespaces.klayr.chains.includes(`klayr:${chain}${env.CHAIN_SUFFIX}`),
 					);
+				console.log(session);
 				if (session) {
 					setSessions(session);
-					setSenderPublicKey(session.namespaces.klayr.accounts[0].slice(14));
+					setSenderPublicKey(session.namespaces.klayr.accounts[0].slice(15));
 				}
 
 				setSignClient(client);
@@ -177,7 +178,7 @@ export function WalletConnectProvider({ children }) {
 				if (uri) {
 					const sessionNamespace = await approval();
 					setSessions(sessionNamespace);
-					setSenderPublicKey(sessionNamespace.namespaces.klayr.accounts[0].slice(14));
+					setSenderPublicKey(sessionNamespace.namespaces.klayr.accounts[0].slice(15));
 					callback && callback.onSuccess && callback.onSuccess();
 				}
 			} catch (e) {
@@ -449,7 +450,7 @@ export function WalletConnectProvider({ children }) {
 				);
 			if (session) {
 				setSessions(session);
-				setSenderPublicKey(session.namespaces.klayr.accounts[0].slice(14));
+				setSenderPublicKey(session.namespaces.klayr.accounts[0].slice(15));
 			} else {
 				setSessions(undefined);
 				setSenderPublicKey(undefined);
