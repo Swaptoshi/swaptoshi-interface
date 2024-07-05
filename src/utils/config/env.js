@@ -26,8 +26,8 @@ export const CHAIN_SUFFIX = process.env.REACT_APP_CHAIN_SUFFIX
 	? process.env.REACT_APP_CHAIN_SUFFIX
 	: '555555';
 
-export const LISK_SERVICE_URL = process.env.REACT_APP_LISK_SERVICE_URL
-	? process.env.REACT_APP_LISK_SERVICE_URL
+export const KLAYR_SERVICE_URL = process.env.REACT_APP_KLAYR_SERVICE_URL
+	? process.env.REACT_APP_KLAYR_SERVICE_URL
 	: 'https://service.klayr.xyz';
 
 export const DEFAULT_CHAIN = process.env.REACT_APP_DEFAULT_CHAIN
