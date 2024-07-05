@@ -20,7 +20,7 @@ export const WC_PROJECT_URL = process.env.REACT_APP_WC_PROJECT_URL
 
 export const WC_PROJECT_ICON = process.env.REACT_APP_WC_PROJECT_ICON
 	? process.env.REACT_APP_WC_PROJECT_ICON
-	: 'https://raw.githubusercontent.com/Swaptoshi/app-registry/main/devnet/Swaptoshi/images/tokens/swaptoshi.svg';
+	: 'https://raw.githubusercontent.com/Swaptoshi/app-registry/main/devnet/Swaptoshi/images/application/swaptoshi.svg';
 
 export const CHAIN_SUFFIX = process.env.REACT_APP_CHAIN_SUFFIX
 	? process.env.REACT_APP_CHAIN_SUFFIX
