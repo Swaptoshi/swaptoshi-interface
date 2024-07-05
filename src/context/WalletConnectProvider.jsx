@@ -132,7 +132,6 @@ export function WalletConnectProvider({ children }) {
 							Object.keys(t.namespaces).includes('klayr') &&
 							t.namespaces.klayr.chains.includes(`klayr:${chain}${env.CHAIN_SUFFIX}`),
 					);
-				console.log(session);
 				if (session) {
 					setSessions(session);
 					setSenderPublicKey(session.namespaces.klayr.accounts[0].slice(15));
@@ -346,7 +345,7 @@ export function WalletConnectProvider({ children }) {
 						let tokenName = meta ? meta.tokenName : '';
 						let decimal =
 							meta && symbol !== '???'
-								? meta.denomUnits.find(t => t.denom === symbol.toLowerCase()).decimals
+								? meta.denomUnits.find(t => t.denom.toLowerCase() === symbol.toLowerCase()).decimals
 								: env.DEFAULT_TOKEN_DECIMAL;
 
 						if (!meta) {

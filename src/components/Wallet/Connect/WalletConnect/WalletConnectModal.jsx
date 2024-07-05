@@ -22,16 +22,7 @@ export default function WalletConnectModal({ setMode }) {
 			<div>
 				<div className="sc-1hmbv05-2 ilYVNX">
 					<div className="sc-sx9n2y-0 bftkTM css-4u0e4f">
-						Scan the QR code using{' '}
-						<a
-							target="_blank"
-							rel="noopener noreferrer"
-							href="https://klayr.xyz/wallet"
-							className="sc-7yzmni-9 jnMVFjj sc-m8pibl-0 eBkKRJ"
-						>
-							Klayr Mobile{' '}
-						</a>{' '}
-						or copy the request string and paste it into your{' '}
+						Click &quot;Copy Request&quot; below, then paste it into your{' '}
 						<a
 							target="_blank"
 							rel="noopener noreferrer"
@@ -40,8 +31,7 @@ export default function WalletConnectModal({ setMode }) {
 						>
 							Klayr Desktop{' '}
 						</a>{' '}
-						wallet (under Applications {'>'} Wallet connections {'>'}
-						Connect Wallet)
+						wallet by navigating to Applications &gt; Wallet connections &gt; Connect Wallet.
 					</div>
 				</div>
 
