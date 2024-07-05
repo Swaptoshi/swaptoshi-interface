@@ -124,9 +124,9 @@ export default function SwapDetailsInfo({
 					{isLoading
 						? 'Fetching best price...'
 						: baseValue && quoteValue
-							? `1 ${quoteToken.symbol.toUpperCase()} = ${
-									baseValue / quoteValue
-								} ${baseToken.symbol.toUpperCase()}`
+							? `1 ${quoteToken.symbol.toUpperCase()} = ${(baseValue / quoteValue).toFixed(
+									baseToken.decimal,
+								)} ${baseToken.symbol.toUpperCase()}`
 							: 'Quote price failed'}
 				</div>
 				{isFeeConvert && (
