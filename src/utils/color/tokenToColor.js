@@ -2,7 +2,7 @@ const { crc32 } = require('crc');
 const Vibrant = require('node-vibrant');
 
 export async function tokenToColorHex(token, src, config) {
-	const hash = crc32(token);
+	const hash = crc32(Buffer.from(token, 'hex'));
 
 	const hue =
 		config.nftPositionColorRange.hue[0] +
