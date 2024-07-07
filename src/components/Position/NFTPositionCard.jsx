@@ -1,6 +1,5 @@
 import React from 'react';
 import PrimaryCard from '../Card/PrimaryCard';
-import { getIPFSUrl } from '../../utils/ipfs/url';
 import useTokenColor from '../../utils/hook/useTokenColor';
 
 export default function NFTPositionCard({ image, position }) {
@@ -40,14 +39,6 @@ export default function NFTPositionCard({ image, position }) {
 					}}
 				/>
 			</div>
-			<a
-				href={getIPFSUrl(position.tokenURI)}
-				target={'_blank'}
-				rel="noreferrer"
-				style={{ color: 'var(--primary)' }}
-			>
-				View on IPFS
-			</a>
 		</PrimaryCard>
 	);
 }
