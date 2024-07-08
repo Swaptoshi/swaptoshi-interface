@@ -60,7 +60,7 @@ export default function WalletAccount({ show }) {
 			}
 
 			requestRef.current = true;
-			const lskTokenId = await getKLYTokenId(chain);
+			const klyTokenId = await getKLYTokenId(chain);
 
 			const accountBalances = [];
 			for (let i = 0; i < balances.length; i++) {
@@ -68,7 +68,7 @@ export default function WalletAccount({ show }) {
 
 				const price = await getPrice({
 					baseTokenId: balances[i].tokenId,
-					quoteTokenId: lskTokenId,
+					quoteTokenId: klyTokenId,
 				});
 
 				const accountBalance = {

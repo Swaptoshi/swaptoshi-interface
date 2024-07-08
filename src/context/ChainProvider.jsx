@@ -19,7 +19,7 @@ export default function ChainProvider({ children }) {
 	const [feeConfig, setFeeConfig] = React.useState();
 	const [availableService, setAvailableService] = React.useState();
 	const [selectedService, setSelectedService] = React.useState();
-	const [lskTokenInfo, setLskTokenInfo] = React.useState(klayrTokenCompact);
+	const [klyTokenInfo, setKlyTokenInfo] = React.useState(klayrTokenCompact);
 
 	const fetchBlock = React.useRef(false);
 
@@ -34,7 +34,7 @@ export default function ChainProvider({ children }) {
 	}, []);
 
 	React.useEffect(() => {
-		setLskTokenInfo(s => ({
+		setKlyTokenInfo(s => ({
 			...s,
 			tokenId: chain.concat('0'.repeat(14)),
 		}));
@@ -116,11 +116,11 @@ export default function ChainProvider({ children }) {
 			availableService,
 			selectedService,
 			setSelectedService,
-			lskTokenInfo,
+			klyTokenInfo,
 			dexConfig,
 			feeConfig,
 		}),
-		[availableService, chain, dexConfig, feeConfig, lskTokenInfo, selectedService],
+		[availableService, chain, dexConfig, feeConfig, klyTokenInfo, selectedService],
 	);
 
 	return <ChainContext.Provider value={context}>{children}</ChainContext.Provider>;

@@ -32,7 +32,7 @@ import BigNumber from 'bignumber.js';
 
 const AddLiquidity = () => {
 	const navigate = useNavigate();
-	const { lskTokenInfo, selectedService } = useChain();
+	const { klyTokenInfo, selectedService } = useChain();
 	const { balances, senderPublicKey, auth } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
 
@@ -154,8 +154,8 @@ const AddLiquidity = () => {
 	}, [tokenA, tokenB]);
 
 	React.useEffect(() => {
-		setTokenA(lskTokenInfo);
-	}, [lskTokenInfo]);
+		setTokenA(klyTokenInfo);
+	}, [klyTokenInfo]);
 
 	const fetchPoolTickData = useDebouncedCallback(async () => {
 		const checkPool = async () => {

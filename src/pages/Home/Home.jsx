@@ -9,7 +9,7 @@ import { useChain } from '../../context/ChainProvider';
 import * as env from '../../utils/config/env';
 
 const Home = () => {
-	const { lskTokenInfo, selectedService } = useChain();
+	const { klyTokenInfo, selectedService } = useChain();
 	const sectionRef = React.useRef(null);
 
 	const handleClick = () => {
@@ -34,7 +34,7 @@ const Home = () => {
 					<NavLink className="card-anchor" to="/swap">
 						<div className="card-section card-home">
 							<div className={'card-home-bg'} style={{ borderRadius: '24px' }}>
-								<SwapWidget disabled initialBaseToken={lskTokenInfo} />
+								<SwapWidget disabled initialBaseToken={klyTokenInfo} />
 							</div>
 						</div>
 					</NavLink>

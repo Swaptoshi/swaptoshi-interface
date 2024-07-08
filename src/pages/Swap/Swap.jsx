@@ -3,13 +3,13 @@ import SwapWidget from '../../components/Swap/SwapWidget';
 import { useChain } from '../../context/ChainProvider';
 
 const Swap = () => {
-	const { lskTokenInfo } = useChain();
+	const { klyTokenInfo } = useChain();
 
 	return (
 		<React.Fragment>
 			<div className="swap-wrapper">
 				<div className="card-section">
-					<SwapWidget withGlow initialBaseToken={lskTokenInfo} />
+					<SwapWidget withGlow initialBaseToken={klyTokenInfo} />
 				</div>
 			</div>
 		</React.Fragment>

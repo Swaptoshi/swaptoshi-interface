@@ -18,7 +18,7 @@ import * as env from '../../utils/config/env';
 
 export default function CreatePool() {
 	const navigate = useNavigate();
-	const { lskTokenInfo, selectedService } = useChain();
+	const { klyTokenInfo, selectedService } = useChain();
 	const { auth, senderPublicKey } = useWalletConnect();
 	const { sendTransaction } = useTransactionModal();
 
@@ -42,8 +42,8 @@ export default function CreatePool() {
 	}, [tokenA, tokenB]);
 
 	React.useEffect(() => {
-		setTokenA(lskTokenInfo);
-	}, [lskTokenInfo]);
+		setTokenA(klyTokenInfo);
+	}, [klyTokenInfo]);
 
 	React.useEffect(() => {
 		const checkPool = async () => {

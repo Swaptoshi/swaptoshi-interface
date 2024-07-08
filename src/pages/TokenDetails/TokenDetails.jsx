@@ -34,7 +34,7 @@ const TokenDetails = () => {
 
 	const fetchTickChart = React.useCallback(
 		async (tokens, now) => {
-			const lskUsdTick = await getPriceTick({
+			const klyUsdTick = await getPriceTick({
 				base: 'KLY',
 				quote: 'USD',
 				interval: timeframeToInterval[timeframe],
@@ -50,10 +50,10 @@ const TokenDetails = () => {
 					start: now - intervalToSecond[timeframe],
 				});
 
-				if (tokenTick && tokenTick.data && lskUsdTick && lskUsdTick.data) {
+				if (tokenTick && tokenTick.data && klyUsdTick && klyUsdTick.data) {
 					setChart(
 						tokenTick.data.flatMap(t => {
-							const matched = lskUsdTick.data.find(s => s.time === t.time);
+							const matched = klyUsdTick.data.find(s => s.time === t.time);
 							if (matched) {
 								return {
 									time: t.time,
@@ -66,8 +66,8 @@ const TokenDetails = () => {
 					);
 				}
 			} else {
-				if (lskUsdTick && lskUsdTick.data) {
-					setChart(lskUsdTick.data);
+				if (klyUsdTick && klyUsdTick.data) {
+					setChart(klyUsdTick.data);
 				}
 			}
 		},
@@ -76,7 +76,7 @@ const TokenDetails = () => {
 
 	const fetchOhlcChart = React.useCallback(
 		async (tokens, now) => {
-			const lskUsdTick = await getPriceOhlc({
+			const klyUsdTick = await getPriceOhlc({
 				base: 'KLY',
 				quote: 'USD',
 				timeframe: intervalToTimeframe[timeframe],
@@ -90,10 +90,10 @@ const TokenDetails = () => {
 					start: now - intervalToSecond[timeframe],
 				});
 
-				if (tokenTick && tokenTick.data && lskUsdTick && lskUsdTick.data) {
+				if (tokenTick && tokenTick.data && klyUsdTick && klyUsdTick.data) {
 					setChart(
 						tokenTick.data.flatMap(t => {
-							const matched = lskUsdTick.data.find(s => s.time === t.time);
+							const matched = klyUsdTick.data.find(s => s.time === t.time);
 							if (matched) {
 								return {
 									time: t.time,
@@ -109,8 +109,8 @@ const TokenDetails = () => {
 					);
 				}
 			} else {
-				if (lskUsdTick && lskUsdTick.data) {
-					setChart(lskUsdTick.data);
+				if (klyUsdTick && klyUsdTick.data) {
+					setChart(klyUsdTick.data);
 				}
 			}
 		},

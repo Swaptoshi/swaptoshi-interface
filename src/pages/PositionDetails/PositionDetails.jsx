@@ -45,26 +45,26 @@ export default function PositionDetails() {
 		let token0Price = 0;
 		let token1Price = 0;
 
-		const token0ToLskPrice = await getPrice(
+		const token0ToKlyPrice = await getPrice(
 			{
 				baseTokenId: position[token0],
 				quoteTokenId: `${chain}00000000000000`,
 			},
 			selectedService ? selectedService.serviceURLs : undefined,
 		);
-		if (token0ToLskPrice && token0ToLskPrice.data) {
-			token0Price = token0ToLskPrice.data.price;
+		if (token0ToKlyPrice && token0ToKlyPrice.data) {
+			token0Price = token0ToKlyPrice.data.price;
 		}
 
-		const token1ToLskPrice = await getPrice(
+		const token1ToKlyPrice = await getPrice(
 			{
 				baseTokenId: position[token1],
 				quoteTokenId: `${chain}00000000000000`,
 			},
 			selectedService ? selectedService.serviceURLs : undefined,
 		);
-		if (token1ToLskPrice && token1ToLskPrice.data) {
-			token1Price = token1ToLskPrice.data.price;
+		if (token1ToKlyPrice && token1ToKlyPrice.data) {
+			token1Price = token1ToKlyPrice.data.price;
 		}
 
 		setToken0Price(token0Price);

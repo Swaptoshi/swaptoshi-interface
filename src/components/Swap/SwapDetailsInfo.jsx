@@ -36,22 +36,22 @@ export default function SwapDetailsInfo({
 	const [isPoolExistForConversion, setIsPoolExistForConversion] = React.useState();
 
 	const fetchFeeFiat = useDebouncedCallback(
-		async (networkFee, lskPrice) => {
+		async (networkFee, klyPrice) => {
 			await tryToast(
 				'Quote fee price failed',
 				async () => {
-					const tokenToLskPrice = await getPrice(
+					const tokenToKlyPrice = await getPrice(
 						{
 							baseTokenId: feeConfig.feeTokenID,
 							quoteTokenId: `${chain}00000000000000`,
 						},
 						selectedService ? selectedService.serviceURLs : undefined,
 					);
-					if (tokenToLskPrice && tokenToLskPrice.data) {
+					if (tokenToKlyPrice && tokenToKlyPrice.data) {
 						setFeeFiat(
 							(Number(networkFee) / 10 ** env.WC_TOKEN_DECIMAL) *
-								tokenToLskPrice.data.price *
-								lskPrice,
+								tokenToKlyPrice.data.price *
+								klyPrice,
 						);
 					}
 					setIsFectingPrice(false);

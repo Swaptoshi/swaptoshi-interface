@@ -30,19 +30,19 @@ export default function SwapTokenInput({
 	const [selectedFiatValue, setSelectedFiatValue] = React.useState();
 	const [isFetchingPrice, setIsFectingPrice] = React.useState(false);
 
-	const fetchFiatPrice = useDebouncedCallback(async (amount, tokenId, lskPrice) => {
+	const fetchFiatPrice = useDebouncedCallback(async (amount, tokenId, klyPrice) => {
 		await tryToast(
 			'Quote price failed',
 			async () => {
-				const tokenToLskPrice = await getPrice(
+				const tokenToKlyPrice = await getPrice(
 					{
 						baseTokenId: tokenId,
 						quoteTokenId: `${chain}00000000000000`,
 					},
 					selectedService ? selectedService.serviceURLs : undefined,
 				);
-				if (tokenToLskPrice && tokenToLskPrice.data) {
-					setSelectedFiatValue(Number(amount) * tokenToLskPrice.data.price * lskPrice);
+				if (tokenToKlyPrice && tokenToKlyPrice.data) {
+					setSelectedFiatValue(Number(amount) * tokenToKlyPrice.data.price * klyPrice);
 				}
 				setIsFectingPrice(false);
 			},
