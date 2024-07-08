@@ -160,12 +160,11 @@ const AddLiquidity = () => {
 				if (pools.data.length === 0) {
 					setNoPoolError("Pool Doesn't Exists");
 				} else {
+					const token0 = pools.data[0].token0 === tokenA.tokenId ? tokenA : tokenB;
+					const token1 = pools.data[0].token1 === tokenA.tokenId ? tokenA : tokenB;
+
 					setPool(pools.data[0]);
-					setPrice(
-						inverted
-							? new Decimal(pools.data[0].price).pow(-1).toPrecision(5)
-							: pools.data[0].price,
-					);
+					setPrice(decodeTickPrice(pools.data[0].tick, token0.decimal, token1.decimal, !!inverted));
 
 					const poolTick = await getDEXPoolTick(
 						{ poolAddress },
