@@ -34,7 +34,7 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
-				backgroundColor: color,
+				backgroundColor: loaded ? color : 'var(--surface-2)',
 				...style,
 			}}
 			{...props}
