@@ -26,7 +26,7 @@ export default function WalletConnectModal({ setMode }) {
 						<a
 							target="_blank"
 							rel="noopener noreferrer"
-							href="klayr://"
+							href="https://klayr.xyz/wallet/"
 							className="sc-7yzmni-9 jnMVFjj sc-m8pibl-0 eBkKRJ"
 						>
 							Klayr Desktop{' '}
