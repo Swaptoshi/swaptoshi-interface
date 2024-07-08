@@ -21,6 +21,8 @@ export default function LiquidityAmountsInput({
 	tokenB,
 }) {
 	const { dexConfig } = useChain();
+	const [token0, setToken0] = React.useState();
+	const [token1, setToken1] = React.useState();
 
 	const tickSpacing = React.useMemo(() => {
 		if (dexConfig && poolAddress) {
@@ -37,7 +39,11 @@ export default function LiquidityAmountsInput({
 		() => (tickSpacing ? getMinTick(tickSpacing) : undefined),
 		[tickSpacing],
 	);
-	const minPrice = React.useMemo(() => (minTick ? decodeTickPrice(minTick) : 0), [minTick]);
+	const minPrice = React.useMemo(
+		() =>
+			minTick && token0 && token1 ? decodeTickPrice(minTick, token0.decimal, token1.decimal) : 0,
+		[minTick, token0, token1],
+	);
 	const lowerPrice = React.useMemo(
 		() => (lowPrice === ZERO ? minPrice : lowPrice),
 		[lowPrice, minPrice],
@@ -47,11 +53,22 @@ export default function LiquidityAmountsInput({
 		() => (tickSpacing ? getMaxTick(tickSpacing) : undefined),
 		[tickSpacing],
 	);
-	const maxPrice = React.useMemo(() => (maxTick ? decodeTickPrice(maxTick) : 0), [maxTick]);
+	const maxPrice = React.useMemo(
+		() =>
+			maxTick && token0 && token1 ? decodeTickPrice(maxTick, token0.decimal, token1.decimal) : 0,
+		[maxTick, token0, token1],
+	);
 	const upperPrice = React.useMemo(
 		() => (highPrice === INFINITE ? maxPrice : highPrice),
 		[highPrice, maxPrice],
 	);
+
+	React.useEffect(() => {
+		if (tokenA && tokenB) {
+			setToken0(tokenA.tokenId >= tokenB.tokenId ? tokenB : tokenA);
+			setToken1(tokenA.tokenId >= tokenB.tokenId ? tokenA : tokenB);
+		}
+	}, [tokenA, tokenB]);
 
 	React.useEffect(() => {
 		setAmountA('');

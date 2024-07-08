@@ -49,12 +49,12 @@ const IncreaseLiquidity = () => {
 			position
 				? decodeTickPrice(
 						position.poolTick,
-						position[`${inverted ? token1 : token0}Decimal`],
-						position[`${inverted ? token0 : token1}Decimal`],
+						position.token0Decimal,
+						position.token1Decimal,
 						inverted,
 					)
 				: 0,
-		[inverted, position, token0, token1],
+		[inverted, position],
 	);
 
 	const lowPrice = React.useMemo(
@@ -62,12 +62,12 @@ const IncreaseLiquidity = () => {
 			position
 				? decodeTickPrice(
 						inverted ? position.tickUpper : position.tickLower,
-						position[`${inverted ? token1 : token0}Decimal`],
-						position[`${inverted ? token0 : token1}Decimal`],
+						position.token0Decimal,
+						position.token1Decimal,
 						inverted,
 					)
 				: 0,
-		[inverted, position, token0, token1],
+		[inverted, position],
 	);
 
 	const highPrice = React.useMemo(
@@ -75,12 +75,12 @@ const IncreaseLiquidity = () => {
 			position
 				? decodeTickPrice(
 						inverted ? position.tickLower : position.tickUpper,
-						position[`${token0}Decimal`],
-						position[`${token1}Decimal`],
+						position.token0Decimal,
+						position.token1Decimal,
 						inverted,
 					)
 				: 0,
-		[inverted, position, token0, token1],
+		[inverted, position],
 	);
 
 	const tokenA = React.useMemo(

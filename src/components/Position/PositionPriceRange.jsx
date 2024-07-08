@@ -76,8 +76,8 @@ export default function PositionPriceRange({
 								? ZERO
 								: decodeTickPrice(
 										inverted ? position.tickUpper : position.tickLower,
-										position[`${inverted ? token1 : token0}Decimal`],
-										position[`${inverted ? token0 : token1}Decimal`],
+										position.token0Decimal,
+										position.token1Decimal,
 										inverted,
 									)}
 						</div>
@@ -98,8 +98,8 @@ export default function PositionPriceRange({
 								? INFINITE
 								: decodeTickPrice(
 										inverted ? position.tickLower : position.tickUpper,
-										position[`${inverted ? token1 : token0}Decimal`],
-										position[`${inverted ? token0 : token1}Decimal`],
+										position.token0Decimal,
+										position.token1Decimal,
 										inverted,
 									)}
 						</div>
@@ -115,8 +115,8 @@ export default function PositionPriceRange({
 					<div className="text__TextWrapper-sc-fbb4b34d-0 ennNJZ css-5dyzfr">
 						{decodeTickPrice(
 							position.poolTick,
-							position[`${inverted ? token1 : token0}Decimal`],
-							position[`${inverted ? token0 : token1}Decimal`],
+							position.token0Decimal,
+							position.token1Decimal,
 							inverted,
 						)}
 					</div>

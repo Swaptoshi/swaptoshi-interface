@@ -1,11 +1,6 @@
 const { INFINITE, ZERO } = require('../constants/tick');
 const { normalizeTick } = require('../tick/normalize_tick');
-const {
-	getSqrtRatioAtTick,
-	MAX_SQRT_RATIO,
-	MIN_SQRT_RATIO,
-	getTickAtSqrtRatio,
-} = require('../tick/tick_math');
+const { MAX_SQRT_RATIO, MIN_SQRT_RATIO } = require('../tick/tick_math');
 
 /* eslint-disable import/no-extraneous-dependencies */
 const Decimal = require('decimal.js').default;
@@ -25,8 +20,11 @@ function decodePriceSqrt(
 	inverse = false,
 	disableFiveSigPrevision = false,
 ) {
-	const ratioNum = ((parseInt(sqrtRatioX96.toString(), 10) / 2 ** 96) ** 2).toPrecision(5);
-	let ratio = new Decimal(ratioNum.toString());
+	const ratioNum = new Decimal(sqrtRatioX96)
+		.div(2 ** 96)
+		.pow(2)
+		.toPrecision(5);
+	let ratio = new Decimal(ratioNum);
 
 	if (decimalsToken1 < decimalsToken0) {
 		ratio = ratio.mul(TEN.pow(decimalsToken0 - decimalsToken1).toString());
@@ -67,16 +65,40 @@ function decodeFeeGrowth(feeGrowthX128, liquidity) {
 	return ((BigInt(feeGrowthX128) * BigInt(liquidity)) / Q128).toString();
 }
 
-function decodeTickPrice(tick, decimalsToken0 = 8, decimalsToken1 = 8, inverse = false) {
-	const sqrtPriceX96 = getSqrtRatioAtTick(tick);
-	return decodePriceSqrt(sqrtPriceX96, decimalsToken0, decimalsToken1, inverse);
+function decodeTickPrice(tick, token0Decimals = 8, token1Decimals = 8, invert = false) {
+	let price = new Decimal(1.0001)
+		.pow(tick)
+		.mul(new Decimal(10).pow(Number(token1Decimals) - Number(token0Decimals)));
+
+	if (invert) {
+		price = price.pow(-1);
+	}
+
+	return price.toDecimalPlaces(invert ? Number(token1Decimals) : Number(token0Decimals)).toString();
 }
 
-function encodeTickPrice(price, tickSpacing) {
-	const sqrtPriceX96 = encodePriceSqrt(price, 1);
-	return tickSpacing
-		? normalizeTick(getTickAtSqrtRatio(sqrtPriceX96), tickSpacing)
-		: Number(getTickAtSqrtRatio(sqrtPriceX96));
+function encodeTickPrice(
+	price,
+	tickSpacing,
+	token0Decimals = 8,
+	token1Decimals = 8,
+	invert = false,
+) {
+	let _price = price;
+	if (invert) {
+		_price = new Decimal(price)
+			.pow(-1)
+			.toDecimalPlaces(invert ? Number(token1Decimals) : Number(token0Decimals))
+			.toString();
+	}
+
+	let adjustedPrice = new Decimal(_price)
+		.div(new Decimal(10).pow(Number(token1Decimals) - Number(token0Decimals)))
+		.toNumber();
+	let tick = Math.log(adjustedPrice) / Math.log(1.0001);
+	tick = normalizeTick(tick, Number(tickSpacing));
+
+	return Math.round(tick);
 }
 
 function inversePriceSqrt(sqrtRatioX96, decimalsToken0 = 8, decimalsToken1 = 8) {
@@ -84,7 +106,12 @@ function inversePriceSqrt(sqrtRatioX96, decimalsToken0 = 8, decimalsToken1 = 8) 
 	return encodePriceSqrt(price, 1);
 }
 
+function decimalToString(value, decimal) {
+	return new Decimal(value).toDecimalPlaces(decimal).toString();
+}
+
 module.exports = {
+	decimalToString,
 	encodeTickPrice,
 	inversePriceSqrt,
 	decodeTickPrice,

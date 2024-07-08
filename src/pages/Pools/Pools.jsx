@@ -17,6 +17,7 @@ import TokenAvatar from '../../components/Avatar/token';
 import { getMaxTick, getMinTick, getTickSpacing } from '../../utils/tick/price_tick';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
 import PriceRangeLabel from '../../components/Price/PriceRangeLabel';
+import { decodeTickPrice } from '../../utils/math/priceFormatter';
 
 const Pools = () => {
 	const navigate = useNavigate();
@@ -155,12 +156,12 @@ const Pools = () => {
 													pos.tickLower.toString() ===
 													getMinTick(getTickSpacing(pos.fee, dexConfig))
 														? ZERO
-														: pos.priceLower
+														: decodeTickPrice(pos.tickLower, pos.token0Decimal, pos.token1Decimal)
 												} ${pos.token0Symbol} per ${pos.token1Symbol} ↔ ${
 													pos.tickUpper.toString() ===
 													getMaxTick(getTickSpacing(pos.fee, dexConfig))
 														? INFINITE
-														: pos.priceUpper
+														: decodeTickPrice(pos.tickUpper, pos.token0Decimal, pos.token1Decimal)
 												} ${pos.token0Symbol} per ${pos.token1Symbol}`}</div>
 											</div>
 											<PriceRangeLabel

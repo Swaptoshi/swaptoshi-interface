@@ -1,15 +1,26 @@
 import React from 'react';
 import {
 	addByTick,
+	getMaxPrice,
 	getMaxTick,
-	getMinTick,
+	getMinPrice,
 	normalizePriceByTick,
 	subByTick,
 } from '../../utils/tick/price_tick';
 import { decodeTickPrice } from '../../utils/math/priceFormatter';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
 
-export default function PriceInput({ value, disabled, setValue, title, subTitle, tickSpacing }) {
+export default function PriceInput({
+	value,
+	disabled,
+	setValue,
+	title,
+	subTitle,
+	tickSpacing,
+	decimal,
+	token0Decimal,
+	token1Decimal,
+}) {
 	const onChange = React.useCallback(
 		event => {
 			const inputValue = event.target.value;
@@ -34,43 +45,61 @@ export default function PriceInput({ value, disabled, setValue, title, subTitle,
 	const onBlur = React.useCallback(() => {
 		try {
 			if (value && value !== ZERO && value !== INFINITE) {
-				const normalized = normalizePriceByTick(value, tickSpacing);
+				const normalized = normalizePriceByTick(value, tickSpacing, token0Decimal, token1Decimal);
 				setValue(normalized);
 			}
 		} catch {
 			setValue('');
 		}
-	}, [setValue, tickSpacing, value]);
+	}, [setValue, tickSpacing, token0Decimal, token1Decimal, value]);
 
 	const onPlus = React.useCallback(() => {
 		if (value) {
 			if (value === INFINITE) {
-				setValue(decodeTickPrice(Number(getMinTick(tickSpacing)) + Number(tickSpacing)));
+				setValue(ZERO);
+				return;
+			}
+			if (value === getMaxPrice(tickSpacing, token0Decimal, token1Decimal)) {
+				setValue(INFINITE);
+				return;
 			}
 			if (Number(value) === Number(ZERO)) {
-				setValue(decodeTickPrice(Number(getMinTick(tickSpacing))));
+				setValue(getMinPrice(decimal));
+				return;
 			}
 			if (value !== INFINITE && Number(value) !== Number(ZERO)) {
-				const added = addByTick(value, tickSpacing);
+				const added = addByTick(value, tickSpacing, decimal, token0Decimal, token1Decimal);
 				setValue(added);
+				return;
 			}
+		} else {
+			setValue(getMinPrice(decimal));
 		}
-	}, [setValue, tickSpacing, value]);
+	}, [decimal, setValue, tickSpacing, token0Decimal, token1Decimal, value]);
 
 	const onMinus = React.useCallback(() => {
 		if (value) {
 			if (value === INFINITE) {
-				setValue(decodeTickPrice(Number(getMaxTick(tickSpacing)) - Number(tickSpacing)));
+				setValue(getMaxPrice(tickSpacing, token0Decimal, token1Decimal));
+				return;
+			}
+			if (value === getMinPrice(decimal)) {
+				setValue(ZERO);
+				return;
 			}
 			if (Number(value) === Number(ZERO)) {
-				setValue(decodeTickPrice(Number(getMaxTick(tickSpacing))));
+				setValue(INFINITE);
+				return;
 			}
 			if (value !== INFINITE && Number(value) !== Number(ZERO)) {
-				const subtracted = subByTick(value, tickSpacing);
+				const subtracted = subByTick(value, tickSpacing, decimal, token0Decimal, token1Decimal);
 				setValue(subtracted);
+				return;
 			}
+		} else {
+			setValue(decodeTickPrice(Number(getMaxTick(tickSpacing)), token0Decimal, token1Decimal));
 		}
-	}, [setValue, tickSpacing, value]);
+	}, [decimal, setValue, tickSpacing, token0Decimal, token1Decimal, value]);
 
 	return (
 		<div

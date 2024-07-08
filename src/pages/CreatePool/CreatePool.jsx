@@ -14,6 +14,7 @@ import { getDEXPool } from '../../service/dex';
 import { computePoolAddress, getPoolKey } from '../../utils/address/poolAddress';
 import { tryToast } from '../../utils/toast/tryToast';
 import WarningBox from '../../components/Error/WarningBox';
+import * as env from '../../utils/config/env';
 
 export default function CreatePool() {
 	const navigate = useNavigate();
@@ -23,11 +24,22 @@ export default function CreatePool() {
 
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [error, setError] = React.useState();
+	const [inverted, setInverted] = React.useState();
+	const [token0, setToken0] = React.useState();
+	const [token1, setToken1] = React.useState();
 	const [tokenA, setTokenA] = React.useState();
 	const [tokenB, setTokenB] = React.useState();
 	const [fee, setFee] = React.useState();
 	const [tickSpacing, setTickSpacing] = React.useState();
 	const [price, setPrice] = React.useState();
+
+	React.useEffect(() => {
+		if (tokenA && tokenB) {
+			setInverted(tokenA.tokenId >= tokenB.tokenId);
+			setToken0(tokenA.tokenId >= tokenB.tokenId ? tokenB : tokenA);
+			setToken1(tokenA.tokenId >= tokenB.tokenId ? tokenA : tokenB);
+		}
+	}, [tokenA, tokenB]);
 
 	React.useEffect(() => {
 		setTokenA(lskTokenInfo);
@@ -155,6 +167,15 @@ export default function CreatePool() {
 				subTitle={isSpecifyPriceReady ? `${tokenA.symbol.toUpperCase()}` : '-'}
 				value={price}
 				setValue={setPrice}
+				decimal={
+					token0 && token1
+						? inverted
+							? token1.decimal
+							: token0.decimal
+						: env.DEFAULT_TOKEN_DECIMAL
+				}
+				token0Decimal={token0 ? token0.decimal : 0}
+				token1Decimal={token1 ? token1.decimal : 0}
 			/>
 
 			<WalletActionButton

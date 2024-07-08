@@ -53,6 +53,16 @@ export default function LiquidityChartRangeInput({
 	const tokenAColor = useTokenColor(currencyA);
 	const tokenBColor = useTokenColor(currencyB);
 
+	const [token0, setToken0] = React.useState();
+	const [token1, setToken1] = React.useState();
+
+	React.useEffect(() => {
+		if (currencyA && currencyB) {
+			setToken0(currencyA.tokenId >= currencyB.tokenId ? currencyB : currencyA);
+			setToken1(currencyA.tokenId >= currencyB.tokenId ? currencyA : currencyB);
+		}
+	}, [currencyA, currencyB]);
+
 	const onBrushDomainChangeEnded = useCallback(
 		(domain, mode) => {
 			let leftRangeValue = Number(domain[0]);
@@ -82,10 +92,16 @@ export default function LiquidityChartRangeInput({
 	const brushDomain = useMemo(() => {
 		const leftPrice = priceLower;
 		const rightPrice =
-			priceUpper === INFINITE ? decodeTickPrice(getMaxTick(tickSpacing)) : priceUpper;
+			priceUpper === INFINITE
+				? decodeTickPrice(
+						getMaxTick(tickSpacing),
+						token0 ? token0.decimal : 0,
+						token1 ? token1.decimal : 0,
+					)
+				: priceUpper;
 
 		return leftPrice && rightPrice ? [parseFloat(leftPrice), parseFloat(rightPrice)] : undefined;
-	}, [priceLower, priceUpper, tickSpacing]);
+	}, [priceLower, priceUpper, tickSpacing, token0, token1]);
 
 	const brushLabelValue = useCallback(
 		(d, x) => {
