@@ -2,7 +2,7 @@ import React from 'react';
 import { checkServiceNode } from '../service/node';
 import { getBlockchainApps } from '../service/apps';
 import { tryToast } from '../utils/toast/tryToast';
-import { klayrTokenCompact } from '../utils/constants/tokens';
+import { klayrTokenCompact, swaptoshiTokenCompact } from '../utils/constants/tokens';
 import { getDEXConfig } from '../service/dex';
 import * as env from '../utils/config/env';
 import { getFeeEstimates } from '../service/fee';
@@ -20,6 +20,7 @@ export default function ChainProvider({ children }) {
 	const [availableService, setAvailableService] = React.useState();
 	const [selectedService, setSelectedService] = React.useState();
 	const [klyTokenInfo, setKlyTokenInfo] = React.useState(klayrTokenCompact);
+	const [swxTokenInfo, setSwxTokenInfo] = React.useState(swaptoshiTokenCompact);
 
 	const fetchBlock = React.useRef(false);
 
@@ -37,6 +38,10 @@ export default function ChainProvider({ children }) {
 		setKlyTokenInfo(s => ({
 			...s,
 			tokenId: chain.concat('0'.repeat(14)),
+		}));
+		setSwxTokenInfo(s => ({
+			...s,
+			tokenId: chain.concat(env.CHAIN_SUFFIX).concat('0'.repeat(8)),
 		}));
 	}, [chain]);
 
@@ -117,10 +122,11 @@ export default function ChainProvider({ children }) {
 			selectedService,
 			setSelectedService,
 			klyTokenInfo,
+			swxTokenInfo,
 			dexConfig,
 			feeConfig,
 		}),
-		[availableService, chain, dexConfig, feeConfig, klyTokenInfo, selectedService],
+		[availableService, chain, dexConfig, feeConfig, klyTokenInfo, selectedService, swxTokenInfo],
 	);
 
 	return <ChainContext.Provider value={context}>{children}</ChainContext.Provider>;
