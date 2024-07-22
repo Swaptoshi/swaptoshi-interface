@@ -341,7 +341,7 @@ export function WalletConnectProvider({ children }) {
 						const meta = tokenMeta.data.find(t => t.tokenID === tokens.data[i].tokenID);
 
 						let symbol = meta && meta.symbol ? meta.symbol : '???';
-						let logo = meta ? meta.logo.png : '';
+						let logo = meta && meta.logo ? (meta.logo.svg ? meta.logo.svg : meta.logo.png) : '';
 						let tokenName = meta ? meta.tokenName : '';
 						let decimal =
 							meta && symbol !== '???'

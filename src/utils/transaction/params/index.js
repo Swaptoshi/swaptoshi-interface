@@ -117,6 +117,10 @@ export const transformParam = (module, command, params) => {
 								amount: BigInt(vesting.amount),
 							})),
 						})),
+						attributes: params.attributes.map(attribute => ({
+							key: attribute.key,
+							attributes: Buffer.from(attribute.attributes, 'hex'),
+						})),
 					};
 				case 'tokenBurn':
 					return {

@@ -10,7 +10,7 @@ import { codec } from '@klayr/codec';
 import { factoryMetadataSchema } from '../../utils/schema/token_factory_create_metadata';
 import { useTransactionModal } from '../../context/TransactionModalProvider';
 import { useChain } from '../../context/ChainProvider';
-import { getFactoryIsAvailable, postFactoryCreate } from '../../service/factory';
+import { getFactoryIsAvailable } from '../../service/factory';
 import ModalContainer from '../../components/Modal/ModalContainer.jsx';
 import { useDebouncedCallback } from 'use-debounce';
 import { tryToast } from '../../utils/toast/tryToast.js';
@@ -85,7 +85,7 @@ const CreateToken = () => {
 	}, []);
 
 	const handleChange = React.useCallback(async e => {
-		setLogoHex(Buffer.from(await e.arrayBuffer()).toString('base64'));
+		setLogoHex(Buffer.from(await e.arrayBuffer(), 'hex'));
 		setLogo(URL.createObjectURL(e));
 		setLogoError();
 	}, []);
@@ -98,6 +98,14 @@ const CreateToken = () => {
 	const handleSubmit = React.useCallback(
 		e => {
 			e.preventDefault();
+			const metadata = codec.encode(factoryMetadataSchema, {
+				tokenName,
+				description,
+				decimal,
+				baseDenom,
+				symbol: tokenSymbol,
+			});
+
 			const transaction = {
 				module: 'tokenFactory',
 				command: 'tokenCreate',
@@ -112,31 +120,19 @@ const CreateToken = () => {
 							vesting: [],
 						},
 					],
+					attributes: [
+						{ key: 'svg', attributes: logoHex.toString('hex') },
+						{ key: 'metadata', attributes: metadata.toString('hex') },
+					],
 				},
 				nonce: auth.nonce,
 				senderPublicKey: senderPublicKey,
 				signatures: new Array(auth.numberOfSignatures || 1).fill('0'.repeat(128)),
 			};
-			const metadata = codec
-				.encode(factoryMetadataSchema, {
-					tokenName,
-					description,
-					decimal,
-					baseDenom,
-					symbol: tokenSymbol,
-				})
-				.toString('hex');
-			const logo = logoHex;
 
 			sendTransaction({
 				transaction,
 				onSuccess: () => navigate('/tokens'),
-				customHandler: async signed => {
-					await postFactoryCreate(
-						{ transaction: signed, metadata, logo },
-						selectedService ? selectedService.serviceURLs : undefined,
-					);
-				},
 			});
 		},
 		[
@@ -151,7 +147,6 @@ const CreateToken = () => {
 			tokenSymbol,
 			logoHex,
 			sendTransaction,
-			selectedService,
 		],
 	);
 
@@ -209,9 +204,9 @@ const CreateToken = () => {
 							<FileUploader
 								multiple={false}
 								required
-								types={['png']}
+								types={['svg']}
 								onTypeError={handleFileError}
-								maxSize={0.512}
+								maxSize={0.01}
 								onSizeError={handleFileError}
 								handleChange={handleChange}
 								classes="custom-file-upload"
@@ -254,7 +249,7 @@ const CreateToken = () => {
 									>
 										select or drop token icon here
 										<br />
-										(.png only, Max 512kb)
+										(.svg only, Max 10kb)
 										{logoError && <div style={{ color: 'var(--red)' }}>{logoError}</div>}
 									</div>
 								</div>
