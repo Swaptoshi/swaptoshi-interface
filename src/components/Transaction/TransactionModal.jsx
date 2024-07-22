@@ -133,15 +133,26 @@ export default function TransactionModal({
 	const calculateMinimumFee = useDebouncedCallback(async transaction => {
 		try {
 			setStatus('Calculating transacton fee...');
-			const txBytes = await getTransactionBytes(transaction);
-			const minFee = BigInt(txBytes.length) * BigInt(feeConfig.minFeePerByte);
+			const baseFee = BigInt(getBaseFee(transaction.module, transaction.command));
+			let txBytes = await getTransactionBytes(transaction);
+			let minFee = BigInt(txBytes.length) * BigInt(feeConfig.minFeePerByte);
 
-			let fee = minFee + BigInt(getBaseFee(transaction.module, transaction.command));
-			const parsed = {
+			let fee = minFee + baseFee;
+			let parsed = {
+				...transaction,
+				fee: fee.toString(),
+			};
+
+			txBytes = await getTransactionBytes(parsed);
+			minFee = BigInt(txBytes.length) * BigInt(feeConfig.minFeePerByte);
+
+			fee = minFee + baseFee;
+			parsed = {
 				...transaction,
 				fee: fee.toString(),
 				signatures: [],
 			};
+
 			setParsedTransaction(parsed);
 			dryRun(parsed);
 		} catch (err) {
