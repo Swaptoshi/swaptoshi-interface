@@ -249,7 +249,7 @@ const CreateToken = () => {
 									>
 										select or drop token icon here
 										<br />
-										(.svg only, Max 10kb)
+										(.svg only, 64px x 64px, Max 10kb)
 										{logoError && <div style={{ color: 'var(--red)' }}>{logoError}</div>}
 									</div>
 								</div>
