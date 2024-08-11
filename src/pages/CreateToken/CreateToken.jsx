@@ -160,7 +160,7 @@ const CreateToken = () => {
 				</TextButton>
 			}
 		>
-			<form onSubmit={handleSubmit}>
+			<form>
 				<div className="Column__AutoColumn-sc-72c388fb-2 erfjwt">
 					<div
 						style={{
@@ -188,7 +188,7 @@ const CreateToken = () => {
 										height: '100px',
 										borderRadius: '100%',
 										overflow: 'hidden',
-										objectFit: 'cover',
+										objectFit: 'contain',
 										margin: 'auto',
 									}}
 									alt="coin"
@@ -323,7 +323,7 @@ const CreateToken = () => {
 					)}
 					<WalletActionButton
 						disabled={!isReady || !isNoError}
-						type="submit"
+						onClick={handleSubmit}
 						style={{ height: '60px' }}
 					>
 						Create Token
