@@ -34,7 +34,7 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
-				backgroundColor: loaded ? color : 'var(--surface-2)',
+				backgroundColor: loaded ? (error ? color : 'var(--surface-2)') : 'var(--surface-2)',
 				...style,
 			}}
 			{...props}
@@ -47,7 +47,7 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 					height: '100%',
 					width: '100%',
 					display: error ? 'none' : loaded ? undefined : 'none',
-					objectFit: 'cover',
+					objectFit: 'contain',
 				}}
 				onLoad={onLoad}
 				onError={onError}
