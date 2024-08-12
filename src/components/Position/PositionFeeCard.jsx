@@ -63,13 +63,11 @@ export default function PositionFeeCard({
 			command: 'collect',
 			fee: '1000000',
 			params: {
-				poolAddress: cryptography.address
-					.getAddressFromKlayr32Address(position.poolAddress)
-					.toString('hex'),
+				poolAddress: position.poolAddress,
 				tokenId: index.toString(),
-				recipient: cryptography.address
-					.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
-					.toString('hex'),
+				recipient: cryptography.address.getKlayr32AddressFromPublicKey(
+					Buffer.from(senderPublicKey, 'hex'),
+				),
 				amount0Max: value[`fees${token0.slice(-1)}`],
 				amount1Max: value[`fees${token1.slice(-1)}`],
 			},

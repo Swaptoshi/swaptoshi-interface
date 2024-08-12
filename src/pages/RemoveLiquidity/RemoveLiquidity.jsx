@@ -1,5 +1,4 @@
 import React from 'react';
-import * as cryptography from '@klayr/cryptography';
 import Loader from '../../components/Loader';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -99,9 +98,7 @@ export default function RemoveLiquidity() {
 			command: 'decreaseLiquidity',
 			fee: '1000000',
 			params: {
-				poolAddress: cryptography.address
-					.getAddressFromKlayr32Address(position.poolAddress)
-					.toString('hex'),
+				poolAddress: position.poolAddress,
 				tokenId: index.toString(),
 				liquidity,
 				amount0Min: new BigNumber(amount0)

@@ -1,5 +1,4 @@
 import React from 'react';
-import * as cryptography from '@klayr/cryptography';
 import ModalContainer from '../../components/Modal/ModalContainer';
 import WalletActionButton from '../../components/Button/WalletActionButton';
 import { decodeNFTId } from '../../utils/address/poolAddress';
@@ -210,9 +209,7 @@ const IncreaseLiquidity = () => {
 			command: 'increaseLiquidity',
 			fee: '1000000',
 			params: {
-				poolAddress: cryptography.address
-					.getAddressFromKlayr32Address(position.poolAddress)
-					.toString('hex'),
+				poolAddress: position.poolAddress,
 				tokenId: index.toString(),
 				amount0Desired: amount0Desired.toString(),
 				amount1Desired: amount1Desired.toString(),

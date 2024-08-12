@@ -113,9 +113,9 @@ const CreateToken = () => {
 				params: {
 					distribution: [
 						{
-							recipientAddress: cryptography.address
-								.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
-								.toString('hex'),
+							recipientAddress: cryptography.address.getKlayr32AddressFromPublicKey(
+								Buffer.from(senderPublicKey, 'hex'),
+							),
 							amount: (Number(amount) * 10 ** Number(decimal)).toString(),
 							vesting: [],
 						},

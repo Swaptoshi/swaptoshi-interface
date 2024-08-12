@@ -131,8 +131,11 @@ export default function TransactionModal({
 	);
 
 	const calculateMinimumFee = useDebouncedCallback(async transaction => {
+		const errorMessage = 'Calculating fee failed, please re-check your parameter';
+
 		try {
 			setStatus('Calculating transacton fee...');
+
 			const baseFee = BigInt(getBaseFee(transaction.module, transaction.command));
 			let txBytes = await getTransactionBytes(transaction);
 			let minFee = BigInt(txBytes.length) * BigInt(feeConfig.minFeePerByte);
@@ -156,7 +159,8 @@ export default function TransactionModal({
 			setParsedTransaction(parsed);
 			dryRun(parsed);
 		} catch (err) {
-			setError(err.message);
+			console.error(err);
+			setError(err.message ? err.message : errorMessage);
 			setIsFecting(false);
 		}
 	}, Number(env.EFFECT_DEBOUNCE_WAIT));

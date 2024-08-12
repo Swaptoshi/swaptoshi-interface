@@ -377,9 +377,9 @@ const AddLiquidity = () => {
 			params: {
 				token0: poolKey.token0,
 				token1: poolKey.token1,
-				fee,
-				tickLower,
-				tickUpper,
+				fee: fee.toString(),
+				tickLower: tickLower.toString(),
+				tickUpper: tickUpper.toString(),
 				amount0Desired: amount0Desired.toString(),
 				amount1Desired: amount1Desired.toString(),
 				amount0Min: new BigNumber(amount0Desired)
@@ -390,9 +390,9 @@ const AddLiquidity = () => {
 					.minus(new BigNumber(amount1Desired).multipliedBy(slippageFactor).dividedBy(100))
 					.toFixed(0)
 					.toString(),
-				recipient: cryptography.address
-					.getAddressFromPublicKey(Buffer.from(senderPublicKey, 'hex'))
-					.toString('hex'),
+				recipient: cryptography.address.getKlayr32AddressFromPublicKey(
+					Buffer.from(senderPublicKey, 'hex'),
+				),
 				deadline: (Math.floor(Date.now() / 1000) + deadlineFactor * 60).toString(),
 			},
 			nonce: auth.nonce,
