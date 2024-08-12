@@ -4,7 +4,7 @@ import Loader from '../../Loader';
 import InfoBox from '../../Message/InfoBox';
 import { INFINITE } from '../../../utils/constants/tick';
 import { decodeTickPrice } from '../../../utils/math/priceFormatter';
-import { getMaxTick } from '../../../utils/tick/price_tick';
+import { getMaxTick, normalizePriceByTick } from '../../../utils/tick/price_tick';
 import useTokenColor from '../../../utils/hook/useTokenColor';
 
 const ZOOM_LEVELS = {
@@ -49,6 +49,8 @@ export default function LiquidityChartRangeInput({
 	interactive,
 	isLoading,
 	error,
+	token0Decimal,
+	token1Decimal,
 }) {
 	const tokenAColor = useTokenColor(currencyA);
 	const tokenBColor = useTokenColor(currencyB);
@@ -73,18 +75,30 @@ export default function LiquidityChartRangeInput({
 			}
 
 			if ((!ticksAtLimit['LOWER'] || mode === 'handle' || mode === 'reset') && leftRangeValue > 0) {
-				onLeftRangeInput(leftRangeValue.toFixed(5));
+				const normalized = normalizePriceByTick(
+					leftRangeValue,
+					tickSpacing,
+					token0Decimal,
+					token1Decimal,
+				);
+				onLeftRangeInput(normalized);
 			}
 
 			if ((!ticksAtLimit['UPPER'] || mode === 'reset') && rightRangeValue > 0) {
 				// todo: remove this check. Upper bound for large numbers
 				// sometimes fails to parse to tick.
 				if (rightRangeValue < 1e35) {
-					onRightRangeInput(rightRangeValue.toFixed(5));
+					const normalized = normalizePriceByTick(
+						rightRangeValue,
+						tickSpacing,
+						token0Decimal,
+						token1Decimal,
+					);
+					onRightRangeInput(normalized);
 				}
 			}
 		},
-		[onLeftRangeInput, onRightRangeInput, ticksAtLimit],
+		[onLeftRangeInput, onRightRangeInput, tickSpacing, ticksAtLimit, token0Decimal, token1Decimal],
 	);
 
 	interactive = interactive && Boolean(ticks?.length);

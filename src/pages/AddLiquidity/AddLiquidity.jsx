@@ -598,6 +598,8 @@ const AddLiquidity = () => {
 								priceUpper={highPrice}
 								onLeftRangeInput={handleLowPriceInput}
 								onRightRangeInput={handleHighPriceInput}
+								token0Decimal={token0 ? token0.decimal : 0}
+								token1Decimal={token1 ? token1.decimal : 0}
 								interactive={ticks && ticks.length > 0}
 								isLoading={isLoading}
 								error={error}
