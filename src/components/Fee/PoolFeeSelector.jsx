@@ -82,7 +82,6 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 												key={fees.fee}
 												onClick={() => onSelect(fees)}
 												style={{
-													width: '31%',
 													margin: '1% 1%',
 													border: '1px solid var(--border)',
 													padding: '16px',

@@ -966,6 +966,18 @@ button {
 	min-width: 100px;
 }
 
+@media screen and (width >= 768px) {
+	.aQTri {
+		width: 23%;
+	}
+}
+
+@media screen and (width < 768px) {
+	.aQTri {
+		width: 100%;
+	}
+}
+
 @media screen and (width <= 768px) {
 	.cMHLWt {
 		flex: 5;
