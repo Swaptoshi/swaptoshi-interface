@@ -5,6 +5,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import * as env from '../../utils/config/env';
 
 const feeDescriptionMap = {
+	[100]: 'Best for very stable pairs.',
 	[500]: 'Best for stable pairs.',
 	[3000]: 'Best for most pairs.',
 	[10000]: 'Best for exotic pairs.',
