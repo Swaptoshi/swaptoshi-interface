@@ -88,8 +88,8 @@ export default function CreatePool() {
 	}, [isSpecifyPriceReady, price]);
 
 	const handleSelectFee = React.useCallback(selected => {
-		setFee(Number(selected[0]));
-		setTickSpacing(Number(selected[1]));
+		setFee(Number(selected.fee));
+		setTickSpacing(Number(selected.tickSpacing));
 	}, []);
 
 	const handleTokenAChange = React.useCallback(selected => {

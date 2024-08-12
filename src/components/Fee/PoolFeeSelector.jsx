@@ -30,7 +30,7 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 			onLoad && onLoad(config.feeAmountTickSpacing);
 		}
 		if (env.DEFAULT_FEE_TIER) {
-			const matched = config.feeAmountTickSpacing.find(t => t[0] === env.DEFAULT_FEE_TIER);
+			const matched = config.feeAmountTickSpacing.find(t => t.fee === env.DEFAULT_FEE_TIER);
 			onSelect && onSelect(matched);
 		}
 		setIsLoading(false);
@@ -78,7 +78,7 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 								? dexConfig.feeAmountTickSpacing.map(fees => {
 										return (
 											<button
-												key={fees[0]}
+												key={fees.fee}
 												onClick={() => onSelect(fees)}
 												style={{
 													width: '31%',
@@ -88,7 +88,7 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 													borderRadius: '16px',
 													overflow: 'hidden',
 													backgroundColor:
-														Number(selected) === Number(fees[0]) ? 'var(--surface-2)' : undefined,
+														Number(selected) === Number(fees.fee) ? 'var(--surface-2)' : undefined,
 												}}
 												className="sc-bczRLJ lbXqUa Button__BaseButton-sc-4f96dcd8-1 Button__ButtonOutlined-sc-4f96dcd8-7 eOoGds aQTri"
 											>
@@ -96,10 +96,10 @@ export default function PoolFeeSelector({ selected, onSelect, onLoad }) {
 													<div className="Column__AutoColumn-sc-72c388fb-2 ezHOjM">
 														<div className="Column__AutoColumn-sc-72c388fb-2 gajsee">
 															<div className="text__TextWrapper-sc-9327e48a-0 blhgKn FeeOption__ResponsiveText-sc-6b7ccec1-0 fYKQxG css-1lohbqv">
-																{fees[0] / 10000}%
+																{fees.fee / 10000}%
 															</div>
 															<div className="text__TextWrapper-sc-9327e48a-0 fbSdRZ css-fczr0v">
-																{feeDescriptionMap[fees[0]] ?? 'New Opportunities'}
+																{feeDescriptionMap[fees.fee] ?? 'New Opportunities'}
 															</div>
 														</div>
 													</div>

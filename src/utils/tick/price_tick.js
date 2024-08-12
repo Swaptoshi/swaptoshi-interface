@@ -92,9 +92,9 @@ export const getMaxTick = tickSpacing => {
 
 export const getTickSpacing = (fee, dexConfig) => {
 	if (dexConfig) {
-		const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t[0] === fee.toString());
+		const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t.fee === fee.toString());
 		if (tickSpacing) {
-			return tickSpacing[1];
+			return tickSpacing.tickSpacing;
 		}
 	}
 	return '0';

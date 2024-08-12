@@ -43,7 +43,7 @@ export const isFeeConversion = async (
 			const service = selectedService ? selectedService.serviceURLs : undefined;
 
 			for (const feeTickSpaingMap of dexConfig.feeAmountTickSpacing) {
-				const [fee] = feeTickSpaingMap;
+				const { fee } = feeTickSpaingMap;
 				const poolAddress = cryptography.address.getKlayr32AddressFromAddress(
 					computePoolAddress(getPoolKey(tokenIn, tokenOut, fee)),
 				);

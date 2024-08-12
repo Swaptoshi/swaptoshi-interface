@@ -3,7 +3,7 @@ import SwapTokenInput from '../Swap/SwapTokenInput';
 import { decodePoolAddress } from '../../utils/address/poolAddress';
 import { useChain } from '../../context/ChainProvider';
 import { calculateAmount0, calculateAmount1 } from '../../utils/liquidity/liquidityAmount';
-import { getMaxTick, getMinTick } from '../../utils/tick/price_tick';
+import { getMaxTick, getMinTick, getTickSpacing } from '../../utils/tick/price_tick';
 import { decodeTickPrice } from '../../utils/math/priceFormatter';
 import { INFINITE, ZERO } from '../../utils/constants/tick';
 
@@ -27,10 +27,7 @@ export default function LiquidityAmountsInput({
 	const tickSpacing = React.useMemo(() => {
 		if (dexConfig && poolAddress) {
 			const { fee } = decodePoolAddress(poolAddress);
-			const tickSpacing = dexConfig.feeAmountTickSpacing.find(t => t[0] === fee.toString());
-			if (tickSpacing) {
-				return tickSpacing[1];
-			}
+			return getTickSpacing(fee, dexConfig);
 		}
 		return undefined;
 	}, [dexConfig, poolAddress]);
