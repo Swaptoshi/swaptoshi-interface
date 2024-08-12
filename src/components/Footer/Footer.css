@@ -152,6 +152,12 @@
 	}
 }
 
+@media screen and (width < 1024px) {
+	.dNOeBf {
+		display: none;
+	}
+}
+
 @media screen and (width >= 1280px) {
 	.kzmIWZ {
 		grid-template-columns: 1fr 1fr 1fr 1fr;
