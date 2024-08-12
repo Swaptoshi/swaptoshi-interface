@@ -32,7 +32,7 @@ export const KLAYR_SERVICE_URL = process.env.REACT_APP_KLAYR_SERVICE_URL
 
 export const DEFAULT_CHAIN = process.env.REACT_APP_DEFAULT_CHAIN
 	? process.env.REACT_APP_DEFAULT_CHAIN
-	: '04';
+	: '00';
 
 export const DEFAULT_TOKEN_DECIMAL = process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL
 	? process.env.REACT_APP_DEFAULT_TOKEN_DECIMAL
