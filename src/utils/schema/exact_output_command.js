@@ -4,10 +4,12 @@ export const exactOutputCommandSchema = {
 	properties: {
 		path: {
 			dataType: 'bytes',
+			format: 'hex',
 			fieldNumber: 1,
 		},
 		recipient: {
 			dataType: 'bytes',
+			format: 'klayr32',
 			fieldNumber: 2,
 		},
 		deadline: {

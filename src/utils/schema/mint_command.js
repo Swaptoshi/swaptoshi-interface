@@ -4,10 +4,12 @@ export const mintCommandSchema = {
 	properties: {
 		token0: {
 			dataType: 'bytes',
+			format: 'hex',
 			fieldNumber: 1,
 		},
 		token1: {
 			dataType: 'bytes',
+			format: 'hex',
 			fieldNumber: 2,
 		},
 		fee: {
@@ -40,6 +42,7 @@ export const mintCommandSchema = {
 		},
 		recipient: {
 			dataType: 'bytes',
+			format: 'klayr32',
 			fieldNumber: 10,
 		},
 		deadline: {
