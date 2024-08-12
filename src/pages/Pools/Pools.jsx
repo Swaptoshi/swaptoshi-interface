@@ -135,12 +135,19 @@ const Pools = () => {
 										>
 											<div style={{ flex: 1 }}>
 												<div style={{ display: 'flex' }}>
-													<TokenAvatar src={pos.token0Logo} size={24} tokenId={pos.token0} />
+													<TokenAvatar
+														src={pos.token0Logo}
+														backgroundColor={'var(--surface-2)'}
+														size={24}
+														tokenId={pos.token0}
+														style={{ border: '1px solid var(--border)' }}
+													/>
 													<TokenAvatar
 														src={pos.token1Logo}
+														backgroundColor={'var(--surface-2)'}
 														size={24}
 														tokenId={pos.token1}
-														style={{ marginLeft: '-10px' }}
+														style={{ marginLeft: '-10px', border: '1px solid var(--border)' }}
 													/>
 													<div style={{ margin: '0px 4px' }} />
 													<div style={{ color: 'var(--text-1)', fontWeight: 600 }}>

@@ -205,12 +205,19 @@ export default function RemoveLiquidity() {
 				<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowBetween-sc-34df4f97-1 PositionPage__ResponsiveRow-sc-f1e5edbd-7 dKubqp cPCYrp bIFEzi iYnZBs">
 					<div className="sc-aXZVg Row-sc-34df4f97-0 Row__RowFixed-sc-34df4f97-4 PositionPage__PositionLabelRow-sc-f1e5edbd-14 dKubqp cPCYrp kjbeBO">
 						<div style={{ display: 'flex', alignItems: 'center' }}>
-							<TokenAvatar src={position.token0Logo} size={24} tokenId={position.token0} />
+							<TokenAvatar
+								src={position.token0Logo}
+								backgroundColor={'var(--surface-2)'}
+								size={24}
+								tokenId={position.token0}
+								style={{ border: '1px solid var(--border)' }}
+							/>
 							<TokenAvatar
 								src={position.token1Logo}
+								backgroundColor={'var(--surface-2)'}
 								size={24}
 								tokenId={position.token1}
-								style={{ marginLeft: '-10px' }}
+								style={{ marginLeft: '-10px', border: '1px solid var(--border)' }}
 							/>
 							<div style={{ margin: '0px 4px' }} />
 							<div style={{ color: 'var(--text-1)', fontSize: '20px', fontWeight: 600 }}>

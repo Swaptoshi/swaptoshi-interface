@@ -175,14 +175,17 @@ export default function PositionDetails() {
 									<div style={{ display: 'flex', alignItems: 'center' }}>
 										<TokenAvatar
 											src={position[`${token0}Logo`]}
+											backgroundColor={'var(--surface-2)'}
 											size={24}
 											tokenId={position[token0]}
+											style={{ border: '1px solid var(--border)' }}
 										/>
 										<TokenAvatar
 											src={position[`${token1}Logo`]}
+											backgroundColor={'var(--surface-2)'}
 											size={24}
 											tokenId={position[token1]}
-											style={{ marginLeft: '-10px' }}
+											style={{ marginLeft: '-10px', border: '1px solid var(--border)' }}
 										/>
 										<div style={{ margin: '0px 4px' }} />
 										<div style={{ color: 'var(--text-1)', fontSize: '20px', fontWeight: 600 }}>

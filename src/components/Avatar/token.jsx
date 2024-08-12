@@ -1,7 +1,7 @@
 import React from 'react';
 import useTokenColor from '../../utils/hook/useTokenColor';
 
-export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
+export default function TokenAvatar({ size, style, src, backgroundColor, tokenId, ...props }) {
 	const [loaded, setIsLoaded] = React.useState(false);
 	const [error, setError] = React.useState(false);
 	const [key, setKey] = React.useState(0);
@@ -34,7 +34,7 @@ export default function TokenAvatar({ size, style, src, tokenId, ...props }) {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
-				backgroundColor: loaded ? (error ? color : undefined) : 'var(--surface-2)',
+				backgroundColor: loaded ? (error ? color : backgroundColor) : 'var(--surface-2)',
 				...style,
 			}}
 			{...props}
