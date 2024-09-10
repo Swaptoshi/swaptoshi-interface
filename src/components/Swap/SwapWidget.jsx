@@ -161,7 +161,7 @@ const SwapWidget = ({ disabled, withGlow, initialBaseToken, initialQuoteToken })
 				fee: '1000000',
 				params: {
 					path,
-					recipient: cryptography.address.getAddressFromPublicKey(senderBuffer).toString('hex'),
+					recipient: cryptography.address.getKlayr32AddressFromPublicKey(senderBuffer),
 					deadline: (Math.floor(Date.now() / 1000) + deadlineFactor * 60).toString(),
 					amountOut: Math.floor(Number(quoteValue) * 10 ** quoteToken.decimal).toString(),
 					amountInMaximum: new BigNumber(amount)
