@@ -50,11 +50,15 @@ function encodePriceSqrt(reserve1, reserve0) {
 	if (reserve1 === ZERO || reserve0 === ZERO) {
 		return MIN_SQRT_RATIO;
 	}
-	return new Decimal(reserve1.toString())
+	const priceSqrt = new BigNumber(reserve1)
 		.div(reserve0)
 		.sqrt()
-		.mul(new Decimal(2).pow(96))
-		.toFixed(0);
+		.multipliedBy(2 ** 96);
+
+	if (priceSqrt.gte(MAX_SQRT_RATIO)) return MAX_SQRT_RATIO;
+	if (priceSqrt.lte(MIN_SQRT_RATIO)) return MIN_SQRT_RATIO;
+
+	return priceSqrt.toFixed(0);
 }
 
 function encodeFeeGrowth(feeGrowth, liquidity) {

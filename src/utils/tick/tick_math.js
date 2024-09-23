@@ -46,10 +46,12 @@ function getSqrtRatioAtTick(tick) {
 }
 exports.getSqrtRatioAtTick = getSqrtRatioAtTick;
 function getTickAtSqrtRatio(sqrtPriceX96) {
+	// on uniswap v3 solidity, its < not <=; On tick spacing 1, <= works but < not
+
 	if (
 		!(
 			int_1.Uint160.from(sqrtPriceX96).gte(exports.MIN_SQRT_RATIO) &&
-			int_1.Uint160.from(sqrtPriceX96).lt(exports.MAX_SQRT_RATIO)
+			int_1.Uint160.from(sqrtPriceX96).lte(exports.MAX_SQRT_RATIO)
 		)
 	) {
 		throw new Error('R');
