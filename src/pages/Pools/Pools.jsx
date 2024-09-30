@@ -164,12 +164,12 @@ const Pools = () => {
 													getMinTick(getTickSpacing(pos.fee, dexConfig))
 														? ZERO
 														: decodeTickPrice(pos.tickLower, pos.token0Decimal, pos.token1Decimal)
-												} ${pos.token0Symbol} per ${pos.token1Symbol} ↔ ${
+												} ${pos.token1Symbol} per ${pos.token0Symbol} ↔ ${
 													pos.tickUpper.toString() ===
 													getMaxTick(getTickSpacing(pos.fee, dexConfig))
 														? INFINITE
 														: decodeTickPrice(pos.tickUpper, pos.token0Decimal, pos.token1Decimal)
-												} ${pos.token0Symbol} per ${pos.token1Symbol}`}</div>
+												} ${pos.token1Symbol} per ${pos.token0Symbol}`}</div>
 											</div>
 											<PriceRangeLabel
 												liquidity={pos.liquidity}
