@@ -82,7 +82,7 @@ export default function PositionPriceRange({
 									)}
 						</div>
 						<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-							{position[`${token0}Symbol`]} per {position[`${token1}Symbol`]}
+							{position[`${token1}Symbol`]} per {position[`${token0}Symbol`]}
 						</span>
 					</div>
 				</SecondaryCard>
@@ -104,7 +104,7 @@ export default function PositionPriceRange({
 									)}
 						</div>
 						<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-							{position[`${token0}Symbol`]} per {position[`${token1}Symbol`]}
+							{position[`${token1}Symbol`]} per {position[`${token0}Symbol`]}
 						</span>
 					</div>
 				</SecondaryCard>
@@ -121,7 +121,7 @@ export default function PositionPriceRange({
 						)}
 					</div>
 					<span className="PositionPage__ExtentsText-sc-f1e5edbd-4 kyqFWH">
-						{position[`${token0}Symbol`]} per {position[`${token1}Symbol`]}
+						{position[`${token1}Symbol`]} per {position[`${token0}Symbol`]}
 					</span>
 				</div>
 			</SecondaryCard>
